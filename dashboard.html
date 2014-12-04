@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<html>
+  <head>
+    <style type="text/css">
+      html {height:100%;}
+      body {margin:0;padding:0;}
+      body, table {font-family:sans-serif;font-size:0.8em;}
+      div#header {position:absolute;left:0;top:0;margin:0;padding:0;height:79px;background-image:url('res/bg_t.jpg');background-repeat:repeat;width:100%;}
+      div#content {position:absolute;left:0;top:79px;width:100%;}
+
+      table.dataTable {border-radius:10px;background-color:#f4f4f4;border-spacing:0;border-collapse:collapse;}
+      table.dataTable td {padding:4px;}
+      table.dataTable th {padding-left:6px;padding-right:6px;}
+      table.dataTable tr.title {font-weight:bold;color:#636363;font-size:1.2em;}
+      table.dataTable tr.title td {padding-left:8px;}
+      table.dataTable tr.hd {background-color:#bcbcbc;color:#ffffff;}
+      table.dataTable td.ar {text-align:right;}
+      table.dataTable td.b {font-weight:bold;}
+      table.dataTable tr.od {background-color:#ffffff;border:1px solid #eaeaea;}
+      table.dataTable tr.ev {background-color:#f6f6f6;border:1px solid #eaeaea;}
+      table.dataTable tr.od:hover {background-color:#fffacd;}
+      table.dataTable tr.ev:hover {background-color:#fffacd;}
+      table.dataTable tr.em1 {background-color:#faa07a;}
+      table.dataTable tr.em2 {background-color:#00fa9a;}
+      table.dataTable tr.em3 {background-color:#00bfff;}
+
+      table.dataTable tr.sm {font-weight:bold;}
+
+      table#contentLayout {width:98%;margin-left:12px;margin-top:12px;}
+      td.aligntop {vertical-align:top;}
+
+      div.trendLineContainer {padding:10px;border:1px solid silver;border-radius:10px;}
+      div.containerTitle1 {padding-left:12px;font-weight:bold;color:#636363;font-size:1.0em;display:inline;}
+      div.containerTitle2 {font-size:0.9em;display:inline;}
+      
+      div#data2TrendContainer {width:640px;}
+      div#data2TrendContainer div.containerTitle2 {margin-left:280px;}
+      div#data3BarContainer {width:320px;}
+      div#data3BarContainer div.containerTitle2 {margin-left:100px;}
+      div#data4PieContainer {width:320px;}
+      div#data4Legend {float:right;}
+
+      span.lt2 {color:#ff8c00;font-weight:bold;}
+      span.lt3 {color:#32cd32;font-weight:bold;}
+      span.lt4 {color:#1e90ff;font-weight:bold;}
+      span.lt5 {color:#1B9E77;font-weight:bold;}
+      span.lt6 {color:#D95F02;font-weight:bold;}
+      span.lt7 {color:#7570B3;font-weight:bold;}      
+      span.lt8 {color:#ff7f0e;font-weight:bold;}
+      span.lt9 {color:#1f77b4;font-weight:bold;}
+      span.lt10 {color:#2ca02c;font-weight:bold;}
+      span.lt11 {color:#d62728;font-weight:bold;}
+      span.lt12 {color:#9467bd;font-weight:bold;}      
+
+      
+      table#rulesTripped {width:340px;}
+      table#scoreBand {width:340px;}
+      table#salesOverview {width:360px;}
+      table#salesDistribution {width:360px;}
+
+
+
+      .axis path, .axis line {fill:none;stroke:silver;shape-rendering:crispEdges;}
+      .x.axis path  { displayx: none;}
+      .axis text {font-size:0.8em;}
+      .line {fill: none;stroke: steelblue;stroke-width: 1.5px;}
+
+      path.lt1 {stroke:#da70d6;stroke-width:2;fill:none;}
+      path.lt2 {stroke:#ff8c00;stroke-width:2;fill:none;}
+      path.lt3 {stroke:#32cd32;stroke-width:2;fill:none;}
+      path.lt4 {stroke:#1e90ff;stroke-width:2;fill:none;}
+
+    div.arrow-up {
+        width: 0; 
+        height: 0; 
+        border-left: 5px solid transparent;
+        border-right: 5px solid transparent;
+        border-bottom: 5px solid green;
+        
+    }
+
+    div.arrow-down {
+        width: 0; 
+        height: 0; 
+        border-left: 5px solid transparent;
+        border-right: 5px solid transparent;
+        border-top: 5px solid red;
+
+    }
+
+    </style>
+
+    <script type="text/javascript" src="./res/d3.v3.min.js"></script>
+
+    <script type="text/javascript">
+      function init() {
+          renderBarData3();
+          renderTimelineData2();
+          renderPieData4();
+      }
+
+      var TIMES_LOOKUP = ['8am','9am','10am','11am','12pm','1pm','2pm','3pm','4pm','5pm','6pm','7pm','8pm','9pm','10pm','11pm','12am','1am','2am','3am','4am','5am','6am','7am'];
+
+
+      function renderTimelineData2() {
+        var w = 600,
+            h = 100;
+        var svg = d3.select('div#data2Trend').append('svg')
+          .attr('width', w + 20)
+          .attr('height', h + 40)
+          .append("g")
+          .attr("transform", "translate(" + 30 + "," + 20 + ")");
+        var data2 =
+[
+[{h:0,v:0},{h:1,v:0},{h:2,v:1},{h:3,v:2},{h:4,v:0},{h:5,v:2},{h:6,v:0},{h:7,v:0},{h:8,v:2},{h:9,v:0},{h:10,v:2},{h:11,v:4},{h:12,v:7},{h:13,v:4},{h:14,v:3},{h:15,v:32},{h:16,v:40},{h:17,v:7},{h:18,v:4},{h:19,v:0},{h:20,v:0},{h:21,v:0},{h:22,v:0},{h:23,v:0}],
+[{h:0,v:0},{h:1,v:0},{h:2,v:0},{h:3,v:4},{h:4,v:0},{h:5,v:4},{h:6,v:2},{h:7,v:2},{h:8,v:11},{h:9,v:0},{h:10,v:0},{h:11,v:5},{h:12,v:0},{h:13,v:3},{h:14,v:1},{h:15,v:4},{h:16,v:0},{h:17,v:2},{h:18,v:1},{h:19,v:0},{h:20,v:0},{h:21,v:0},{h:22,v:2},{h:23,v:0}],
+[{h:0,v:0},{h:1,v:0},{h:2,v:0},{h:3,v:0},{h:4,v:3},{h:5,v:1},{h:6,v:0},{h:7,v:0},{h:8,v:2},{h:9,v:0},{h:10,v:0},{h:11,v:2},{h:12,v:2},{h:13,v:4},{h:14,v:0},{h:15,v:6},{h:16,v:2},{h:17,v:2},{h:18,v:2},{h:19,v:0},{h:20,v:0},{h:21,v:0},{h:22,v:0},{h:23,v:0}]
+];
+        var x = d3.scale.linear().domain([0,23]).range([0, w]),
+            y = d3.scale.linear().domain([0,40]).range([h,0]);
+        var xAxis = d3.svg.axis()
+            .scale(x)
+            .tickFormat(function(d){return TIMES_LOOKUP[d];})
+            .orient("bottom");
+        var yAxis = d3.svg.axis()
+            .scale(y)
+            .orient("left");
+        var line = d3.svg.line()
+            .interpolate("basis")
+            .x(function(d) { return x(d.h); })
+            .y(function(d) { return y(d.v); });
+        var group = svg.selectAll('path')
+            .data(data2)
+            .enter().append('path')
+            .attr("d", line)
+            //.attr("class","lt2");
+            .attr("class", function(d,i) {return 'lt'+(2+i);});
+      svg.append("g")
+          .attr("class", "x axis")
+          .attr("transform", "translate(0," + h + ")")
+          .call(xAxis);
+      svg.append("g")
+          .attr("class", "y axis")
+          .call(yAxis)
+      }
+
+
+      function renderBarData3() {
+        var margin = {top: 20, right: 10, bottom: 20, left: 30},
+            width = 300 - margin.left - margin.right,
+            height = 200 - margin.top - margin.bottom;
+var data =
+[
+{"State":"Jan","Web":"12542","Phone":"4257","POS":"5061"},
+{"State":"Feb","Web":"25742","Phone":"12458","POS":"18001"},
+{"State":"Mar","Web":"18799","Phone":"9569","POS":"11000"},
+{"State":"May","Web":"25041","Phone":"10212","POS":"13004"},
+{"State":"Jun","Web":"32006","Phone":"17750","POS":"14008"},
+{"State":"Jul","Web":"31058","Phone":"15999","POS":"19584"},
+{"State":"Aug","Web":"22548","Phone":"14150","POS":"20857"},
+{"State":"Sep","Web":"33485","Phone":"12007","POS":"18048"},
+{"State":"Oct","Web":"29487","Phone":"11879","POS":"15487"},
+{"State":"Nov","Web":"34248","Phone":"17941","POS":"21589"},
+{"State":"Dec","Web":"42100","Phone":"21385","POS":"26852"}
+]
+        var x = d3.scale.ordinal()
+            .rangeRoundBands([0, width], .4);
+        var y = d3.scale.linear()
+            .rangeRound([height, 0]);
+        var color = d3.scale.ordinal()
+            .range(["#1B9E77", "#D95F02", "#7570B3"]);
+        var xAxis = d3.svg.axis()
+            .scale(x)
+            .orient("bottom");
+        var yAxis = d3.svg.axis()
+            .scale(y)
+            .orient("left")
+            .tickFormat(d3.format(".2s"));
+        var svg = d3.select("div#data3Bar").append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+          .append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+          color.domain(d3.keys(data[0]).filter(function(key) { return key !== "State"; }));
+          data.forEach(function(d) {
+            var y0 = 0;
+            d.ages = color.domain().map(function(name) { return {name: name, y0: y0, y1: y0 += +d[name]}; });
+            d.total = d.ages[d.ages.length - 1].y1;
+          });
+          //data.sort(function(a, b) { return b.total - a.total; });
+          x.domain(data.map(function(d) { return d.State; }));
+          y.domain([0, d3.max(data, function(d) { return d.total; })]);
+          svg.append("g")
+              .attr("class", "x axis")
+              .attr("transform", "translate(0," + height + ")")
+              .call(xAxis);
+          svg.append("g")
+              .attr("class", "y axis")
+              .call(yAxis)
+          /*    
+            .append("text")
+              .attr("transform", "rotate(-90)")
+              .attr("y", 6)
+              .attr("dy", ".71em")
+              .style("text-anchor", "end")
+              .text("Population");
+          */
+          var state = svg.selectAll(".state")
+              .data(data)
+            .enter().append("g")
+              .attr("class", "g")
+              .attr("transform", function(d) { return "translate(" + x(d.State) + ",0)"; });
+          state.selectAll("rect")
+              .data(function(d) { return d.ages; })
+            .enter().append("rect")
+              .attr("width", x.rangeBand())
+              //.attr("width", 20)
+              .attr("y", function(d) { return y(d.y1); })
+              .attr("height", function(d) { return y(d.y0) - y(d.y1); })
+              .style("fill", function(d) { return color(d.name); });
+          var legend = svg.selectAll(".legend")
+              .data(color.domain().slice().reverse())
+            .enter().append("g")
+              .attr("class", "legend")
+              .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+          /*
+          legend.append("rect")
+              .attr("x", width)
+              .attr("width", 18)
+              .attr("height", 18)
+              .style("fill", color);
+
+          legend.append("text")
+              .attr("x", width - 24)
+              .attr("y", 9)
+              .attr("dy", ".35em")
+              .style("text-anchor", "end")
+              .text(function(d) { return d; });
+          */
+      }
+      
+      function renderPieData4() {
+            //Width and height
+            var w = 120;
+            var h = 120;
+            var dataset = [ 68,11,9,5,7 ];
+            var outerRadius = w / 2;
+            var innerRadius = 0;
+            var arc = d3.svg.arc()
+                            .innerRadius(innerRadius)
+                            .outerRadius(outerRadius);
+            var pie = d3.layout.pie();
+            //Easy colors accessible via a 10-step ordinal scale
+            //var color = d3.scale.category10();
+            var color = ['#ff7f0e','#1f77b4','#2ca02c','#d62728','#9467bd'];
+            //Create SVG element
+            var svg = d3.select("#data4Pie")
+                        .append("svg")
+                        .attr("width", w)
+                        .attr("height", h);
+            //Set up groups
+            var arcs = svg.selectAll("g.arc")
+                          .data(pie(dataset))
+                          .enter()
+                          .append("g")
+                          .attr("class", "arc")
+                          .attr("transform", "translate(" + outerRadius + "," + outerRadius + ")");
+            //Draw arc paths
+            arcs.append("path")
+                .attr("fill", function(d, i) {
+                    return color[i];
+                })
+                .attr("d", arc);
+            //Labels
+            arcs.append("text")
+                .attr("transform", function(d) {
+                    return "translate(" + arc.centroid(d) + ")";
+                })
+                .attr("text-anchor", "middle")
+                .text(function(d) {
+                    return d.value;
+                });
+      }
+
+    </script>
+
+
+    <body onload="init()">
+      <div id="header">
+        <img src="res/logo_tl.jpg"/>
+      </div>
+      <div id="content">
+
+<table id="contentLayout" border="0">
+<tr>
+<td class="aligntop">
+    <table id="salesDistribution" class="dataTable">
+        <tr class="title"><td colspan="6">Sales Distribution</td></tr>
+        <tr class="hd"><th>STORE</th><th>REGION</th><th>CITY</th><th>PROFIT</th><th>% Fraud</th><th>% Chargebacks</th></tr>
+        <tr class="od"><td>Store 1</td><td>Northeast</td><td>New York</td><td class="ar">$1,527,532.00</td><td class="ar">4%</td><td class="ar">1%</td></tr>
+        <tr class="ev"><td>Store 2</td><td>Northeast</td><td>Boston</td><td class="ar">$60,000.00</td><td class="ar">22%</td><td class="ar">13%</td></tr>
+        <tr class="od"><td>Store 3</td><td>South</td><td>New Orleans</td><td class="ar">$555,253.00</td><td class="ar">6%</td><td class="ar">0</td></tr>
+        <tr class="ev"><td>Store 4</td><td>South</td><td>Memphis</td><td class="ar">$321,444.00</td><td class="ar">8%</td><td class="ar">4%</td></tr>
+        <tr class="od"><td>Store 5</td><td>Central</td><td>Milwaukee</td><td class="ar">$600,542.00</td><td class="ar">3%</td><td class="ar">0%</td></tr>
+        <tr class="ev"><td>Store 6</td><td>Central </td><td>Fargo</td><td class="ar">$52,000.00</td><td class="ar">27%</td><td class="ar">16%</td></tr>
+        <tr class="od em1"><td>Store 7</td><td>Southeast</td><td>Miami</td><td class="ar">$49,000.00</td><td class="ar">34%</td><td class="ar">13%</td></tr>
+        <tr class="ev"><td>Store 8</td><td>Southeast</td><td>Atlanta</td><td class="ar">$75,000.00</td><td class="ar">17%</td><td class="ar">3%</td></tr>
+        <tr class="od em2"><td>Store 9</td><td>Northwest</td><td>San Francisco</td><td class="ar">$1,000,585.00</td><td class="ar">2%</td><td class="ar">0%</td></tr>
+        <tr class="ev"><td>Store 10</td><td>Northwest </td><td>Seattle</td><td class="ar">$752,111.00</td><td class="ar">6%</td><td class="ar">1%</td></tr>
+        <tr class="od"><td>Store 11</td><td>Southwest</td><td>San Diego</td><td class="ar">$842,611.00</td><td class="ar">5%</td><td class="ar">1%</td></tr>
+        <tr class="ev"><td>Store 12</td><td>Southwest</td><td>Salt Lake</td><td class="ar">$250,750.00</td><td class="ar">7%</td><td class="ar">3%</td></tr>
+        <tr class="sp"><td colspan="6"></td></tr>
+    </table>
+    
+    <br /><br />
+    
+    <table id="salesOverview" class="dataTable">
+        <tr class="title"><td colspan="4">Sales Overview By Month</td></tr>
+        <tr class="hd"><th>CHANNEL</th><th># TRANSACTIONS</th><th>$ AMOUNT</th><th>% FRAUD</th></tr>
+        <tr class="od">   <td>Web</td>  <td class="ar">100,000</td><td class="ar">$500,000</td><td class="ar">3%</td></tr>
+        <tr class="ev">   <td>Phone</td><td class="ar">20,000</td> <td class="ar">$100,000</td><td class="ar">10%</td></tr>
+        <tr class="od">   <td>POS</td>  <td class="ar">75,000</td> <td class="ar">$375,000</td><td class="ar">8%</td></tr>
+        <tr class="ev sm"><td>TOTAL</td><td class="ar">195,000</td><td class="ar">$975,000</td><td class="ar">21%</td></tr>
+        <tr class="sp"><td colspan="4"></td></tr>
+    </table>    
+    
+</td>
+<td class="aligntop">
+
+   <div id="data3BarContainer">
+     <div class="containerTitle1">Revenue YTD</div>
+      &nbsp;
+     <div class="containerTitle2"> &nbsp; <span class="lt5">WEB</span> &nbsp; <span class="lt6">PHONE</span> &nbsp; <span class="lt7">POS</span></div>
+     <div id="data3Bar" class="trendLineContainer"></div>
+   </div>
+
+   <br /><br />
+   
+   <div id="data4PieContainer">
+     <div class="containerTitle1">Fraud Analysis</div>
+     <div id="data4Pie" class="trendLineContainer">
+       <div id="data4Legend" class="containerTitle2">
+        <span class="lt8">Approved</span><br />
+        <span class="lt9">Hostile Fraud</span><br />
+        <span class="lt10">Friendly Fraud</span><br />
+        <span class="lt12">Rejected</span><br />
+        <span class="lt11">Missed Fraud</span><br />
+       </div>
+     </div>
+   </div>
+
+</td>
+<td rowspan="2"  class="aligntop">
+    <table id="rulesTripped" class="dataTable">
+        <tr class="title"><td colspan="4">Top 10 Rules Tripped</td></tr>
+        <tr class="hd"><th></th><th>RULE</th><th></th><th># TIMES TRIPPED</th></tr>
+        <tr class="od"><td>1	</td><td>Bin Number in negative file.</td><td><div class="arrow-up"></div></td><td class="ar b">547</td></tr>
+        <tr class="ev"><td>2	</td><td>Billing email in neg table.</td><td><div class="arrow-up"></div></td><td class="ar b">410</td></tr>
+        <tr class="od"><td>3	</td><td>Billing name is in neg table</td><td><div class="arrow-down"></div></td><td class="ar b">404</td></tr>
+        <tr class="ev"><td>4	</td><td>Distance between ship zip code to bill zip code</td><td></td><td class="ar b">375</td></tr>
+        <tr class="od"><td>5	</td><td>Bin state not equal to depart state</td><td><div class="arrow-down"></div></td><td class="ar b">313</td></tr>
+        <tr class="ev"><td>6	</td><td>Same CC multiple addresses</td><td><div class="arrow-up"></div></td><td class="ar b">205</td></tr>
+        <tr class="od"><td>7	</td><td>Password in negative table</td><td><div class="arrow-up"></div></td><td class="ar b">199</td></tr>
+        <tr class="ev"><td>8	</td><td>Cardholder Phone neg</td><td></td><td class="ar b">98</td></tr>
+        <tr class="od"><td>9	</td><td>AVS Response code = C</td><td><div class="arrow-down"></div></td><td class="ar b">84</td></tr>
+        <tr class="ev"><td>10	</td><td>Neg List</td><td><div class="arrow-up"></div></td><td class="ar b">17</td></tr>
+        <tr class="sp"><td colspan="4"></td></tr>
+    </table>
+    <br /><br />
+    <table id="scoreBand" class="dataTable">
+        <tr class="title"><td colspan="5">Score Bands</td></tr>
+        <tr class="hd"><th>SCORE RANGE</th><th>APPROVED</th><th>CHALLENGED</th><th>REJECTED</th><th>TOTALS</th></tr>
+        <tr class="od"><td>599 and less</td><td class="ar b">22</td><td class="ar b"></td><td class="ar b"></td><td class="ar b">22</td></tr>
+        <tr class="ev"><td>600-699</td><td class="ar b"></td><td class="ar b"></td><td class="ar b"></td><td class="ar b"></td></tr>
+        <tr class="od"><td>700-799</td><td class="ar b"></td><td class="ar b"></td><td class="ar b"></td><td class="ar b"></td></tr>
+        <tr class="ev em3"><td>800-899</td><td class="ar b">2</td><td class="ar b"></td><td class="ar b"></td><td class="ar b">2</td></tr>
+        <tr class="od"><td>900-999</td><td class="ar b"></td><td class="ar b"></td><td class="ar b"></td><td class="ar b"></td></tr>
+        <tr class="ev"><td>1,000-1099</td><td class="ar b">12</td><td class="ar b"></td><td class="ar b"></td><td class="ar b">12</td></tr>
+        <tr class="od"><td>1,100-1,199</td><td class="ar b"></td><td class="ar b"></td><td class="ar b"></td><td class="ar b"></td></tr>
+        <tr class="ev"><td>1,200-1,299</td><td class="ar b"></td><td class="ar b"></td><td class="ar b"></td><td class="ar b"></td></tr>
+        <tr class="od"><td>1,300-1,399</td><td class="ar b"></td><td class="ar b"></td><td class="ar b"></td><td class="ar b"></td></tr>
+        <tr class="ev"><td>1,400-1,499</td><td class="ar b"></td><td class="ar b">17</td><td class="ar b"></td><td class="ar b">17</td></tr>
+        <tr class="od"><td>1,500-4,499</td><td class="ar b"></td><td class="ar b"></td><td class="ar b"></td><td class="ar b"></td></tr>
+        <tr class="ev"><td>4,500-4,599</td><td class="ar b"></td><td class="ar b"></td><td class="ar b"></td><td class="ar b"></td></tr>
+        <tr class="od"><td>4,600-4,699</td><td class="ar b"></td><td class="ar b"></td><td class="ar b"></td><td class="ar b"></td></tr>
+        <tr class="ev"><td>4,700-4,799</td><td class="ar b"></td><td class="ar b"></td><td class="ar b"></td><td class="ar b"></td></tr>
+        <tr class="od"><td>4,800-4,999</td><td class="ar b"></td><td class="ar b"></td><td class="ar b"></td><td class="ar b"></td></tr>
+        <tr class="ev"><td>5,000-5,099</td><td class="ar b"></td><td class="ar b"></td><td class="ar b"></td><td class="ar b"></td></tr>
+        <tr class="od"><td>5,100-5,199</td><td class="ar b"></td><td class="ar b"></td><td class="ar b"></td><td class="ar b"></td></tr>
+        <tr class="ev"><td>5,200-5,299</td><td class="ar b"></td><td class="ar b"></td><td class="ar b"></td><td class="ar b"></td></tr>
+        <tr class="od"><td>5,300-5,399</td><td class="ar b"></td><td class="ar b"></td><td class="ar b"></td><td class="ar b"></td></tr>
+        <tr class="ev"><td>5,400-5,499</td><td class="ar b"></td><td class="ar b"></td><td class="ar b"></td><td class="ar b"></td></tr>
+        <tr class="od"><td>5,500- and greater</td><td class="ar b"></td><td class="ar b"></td><td class="ar b">82</td><td class="ar b">82</td></tr>
+        <tr class="ev sm"><td>GRAND TOTAL:</td><td class="ar">36</td><td class="ar">17</td><td class="ar">82</td><td class="ar">135</td></tr>
+        <tr class="sp"><td colspan="5"></td></tr>
+    </table>
+</td>
+</tr>
+<tr>
+<td colspan="2">
+
+   <br /><br />
+   <div id="data2TrendContainer">
+     <div class="containerTitle1">Fraud Count by hour of day</div>
+      &nbsp;
+     <div class="containerTitle2"> &nbsp; <span class="lt2">HOSTILE</span> &nbsp; <span class="lt3">FRIENDLY</span> &nbsp; <span class="lt4">MISSED</span></div>
+     <div id="data2Trend" class="trendLineContainer"></div>
+   </div>
+   
+     
+   
+</td>
+</tr>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      </div><!-- content -->
+    </body>
+</html>

@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<html>
+  <head>
+    <title>Analyst Performance - Dashboard</title>
+    <style type="text/css">
+      html {height:100%;}
+      body {margin:0;padding:0;}
+      body,table {font-family:sans-serif;}
+      body {font-size:0.8em;}
+
+      td.nowrap {white-space:nowrap;}
+      td.alignright {text-align:right;}
+      td.alignleft {text-align:left;}
+      td.aligncenter {text-align:center;}
+      td.bold {font-weight:bold;}
+
+      div#bannerSection {border:1px solid yellow; height:32px;display:none;}
+
+
+
+      table.dataTable {font-size:0.8em;background-color:whitesmoke;border-collapse:separate;border-spacing:1px;}
+      table.dataTable th {background-color:gainsboro;padding:2px;}
+      table.dataTable tr {background-color:white;}
+      table.dataTable td {padding:2px;}
+      table.dataTable tr:hover {background-color:whitesmoke;}
+
+      table#mainLayout {width:100%; height:100%;align:center;}
+      table#mainLayout td {}
+      table#trSectionLayout {width:100%; height:100%;}
+      table#ovSectionLayout {width:100%;font-size:0.8em;}
+
+      table#dataListLayout {margin-left:auto;margin-right:auto;}
+      table#adResListLayout {}
+      table#adTransListLayout {}
+
+      table#dllHlt {border-collapse:collapse;}
+      table#dllHlt td {background-color:gainsboro;padding:0px;}
+
+      table#arllHlt {border-collapse:collapse;}
+      table#arllHlt td {background-color:gainsboro;padding:0px;}
+
+
+
+
+      td.dtcs0  {cursor:pointer;}
+      td.dtcs3  {text-align:right;padding-right:2px;}
+      td.dtcs4  {text-align:right;padding-right:2px;}
+      td.dtcs5  {text-align:right;padding-right:2px;}
+      td.dtcs6  {text-align:right;padding-right:2px;}
+      td.dtcs7  {text-align:right;padding-right:2px;}
+      td.dtcs8  {text-align:right;padding-right:2px;}
+      td.dtcs9  {text-align:right;padding-right:2px;}
+      td.dtcs10 {text-align:right;padding-right:2px;}
+      td.dtcs11 {text-align:right;padding-right:2px;}
+      td.dtcs12 div.X   {position:relative;}
+      td.dtcs12 div.av  {position:absolute;bottom:0px;}
+
+      td.adlc_c_0 {white-space:nowrap;text-align:right;}
+      td.adlc_c_2 {text-align:right;padding-right:2px;}
+      td.adlc_c_3 {white-space:nowrap;text-alignx:right;padding-right:2px;}
+
+      td.adtc_c_0 {white-space:nowrap;cursor:pointer;}
+      td.adtc_c_1 {text-align:right;padding-right:2px;}
+      td.adtc_c_2 {text-align:right;padding-right:2px;}
+      td.adtc_c_3 {text-align:right;padding-right:2px;}
+
+      span.atdc_c_1_n {font-weight:bold;font-style:italic;color:firebrick;}
+      span.atdc_c_1_p {}
+
+      div.dth_ht {}
+      div.dth_hu {font-weight:normal;font-style:italic;color:dimgray;}
+
+      div.tm_vu {}
+      span.tm_v {color:firebrick;font-size:2.0em;}
+      span.tm_u {color:gray;font-size:1.2em;}
+      div.tm_nt {color:silver;font-size:0.9em;}
+      span.tm_n {color:silver;font-size:0.9em;}
+      span.tm_t {}
+
+      div#ov_rs_g {min-width:100px;}
+      div#ov_rs_l {min-widthx:50px;}
+
+      path.tm_t {stroke:silver;stroke-width:2;fill:none;}
+
+      .ad_sp_axis path,.ad_sp_axis line {fill:none;stroke:silver;opacity:0.4;shape-rendering:crispEdges;}
+      .ad_sp_axis text {font-family:sans-serif;font-size:11px;}
+
+      circle.ad_sp_dp {fill-opacity:0.8;}
+      circle.hilite {stroke:darkslategray;stroke-width:2px;}
+      circle.lolite {stroke-width:0px;}
+
+      circle.atdc_c_4_hi {stroke:gray;stroke-width:2;shape-renderingx:crispEdges;}
+      circle.atdc_c_4_lo {}
+
+      g.tick text {fill:gray;}
+      text.ad_sp_text {fill:gray;font-weight:bold;font-size:0.80em;}
+
+      tr.dsh1 {text-align:left;background-color:gainsboro;font-weight:bold;}
+
+      div#ad_sp_tooltip {
+          position: absolute;
+          text-align: center;
+          width: 160px;
+          height: 72px;
+          padding: 2px;
+          font: 12px sans-serif;
+          background: lightsteelblue;
+          border: 0px;
+          border-radius: 8px;
+          pointer-events: none;
+          z-index:1100;
+     }
+
+    </style>
+    <link rel="stylesheet" href="./res/jquery-ui.css" />
+
+    <script type="text/javascript" src="./res/d3.v3.min.js"></script>
+    <script src="./res/jquery-1.7.2.js"></script>
+    <script src="./res/jquery-ui-1.8.17.min.js"></script>
+    <script src="./res/data.js"></script>
+    <script type="text/javascript">
+
+// ACCCOREJS
+    function getEventTarget(e) {
+      e = e || window.event;
+      return e.target || e.srcElement;
+    }
+
+    var LBR = null; //LAYOUT_ROWS_BODY_REF
+
+    var CURR_ANALYST_INDEX = 0;
+
+    var ANALYST_DETAIL_DLG_REF = null;
+    var AD_SP_TOOLTIP_REF= null;
+    var TR_VALUES_REF = {};
+
+
+    function init() {
+        ANALYST_DETAIL_DLG_REF = jQuery('#analyst_detail_dlg');
+        ANALYST_DETAIL_DLG_REF.dialog({autoOpen:false,width:840,height:600,show:"slow"});
+
+        LBR = document.getElementById('dataListBody');
+        AD_SP_TOOLTIP_REF = document.getElementById('ad_sp_container');
+
+        AD_SP_TOOLTIP_REF = d3.select("body")
+            .append("div")
+            .attr("id", "ad_sp_tooltip")
+            .style("opacity", 0);
+
+
+        render(); // main()
+        
+        
+        TR_VALUES_REF.at = document.getElementById('tm_v_at');
+        TR_VALUES_REF.fp = document.getElementById('tm_v_fp');
+        TR_VALUES_REF.rc = document.getElementById('tm_v_rc');
+        TR_VALUES_REF.rd = document.getElementById('tm_v_rd');
+        TR_VALUES_REF.fc = document.getElementById('tm_v_fc');
+        TR_VALUES_REF.fd = document.getElementById('tm_v_fd');
+        
+        setInterval(updateTrendSection,3000);
+        
+    }
+
+    function render() {
+
+        renderListSection();
+
+        renderTrendSection();
+
+        renderOverviewResolutionSpread();
+
+        renderAnalystDetailResolutionDetail(CURR_ANALYST_INDEX);
+
+        renderAnalystDetailTransactionDetail();
+
+        renderAnalystDetailScatter(ATD,ATDX);
+    }
+
+
+    function renderListSection() {
+        // generate dataTable
+        var datarows = d3.select('#dataListBody')
+            .selectAll('tr')
+            .data(d3.range(LD.length))
+            .enter()
+            .append('tr')
+            .attr('id',function(d){return 'dr'+d;});
+        //
+        datarows.selectAll('tr')
+            .data(d3.range(13))
+            .enter()
+            .append('td')
+            .attr('id',function(d,i,p){return 'dc_'+p+'_'+d;})
+            .attr('class', function(d){return 'dtcs'+d;});
+        var scale = null;
+        var html = '';
+        // col0 n
+        LD.forEach(function(d,i){
+            //renderNameTn('dc_'+i+'_0', d.n);
+            html = '<span onclick="showAnalystDetail('+i+')">' + d.n + '</span>';
+            document.getElementById('dc_'+i+'_0').innerHTML = html;
+        });
+        // col1 at
+        scale = d3.scale.linear().domain([0,LDG.at.mx]).rangeRound([0,100]);
+        LD.forEach(function(d,i){
+            //renderValue('dc_'+i+'_1', d.at);
+            document.getElementById('dc_'+i+'_1').innerHTML = lineBarHtml(100,10,d.at,scale(d.at),'black',scale(LDG.at.av),'silver');
+        });
+        document.getElementById('dr_at').innerHTML = LDG.at.av;
+        // col2 rc
+        LD.forEach(function(d,i){
+            scale = d3.scale.linear().domain([0,LDG.tc.mx]).rangeRound([0,100]);
+            html = barHtml(100,10,[[scale(d.rc),'DarkTurquoise'],[scale(d.tc)-scale(d.rc),'DarkCyan']]);
+            html += '<span class="adlc_rc_v">' + d.rc + '</span> <span class="adlc_tc_v">(' + d.tc + ')</span>';
+            document.getElementById('dc_'+i+'_2').innerHTML = html;
+        });
+        document.getElementById('dr_rc').innerHTML = LDG.rc.av;
+        document.getElementById('dr_tc').innerHTML = LDG.tc.av;
+        // col3 rd
+        LD.forEach(function(d,i){renderValue('dc_'+i+'_3', d.rd);});
+        document.getElementById('dr_rd').innerHTML = LDG.rd.av;
+        // col4 hmc
+        scale = d3.scale.linear().domain([0,LDG.hmc.mx]).rangeRound([0,48]);
+        LD.forEach(function(d,i){
+            document.getElementById('dc_'+i+'_4').innerHTML = valueBarHtml(48,d.hmc,scale(d.hmc),'silver',scale(LDG.hmc.av),'black');
+        });
+        document.getElementById('dr_hmc').innerHTML = LDG.hmc.av;
+        // col5 hpc
+        scale = d3.scale.linear().domain([0,LDG.hpc.mx]).rangeRound([0,48]);
+        LD.forEach(function(d,i){
+            document.getElementById('dc_'+i+'_5').innerHTML = valueBarHtml(48,d.hpc,scale(d.hpc),'silver',scale(LDG.hpc.av),'black');
+        });
+        document.getElementById('dr_hpc').innerHTML = LDG.hpc.av;
+        // col6 fmc
+        scale = d3.scale.linear().domain([0,LDG.fmc.mx]).rangeRound([0,48]);
+        LD.forEach(function(d,i){
+            document.getElementById('dc_'+i+'_6').innerHTML = valueBarHtml(48,d.fmc,scale(d.fmc),'silver',scale(LDG.fmc.av),'black');
+        });
+        document.getElementById('dr_fmc').innerHTML = LDG.fmc.av;
+        // col7 fpc
+        scale = d3.scale.linear().domain([0,LDG.fpc.mx]).rangeRound([0,48]);
+        LD.forEach(function(d,i){
+            //renderValue('dc_'+i+'_7', d.fpc);
+            document.getElementById('dc_'+i+'_7').innerHTML = valueBarHtml(48,d.fpc,scale(d.fpc),'silver',scale(LDG.fpc.av),'black');
+        });
+        document.getElementById('dr_fpc').innerHTML = LDG.fpc.av;
+        // col8 hmd
+        scale = d3.scale.linear().domain([0,LDG.hmd.mx]).rangeRound([0,48]);
+        LD.forEach(function(d,i){
+            //renderValue('dc_'+i+'_8', d.hmd);
+            document.getElementById('dc_'+i+'_8').innerHTML = valueBarHtml(48,d.hmd,scale(d.hmd),'silver',scale(LDG.hmd.av),'black');
+        });
+        document.getElementById('dr_hmd').innerHTML = LDG.hmd.av;
+        // col9 hpd
+        scale = d3.scale.linear().domain([0,LDG.hpd.mx]).rangeRound([0,48]);
+        LD.forEach(function(d,i){
+            //renderValue('dc_'+i+'_9', d.hpd);
+            document.getElementById('dc_'+i+'_9').innerHTML = valueBarHtml(48,d.hpd,scale(d.hpd),'silver',scale(LDG.hpd.av),'black');
+        });
+        document.getElementById('dr_hpd').innerHTML = LDG.hpd.av;
+        // col10 fmd
+        scale = d3.scale.linear().domain([0,LDG.fmd.mx]).rangeRound([0,48]);
+        LD.forEach(function(d,i){
+            //renderValue('dc_'+i+'_10', d.fmd);
+            document.getElementById('dc_'+i+'_10').innerHTML = valueBarHtml(48,d.fmd,scale(d.fmd),'silver',scale(LDG.fmd.av),'black');
+        });
+        document.getElementById('dr_fmd').innerHTML = LDG.fmd.av;
+        // col11 fpd
+        scale = d3.scale.linear().domain([0,LDG.fpd.mx]).rangeRound([0,48]);
+        LD.forEach(function(d,i){
+            //renderValue('dc_'+i+'_11', d.fpd);
+            document.getElementById('dc_'+i+'_11').innerHTML = valueBarHtml(48,d.fpd,scale(d.fpd),'silver',scale(LDG.fpd.av),'black');
+        });
+        document.getElementById('dr_fpd').innerHTML = LDG.fpd.av;
+        //col12 rctl
+        LD.forEach(function(d,i){renderSparkHist('dc_'+i+'_12',120,18,d.rctl,'#dcdcdc');});
+    }
+
+    function renderNameTn(pinId,name) {
+        var t = '<span class="">' + name + '</span><br />';
+        document.getElementById(pinId).innerHTML = t;
+    }
+
+    function renderValue(pinId, value, minValue, maxValue) {
+        var t = '<span class="">' + value + '</span><br />';
+        document.getElementById(pinId).innerHTML = t;
+    }
+
+
+    function renderSparkHist(pin,w,h,dataset,color) {
+        var yScale = d3.scale.linear()
+            .domain([0,d3.max(dataset)])
+            .rangeRound([0,h]);
+        var barW = Math.floor(w/dataset.length);
+        var style = '';
+        var classVal = '';
+        style = 'width:'+w+'px;height:'+h+'px;';
+        classVal = 'X';
+        var container = d3.select('#'+pin)
+            .append("div")
+            .attr("style", style)
+            .attr("class", classVal);
+        container.selectAll("div")
+            .data(dataset)
+            .enter()
+            .append("div")
+            .attr("class", "av")
+            .style("width",(barW-6)+'px')
+            .style("background-color",color)
+            .style("height", function(d){return yScale(d)+'px';})
+            .style("left", function(d,i){return (i*barW)+'px'});
+    }
+
+    function renderSparkLine(pin,w,h,dataset,pathClass) {
+        var yScale = d3.scale.linear()
+            .domain([d3.min(dataset),d3.max(dataset)])
+            .rangeRound([0,h]);
+        var xStep = Math.floor(w/(dataset.length-1));
+
+        var path = 'M0,' + (h - yScale(dataset[0]));
+        for (var i = 1; i < dataset.length; i++)
+            path += 'L' + xStep*i + ',' + (h - yScale(dataset[i]));
+        var container = d3.select('#'+pin)
+            .append("svg")
+            .attr("height",h)
+            .attr("width",w);
+        container.append("g")
+            .append("path")
+            .attr("d",path)
+            .attr("class",pathClass);
+    }
+
+    // table sort handlers
+    function dthClicked(dataColKey) {
+      LDSI[dataColKey].forEach(function(d){
+          LBR.appendChild(LBR.removeChild(document.getElementById('dr'+d)));
+      });
+      LDSI[dataColKey].reverse(); // to toggle the sort order on this col, for the next time
+    }
+    //
+    function ardlhClicked(dataColKey) {
+      var listBodyRef = document.getElementById('adrltBody');
+      ARDSI[dataColKey].forEach(function(d){
+          listBodyRef.appendChild(listBodyRef.removeChild(document.getElementById('adrr'+d)));
+      });
+      ARDSI[dataColKey].reverse(); // to toggle the sort order on this col, for the next time
+    }
+    //
+    function atdlhClicked(dataColKey) {
+      var listBodyRef = document.getElementById('adtltBody');
+      ATDSI[dataColKey].forEach(function(d){
+          listBodyRef.appendChild(listBodyRef.removeChild(document.getElementById('adtr'+d)));
+      });
+      ATDSI[dataColKey].reverse(); // to toggle the sort order on this col, for the next time
+    }
+
+    function renderTrendSection() {
+      var sparkLineW = 80, sparkLineH = 18;
+
+      document.getElementById('tm_v_at').innerHTML = TM.at;
+      renderSparkLine('tm_t_at',sparkLineW,sparkLineH,TMTV.at,'tm_t');
+
+      document.getElementById('tm_v_fp').innerHTML = TM.fp;
+      renderSparkLine('tm_t_fp',sparkLineW,sparkLineH,TMTV.fp,'tm_t');
+
+      document.getElementById('tm_v_rc').innerHTML = TM.rc;
+      renderSparkLine('tm_t_rc',sparkLineW,sparkLineH,TMTV.rc,'tm_t');
+
+      document.getElementById('tm_v_rd').innerHTML = TM.rd;
+      renderSparkLine('tm_t_rd',sparkLineW,sparkLineH,TMTV.rd,'tm_t');
+
+      document.getElementById('tm_v_fc').innerHTML = TM.fc;
+      renderSparkLine('tm_t_fc',sparkLineW,sparkLineH,TMTV.fc,'tm_t');
+
+      document.getElementById('tm_v_fd').innerHTML = TM.fd
+      renderSparkLine('tm_t_fd',sparkLineW,sparkLineH,TMTV.fd,'tm_t');
+
+    }
+
+    function renderOverviewResolutionSpread(graphicPin,w,h,legendPin,dataset,colors) {
+        var w = 100;
+        var h = 100;
+        // draw pie
+        var radius = w/2;
+        var arc = d3.svg.arc()
+            .innerRadius(0)
+            .outerRadius(radius);
+        var pie = d3.layout.pie().value(function(d){return d.v;}).sort(null);
+        var svg = d3.select('#ov_rs_g')
+            .append("svg")
+            .attr("width", w)
+            .attr("height", h);
+        var arcs = svg.selectAll("g.arc")
+            .data(pie(ODRS))
+            .enter()
+            .append("g")
+            .attr("class", "arc")
+            .attr("transform", "translate(" + radius + "," + radius + ")");
+        arcs.append("path")
+            .attr("fill", function(d,i){return COLORS1[i];})
+            .attr("d", arc)
+            .append("title")
+            .text(function(d,i){return RLU[i].n;});
+        // render legend
+
+
+        var datarows = d3.select('#ov_rs_ltBody')
+            .selectAll('tr')
+            .data(d3.range(ODRS.length))
+            .enter()
+            .append('tr')
+            .attr('id',function(d){return 'odrsr'+d;});
+        //
+        datarows.selectAll('tr')
+            .data(d3.range(2))
+            .enter()
+            .append('td')
+            .attr('id',function(d,i,p){return 'odrsc_'+p+'_'+d;})
+            .attr("class",function(d,i){return 'odrsc_c_'+d});
+        ODRS.forEach(function(d,i){
+            document.getElementById('odrsc_'+i+'_0').innerHTML = swatchHtml(10,COLORS1[d.rid]);
+            document.getElementById('odrsc_'+i+'_1').innerHTML = RLU[d.rid].n;
+        });
+    }
+
+    function renderAnalystDetailResolutionDetail(analystIndex) {
+        // generate dataTable
+        var datarows = d3.select('#adrltBody')
+            .selectAll('tr')
+            .data(d3.range(ARD.length))
+            .enter()
+            .append('tr')
+            .attr('id',function(d){return 'adrr'+d;});
+        //
+        datarows.selectAll('tr')
+            .data(d3.range(6))
+            .enter()
+            .append('td')
+            .attr('id',function(d,i,p){return 'adlc_'+p+'_'+d;})
+            .attr("class",function(d,i){return 'adlc_c_'+d});
+        // fill row cells
+        var rcRtScale = d3.scale.linear()
+            .domain([0,ARDX.rt.M])
+            .rangeRound([0,100]);
+        var adScale = d3.scale.linear()
+            .domain([0,ARDX.ad.M])
+            .rangeRound([0,100]);
+        var tdScale = d3.scale.linear()
+            .domain([0,ARDX.td.M])
+            .rangeRound([0,100]);
+        ARD.forEach(function(d,i){
+            var html = '';
+            document.getElementById('adlc_'+i+'_0').innerHTML = RLU[d.rid].n;
+            document.getElementById('adlc_'+i+'_1').innerHTML = swatchHtml(10,COLORS1[d.rid]);
+            document.getElementById('adlc_'+i+'_2').innerHTML = d.at;
+            //
+            html = barHtml(100,10,[[rcRtScale(d.rc),'DarkTurquoise'],[rcRtScale(d.rt)-rcRtScale(d.rc),'DarkCyan']]);
+            html += '<span class="adlc_rc_v">' + d.rc + '</span> <span class="adlc_rt_v">(' + d.rt + ')</span>';
+            document.getElementById('adlc_'+i+'_3').innerHTML = html;
+            //
+            html = barHtml(100,10,[[tdScale(d.td),'DarkCyan']]);
+            html += '<span class="adlc_td_v">' + d.td + '</span>';
+            document.getElementById('adlc_'+i+'_4').innerHTML = html;
+            //
+            html = barHtml(100,10,[[adScale(d.ad),'LightSeaGreen']]);
+            html += '<span class="adlc_ad_v">' + d.ad + '</span>';
+            document.getElementById('adlc_'+i+'_5').innerHTML = html;
+        });
+        // fill summary footer
+        document.getElementById('adrl_ttr_t').innerHTML = LD[analystIndex].at;
+        document.getElementById('adrl_rc_t').innerHTML = LD[analystIndex].rc;
+        document.getElementById('adrl_tc_t').innerHTML = LD[analystIndex].tc;
+        document.getElementById('adrl_td_t').innerHTML = LD[analystIndex].rd;
+
+    }
+
+    function renderAnalystDetailTransactionDetail() {
+        // generate dataTable
+        var datarows = d3.select('#adtltBody')
+            .selectAll('tr')
+            .data(d3.range(ATD.length))
+            .enter()
+            .append('tr')
+            .attr('id',function(d){return 'adtr'+d;});
+        //
+        datarows.selectAll('tr')
+            .data(d3.range(5))
+            .enter()
+            .append('td')
+            .attr('id',function(d,i,p){return 'adtc_'+p+'_'+d;})
+            .attr("class",function(d,i){return 'adtc_c_'+d});
+        // fill row cells
+        ATD.forEach(function(d,i){
+            var html = '';
+            html ='<span onclick="showTransaction(' + "'" + d.id + "'" + ')">'+d.tid+'</span>';
+            document.getElementById('adtc_'+i+'_0').innerHTML = html;
+            html = '<span class="atdc_c_1_'+((d.sc<0)?'n':'p')+'">'+d.sc+'</span>';
+            document.getElementById('adtc_'+i+'_1').innerHTML = html;
+            document.getElementById('adtc_'+i+'_2').innerHTML = d.dv;
+            document.getElementById('adtc_'+i+'_3').innerHTML = d.ttr;
+            //
+            html = '<svg width="'+(14*(d.rl.length+1))+'" height="14">';
+            d.rl.forEach (function(dd,i){
+                html += '<circle cx="'+(14*(i+1))+'" cy="7" r="5" fill="'+COLORS1[dd]+'" ';
+                html += 'class="atdc_c_4_'+((1==d.rt[i])?'hi':'lo')+'">';
+                html += '<title>'+RLU[dd].n+'</title></circle>';
+            });
+            html += '</svg>';
+            document.getElementById('adtc_'+i+'_4').innerHTML = html;
+            //rl:[12,7,5,4],rt:[1,1,0,0]
+        });
+    }
+
+    function renderAnalystDetailScatter(dataset,extents) {
+        var w = 800;
+        var h = 500;
+        var pad = 40;
+        // scales
+        var xScale = d3.scale.linear() // ttr timeToResolve
+            .domain([0, ATDX.ttr.M])
+            .range([pad, w - pad * 2]);
+        var yScale = d3.scale.linear() // sc score
+            .domain([ATDX.sc.m, ATDX.sc.M])
+            .range([h - pad, pad]);
+        var rScale = d3.scale.linear() // dv dollarValue
+            .domain([0, ATDX.dv.M])
+            .range([4, 12]);
+        // define axes
+        var xAxis = d3.svg.axis()
+            .scale(xScale)
+            .orient("bottom")
+            .ticks(5)
+            .tickSize(-h+pad*2,0,0);
+        var yAxis = d3.svg.axis()
+            .scale(yScale)
+            .orient("left")
+            .ticks(5)
+            .tickSize(-w+pad*3,0,0);
+        // container
+        var svg = d3.select("#" + "ad_sp_container")
+            .append("svg")
+            .attr("width", w)
+            .attr("height", h);
+        // data points
+        svg.selectAll("circle")
+            .data(dataset)
+            .enter()
+            .append("circle")
+            .attr("cx", function(d){return xScale(d.ttr);})
+            .attr("cy", function(d){return yScale(d.sc);})
+            .attr("r", function(d){return rScale(d.dv);})
+            .attr("fill",function(d){return COLORS1[d.lr[1]];})
+            .on("mouseover",function(d){
+                d3.select(this).classed("hilite",true);
+                AD_SP_TOOLTIP_REF
+                    .transition()
+                    .duration(200)
+                    .style("opacity", .9);
+                AD_SP_TOOLTIP_REF
+                    .html(adSpTooltipHtml(d))
+                    .style("left", (d3.event.pageX) + "px")
+                    .style("top", (d3.event.pageY - 28) + "px");
+            })
+            .on("mouseout",function(d){
+                d3.select(this).classed("hilite",false);
+                AD_SP_TOOLTIP_REF
+                    .transition()
+                    .duration(500)
+                    .style("opacity", 0);
+            })
+            .on("click",function(d){
+                showTransaction("'" + d.id + "'");
+            })
+            .attr("class","ad_sp_dp");
+        // render axes
+        svg.append("g")
+            .attr("class", "ad_sp_axis")
+            .attr("transform", "translate(0," + (h - pad) + ")")
+            .call(xAxis);
+        svg.append("g")
+            .attr("class", "ad_sp_axis")
+            .attr("transform", "translate(" + pad + ",0)")
+            .call(yAxis);
+        svg.append("text")
+            .attr("x",250)
+            .attr("y",490)
+            .attr("class","ad_sp_text")
+            .text("Time to resolve (secs)");
+        svg.append("text")
+            .attr("x",18)
+            .attr("y",250)
+            .attr("transform","rotate(-90,18,250)")
+            .attr("class","ad_sp_text")
+            .text("Score");
+    }
+
+    function adSpTooltipHtml(d) {
+        var html = '';
+        html += '<b>'+RLU[d.lr[1]].n+'</b>';
+        html += '<div><b>Score:</b>'+d.sc+'</div>';
+        html += '<div><b>Time:</b>'+d.ttr+' secs</div>';
+        html += '<div><b>Amount:</b> $'+d.dv+'</div>';
+        html += d.tid;
+        return html;
+    }
+
+    //function dthClicked(e) {
+       //var target = getEventTarget(e);
+       //console.log(target.tagName);
+    //}
+
+
+    function swatchHtml(size,color) {
+        return '<div style="position:relative;height:'+size+'px;width:'+size+'px;">'+
+                '<div style="position:absolute;display:inline;background-color:'+color+';width:'+size+'px;height:'+size+'px;"></div>'+
+                '</div>';
+    }
+
+    // stacked horiz bar in a container of width w, bar height h and [[width,color],[incrementWidth,color],[incrementWidth,color],..] stacked
+    function barHtml(w,h,arrayOfWidthColorTuples) {
+        var html= '';
+        html += '<svg width="'+w+'" height="'+h+'">';
+        var prevX = 0;
+        arrayOfWidthColorTuples.forEach(function(d) {
+            html += '<rect x="'+prevX+'" y="0" width="'+d[0]+'" height="'+h+'" fill="'+d[1]+'"/>';
+            prevX = d[0];
+        });
+        html += '</svg>';
+        return html;
+    }
+
+    function valueBarHtml(w,barValue,barW,barColor,refPosn,refColor) {
+        var html = '';
+        html += '<div style="width:'+w+'px;position:relative;">';
+        html += '<div>'+barValue+'</div>';
+        html += '<div style="background-color:'+barColor+';width:'+barW+'px;height:2px;"></div>';
+        html += '<div style="position:absolute;left:'+refPosn+'px;background-color:'+refColor+';width:2px;height:2px;"></div>';
+        html += '</div>';
+        return html;
+    }
+
+    function lineBarHtml(w,h,displayValue,value,vColor,ref,rColor) {
+        var html = '';
+        html += '<svg width="'+w+'" height="'+h+'">';
+        html += '<line x1="'+ref+'" y1="0" x2="'+ref+'" y2="'+h+'" stroke="'+rColor+'" stroke-width="2"/>';
+        html += '<line x1="0" y1="'+(h/2)+'" x2="'+value+'" y2="'+(h/2)+'" stroke="'+vColor+'" stroke-width="2"/>';
+        html += '<line x1="'+value+'" y1="2" x2="'+value+'" y2="'+(h-2)+'" stroke="'+vColor+'" stroke-width="1"/>';
+        html += '</svg>';
+        html += '<span>'+displayValue+'</span>  ';
+        return html;
+    }
+
+    function updateTrendSection() {
+        TR_VALUES_REF.at.innerHTML = Math.floor((Math.random()*120)+80);
+        TR_VALUES_REF.fp.innerHTML = Math.floor((Math.random()*50)+10)/10;
+        TR_VALUES_REF.rc.innerHTML = +TR_VALUES_REF.rc.innerHTML + Math.floor((Math.random()*10)+1);
+        TR_VALUES_REF.fc.innerHTML = +TR_VALUES_REF.fc.innerHTML + Math.floor((Math.random()*10)+1);
+        TR_VALUES_REF.rd.innerHTML = (+TR_VALUES_REF.rd.innerHTML + Math.floor((Math.random()*1000)+100)/10).toFixed(2);
+        TR_VALUES_REF.fd.innerHTML = (+TR_VALUES_REF.fd.innerHTML + Math.floor((Math.random()*100)+10)/10).toFixed(2);
+    }
+
+
+    function showAnalystDetail(i) {
+        CURR_ANALYST_INDEX = i;
+        console.log(i + ' ' + LD[i].n);
+        ANALYST_DETAIL_DLG_REF.dialog('option','title', LD[i].n + ' - detail');
+        ANALYST_DETAIL_DLG_REF.dialog('open');
+    }
+
+    function showTransaction(dhid) {
+        //console.log('dhid: ' + dhid);
+        var transView = window.open("","transView");
+        transView.document.writeln('<html><body style="margin: 0 0 0 0;"><img src="./res/view_transaction.png"/></body></html>');
+    }
+
+    function test1() {
+        $( "#dialog-modal" ).dialog({
+          height: 140,
+          modal: true
+        });
+    }
+
+    </script>
+</head>
+<body onload="init()">
+
+
+<div id="bannerSection">
+Analyst Performance
+
+</div>
+
+<!--
+____________
+|      | b |
+|   a  |___|
+|      | c |
+|______|___|
+
+-->
+<table id="mainLayout">
+<tr>
+<td valign="top" rowspan="2"><!-- a -->
+      <table id="dataListLayout" class="dataTable">
+        <thead>
+          <tr >
+            <th id="dh_n" class="n"><input type="radio" name="dths" onclick="dthClicked('n')" checked="true" /><div class="dth_ht">Analyst</div><br /></th>
+            <th id="dh_at" class="at"><input type="radio" name="dths" onclick="dthClicked('at')" /><div class="dth_ht">Av. time to resolve</div><div class="dth_hu"><span class="ref" id="dr_at"></span> secs</div></th>
+            <th id="dh_rc" class="rctc">
+                <table width="100%" id="dllHlt">
+                  <tr>
+                    <th><input type="radio" name="dths" onclick="dthClicked('rc')" /></th>
+                    <th><input type="radio" name="dths" onclick="dthClicked('tc')" /></th>
+                  </tr>
+                  <tr>
+                     <td><div class="dth_ht">Resolved</div></td>
+                     <td><div class="dth_ht">(Touched)</div></td>
+                  </tr>
+                  <tr>
+                     <td><div class="dth_hu"><span id="dr_rc"></span></div></td>
+                     <td><div class="dth_hu"><span id="dr_tc"></span></div></td>
+                  </tr>
+                </table>
+            </th>
+            <th id="dh_rd" class="rd"><input type="radio" name="dths" onclick="dthClicked('rd')" /><div class="dth_ht">Amount</div><div class="dth_hu">$<span class="ref" id="dr_rd"></span></div></th>
+            <th id="dh_hmc" class="hmc"><input type="radio" name="dths" onclick="dthClicked('hmc')" /><div class="dth_ht">Host. miss.</div><div class="dth_hu"><span class="ref" id="dr_hmc"></span></div></th>
+            <th id="dh_hpc" class="hpc"><input type="radio" name="dths" onclick="dthClicked('hpc')" /><div class="dth_ht">Host. prev.</div><div class="dth_hu"><span class="ref" id="dr_hpc"></span></div></th>
+            <th id="dh_fmc" class="fmc"><input type="radio" name="dths" onclick="dthClicked('fmc')" /><div class="dth_ht">Frnd. miss.</div><div class="dth_hu"><span class="ref" id="dr_fmc"></span></div></th>
+            <th id="dh_fpc" class="fpc"><input type="radio" name="dths" onclick="dthClicked('fpc')" /><div class="dth_ht">Frnd. prev.</div><div class="dth_hu"><span class="ref" id="dr_fpc"></span></div></th>
+            <th id="dh_hmd" class="hmd"><input type="radio" name="dths" onclick="dthClicked('hmd')" /><div class="dth_ht">Host. miss.</div><div class="dth_hu">$<span class="ref" id="dr_hmd"></span></div></th>
+            <th id="dh_hpd" class="hpd"><input type="radio" name="dths" onclick="dthClicked('hpd')" /><div class="dth_ht">Host. prev.</div><div class="dth_hu">$<span class="ref" id="dr_hpd"></span></div></th>
+            <th id="dh_fmd" class="fmd"><input type="radio" name="dths" onclick="dthClicked('fmd')" /><div class="dth_ht">Frnd. miss.</div><div class="dth_hu">$<span class="ref" id="dr_fmd"></span></div></th>
+            <th id="dh_fpd" class="fpd"><input type="radio" name="dths" onclick="dthClicked('fpd')" /><div class="dth_ht">Frnd. prev.</div><div class="dth_hu">$<span class="ref" id="dr_fpd"></span></div></th>
+            <th id="dh_rctl" class="rctl"><br /><br /><div class="dth_ht">Resolved</div><div class="dth_hu">last 8 weeks</th>
+          </tr>
+        </thead>
+        <tbody id="dataListBody">
+        <!-- dynamic fill -->
+        </tbody>
+      </table><!-- dataListLayout -->
+</td><!-- a -->
+<td valign="top"><!-- b -->
+      <table id="trSectionLayout">
+        <tr>
+          <td>
+            <div class="tm_vu"><span id="tm_v_at" class="tm_v"></span><span id="tm_u_at" class="tm_u"> secs</span></div>
+            <div class="tm_nt">Av. time to resolve</div>
+            <div id="tm_t_at" class="tm_t"></div>
+          </td>
+          <td>
+            <div class="tm_vu"><span id="tm_v_fp" class="tm_v"></span><span id="tm_u_fp" class="tm_u"> %</span></div>
+            <div class="tm_nt">Fraud percenage</div>
+            <div id="tm_t_fp" class="tm_t"></div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="tm_vu"><span id="tm_v_rc" class="tm_v"></span><span id="tm_u_rc" class="tm_u"></span></div>
+            <div class="tm_nt">Transactions resolved</div>
+            <div id="tm_t_rc" class="tm_t"></div>
+          </td>
+          <td>
+            <div class="tm_vu"><span id="tm_v_rd" class="tm_v"></span><span id="tm_u_rd" class="tm_u"> $</span></div>
+            <div class="tm_nt">Resolve dollar value</div>
+            <div id="tm_t_rd" class="tm_t"></div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="tm_vu"><span id="tm_v_fc" class="tm_v"></span><span id="tm_u_fc" class="tm_u"></span></div>
+            <div class="tm_nt">Fraud resolutions</div>
+            <div id="tm_t_fc" class="tm_t"></div>
+          </td>
+          <td>
+            <div class="tm_vu"><span id="tm_v_fd" class="tm_v"></span><span id="tm_u_fd" class="tm_u"> $</span></div>
+            <div class="tm_nt">Fraud prevented</div>
+            <div id="tm_t_fd" class="tm_t"></div>
+          </td>
+        </tr>
+      </table><!-- trSectionLayout -->
+</td><!-- b -->
+</tr>
+<tr>
+<td valign="top"><!-- c -->
+      <br /><br />
+      <table id="ovSectionLayout" >
+        <tr class="dsh1"><th colspan="2">Overall Resolution Spread</th></tr>
+        <tr>
+          <td><div id="ov_rs_g"></div></td>
+          <td>
+            <div id="ov_rs_l">
+              <table>
+                <tbody id="ov_rs_ltBody"></tbody>
+              </table>
+            </div>
+          </td>
+        </tr>
+      </table><!-- ovSectionLayout -->
+</td><!-- c -->
+</tr>
+</table><!-- mainLayout -->
+
+
+
+
+<!-- #################### analyst_detail_dlg #################### -->
+<div id="analyst_detail_dlg">
+
+
+<div id="ad_toolbar">
+ <span onclick="document.getElementById('adResListLayout').style.display='block';document.getElementById('adTransListLayout').style.display='none';document.getElementById('ad_sp_container').style.display='none';"><img src="./res/ad_icon2.png" height="32" width="32" /></span>
+ <span onclick="document.getElementById('adResListLayout').style.display='none';document.getElementById('adTransListLayout').style.display='block';document.getElementById('ad_sp_container').style.display='none';"><img src="./res/ad_icon3.png" height="32" width="32" /></span>
+ <span onclick="document.getElementById('adResListLayout').style.display='none';document.getElementById('adTransListLayout').style.display='none';document.getElementById('ad_sp_container').style.display='block';"><img src="./res/ad_icon1.png" height="32" width="32" /></span>
+</div>
+
+
+<hr />
+
+
+<table id="adResListLayout" class="dataTable">
+    <thead>
+    <tr>
+        <th colspan="2"><input type="radio" name="ardls" onclick="ardlhClicked('n')" /><div>Resolution</div></th>
+        <th><input type="radio" name="ardls" onclick="ardlhClicked('at')" /><div>Time on</div></th>
+        <th>
+            <table width="100%" id="arllHlt">
+              <tr>
+                <th><input type="radio" name="ardls" onclick="ardlhClicked('rc')" /></th>
+                <th><input type="radio" name="ardls" onclick="ardlhClicked('rt')" /></th>
+              </tr>
+              <tr>
+                 <td><div>Resolved</div></td>
+                 <td><div>(Touched)</div></td>
+              </tr>
+            </table>
+        <th><input type="radio" name="ardls" onclick="ardlhClicked('rd')" /><div>Total $</div></th>
+        <th><input type="radio" name="ardls" onclick="ardlhClicked('ad')" /><div>Average $</div></th>
+    </tr>
+    </thead>
+    <tbody id="adrltBody">
+    <!-- dynamic fill -->
+    </tbody>
+    <tfoot>
+    <tr>
+        <td colspan="2"></td>
+        <td class="alignright bold"><span id="adrl_ttr_t" class="adrl_ttr_t"></span></td>
+        <td class="alignright bold"><span id="adrl_rc_t" class="adrl_rc_t"> </span>(<span id="adrl_tc_t" class="adrl_tc_t"></span>)</td>
+        <td class="alignright bold"><span id="adrl_td_t" class="adrl_td_t"></span></td>
+        <td></td>
+    </tr>
+    </tfoot>
+</table><!-- adResListLayout -->
+
+<div id="ad_sp_container" style="display:none"></div>
+
+<table id="adTransListLayout" class="dataTable"  style="display:none">
+    <thead>
+    <tr>
+        <th><br /><span class="adtl_tid">Trans ID</span></th>
+        <th><input type="radio" name="adtls" onclick="atdlhClicked('sc')"><br /><span class="adtl_sc" >Score</span></th>
+        <th><input type="radio" name="adtls" onclick="atdlhClicked('dv')"><br /><span class="adtl_dv">Value $</span></th>
+        <th><input type="radio" name="adtls" onclick="atdlhClicked('ttr')"><br /><span class="adtl_ttr">Time on</span></th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody id="adtltBody">
+    <!-- dynamic fill -->
+    </tbody>
+</table><!-- adTransListLayout -->
+
+
+
+</div>
+<!-- #################### analyst_detail_dlg #################### -->
+
+
+</body>
+</html>
