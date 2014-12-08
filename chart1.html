@@ -70,7 +70,7 @@
           .on("mouseout", function() { console.log('mout'); })
           .on("mousemove", mousemove);   
       function mousemove() {
-          document.getElementById('stdout').innerHTML = d3.mouse(this)[0] + ' ' + x.invert(d3.mouse(this)[0]) + ' ' + d3.mouse(this)[1];
+          d3.select('div#stdout').text(d3.mouse(this)[0] + ' ' + x.invert(d3.mouse(this)[0]) + ' ' + d3.mouse(this)[1]);
       }
     
     }    
@@ -87,5 +87,8 @@
 <div id="data2Trend" class="trendLineContainer"></div>
 <div id="stdout">stdout</div>
   <script>init();</script>
+  http://bl.ocks.org/mbostock/3902569 <br />
+  http://bl.ocks.org/WillTurman/4631136 <br />
+  
   </body>
 </html>
