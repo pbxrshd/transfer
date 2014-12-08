@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+       body{font-family:sans-serif;font-size:0.8em;}
+      .axis path, .axis line {fill:none;stroke:silver;shape-rendering:crispEdges;}
+      .x.axis path  { displayx: none;}
+      .axis text {font-size:0.8em;}
+      .line {fill: none;stroke: steelblue;stroke-width: 1.5px;}
+.overlay {
+  fill: none;
+  pointer-events: all;
+}
+      path.lt1 {stroke:#da70d6;stroke-width:2;fill:none;}
+      path.lt2 {stroke:#ff8c00;stroke-width:2;fill:none;}
+      path.lt3 {stroke:#32cd32;stroke-width:2;fill:none;}
+      path.lt4 {stroke:#1e90ff;stroke-width:2;fill:none;}    
+    </style>
+    <script src="./res/d3.js"></script>
+    <script>
+      var TIMES_LOOKUP = ['8am','9am','10am','11am','12pm','1pm','2pm','3pm','4pm','5pm','6pm','7pm','8pm','9pm','10pm','11pm','12am','1am','2am','3am','4am','5am','6am','7am'];
+    
+      function renderTimelineData2() {
+        var w = 600,
+            h = 100;
+        var svg = d3.select('div#data2Trend').append('svg')
+          .attr('width', w + 20)
+          .attr('height', h + 40)
+          .append("g")
+          .attr("transform", "translate(" + 30 + "," + 20 + ")");
+        var data2 =
+[
+[{h:0,v:0},{h:1,v:0},{h:2,v:1},{h:3,v:2},{h:4,v:0},{h:5,v:2},{h:6,v:0},{h:7,v:0},{h:8,v:2},{h:9,v:0},{h:10,v:2},{h:11,v:4},{h:12,v:7},{h:13,v:4},{h:14,v:3},{h:15,v:32},{h:16,v:40},{h:17,v:7},{h:18,v:4},{h:19,v:0},{h:20,v:0},{h:21,v:0},{h:22,v:0},{h:23,v:0}],
+[{h:0,v:0},{h:1,v:0},{h:2,v:0},{h:3,v:4},{h:4,v:0},{h:5,v:4},{h:6,v:2},{h:7,v:2},{h:8,v:11},{h:9,v:0},{h:10,v:0},{h:11,v:5},{h:12,v:0},{h:13,v:3},{h:14,v:1},{h:15,v:4},{h:16,v:0},{h:17,v:2},{h:18,v:1},{h:19,v:0},{h:20,v:0},{h:21,v:0},{h:22,v:2},{h:23,v:0}],
+[{h:0,v:0},{h:1,v:0},{h:2,v:0},{h:3,v:0},{h:4,v:3},{h:5,v:1},{h:6,v:0},{h:7,v:0},{h:8,v:2},{h:9,v:0},{h:10,v:0},{h:11,v:2},{h:12,v:2},{h:13,v:4},{h:14,v:0},{h:15,v:6},{h:16,v:2},{h:17,v:2},{h:18,v:2},{h:19,v:0},{h:20,v:0},{h:21,v:0},{h:22,v:0},{h:23,v:0}]
+];
+        var x = d3.scale.linear().domain([0,23]).range([0, w]),
+            y = d3.scale.linear().domain([0,40]).range([h,0]);
+        var xAxis = d3.svg.axis()
+            .scale(x)
+            .tickFormat(function(d){return TIMES_LOOKUP[d];})
+            .orient("bottom");
+        var yAxis = d3.svg.axis()
+            .scale(y)
+            .orient("left");
+        var line = d3.svg.line()
+            .interpolate("basis")
+            .x(function(d) { return x(d.h); })
+            .y(function(d) { return y(d.v); });
+        var group = svg.selectAll('path')
+            .data(data2)
+            .enter().append('path')
+            .attr("d", line)
+            //.attr("class","lt2");
+            .attr("class", function(d,i) {return 'lt'+(2+i);});
+      svg.append("g")
+          .attr("class", "x axis")
+          .attr("transform", "translate(0," + h + ")")
+          .call(xAxis);
+      svg.append("g")
+          .attr("class", "y axis")
+          .call(yAxis);
+      svg.append("rect")
+          .attr("class", "overlay")
+          .attr("width", w)
+          .attr("height", h)
+          .on("mouseover", function() { console.log('min'); })
+          .on("mouseout", function() { console.log('mout'); })
+          .on("mousemove", mousemove);   
+      function mousemove() {
+          d3.select('div#stdout').text(d3.mouse(this)[0] + ' ' + x.invert(d3.mouse(this)[0]) + ' ' + d3.mouse(this)[1]);
+      }
+    
+    }    
+    
+    function init() {
+      renderTimelineData2();
+    }
+    
+    </script>
+    
+  </head>
+  <body>
+
+<div id="data2Trend" class="trendLineContainer"></div>
+<div id="stdout">stdout</div>
+  <script>init();</script>
+  http://bl.ocks.org/mbostock/3902569 <br />
+  http://bl.ocks.org/WillTurman/4631136 <br />
+  
+  </body>
+</html>
