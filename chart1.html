@@ -9,20 +9,24 @@
       .x.axis path  { displayx: none;}
       .axis text {font-size:0.8em;}
       .line {fill: none;stroke: steelblue;stroke-width: 1.5px;}
+
 .overlay {
   fill: none;
   pointer-events: all;
 }
-      path.lt1 {stroke:#da70d6;stroke-width:2;fill:none;}
-      path.lt2 {stroke:#ff8c00;stroke-width:2;fill:none;}
-      path.lt3 {stroke:#32cd32;stroke-width:2;fill:none;}
-      path.lt4 {stroke:#1e90ff;stroke-width:2;fill:none;}    
+      path.lt {stroke-width:1px;}
+      path.lt1 {stroke:#da70d6;fill:none;}
+      path.lt2 {stroke:#ff8c00;fill:none;}
+      path.lt3 {stroke:#32cd32;fill:none;}
+      path.lt4 {stroke:#1e90ff;fill:none;}  
+      path.ltHighlite {stroke-width:3px;}  
     </style>
     <script src="./res/d3.js"></script>
     <script>
       var TIMES_LOOKUP = ['8am','9am','10am','11am','12pm','1pm','2pm','3pm','4pm','5pm','6pm','7pm','8pm','9pm','10pm','11pm','12am','1am','2am','3am','4am','5am','6am','7am'];
     
       function renderTimelineData2() {
+        // def canvas
         var w = 600,
             h = 100;
         var svg = d3.select('div#data2Trend').append('svg')
@@ -30,12 +34,14 @@
           .attr('height', h + 40)
           .append("g")
           .attr("transform", "translate(" + 30 + "," + 20 + ")");
+          // def data
         var data2 =
 [
 [{h:0,v:0},{h:1,v:0},{h:2,v:1},{h:3,v:2},{h:4,v:0},{h:5,v:2},{h:6,v:0},{h:7,v:0},{h:8,v:2},{h:9,v:0},{h:10,v:2},{h:11,v:4},{h:12,v:7},{h:13,v:4},{h:14,v:3},{h:15,v:32},{h:16,v:40},{h:17,v:7},{h:18,v:4},{h:19,v:0},{h:20,v:0},{h:21,v:0},{h:22,v:0},{h:23,v:0}],
 [{h:0,v:0},{h:1,v:0},{h:2,v:0},{h:3,v:4},{h:4,v:0},{h:5,v:4},{h:6,v:2},{h:7,v:2},{h:8,v:11},{h:9,v:0},{h:10,v:0},{h:11,v:5},{h:12,v:0},{h:13,v:3},{h:14,v:1},{h:15,v:4},{h:16,v:0},{h:17,v:2},{h:18,v:1},{h:19,v:0},{h:20,v:0},{h:21,v:0},{h:22,v:2},{h:23,v:0}],
 [{h:0,v:0},{h:1,v:0},{h:2,v:0},{h:3,v:0},{h:4,v:3},{h:5,v:1},{h:6,v:0},{h:7,v:0},{h:8,v:2},{h:9,v:0},{h:10,v:0},{h:11,v:2},{h:12,v:2},{h:13,v:4},{h:14,v:0},{h:15,v:6},{h:16,v:2},{h:17,v:2},{h:18,v:2},{h:19,v:0},{h:20,v:0},{h:21,v:0},{h:22,v:0},{h:23,v:0}]
 ];
+        // def scales, axes
         var x = d3.scale.linear().domain([0,23]).range([0, w]),
             y = d3.scale.linear().domain([0,40]).range([h,0]);
         var xAxis = d3.svg.axis()
@@ -45,34 +51,96 @@
         var yAxis = d3.svg.axis()
             .scale(y)
             .orient("left");
+        // def line gen
         var line = d3.svg.line()
             .interpolate("basis")
             .x(function(d) { return x(d.h); })
             .y(function(d) { return y(d.v); });
+        // gen overlay to act on mouse posn
+        // def here so will be in bottom of dom object stack and not hide value lines
+        svg.append("rect")
+          .attr("class", "overlay")
+          .attr("width", w)
+          .attr("height", h)
+          .on("mouseover", overlayMouseover)
+          .on("mouseout", overlayMouseout)
+          .on("mousemove", overlayMousemove);
+        // gen the value lines, interactivity
         var group = svg.selectAll('path')
             .data(data2)
             .enter().append('path')
             .attr("d", line)
-            //.attr("class","lt2");
-            .attr("class", function(d,i) {return 'lt'+(2+i);});
+            .attr("class", function(d,i) {return 'lt'+(2+i) + ' lt';})
+            .on("mouseover", chartlineMouseover)
+            .on("mouseout", chartlineMouseout);
+      // add x axis
       svg.append("g")
           .attr("class", "x axis")
           .attr("transform", "translate(0," + h + ")")
           .call(xAxis);
+      // add y axis
       svg.append("g")
           .attr("class", "y axis")
           .call(yAxis);
-      svg.append("rect")
-          .attr("class", "overlay")
-          .attr("width", w)
-          .attr("height", h)
-          .on("mouseover", function() { console.log('min'); })
-          .on("mouseout", function() { console.log('mout'); })
-          .on("mousemove", mousemove);   
-      function mousemove() {
-          d3.select('div#stdout').text(d3.mouse(this)[0] + ' ' + x.invert(d3.mouse(this)[0]) + ' ' + d3.mouse(this)[1]);
-      }
     
+    var focus = svg.append("g")
+          .style("display", "none")
+    ;
+    
+     focus.append("line")
+        .attr("class", "vert")
+        .style("stroke", "blue")
+        .style("stroke-dasharray", "3,3")
+        .style("opacity", 0.5)
+        .attr("y1", 0)
+        .attr("y2", h)
+        .attr("x1",0)
+        .attr("x2",0)
+        ;
+     focus.append("line")
+        .attr("class", "hor")
+        .style("stroke", "blue")
+        .style("stroke-dasharray", "3,3")
+        .style("opacity", 0.5)
+        .attr("y1", 0)
+        .attr("y2", 0)
+        .attr("x1",w)
+        .attr("x2",0)
+        ;        
+     /*     
+    focus.append("line")
+        .attr("class", "y")
+        .style("stroke", "blue")
+        .style("stroke-dasharray", "3,3")
+        .style("opacity", 0.5)
+        .attr("x1", w)
+        .attr("x2", w);          
+    */      
+      function overlayMouseover() {
+        focus.style("display", null);
+      }
+      function overlayMouseout() {
+        focus.style("display", "none");
+      }
+      function overlayMousemove() {
+        var xCoord = d3.mouse(this)[0];
+        var yCoord = d3.mouse(this)[1];
+        var xCurr = TIMES_LOOKUP[d3.round(x.invert(xCoord))];
+        var yCurr = d3.round(y.invert(yCoord),1);
+        d3.select('div#stdout').text(xCoord + ',' + yCoord + ' ' + xCurr + ' ' + yCurr);
+        focus.select(".vert").attr("transform", "translate(" + xCoord + ",0)");
+        focus.select(".hor").attr("transform", "translate(0," + yCoord + ")");
+      }
+      function chartlineMouseover(d,i) {
+          d3.select(this).classed("lt", false).classed('ltHighlite',true);
+          //console.dir(this);
+          
+      }
+      function chartlineMouseout(d,i) {
+          d3.select(this).classed('ltHighlite',false).classed("lt", true);
+          //console.dir(this);
+          
+      }    
     }    
     
     function init() {
@@ -89,6 +157,7 @@
   <script>init();</script>
   http://bl.ocks.org/mbostock/3902569 <br />
   http://bl.ocks.org/WillTurman/4631136 <br />
+  http://www.d3noob.org/2014/07/my-favourite-tooltip-method-for-line.html<br />
   
   </body>
 </html>
