@@ -91,11 +91,19 @@ var DATA = {
           .attr("transform", "translate(" + 30 + "," + 20 + ")");
           // def data
         var data2 =
+/*        
 [
 [{h:0,v:0},{h:1,v:0},{h:2,v:1},{h:3,v:2},{h:4,v:0},{h:5,v:2},{h:6,v:0},{h:7,v:0},{h:8,v:2},{h:9,v:0},{h:10,v:2},{h:11,v:4},{h:12,v:7},{h:13,v:4},{h:14,v:3},{h:15,v:32},{h:16,v:40},{h:17,v:7},{h:18,v:4},{h:19,v:0},{h:20,v:0},{h:21,v:0},{h:22,v:0},{h:23,v:0}],
 [{h:0,v:0},{h:1,v:0},{h:2,v:0},{h:3,v:4},{h:4,v:0},{h:5,v:4},{h:6,v:2},{h:7,v:2},{h:8,v:11},{h:9,v:0},{h:10,v:0},{h:11,v:5},{h:12,v:0},{h:13,v:3},{h:14,v:1},{h:15,v:4},{h:16,v:0},{h:17,v:2},{h:18,v:1},{h:19,v:0},{h:20,v:0},{h:21,v:0},{h:22,v:2},{h:23,v:0}],
 [{h:0,v:0},{h:1,v:0},{h:2,v:0},{h:3,v:0},{h:4,v:3},{h:5,v:1},{h:6,v:0},{h:7,v:0},{h:8,v:2},{h:9,v:0},{h:10,v:0},{h:11,v:2},{h:12,v:2},{h:13,v:4},{h:14,v:0},{h:15,v:6},{h:16,v:2},{h:17,v:2},{h:18,v:2},{h:19,v:0},{h:20,v:0},{h:21,v:0},{h:22,v:0},{h:23,v:0}]
 ];
+*/
+[
+[0,0,1,2,0,2,0,0,2,0,2,4,7,4,3,32,40,7,4,0,0,0,0,0],
+[0,0,0,4,0,4,2,2,11,0,0,5,0,3,1,4,0,2,1,0,0,0,2,0],
+[0,0,0,0,3,1,0,0,2,0,0,2,2,4,0,6,2,2,2,0,0,0,0,0]
+];
+
         // def scales, axes
         var x = d3.scale.linear().domain([0,23]).range([0, w]),
             y = d3.scale.linear().domain([0,40]).range([h,0]);
@@ -109,8 +117,10 @@ var DATA = {
         // def line gen
         var line = d3.svg.line()
             .interpolate("basis")
-            .x(function(d) { return x(d.h); })
-            .y(function(d) { return y(d.v); });
+            //.x(function(d,i) { console.log('x: ' + d.h+','+i);return x(d.h); })
+            //.y(function(d,i) { console.log('y: ' + d.v+','+i);return y(d.v); });
+            .x(function(d,i) { /*console.log('x: ' + d+','+i);*/return x(i); })
+            .y(function(d,i) { /*console.log('y: ' + d+','+i);*/return y(d); });
         // gen overlay to act on mouse posn
         // def here so will be in bottom of dom object stack and not hide value lines
         svg.append("rect")
@@ -123,7 +133,8 @@ var DATA = {
         // gen the value lines, interactivity
         var group = svg.selectAll('path')
             .data(data2)
-            .enter().append('path')
+            .enter()
+            .append('path')
             .attr("d", line)
             .attr("class", function(d,i) {return 'lt'+(2+i) + ' lt';})
             .on("mouseover", chartlineMouseover)
