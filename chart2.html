@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+       body{font-family:sans-serif;font-size:0.8em;}
+      .axis path, .axis line {fill:none;stroke:silver;shape-rendering:crispEdges;}
+      .x.axis path  { displayx: none;}
+      .axis text {font-size:0.8em;}
+      .line {fill: none;stroke: steelblue;stroke-width: 1.5px;}
+
+.overlay {
+  fill: none;
+  pointer-events: all;
+}
+      path.lt {stroke-width:1px;}
+      path.lt1 {stroke:#da70d6;fill:none;}
+      path.lt2 {stroke:#ff8c00;fill:none;}
+      path.lt3 {stroke:#32cd32;fill:none;}
+      path.lt4 {stroke:#1e90ff;fill:none;}  
+      path.ltHighlite {stroke-width:3px;}  
+    </style>
+    <script src="./res/d3.js"></script>
+    <script>
+
+var COLORS = [];
+      
+      
+var REC_CODE_DATA = {
+  "categories":["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30"],
+  "values":[
+    {
+    "label":"ACCEPT",
+    "cnt":[295,16,200,17,160,277,193,77,165,198,243,286,183,279,100,237,171,209,257,159,207,33,243,208,223,274,90,280,174,119],
+    "cnttotal":4636,
+    "amt":[4019.31,3345.1,2342.51,3862.67,3662.45,3832.88,3817.95,4172.71,3613.95,4734.21,1591.67,3750.68,389.64,3609.98,1802.86,2949.08,869.64,2095.9,3831.28,1519.99,1770.92,2844.39,246.85,4975.4,2858.83,4327.5,2947.74,2556.06,2447.3,1333.53],
+    "amttotal":72510.85
+    },
+    {
+    "label":"REVIEW",
+    "cnt":[287,112,182,81,134,166,157,193,169,40,20,36,3,160,296,35,218,101,128,49,178,181,54,88,261,152,56,271,34,71],
+    "cnttotal":3329,
+    "amt":[4359.22,3237.15,4598.15,47.89,4745.84,2398.98,3700.76,2472.68,4694.28,3053.97,42.84,1149.99,2237.75,190.67,4013.71,2959.24,4188.18,3014.64,3551.6,3950.54,1712.57,2387.03,3115.62,4795.45,1922.54,499.99,1415.91,4205.93,878.25,4199.47],
+    "amttotal":72541.29
+    },
+    {
+    "label":"DECLINE",
+    "cnt":[38,77,23,25,60,93,87,70,52,34,49,83,28,65,27,79,11,44,31,43,68,83,66,76,46,45,40,44,34,58],
+    "cnttotal":1358,
+    "amt":[133.75,347.14,548.18,199.59,801.88,308.57,52.13,232.13,247.83,499.97,508.22,381.22,401.57,19.2,818.02,437.37,432.83,479.02,299.11,43.54,355.93,945.9,458.82,609.7,392.56,349.81,677.89,506.97,133.79,913.88],
+    "amttotal":9954.18
+    },    
+    {
+    "label":"OTHER",
+    "cnt":[115,101,141,120,45,55,238,278,128,239,10,265,277,181,70,202,38,210,182,192,194,297,116,45,228,202,127,226,46,196],
+    "cnttotal":3967,
+    "amt":[862.81,321.28,702.91,748.43,897.28,44.43,400.3,849.84,678.74,242.47,384.65,431.85,847.1,33.37,85.49,468.23,626.68,815.96,324.13,227.29,662.26,794.67,214.76,892.56,289.74,420.73,432.47,134.59,595.82,228.36],
+    "amttotal":12847.23
+    }
+  ],
+  "stats": {
+    "cnt":{"min":3,"q1":49,"med":117.5,"q3":200.5,"max":297},
+    "amt":{"min":19.2,"q1":388.40,"med":848.47,"q3":2973.09,"max":4975.4}
+   }
+};      
+
+    
+      function renderRecCodeData(data) {
+        // def canvas
+        var w = 600,
+            h = 100;
+        var svg = d3.select('div#recCodeData').append('svg')
+          .attr('width', w + 20)
+          .attr('height', h + 40)
+          .append("g")
+          .attr("transform", "translate(" + 30 + "," + 20 + ")");
+
+        // def scales, axes
+        var x = d3.scale.linear().domain([0,23]).range([0, w]),
+            y = d3.scale.linear().domain([0,40]).range([h,0]);
+        var xAxis = d3.svg.axis()
+            .scale(x)
+            .tickFormat(function(d){return TIMES_LOOKUP[d];})
+            .orient("bottom");
+        var yAxis = d3.svg.axis()
+            .scale(y)
+            .orient("left");
+        // def line gen
+        var line = d3.svg.line()
+            .interpolate("basis")
+            //.x(function(d,i) { console.log('x: ' + d.h+','+i);return x(d.h); })
+            //.y(function(d,i) { console.log('y: ' + d.v+','+i);return y(d.v); });
+            .x(function(d,i) { /*console.log('x: ' + d+','+i);*/return x(i); })
+            .y(function(d,i) { /*console.log('y: ' + d+','+i);*/return y(d); });
+        // gen overlay to act on mouse posn
+        // def here s o will be in bottom of dom object stack and not hide value lines
+        svg.append("rect")
+          .attr("class", "overlay")
+          .attr("width", w)
+          .attr("height", h)
+          .on("mouseover", overlayMouseover)
+          .on("mouseout", overlayMouseout)
+          .on("mousemove", overlayMousemove);
+        // gen the value lines, interactivity
+        var group = svg.selectAll('path')
+            .data(data2)
+            .enter()
+            .append('path')
+            .attr("d", line)
+            .attr("class", function(d,i) {return 'lt'+(2+i) + ' lt';})
+            .on("mouseover", chartlineMouseover)
+            .on("mouseout", chartlineMouseout);
+      // add x axis
+      svg.append("g")
+          .attr("class", "x axis")
+          .attr("transform", "translate(0," + h + ")")
+          .call(xAxis);
+      // add y axis
+      svg.append("g")
+          .attr("class", "y axis")
+          .call(yAxis);
+
+    }    
+    
+    function init() {
+      renderRecCodeData(REC_CODE_DATA);
+    }
+    
+    </script>
+    
+  </head>
+  <body>
+
+<div id="recCodeData" class="" style="border:1px solid #c0c0c0;border-radius:4px;"></div>
+<hr />
+<div id="stdout">stdout</div>
+  <script>init();</script>
+  http://bl.ocks.org/mbostock/3902569 <br />
+  http://bl.ocks.org/WillTurman/4631136 <br />
+  http://www.d3noob.org/2014/07/my-favourite-tooltip-method-for-line.html<br />
+  http://www.robschmuecker.com/d3-js-drag-and-drop-zoomable-tree/<br />
+  
+  <script>init();</script>
+  </body>
+</html>
