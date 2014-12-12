@@ -10,23 +10,39 @@
       .axis text {font-size:0.8em;}
       .line {fill: none;stroke: steelblue;stroke-width: 1.5px;}
 
+.grid  {
+    stroke: #c0c0c0;
+    stroke-opacity: 0.2;
+    shape-rendering: crispEdges;
+}
+.grid path {
+          stroke-width: 0;
+}
+
 .overlay {
   fill: none;
   pointer-events: all;
+  border:1px solid black;
 }
-      path.lt {stroke-width:1px;}
+.rec-code-cursor {
+  stroke-width:1.5px;
+  stroke: red;fill:none;
+  opacity:0.5;
+  stroke-dasharray: 10 5;
+}
+      path.lt {stroke-width:1.5px;}
       path.lt1 {stroke:#da70d6;fill:none;}
       path.lt2 {stroke:#ff8c00;fill:none;}
       path.lt3 {stroke:#32cd32;fill:none;}
       path.lt4 {stroke:#1e90ff;fill:none;}  
+      path.lt5 {stroke:#909090;fill:none;}
       path.ltHighlite {stroke-width:3px;}  
     </style>
     <script src="./res/d3.js"></script>
     <script>
 
 var COLORS = [];
-      
-      
+
 var REC_CODE_DATA = {
   "categories":["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30"],
   "values":[
@@ -35,93 +51,178 @@ var REC_CODE_DATA = {
     "cnt":[295,16,200,17,160,277,193,77,165,198,243,286,183,279,100,237,171,209,257,159,207,33,243,208,223,274,90,280,174,119],
     "cnttotal":4636,
     "amt":[4019.31,3345.1,2342.51,3862.67,3662.45,3832.88,3817.95,4172.71,3613.95,4734.21,1591.67,3750.68,389.64,3609.98,1802.86,2949.08,869.64,2095.9,3831.28,1519.99,1770.92,2844.39,246.85,4975.4,2858.83,4327.5,2947.74,2556.06,2447.3,1333.53],
-    "amttotal":72510.85
+    "amttotal":72510.85,
+    "stats": {
+      "cnt":{"min":16,"q1":159.25,"med":199,"q3":243,"max":295},
+      "amt":{"min":246.85,"q1":1876.12,"med":2948.41,"q3":3827.9475,"max":4975.4}
+     }
     },
     {
     "label":"REVIEW",
     "cnt":[287,112,182,81,134,166,157,193,169,40,20,36,3,160,296,35,218,101,128,49,178,181,54,88,261,152,56,271,34,71],
     "cnttotal":3329,
     "amt":[4359.22,3237.15,4598.15,47.89,4745.84,2398.98,3700.76,2472.68,4694.28,3053.97,42.84,1149.99,2237.75,190.67,4013.71,2959.24,4188.18,3014.64,3551.6,3950.54,1712.57,2387.03,3115.62,4795.45,1922.54,499.99,1415.91,4205.93,878.25,4199.47],
-    "amttotal":72541.29
+    "amttotal":72541.29,
+    "stats": {
+      "cnt":{"min":3,"q1":54.5,"med":131,"q3":180.25,"max":296},
+      "amt":{"min":42.84,"q1":1765.0625,"med":3034.305,"q3":4144.5625,"max":4795.45}
+     }
     },
     {
     "label":"DECLINE",
     "cnt":[38,77,23,25,60,93,87,70,52,34,49,83,28,65,27,79,11,44,31,43,68,83,66,76,46,45,40,44,34,58],
     "cnttotal":1358,
     "amt":[133.75,347.14,548.18,199.59,801.88,308.57,52.13,232.13,247.83,499.97,508.22,381.22,401.57,19.2,818.02,437.37,432.83,479.02,299.11,43.54,355.93,945.9,458.82,609.7,392.56,349.81,677.89,506.97,133.79,913.88],
-    "amttotal":9954.18
-    },    
+    "amttotal":9954.18,
+    "stats": {
+      "cnt":{"min":11,"q1":35,"med":47.5,"q3":69.5,"max":93},
+      "amt":{"min":19.2,"q1":260.65,"med":397.065,"q3":507.9075,"max":945.9}
+     }
+    },
     {
     "label":"OTHER",
     "cnt":[115,101,141,120,45,55,238,278,128,239,10,265,277,181,70,202,38,210,182,192,194,297,116,45,228,202,127,226,46,196],
     "cnttotal":3967,
     "amt":[862.81,321.28,702.91,748.43,897.28,44.43,400.3,849.84,678.74,242.47,384.65,431.85,847.1,33.37,85.49,468.23,626.68,815.96,324.13,227.29,662.26,794.67,214.76,892.56,289.74,420.73,432.47,134.59,595.82,228.36],
-    "amttotal":12847.23
+    "amttotal":12847.23,
+    "stats": {
+      "cnt":{"min":10,"q1":104.5,"med":181.5,"q3":222,"max":297},
+      "amt":{"min":33.37,"q1":254.2875,"med":432.16,"q3":737.05,"max":897.28}
+     }
     }
   ],
   "stats": {
     "cnt":{"min":3,"q1":49,"med":117.5,"q3":200.5,"max":297},
     "amt":{"min":19.2,"q1":388.40,"med":848.47,"q3":2973.09,"max":4975.4}
    }
-};      
-
-    
-      function renderRecCodeData(data) {
+};
+var catScale;
+      /*
+       renders the cnt graph and the amt graphs
+      */
+      function renderRecCodeData(dataset) {
         // def canvas
-        var w = 600,
-            h = 100;
+        var catWidth = 600, 
+            cntHeight = 100, 
+            amtHeight = 150,
+            lPad = 50,
+            rPad = 2,
+            tPad = 10,
+            bPad = 50,
+            midPad = 20;
         var svg = d3.select('div#recCodeData').append('svg')
-          .attr('width', w + 20)
-          .attr('height', h + 40)
+          .attr("width", lPad + catWidth + rPad)
+          .attr("height", tPad + cntHeight + midPad + amtHeight + bPad)
           .append("g")
-          .attr("transform", "translate(" + 30 + "," + 20 + ")");
-
+          .attr("transform", "translate(" + (lPad + rPad) + "," + (tPad) + ")");
+        // ref to collection of paths in this canvas
+        var paths = svg.selectAll("path");  
         // def scales, axes
-        var x = d3.scale.linear().domain([0,23]).range([0, w]),
-            y = d3.scale.linear().domain([0,40]).range([h,0]);
-        var xAxis = d3.svg.axis()
-            .scale(x)
-            .tickFormat(function(d){return TIMES_LOOKUP[d];})
+        catScale = d3.scale.linear().domain([0,dataset.categories.length]).range([0, catWidth]);
+        var    cntScale = d3.scale.linear().domain([0,dataset.stats.cnt.max]).range([cntHeight,0]),
+            amtScale = d3.scale.linear().domain([0,dataset.stats.amt.max]).range([amtHeight,0]);
+        var catAxis = d3.svg.axis()
+            .scale(catScale)
+            .ticks(30)
+            .tickFormat(function(d){return dataset.categories[d];})
+            //.tickValues(dataset.categories)
             .orient("bottom");
-        var yAxis = d3.svg.axis()
-            .scale(y)
+        var cntAxis = d3.svg.axis()
+            .scale(cntScale)
             .orient("left");
-        // def line gen
-        var line = d3.svg.line()
-            .interpolate("basis")
-            //.x(function(d,i) { console.log('x: ' + d.h+','+i);return x(d.h); })
-            //.y(function(d,i) { console.log('y: ' + d.v+','+i);return y(d.v); });
-            .x(function(d,i) { /*console.log('x: ' + d+','+i);*/return x(i); })
-            .y(function(d,i) { /*console.log('y: ' + d+','+i);*/return y(d); });
+        var amtAxis = d3.svg.axis()
+            .scale(amtScale)
+            .orient("left");
         // gen overlay to act on mouse posn
-        // def here s o will be in bottom of dom object stack and not hide value lines
+        // def here so will be in bottom of DOM object stack and not hide value lines
         svg.append("rect")
           .attr("class", "overlay")
-          .attr("width", w)
-          .attr("height", h)
-          .on("mouseover", overlayMouseover)
-          .on("mouseout", overlayMouseout)
+          .attr("width", catWidth)
+          .attr("height", cntHeight + midPad + amtHeight)
+          .on("mouseover", function(){d3.select('#rec-code-cursor').attr("display",null)})
+          .on("mouseout", function(){d3.select('#rec-code-cursor').attr("display","none")})
           .on("mousemove", overlayMousemove);
-        // gen the value lines, interactivity
-        var group = svg.selectAll('path')
-            .data(data2)
+        // def grid cursor
+        svg.append("path")
+          .attr("d", "m 0 0 v " + (cntHeight + midPad + amtHeight))
+          .attr("display","none")
+          .attr("class", "rec-code-cursor")
+          .attr("id", "rec-code-cursor");
+        // def cnt line gen
+        var cntLineGen = d3.svg.line()
+            //.interpolate("basis")
+            .x(function(d,i) {return catScale(i);})
+            .y(function(d,i) {return cntScale(d);});
+        // set up the cnt values data to be passed in
+        var cntValues = [];
+        for (var i = 0; i < dataset.values.length; i++) {
+          cntValues.push(dataset.values[i].cnt);
+        }
+        // gen the cnt value lines
+        paths.data(cntValues)
             .enter()
-            .append('path')
-            .attr("d", line)
-            .attr("class", function(d,i) {return 'lt'+(2+i) + ' lt';})
-            .on("mouseover", chartlineMouseover)
-            .on("mouseout", chartlineMouseout);
-      // add x axis
-      svg.append("g")
-          .attr("class", "x axis")
-          .attr("transform", "translate(0," + h + ")")
-          .call(xAxis);
-      // add y axis
-      svg.append("g")
-          .attr("class", "y axis")
-          .call(yAxis);
+            .append("path")
+            .attr("d", cntLineGen)
+            .attr("class", function(d,i) {return 'lt'+(2+i) + ' lt';});
+        // def amt line gen
+        var amtLineGen = d3.svg.line()
+            .interpolate("basis")
+            .x(function(d,i) {return catScale(i);})
+            .y(function(d,i) {return amtScale(d);});            
+        // set up the amt values data to be passed in
+        var amtValues = [];
+        for (var i = 0; i < dataset.values.length; i++) {
+          amtValues.push(dataset.values[i].amt);
+        }
+        // gen the amt value lines
+        //svg.selectAll("path")
+        paths.data(amtValues)
+            .enter()
+            .append("path")
+            .attr("d", amtLineGen)
+            .attr("transform", "translate(0," + (cntHeight + midPad) + ")")
+            .attr("class", function(d,i) {return 'lt'+(2+i) + ' lt';});            
+        // add x axs
+        svg.append("g")
+            .attr("class", "x axis")
+            .attr("transform", "translate(0," + (cntHeight + midPad + amtHeight) + ")")
+            .call(catAxis);
+        // add the 2 y axes
+        svg.append("g")
+            .attr("class", "y axis")
+            .call(cntAxis);
+        svg.append("g")
+            .attr("class", "y axis")
+            .attr("transform", "translate(0," + (midPad + cntHeight) + ")")
+            .call(amtAxis);
+        // vert grid
+        svg.append("g")
+            .attr("class", "grid")
+            .attr("transform", "translate(0," + (cntHeight + midPad + amtHeight) + ")")
+            .call(d3.svg.axis()
+                .scale(catScale)
+                .orient("bottom")
+                .ticks(dataset.categories.length)
+                .tickSize(-(cntHeight + midPad + amtHeight), 0, 0)
+                .tickFormat("")
+            );
+        function overlayMousemove() {
+          var xCoord = d3.mouse(this)[0];
+          var catIndex = d3.round(catScale.invert(xCoord));
+          var catCurr = dataset.categories[catIndex];
+          var xCurr = catScale(catCurr-1);
+          d3.select('div#stdout').text(xCoord + ',' +  ' ' + xCurr + ' ' + catCurr);
+          if (!isNaN(xCurr)) {
+            d3.select('#rec-code-cursor').attr("transform","translate(" + (xCurr) + ",0)");
+            d3.selectAll(".td").attr("display","none");
+            d3.select('#rec-code-curr-cnt0').text(dataset.values[0].cnt[catIndex]);
+            d3.selectAll(".cd").attr("display","none");
+          }
+        }
 
-    }    
+    }
+
+
     
     function init() {
       renderRecCodeData(REC_CODE_DATA);
@@ -132,10 +233,76 @@ var REC_CODE_DATA = {
   </head>
   <body>
 
-<div id="recCodeData" class="" style="border:1px solid #c0c0c0;border-radius:4px;"></div>
+<table>
+  <tr>
+    <td>
+     <div id="recCodeData" class="" style="border:1px solid #c0c0c0;border-radius:4px;"></div>
+    </td>
+    <td>
+      <div>
+        <table id="rec-code-stats">
+          <tr><th></th><th></th><th>Count</th><th>Amount</th></tr>
+          <tr>
+            <td><input type="checkbox" /></td>
+            <td>ACCEPT</td>
+            <td>
+              <span class="td">4636</span>
+              <span class="cd" id="rec-code-curr-cnt0"></span>
+            </td>
+            <td>
+              <span class="td">72510.85</span>
+              <span class="cd" id="rec-code-curr-amt0"></span>
+            </td>            
+          </tr>
+          <tr>
+            <td><input type="checkbox" /></td>
+            <td>REVIEW</td>
+            <td>
+              <span class="td">3329</span>
+              <span class="cd" id="rec-code-curr-cnt1"></span>
+            </td>
+            <td>
+              <span class="td">72541.29</span>
+              <span class="cd" id="rec-code-curr-amt1"></span>
+            </td>            
+          </tr>
+          <tr>
+            <td><input type="checkbox" /></td>
+            <td>DECLINE</td>
+            <td>
+              <span class="td">1358</span>
+              <span class="cd" id="rec-code-curr-cnt2"></span>
+            </td>
+            <td>
+              <span class="td">9954.18</span>
+              <span class="cd" id="rec-code-curr-amt2"></span>
+            </td>            
+          </tr>
+          <tr>
+            <td><input type="checkbox" /></td>
+            <td>OTHER</td>
+            <td>
+              <span class="td">3967</span>
+              <span class="cd" id="rec-code-curr-cnt3"></span>
+            </td>
+            <td>
+              <span class="td">12847.23</span>
+              <span class="cd" id="rec-code-curr-amt3"></span>
+            </td>            
+          </tr>
+          <tr>
+            <th></th><th></th><th><span class="td">13290</span></th><th><span class="td">167853.55</span></th>
+          </tr>                 
+        </table>
+      </div>
+    </td>
+  </tr>
+</table>
+
 <hr />
 <div id="stdout">stdout</div>
-  <script>init();</script>
+
+<p style="margin-top:400px;"></p>
   http://bl.ocks.org/mbostock/3902569 <br />
   http://bl.ocks.org/WillTurman/4631136 <br />
   http://www.d3noob.org/2014/07/my-favourite-tooltip-method-for-line.html<br />
