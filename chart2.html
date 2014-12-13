@@ -43,6 +43,22 @@
 
 var COLORS = [];
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 var REC_CODE_DATA = {
   "categories":["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30"],
   "values":[
@@ -52,6 +68,8 @@ var REC_CODE_DATA = {
     "cnttotal":4636,
     "amt":[4019.31,3345.1,2342.51,3862.67,3662.45,3832.88,3817.95,4172.71,3613.95,4734.21,1591.67,3750.68,389.64,3609.98,1802.86,2949.08,869.64,2095.9,3831.28,1519.99,1770.92,2844.39,246.85,4975.4,2858.83,4327.5,2947.74,2556.06,2447.3,1333.53],
     "amttotal":72510.85,
+    "cntreg":[[1,171.8],[30,199.7]],
+    "amtreg":[[1,146],[30,114.9]],
     "stats": {
       "cnt":{"min":16,"q1":159.25,"med":199,"q3":243,"max":295},
       "amt":{"min":246.85,"q1":1876.12,"med":2948.41,"q3":3827.9475,"max":4975.4}
@@ -63,6 +81,8 @@ var REC_CODE_DATA = {
     "cnttotal":3329,
     "amt":[4359.22,3237.15,4598.15,47.89,4745.84,2398.98,3700.76,2472.68,4694.28,3053.97,42.84,1149.99,2237.75,190.67,4013.71,2959.24,4188.18,3014.64,3551.6,3950.54,1712.57,2387.03,3115.62,4795.45,1922.54,499.99,1415.91,4205.93,878.25,4199.47],
     "amttotal":72541.29,
+    "cntreg":[[1,55.3],[30,49.9]],
+    "amtreg":[[1,139],[30,178.6]],    
     "stats": {
       "cnt":{"min":3,"q1":54.5,"med":131,"q3":180.25,"max":296},
       "amt":{"min":42.84,"q1":1765.0625,"med":3034.305,"q3":4144.5625,"max":4795.45}
@@ -74,6 +94,8 @@ var REC_CODE_DATA = {
     "cnttotal":1358,
     "amt":[133.75,347.14,548.18,199.59,801.88,308.57,52.13,232.13,247.83,499.97,508.22,381.22,401.57,19.2,818.02,437.37,432.83,479.02,299.11,43.54,355.93,945.9,458.82,609.7,392.56,349.81,677.89,506.97,133.79,913.88],
     "amttotal":9954.18,
+    "cntreg":[[1,3525],[30,2216.5]],
+    "amtreg":[[1,3096.4],[30,2486.3]],    
     "stats": {
       "cnt":{"min":11,"q1":35,"med":47.5,"q3":69.5,"max":93},
       "amt":{"min":19.2,"q1":260.65,"med":397.065,"q3":507.9075,"max":945.9}
@@ -85,6 +107,8 @@ var REC_CODE_DATA = {
     "cnttotal":3967,
     "amt":[862.81,321.28,702.91,748.43,897.28,44.43,400.3,849.84,678.74,242.47,384.65,431.85,847.1,33.37,85.49,468.23,626.68,815.96,324.13,227.29,662.26,794.67,214.76,892.56,289.74,420.73,432.47,134.59,595.82,228.36],
     "amttotal":12847.23,
+    "cntreg":[[1,302.4],[30,533.4]],
+    "amtreg":[[1,595.1],[30,382.2]],    
     "stats": {
       "cnt":{"min":10,"q1":104.5,"med":181.5,"q3":222,"max":297},
       "amt":{"min":33.37,"q1":254.2875,"med":432.16,"q3":737.05,"max":897.28}
@@ -96,7 +120,7 @@ var REC_CODE_DATA = {
     "amt":{"min":19.2,"q1":388.40,"med":848.47,"q3":2973.09,"max":4975.4}
    }
 };
-var catScale;
+
       /*
        renders the cnt graph and the amt graphs
       */
@@ -118,8 +142,8 @@ var catScale;
         // ref to collection of paths in this canvas
         var paths = svg.selectAll("path");  
         // def scales, axes
-        catScale = d3.scale.linear().domain([0,dataset.categories.length]).range([0, catWidth]);
-        var    cntScale = d3.scale.linear().domain([0,dataset.stats.cnt.max]).range([cntHeight,0]),
+        var catScale = d3.scale.linear().domain([0,dataset.categories.length]).range([0, catWidth]);
+        var cntScale = d3.scale.linear().domain([0,dataset.stats.cnt.max]).range([cntHeight,0]),
             amtScale = d3.scale.linear().domain([0,dataset.stats.amt.max]).range([amtHeight,0]);
         var catAxis = d3.svg.axis()
             .scale(catScale)
@@ -144,7 +168,7 @@ var catScale;
           .on("mousemove", overlayMousemove);
         // def grid cursor
         svg.append("path")
-          .attr("d", "m 0 0 v " + (cntHeight + midPad + amtHeight))
+          .attr("d", "M 0 0 v " + (cntHeight + midPad + amtHeight))
           .attr("display","none")
           .attr("class", "rec-code-cursor")
           .attr("id", "rec-code-cursor");
@@ -171,17 +195,39 @@ var catScale;
             .y(function(d,i) {return amtScale(d);});            
         // set up the amt values data to be passed in
         var amtValues = [];
+        var amtTrendValues = [];
         for (var i = 0; i < dataset.values.length; i++) {
           amtValues.push(dataset.values[i].amt);
+          amtTrendValues.push(dataset.values[i].amtreg);
         }
         // gen the amt value lines
-        //svg.selectAll("path")
         paths.data(amtValues)
             .enter()
             .append("path")
             .attr("d", amtLineGen)
             .attr("transform", "translate(0," + (cntHeight + midPad) + ")")
-            .attr("class", function(d,i) {return 'lt'+(2+i) + ' lt';});            
+            .attr("class", function(d,i) {return 'lt'+(2+i) + ' lt';});
+        // gen amt trend reg lines
+        amtTrendValues.forEach(function(d,i){
+            svg.append("path")
+               .attr("d","M " + catScale(d[0][0]) + " " + amtScale(d[0][1]) + " L " + catScale(d[1][0]) + " " + amtScale(d[1][1]))
+               .attr("transform", "translate(0," + (cntHeight + midPad) + ")")
+               .attr("class", function(d,i) {return 'lt'+(2+i) + ' lt';});
+            //console.log('d:' + d + ' i:' + i);
+        });
+        /*
+        svg.append("line")
+            .attr("x1",)
+            
+            <line x1="10" x2="50" y1="110" y2="150"/>
+        
+        paths.data(amtTrendValues)
+            .enter()
+            .append("path")
+            .attr("d", amtLineGen)
+            .attr("transform", "translate(0," + (cntHeight + midPad) + ")")
+            .attr("class", function(d,i) {return 'lt'+(2+i) + ' lt';});      
+            */  
         // add x axs
         svg.append("g")
             .attr("class", "x axis")
@@ -307,6 +353,16 @@ var catScale;
   http://bl.ocks.org/WillTurman/4631136 <br />
   http://www.d3noob.org/2014/07/my-favourite-tooltip-method-for-line.html<br />
   http://www.robschmuecker.com/d3-js-drag-and-drop-zoomable-tree/<br />
+  
+  <pre>
+    // import org.apache.commons.math3.stat.regression.SimpleRegression
+    //double[][] data = { { 1, 3 }, {2, 5 }, {3, 7 }, {4, 14 }, {5, 11 }};
+    double[][] data = {{1,295},{2,16},{3,200},{4,17},{5,160},{6,277},{7,193},{8,77},{9,165},{10,198},{11,243},{12,286},{13,183},{14,279},{15,100},{16,237},{17,171},{18,209},{19,257},{20,159},{21,207},{22,33},{23,243},{24,208},{25,223},{26,274},{27,90},{28,280},{29,174},{30,119}};
+    SimpleRegression regression = new SimpleRegression();
+    regression.addData(data);
+    System.out.println("intercept,slope,error:\t" + regression.getIntercept() 
+      + "\t" + regression.getSlope() + "\t" + regression.getSlopeStdErr());  
+  </pre>
   
   <script>init();</script>
   </body>
