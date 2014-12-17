@@ -15,7 +15,7 @@ class MyHTMLParser(HTMLParser):
 
 def extract_status_snippet(html_snippet):
     tree = html.fromstring(html_snippet)
-    snippet = tree.xpath('//span[@class="userContent"]/text()')
+    snippet = tree.xpath('//span[@class="userContent"]')
     return snippet
         
 #f = open("ayhp_page_source_formatted.html")
@@ -33,6 +33,6 @@ for comment in comments:
     statuses = extract_status_snippet(comment)
     if statuses:
         for status in statuses:
-            print 'status', status
+            print 'status', status.text
 
 print 'done'
