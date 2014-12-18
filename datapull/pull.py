@@ -2,6 +2,7 @@
 
 from HTMLParser import HTMLParser
 from lxml import html
+from lxml.etree import tostring
 
 class MyHTMLParser(HTMLParser):
     def __init__(self, html_snippet):
@@ -24,8 +25,9 @@ response = f.read()
 myparser = MyHTMLParser(response)
 f.close()
 comments = myparser.get_comments()
-for comment in comments:
-    print 'comment', comment
+
+#for comment in comments:
+#    print 'comment', comment
 
 print 'found',len(comments),'comments'
 
@@ -33,6 +35,6 @@ for comment in comments:
     statuses = extract_status_snippet(comment)
     if statuses:
         for status in statuses:
-            print 'status', status.text
+            print 'status', tostring(status)
 
 print 'done'

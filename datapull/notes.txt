@@ -85,6 +85,8 @@ see findall, doc = html.document_fromstring(example_html), doc.cssselect
 
 
 
+ $ python -m CGIHTTPServer 60194
+ $ python -m SimpleHTTPServer 60193
 
 
 
@@ -146,3 +148,38 @@ response = '<input name="fileIDs" value="123456" />'
 myparser = MyHTMLParser(response)
 print myparser.get_fileids()
 print 'done'    
+
+python -m CGIHTTPServer
+
+(in a directory called "cgi-bin")
+#!/usr/bin/python
+
+print 'Content-Type: text/html'
+print
+print '<html>'
+print '<head><title>Hello from Python</title></head>'
+print '<body>'
+print '<h2>Hello from Python</h2>'
+print '</body></html>'
+
+
+#!/usr/bin/env python
+print "Content-Type: text/html"
+print
+print """\
+<html>
+<body>
+<h2>Hello World!</h2>
+</body>
+</html>
+"""
+
+#!/usr/bin/env python
+import simplejson as json
+print "Content-type: application/json\n"
+data = { 'a':'A', 'b':[2, 4], 'c':3.0 }
+#This way...
+#print json.dumps(data)
+#..or this way
+print(json.JSONEncoder().encode(data))
+

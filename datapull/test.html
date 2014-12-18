@@ -1,10 +1,48 @@
-    <code class="hidden_elem" id="u_0_l">
-      <!-- <div class="_5ay5"><div id="PagePostsSectionPagelet-1471242616483881-0" data-referrer="PagePostsSectionPagelet-1471242616483881-0">
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <style>
+    div.status {border:1px solid silver;padding:10px;border-radius:4px}
+    </style>
+    <script>
+    function test() {
+      doFbDp();
+    }
+
+    var STATUS_OBJ = null;
+
+    function doFbDp() {
+      var scriptElement = document.createElement('script');
+      scriptElement.src = 'http://localhost:60194/cgi-bin/fbdp.py';
+      // stick the script element in the page <head>
+      document.getElementsByTagName('head')[0].appendChild(scriptElement);      
+    }    
+
+    function callback(data) {
+       console.log('data is:' + console.dir(data)); 
+       STATUS_OBJ = data;
+       var statusesContainer = document.getElementById('statuses');
+       var statuses = data.status;
+       for (var i = 0; i < statuses.length; i++) {
+         var statusElement = document.createElement('div');
+         var attr = document.createAttribute("class");
+         attr.value = "status";
+         statusElement.setAttributeNode(attr);
+         statusesContainer.appendChild(statusElement);
+         statusElement.innerHTML = statuses[i];
+         statusesContainer.appendChild(document.createElement('hr'));
+         
+       }
        
-         data-referrer="PagePostsSectionPagelet-1471242616483881-1"></div></div> -->
-    </code>
+    }
 
-
-    <code class="hidden_elem" id="u_0_n">
-      <!-- <div class="_5ay5" data-id="5"><div class="_4-u2 _5v4j">-->
-    </code>
+    </script>
+  </head>
+  <body>
+  
+  <span onclick="test()">test</span>
+  <hr />
+  <div id="statuses"></div>
+  </body>
+</html>
