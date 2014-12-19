@@ -14,7 +14,7 @@
 
     function doFbDp() {
       var scriptElement = document.createElement('script');
-      scriptElement.src = 'http://localhost:60194/cgi-bin/fbdp.py';
+      scriptElement.src = 'http://localhost:60194/cgi-bin/fbdp.py?callback=callback';
       // stick the script element in the page <head>
       document.getElementsByTagName('head')[0].appendChild(scriptElement);      
     }    

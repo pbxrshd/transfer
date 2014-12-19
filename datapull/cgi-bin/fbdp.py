@@ -5,6 +5,7 @@ from lxml import html
 from lxml.etree import tostring
 import urllib, urllib2
 import cgi
+import re
 
 class DPHTMLParser(HTMLParser):
     def __init__(self, html_snippet):
@@ -28,6 +29,26 @@ def extract_status_snippet(html_snippet):
     snippet = tree.xpath('//span[@class="userContent"]')
     return snippet
 
+def normalize_status(unnormalized_status):
+    normalized = unnormalized_status
+    # make single line
+    normalized = normalized.replace('\n', '')
+    # remove span tags with content = "..."
+    normalized = re.sub(r'<span[^>]*?>\.\.\.</span>', "", normalized)
+    # remove all span tags, leaving only text content
+    normalized = re.sub(r'<span.*?>', "", normalized)
+    normalized = re.sub(r'</span>', "", normalized)
+    # remove all div tags, leaving only text content
+    normalized = re.sub(r'<div.*?>', "", normalized)
+    normalized = re.sub(r'</div>', "", normalized)
+    # remove <a tags and content from tags that have href to # anchor
+    normalized = re.sub(r'<a[^>]*?href="#"[^>]*?>[^>]*?</a>', "", normalized)
+    # collapse repeated whitespace
+    normalized = re.sub(r'\s+', " ", normalized)
+    # fix any remaining <a to have only href, and normalise the href link itself
+    normalized = re.sub(r'<a[^>]*?(href=".*?")[^>]*?>', r'<a \g<1>>', normalized)
+    return normalized
+
 def generate_content(comments, callback):
   
     if not callback:
@@ -38,7 +59,7 @@ def generate_content(comments, callback):
         statuses = extract_status_snippet(comment)
         if statuses:
             for status in statuses:
-                status_snippets.append(tostring(status))  
+                status_snippets.append(normalize_status(tostring(status)))  
   
     content = callback + "(" + json.dumps({"status":status_snippets}) + ");"
     return content
