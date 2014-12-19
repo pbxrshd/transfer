@@ -27,13 +27,27 @@ see findall, doc = html.document_fromstring(example_html), doc.cssselect
 
 
   <div class="userContentWrapper">
-    <div class="_wk"><span data-ft="&#123;&quot;tn&quot;:&quot;K&quot;&#125;" class="userContent">Please keep the Pakistan school shooting victims and thier families in your duas.  May Allah(swt) give them patience to go through this difficult time and may He(swt) keep us all in his protection.</span></div>
+    <div class="_wk">
+      <span data-ft="&#123;&quot;tn&quot;:&quot;K&quot;&#125;" class="userContent">
+        Please keep the Pakistan school shooting victims and thier families in your duas.  May Allah(swt) ... protection.
+      </span>
+    </div>
   </div>
 
   <div class="userContentWrapper">
     <div class="_wk">
       <span class="userContent">
-        <div id="id_54913aa77352c8650446971" class="text_exposed_root">Assalamu Alaikum, <br /> <br /> Alhamdulillah the Al-Huda Youth Program has organized a gym day for the youth program boys on Friday, Jan 2nd from 5pm-6pm at the Schaumburg Park District Sports Center located on  1141 West Irving Park Road, Schaumburg,<span class="text_exposed_hide">...</span><span class="text_exposed_show"> IL.  Its just two blocks east of the Masjid.  Please drop your boys directly at the Sports Center around 4:50pm on Jan 2nd.  Make sure you are on time so the kids can make the most of the time available to them.<br /> <br /> This will be a fun way to get the kids recharged after a long break!  Come ready to show off your skills guys!!  Hope to see all the boys there inshAllah.  Remember to bring a water bottle.</span><span class="text_exposed_hide"> <span class="text_exposed_link"><a class="see_more_link" onclick="var func = function(e) &#123; e.preventDefault(); &#125;; var parent = Parent.byClass(this, &quot;text_exposed_root&quot;); if (parent &amp;&amp; parent.getAttribute(&quot;id&quot;) == &quot;id_54913aa77352c8650446971&quot;) &#123; CSS.addClass(parent, &quot;text_exposed&quot;); Arbiter.inform(&quot;reflow&quot;); &#125;; func(event); " href="#" data-ft="&#123;&quot;tn&quot;:&quot;e&quot;&#125;" role="button">See More</a></span></span></div>
+        <div id="id_54913aa77352c8650446971" class="text_exposed_root">
+          Assalamu Alaikum, <br /> <br /> Alhamdulillah the Al-Huda Youth Program has organized a gym day ...Schaumburg,
+          <span class="text_exposed_hide">...</span>
+          <span class="text_exposed_show"> IL.  Its just two blocks east ... them.<br /> <br /> This will be a fun ... bottle.</span>
+          <span class="text_exposed_hide"> 
+             <span class="text_exposed_link">
+               <a class="see_more_link" onclick="var func = function(e) &#123; e.preventDefault(); " 
+               href="#" data-ft="&#123;&quot;tn&quot;:&quot;e&quot;&#125;" role="button">See More</a>
+             </span>
+          </span>
+        </div>
       </span>
     </div>
   </div>
@@ -41,27 +55,81 @@ see findall, doc = html.document_fromstring(example_html), doc.cssselect
 <div class="userContentWrapper aboveUnitContent" data-ft="&#123;&quot;tn&quot;:&quot;K&quot;&#125;">
   <div class="_wk mbm">
     <span class="userContent">
-      <div id="id_54913aa7738a31999607654" class="text_exposed_root">Assalamu Alaikum,<br /> <br /> Following are the topics that will be covered during class sessions this month inshAllah.  We will not have any classes on Friday, Dec 26th.  For previous months lessons please visit our website at <a href="http://l.facebook.com/l.php?u=http%3A%2F%2Fwww.schaumburgareamuslimevents.org%2F&amp;h=pAQFMJTiS&amp;s=1" rel="nofollow nofollow" target="_blank" onmouseover="LinkshimAsyncLink.swap(this, &quot;http:\\/\\/www.schaumburgareamuslimevents.org\\/&quot;);" onclick="LinkshimAsyncLink.swap(this, &quot;http:\\/\\/l.facebook.com\\/l.php?u=http\\u00253A\\u00252F\\u00252Fwww.schaumburgareamuslimevents.org\\u00252F&amp;h=pAQFMJTiS&amp;s=1&quot;);">www.schaumburgareamusli<span class="text_exposed_hide">...</span><span class="text_exposed_show">mevents.org</span></a><span class="text_exposed_show"><br /> <br /> Mawlana Asif&#039;s Class(Boys 13+):<br /> 1) Duas (Best in this life and hereafter, sleeping, and experiencing unrest or fear during sleep), <br /> 2) Facts about Rabiul Awwal<br /> 3) Circle Gathering (Topic will be decided by Students)<br /> 4) Ta&#039;lim al-Deen by M. Ashraf Ali Thanwi (beliefs 30-35)<br /> <br /> Alhamdulilah, last month we were able to talk about racism and how can we fix the problem of racism within our selves. Students gave situations in which racism takes place, then they came up with solutions. I encourage all of the parents to ask their children after every class what they learned in class because it will help them remember and implement what they learned into there lives.   <br /> <br /> Br. Farhan&#039;s Class (Boys 9-12)<br /> <br /> Have the students learn the correct method of doing wudhu and then preform it with the teacher watching.<br /> <br /> Discuss with students how to make our winter break productive.<br /> <br /> Discuss the diseases of the heart such as lust, jealousy, and greed.<br /> <br /> Continue to watch the Inspiration series with Shaykh Omer Suleiman and discuss practical lessons we can take away from it.<br /> <br /> Discuss some of the issues our student&#039;s are facing in school.<br /> <br /> Discuss what it means to be a Muslim.<br /> <br /> <br /> Sr. Sabaahath&#039;s class(Girls 12+)<br /> <br /> Dec 5- Open discussion- these topics were dicussed: Peer relationships/bullying/internet safety<br /> <br /> Dec 12- Art project, (continuation of calligraphy project), Importance of forgiveness.  Personal safety and recognizing what is inappropriate in terms of social interactions.  <br />  <br /> Dec 19- Self-respect and respect for others<br /> <br /> Dec 26- No Class</span><span class="text_exposed_hide"> <span class="text_exposed_link"><a class="see_more_link" onclick="var func = function(e) &#123; e.preventDefault(); &#125;; var parent = Parent.byClass(this, &quot;text_exposed_root&quot;); if (parent &amp;&amp; parent.getAttribute(&quot;id&quot;) == &quot;id_54913aa7738a31999607654&quot;) &#123; CSS.addClass(parent, &quot;text_exposed&quot;); Arbiter.inform(&quot;reflow&quot;); &#125;; func(event); " href="#" data-ft="&#123;&quot;tn&quot;:&quot;e&quot;&#125;" role="button">See More</a></span></span></div>
+      <div id="id_54913aa7738a31999607654" class="text_exposed_root">Assalamu Alaikum,<br /> <br /> Following are the topics t.. website at
+       <a href="http://l.facebook.com/l.php?u=http%3A%2F%2Fwww.schaumburgareamuslimevents.org%2F&amp;h=pAQFMJTiS&amp;s=1" 
+         rel="nofollow nofollow" target="_blank" 
+         onmouseover="LinkshimAsyncLink.swap(this, &quot;http:\\/\\/www.schaumburgareamuslimevents.org\\/&quot;);" 
+         onclick="LinkshimAsyncLink.swap(this, &quot;http:\\/\\/l.facebook.com\\/l.php?u=http\\u00253A\\u00252F\\u00252Fwww.schaumburgareamuslimevents.org\\u00252F&amp;...">
+         www.schaumburgareamusli
+       <span class="text_exposed_hide">...</span><span class="text_exposed_show">mevents.org</span>
+       </a>
+       <span class="text_exposed_show"><br /> <br /> Mawlana Asif&#039;s Class(Boys 13+):<br /> 1) Duas (sleep), <br /> 2) Facts about Rabiul Awwal<br /> 3) lives.</span>
+       <span class="text_exposed_hide"> 
+         <span class="text_exposed_link">
+           <a class="see_more_link" onclick="event); " href="#" data-ft="&#123;&quot;tn&quot;:&quot;e&quot;&#125;" role="button">See More</a>
+         </span>
+       </span>
+      </div>
     </span>
   </div>
 </div>
 
   <div class="userContentWrapper">
-    <div class="_wk"><span data-ft="&#123;&quot;tn&quot;:&quot;K&quot;&#125;" class="userContent">Assalamu Alaikum,<br /> <br /> Audio Files:<br /> The recent lecture of Mufti Kamani, &quot;Build Strong Relationships&quot;, highlighted the idea of strengthening the relationship with the creation in order to strengthen our relationship with the CREATOR.  He discussed the importance of strong bonds with the community, between spouses, siblings, parents and children.  Below is the link to download and listen to this lecture.  InshAllah it will be beneficial.  <br /> Part 1<br /> <a href="https://www.facebook.com/l.php?u=https%3A%2F%2Fwww.mediafire.com%2F%3Fbj7xxaxvoivntae&amp;h=BAQH7dx-1&amp;enc=AZMq8yyyaPf5kCOvZbH6KSRG7vn9jq6oULTZXZtH75c8AMM2yfmeM52rEG5GD7H2apnbS0fmE0v0ZyMD9wkue17GR0VoR7XC67fc0vQGKrPy12OO3KlvAGbmNgouxHQYE25wcBWbMTCRWoyjYaOxvAvq&amp;s=1" rel="nofollow nofollow" target="_blank" onmouseover="LinkshimAsyncLink.swap(this, &quot;https:\\/\\/www.mediafire.com\\/?bj7xxaxvoivntae&quot;);" onclick="LinkshimAsyncLink.swap(this, &quot;https:\\/\\/www.facebook.com\\/l.php?u=https\\u00253A\\u00252F\\u00252Fwww.mediafire.com\\u00252F\\u00253Fbj7xxaxvoivntae&amp;h=BAQH7dx-1&amp;enc=AZMq8yyyaPf5kCOvZbH6KSRG7vn9jq6oULTZXZtH75c8AMM2yfmeM52rEG5GD7H2apnbS0fmE0v0ZyMD9wkue17GR0VoR7XC67fc0vQGKrPy12OO3KlvAGbmNgouxHQYE25wcBWbMTCRWoyjYaOxvAvq&amp;s=1&quot;);"><span>https://www.mediafire.com/</span><wbr /><span class="word_break"></span>?bj7xxaxvoivntae</a><br /> Part 2<br /> <a href="https://www.facebook.com/l.php?u=https%3A%2F%2Fwww.mediafire.com%2F%3F7mb2o8kw7nsqhpq&amp;h=OAQFjF0pc&amp;enc=AZNSHnkxN8XbvLBNoz-DN7F5-lsHlxyjCahdI26EaUmT_naF6NSGvsFRExnX0maWTukJxoOxI4rnI1dj08phGb0Qzw4xgZVrRT9C7PkAIO-CIwZj25pHTFu2qfiZ58TdHha1Gzft2-L8x3h9072CfTjl&amp;s=1" rel="nofollow nofollow" target="_blank" onmouseover="LinkshimAsyncLink.swap(this, &quot;https:\\/\\/www.mediafire.com\\/?7mb2o8kw7nsqhpq&quot;);" onclick="LinkshimAsyncLink.swap(this, &quot;https:\\/\\/www.facebook.com\\/l.php?u=https\\u00253A\\u00252F\\u00252Fwww.mediafire.com\\u00252F\\u00253F7mb2o8kw7nsqhpq&amp;h=OAQFjF0pc&amp;enc=AZNSHnkxN8XbvLBNoz-DN7F5-lsHlxyjCahdI26EaUmT_naF6NSGvsFRExnX0maWTukJxoOxI4rnI1dj08phGb0Qzw4xgZVrRT9C7PkAIO-CIwZj25pHTFu2qfiZ58TdHha1Gzft2-L8x3h9072CfTjl&amp;s=1&quot;);"><span>https://www.mediafire.com/</span><wbr /><span class="word_break"></span>?7mb2o8kw7nsqhpq</a></span></div>
+    <div class="_wk">
+      <span data-ft="&#123;&quot;tn&quot;:&quot;K&quot;&#125;" class="userContent">Assalamu Alaikum,<br /> <br /> Audio Files:<br /> ...the link to .  <br /> Part 1<br /> 
+        <a href="https://www.facebook.com/l.php?u=https%3A%2F%2Fwww.mediafire.com%2F%3Fbj7xxaxvoivntae&amp;h=BAQH7dx-1&amp;enc=AZMq8yyyaPf5kCO&amp;s=1" 
+         rel="nofollow nofollow" target="_blank" 
+         onmouseover="LinkshimAsyncLink.swap(this, &quot;https:\\/\\/www.mediafire.com\\/?bj7xxaxvoivntae&quot;);" 
+         onclick="LinkshimAsyncLink.swap(this, &quot;https:\\/\\/www.facebook.com\\/l.php?u=https\\u00253A\\u00252F\\u00252Fwww.mediafire.com\\u00252F\\u00253Fbj7xxaxvoivntae&amp;;">
+         <span>https://www.mediafire.com/</span>
+         <wbr />
+         <span class="word_break"></span>?bj7xxaxvoivntae
+        </a>
+        <br /> Part 2<br />
+        <a href="https://www.facebook.com/l.php?u=https%3A%2F%2Fwww.mediafire.com%2F%3F7mb2o8kw7nsqhpq&amp;h=OAQFjF0pc&amp1" 
+          rel="nofollow nofollow" target="_blank" 
+          onmouseover="LinkshimAsyncLink.swap(this, &quot;https:\\/\\/www.mediafire.com\\/?7mb2o8kw7nsqhpq&quot;);" 
+          onclick="LinkshimAsyncLink.swap(this, &quot;https:\\/\\/www.faceboqhpq&a">
+          <span>https://www.mediafire.com/</span>
+          <wbr />
+          <span class="word_break"></span>?7mb2o8kw7nsqhpq
+        </a></span>
+    </div>
   </div>
 
   <div class="userContentWrapper">
-    <div class="_wk"><span class="userContent">Build Strong Relationships By Mufti Kamani-  Alhamdulillah this event went well with a great turnout!  Jazakallah to all who attended, and all who helped out with the arrangements and most of all to all the families and the kids who made the bake sale possible.</span> </div>
+    <div class="_wk">
+      <span class="userContent">Build Strong Relationships By Mufti Kamani- ....ble.</span>
+    </div>
   </div>
 
   <div class="userContentWrapper">
-    <div class="_wk"><span class="userContent">Al-Huda Youth Program is ready for their bake sale tomorrow! Thanks to Ameena (a student of the youth program) and her decorating skills!! Be sure to come for Mufti Kamani&#039;s seminar and leave with these beautiful, delicious cookies!!!</span> <a class="_5i18 uiLinkSubtle" href="/permalink.php?story_fbid=1506084139666395&amp;id=1471242616483881">(6 photos)</a></div>
+    <div class="_wk">
+      <span class="userContent">Al-Huda Youth Program ..!!!</span>
+      <a class="_5i18 uiLinkSubtle" href="/permalink.php?story_fbid=1506084139666395&amp;id=1471242616483881">(6 photos)</a>
+    </div>
   </div>
 
   <div class="userContentWrapper">
     <div class="_wk">
       <span class="userContent">
-        <div id="id_54913aa7741ef8c73522092" class="text_exposed_root">Alhamdulillah, Al-Huda Youth Program is pleased to announce a seminar by Mufti Hussain Kamani- &quot;Build Strong Relationships&quot; on Sunday, Nov 30th after Maghrib at Masjid al Huda, Schaumburg.<br /> <br /> One of the goals of the youth program has been to <span class="text_exposed_hide">...</span><span class="text_exposed_show">create strong bonds with our students and in turn, help them strengthen their ties with their community, their friends and family. This seminar highlights the same idea and extends its efforts to benefit the whole community including the youth, adults, parents, teachers, siblings, spouses and friends. We hope you take advantage of this wonderful opportunity and attend the program as the renowned scholar, Mufti Hussain Kamani, speaks about this very important topic. Please find below a brief bio of Mufti Hussain Kamani.<br /> <br /> There will also be a bake sale to support Al-Huda Youth Program. If you have any questions, please contact us at alhudayouthprogram&#064;gmail.com or call at 847-630-6244, 224-828-9537. Hope to see you all there inshallah!<br /> <br /> Visit <a href="http://l.facebook.com/l.php?u=http%3A%2F%2Fwww.schaumburgareamuslimevents.org%2F&amp;h=NAQF1fJjS&amp;enc=AZOeOTEs_VhUicBDMfAF5Y9tEpCz0zboOURVWrfbzyfem7IrfiplmcpTgJk4hElORgFmGz1cH_VuRB6e3msp1E3CVWAtc8wAWnjpKocqO5ORXEsh7u2WqveOlDnz-Pp6YFeoFjThWum5rNWJfdqRNbjD&amp;s=1" rel="nofollow nofollow" target="_blank" onmouseover="LinkshimAsyncLink.swap(this, &quot;http:\\/\\/www.schaumburgareamuslimevents.org\\/&quot;);" onclick="LinkshimAsyncLink.swap(this, &quot;http:\\/\\/l.facebook.com\\/l.php?u=http\\u00253A\\u00252F\\u00252Fwww.schaumburgareamuslimevents.org\\u00252F&amp;h=NAQF1fJjS&amp;enc=AZOeOTEs_VhUicBDMfAF5Y9tEpCz0zboOURVWrfbzyfem7IrfiplmcpTgJk4hElORgFmGz1cH_VuRB6e3msp1E3CVWAtc8wAWnjpKocqO5ORXEsh7u2WqveOlDnz-Pp6YFeoFjThWum5rNWJfdqRNbjD&amp;s=1&quot;);">www.schaumburgareamuslimevents.org</a> for more details.</span><span class="text_exposed_hide"> <span class="text_exposed_link"><a class="see_more_link" onclick="var func = function(e) &#123; e.preventDefault(); &#125;; var parent = Parent.byClass(this, &quot;text_exposed_root&quot;); if (parent &amp;&amp; parent.getAttribute(&quot;id&quot;) == &quot;id_54913aa7741ef8c73522092&quot;) &#123; CSS.addClass(parent, &quot;text_exposed&quot;); Arbiter.inform(&quot;reflow&quot;); &#125;; func(event); " href="#" data-ft="&#123;&quot;tn&quot;:&quot;e&quot;&#125;" role="button">See More</a></span></span></div>
+        <div id="id_54913aa7741ef8c73522092" class="text_exposed_root">Alhamdulillah, Al-Huda Youth Program is pleased .<br /> <br /> been to 
+         <span class="text_exposed_hide">...</span>
+         <span class="text_exposed_show">create strong bonds with o find be.<br /> <br />
+          Visit <a href="http://l.facebook.com/l.php?u=http%3A%2F%2Fwww.schaumburgareamuslimevents.org%2F&amp;h=N" 
+            rel="nofollow nofollow" 
+            target="_blank" onmouseover="LinkshimAsyncLink.swap(this, &quot;http:\\/\\/www.schaumburgareamuslimevents.org\\/&quot;);" 
+            onclick="LinkshimAsyncLink.swap(this, &quot;http:\\/\\/l.facebook.com\\/l.php?;">www.schaumburgareamuslimevents.org</a> 
+          for more details.
+         </span>
+         <span class="text_exposed_hide"> 
+          <span class="text_exposed_link">
+            <a class="see_more_link" onclick="var func =; " 
+             href="#" data-ft="&#123;&quot;tn&quot;:&quot;e&quot;&#125;" role="button">See More
+            </a>
+          </span>
+         </span>
+        </div>
       </span>
     </div>
   </div>
@@ -69,7 +137,15 @@ see findall, doc = html.document_fromstring(example_html), doc.cssselect
   <div class="userContentWrapper">
     <div class="_wk">
       <span class="userContent">
-        <div id="id_54913aa7744cc3090955260" class="text_exposed_root">Al-Huda Youth Program has participated in Restoration Workday with the Dupage County Forest Preserve on Nov 9th.  Our Youth worked very hard in removing non-native, invasive vegetation.  They also planted many seeds of native plants and tre<span class="text_exposed_hide">...</span><span class="text_exposed_show">es to promote new growth. It was a wonderful opportunity to show the Muslim presence in our area.  After all the hard work, our students enjoyed delicious hot pizza at Italian Express!<br /> Br. Sohaib Quadri had prepped up the students prior to the event with a motivational talk on implementing the sunnah of preservation.  He also emphasized on representing the Muslim community in a non-muslim environment through positive efforts.</span><span class="text_exposed_hide"> <span class="text_exposed_link"><a class="see_more_link" onclick="var func = function(e) &#123; e.preventDefault(); &#125;; var parent = Parent.byClass(this, &quot;text_exposed_root&quot;); if (parent &amp;&amp; parent.getAttribute(&quot;id&quot;) == &quot;id_54913aa7744cc3090955260&quot;) &#123; CSS.addClass(parent, &quot;text_exposed&quot;); Arbiter.inform(&quot;reflow&quot;); &#125;; func(event); " href="#" data-ft="&#123;&quot;tn&quot;:&quot;e&quot;&#125;" role="button">See More</a></span></span></div>
+        <div id="id_54913aa7744cc3090955260" class="text_exposed_root">Al-Huda  Restoration Workday ...tre
+          <span class="text_exposed_hide">...</span>
+          <span class="text_exposed_show">es to promotes!<br /> Br. Sohaib Q.</span>
+          <span class="text_exposed_hide"> 
+            <span class="text_exposed_link">
+              <a class="see_more_link" onclick="var func ); " href="#" data-ft="&#123;&quot;tn&quot;:&quot;e&quot;&#125;" role="button">See More</a>
+            </span>
+          </span>
+        </div>
       </span>
       <a class="_5i18 uiLinkSubtle" href="/permalink.php?story_fbid=1504073776534098&amp;id=1471242616483881">(12 photos)</a>
     </div>
@@ -79,9 +155,20 @@ see findall, doc = html.document_fromstring(example_html), doc.cssselect
 
 
 
+replace <br /> with \n
+get rid off span with contents = "..."
+get rid of all tags (except <br and <a and </a), keeping only text content
+for all a links
+  if the href is #, delete the whole link and contents
+  if the href is not #
+    extract the proper link
+    remove all other attributes
+  
 
+replace all \n with <br />
 
-
+treat text until the first <br /> at the title
+rest as the body
 
 
 
@@ -183,3 +270,5 @@ data = { 'a':'A', 'b':[2, 4], 'c':3.0 }
 #..or this way
 print(json.JSONEncoder().encode(data))
 
+
+Asif Uddin <talibuddin786@gmail.com>;
