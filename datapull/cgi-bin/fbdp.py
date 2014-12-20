@@ -11,8 +11,8 @@ class DPHTMLParser(HTMLParser):
     def __init__(self, html_snippet):
         HTMLParser.__init__(self)
         self.comments = []
-        self.feed(html_snippet)
-        #self.feed(html_snippet.read())
+        #self.feed(html_snippet)
+        self.feed(html_snippet.read())
     def handle_comment(self, data):
         self.comments.append(data)
     def get_comments(self):
@@ -45,31 +45,59 @@ def normalize_status(unnormalized_status):
     normalized = re.sub(r'<a[^>]*?href="#"[^>]*?>[^>]*?</a>', "", normalized)
     # collapse repeated whitespace
     normalized = re.sub(r'\s+', " ", normalized)
-    # fix any remaining <a to have only href, and normalise the href link itself
+    # normalize the br tags
+    normalized = re.sub(r'<br/?>', "<br />", normalized)
+    # fix any remaining <a to have only href
     normalized = re.sub(r'<a[^>]*?(href=".*?")[^>]*?>', r'<a \g<1>>', normalized)
-    return normalized
+    # normalize the href
+    #normalized = re.sub(r'href="htt.*?u=' , 'href="', normalized)
+    # package the status into a dict
+    # try to extract a title, split on first <br />
+    status_title = ""
+    status_body = normalized 
+    if "<br />" in normalized:
+        (status_title,status_body) = normalized.split("<br />",1)
+    status = {"title":status_title,"body":status_body}
+    return status
+
+def package_statuses(statuses):
+    packaged_statuses = {}
+    # filter only for statuses that have a title
+    filtered_statuses = []
+    for status in statuses:
+        if status["title"]:
+            if status["title"].startswith("Monthly Lesson"):
+                packaged_statuses["monthly-lesson"] = status
+            else:
+                filtered_statuses.append(status)
+    packaged_statuses["statuses"] = filtered_statuses
+    return packaged_statuses
 
 def generate_content(comments, callback):
-  
     if not callback:
       return ""
-      
+
     status_snippets = []
     for comment in comments:
         statuses = extract_status_snippet(comment)
         if statuses:
             for status in statuses:
                 status_snippets.append(normalize_status(tostring(status)))  
-  
-    content = callback + "(" + json.dumps({"status":status_snippets}) + ");"
+
+    packaged_statuses = package_statuses(status_snippets)
+    content = callback + "(" + json.dumps(packaged_statuses) + ");"
+    #content = callback + "(" + json.dumps({"status":status_snippets}) + ");"
     return content
 
 
-f = open("ayhp_page_source.html")
-response = f.read()
-parser = DPHTMLParser(response)
+#f = open("ayhp_page_source.html")
+#response = f.read()
+#parser = DPHTMLParser(response)
+#comments = parser.get_comments()
+#f.close()
+
+parser = DPHTMLParser(get_fb_response())
 comments = parser.get_comments()
-f.close()
 
 url_params = cgi.FieldStorage()
 content = generate_content(comments, url_params.getvalue("callback"))

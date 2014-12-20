@@ -4,6 +4,8 @@
     <meta charset="utf-8">
     <style>
     div.status {border:1px solid silver;padding:10px;border-radius:4px}
+    div.t {font-weight:bold;}
+    div.b {font-style:italic;}
     </style>
     <script>
     function test() {
@@ -23,8 +25,13 @@
        console.log('data is:' + console.dir(data)); 
        STATUS_OBJ = data;
        var statusesContainer = document.getElementById('statuses');
-       var statuses = data.status;
+       var statuses = data.statuses;
+       var statusHtml = [];
        for (var i = 0; i < statuses.length; i++) {
+         var status = statuses[i];
+         statusHtml.push('<div class="t">' + status.title + '</div>');
+         statusHtml.push('<div class="b">' + status.body +'</div>');
+         /*
          var statusElement = document.createElement('div');
          var attr = document.createAttribute("class");
          attr.value = "status";
@@ -32,8 +39,9 @@
          statusesContainer.appendChild(statusElement);
          statusElement.innerHTML = statuses[i];
          statusesContainer.appendChild(document.createElement('hr'));
+         */
        }
-       
+       statusesContainer.innerHTML = statusHtml.join('\n');
     }
 
     </script>
