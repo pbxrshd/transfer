@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <style>
+    div.status {border:1px solid silver;padding:10px;border-radius:4px}
+    div.t {font-weight:bold;}
+    div.b {font-style:italic;}
+    div#data_element {color:siver;}
+    </style>
+    <script>
+    function test() {
+      doFbDp();
+    }
+
+    var STATUS_OBJ = null;
+
+    function doFbDp() {
+      var scriptElement = document.createElement('script');
+      scriptElement.src = 'http://localhost:60195/fbdata?callback=callback';
+      // stick the script element in the page <head>
+      document.getElementsByTagName('head')[0].appendChild(scriptElement);      
+    }    
+
+    function callback(data) {
+       console.log(console.dir(data)); 
+       STATUS_OBJ = data;
+       var statusesContainer = document.getElementById('statuses');
+       
+       // create a hidden element to hold the html snippet retrieved
+       var dataElement = document.createElement('div');
+       var attr = document.createAttribute("id");
+       attr.value = "data_element";
+       dataElement.setAttributeNode(attr);
+       document.body.appendChild(dataElement);
+       dataElement.innerHTML = data.data;
+       
+       // parse out the data, retrive the pieces we are interested in, and put into our page
+       var statusHtml = [];
+       var userContent = dataElement.querySelectorAll('div.userContent');
+       for (var i = 0; i < userContent.length; i++) {
+          var content = userContent[i];
+          var pNodes = content.getElementsByTagName('p');
+          if (pNodes.length > 1) {
+            var titleNode = pNodes[0].parentNode.removeChild(pNodes[0]);
+            var titleContent = titleNode.innerHTML;
+            // remove all <span class="text_exposed_hide"> from the remaining content
+            var unneededSpans = content.querySelectorAll('span.text_exposed_hide'); 
+            for (var j = 0; j < unneededSpans.length; j++) {
+               unneededSpans[j].parentNode.removeChild(unneededSpans[j]);
+            }
+            // fix the a hrefs, that get mangled by fb
+            var mangledAs = content.getElementsByTagName('a');
+            for (var j = 0; j < mangledAs.length; j++) {
+              var newA = document.createElement('a');
+              var attr = document.createAttribute('href');
+              var newHref = mangledAs[j].textContent;
+              if (newHref.indexOf('http') !== 0) {
+                newHref = 'http://' + newHref;
+              }
+              attr.value = newHref;
+              newA.setAttributeNode(attr);
+              newA.textContent = newHref;
+              mangledAs[j].parentNode.replaceChild(newA, mangledAs[j]);
+            }
+            var bodyContent = content.outerHTML
+
+            
+            statusHtml.push('<div class="t">' + titleContent + '</div>');
+            statusHtml.push('<div class="b">' + bodyContent +'</div>');
+          }
+       }
+       statusesContainer.innerHTML = statusHtml.join('\n');
+       
+       /*
+       var statuses = data.statuses;
+       
+       for (var i = 0; i < statuses.length; i++) {
+         var status = statuses[i];
+         statusHtml.push('<div class="t">' + status.title + '</div>');
+         statusHtml.push('<div class="b">' + status.body +'</div>');
+       }
+       statusesContainer.innerHTML = statusHtml.join('\n');
+       */
+    }
+
+    </script>
+  </head>
+  <body>
+  
+  <span onclick="test()">test</span>
+  <hr />
+  <div id="statuses"></div>
+  <hr />
+  </body>
+</html>
