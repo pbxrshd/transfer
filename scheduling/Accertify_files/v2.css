@@ -1,0 +1,2240 @@
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,300,400,700);
+
+/* Custom Bootstrap */
+.col-xs-1, .col-sm-1, .col-md-1, .col-lg-1,
+.col-xs-2, .col-sm-2, .col-md-2, .col-lg-2,
+.col-xs-3, .col-sm-3, .col-md-3, .col-lg-3,
+.col-xs-4, .col-sm-4, .col-md-4, .col-lg-4,
+.col-xs-5, .col-sm-5, .col-md-5, .col-lg-5,
+.col-xs-6, .col-sm-6, .col-md-6, .col-lg-6,
+.col-xs-7, .col-sm-7, .col-md-7, .col-lg-7,
+.col-xs-8, .col-sm-8, .col-md-8, .col-lg-8,
+.col-xs-9, .col-sm-9, .col-md-9, .col-lg-9,
+.col-xs-10, .col-sm-10, .col-md-10, .col-lg-10,
+.col-xs-11, .col-sm-11, .col-md-11, .col-lg-11,
+.col-xs-12, .col-sm-12, .col-md-12, .col-lg-12 {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.btn .caret {
+    position: absolute;
+    right: 10px;
+    top: 15px;
+}
+
+.row {
+    margin-left: 0;
+    margin-right: 0;
+    width: 100%;
+}
+
+.page-header h2, .page-header h1 {
+    letter-spacing: 0.03em;
+    font-weight: normal;
+    text-transform:uppercase;
+}
+
+.html-note {
+    color:#B6B6B6;
+    text-transform:lowercase;
+    font-style:italic;
+    font-size:1em;
+}
+
+/* Global */
+body {
+    font-family: 'Open Sans', sans-serif !important;
+    color: #434040;
+}
+
+/* Containers */
+.content {
+    min-width: 980px;
+    min-height: 300px;
+    background-color: transparent;
+    padding: 2px;
+}
+
+/* Breadcrumb */
+.acc-crumbs {
+    margin: 20px 0 0 0;
+    padding: 0;
+}
+
+.acc-crumbs > ul, .acc-crumbs > li {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.acc-crumbs li {
+    float: left;
+    color: #777;
+    padding-left: 0;
+}
+
+.acc-crumbs li a {
+    display: block;
+    padding: 6px 15px 3px 0;
+    font-size: 1em;
+    font-weight: normal;
+    color: #c70003;
+}
+
+.acc-crumbs li a:link,
+.acc-crumbs li a:visited {
+    text-decoration: none;
+}
+
+.acc-crumbs a:link, .acc-crumbs a:visited,
+.acc-crumbs li a:hover,
+.acc-crumbs li a:focus {
+    text-decoration: none;
+}
+
+.acc-crumbs li a:after {
+    content: "/";
+    font-style: normal;
+    font-weight: normal;
+    color: #d8d8d8;
+    font-size: 1em;
+    margin: 0 0 0 10px;
+}
+
+.acc-crumbs li:last-child a {
+    background: none;
+    pointer-events: none;
+    cursor: default;
+    font-weight: normal;
+    color: #333333;
+    padding: 6px 15px 3px 0;
+    text-decoration: none;
+}
+
+.acc-crumbs li:last-child a:after {
+    content: "";
+}
+
+/******************************************** HEADER STYLES ********************************************/
+.acc-logo-container {
+    padding: 6px 0 0 0;
+}
+
+/* Breadcrumb */
+.acc-top-crumbs {
+    margin: 4px 0 0 0;
+    padding: 0;
+}
+
+.acc-top-crumbs > ul, .acc-top-crumbs > li {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    font-size: .75em;
+    font-weight: bold;
+}
+
+.acc-top-crumbs li {
+    float: left;
+    color: #777;
+    padding-left: 0;
+}
+
+.acc-top-crumbs li a {
+    padding: 6px 0 3px 0px;
+    margin-right: 6px;
+    color: #c70003;
+}
+
+.acc-top-crumbs li a:link,
+.acc-top-crumbs li a:visited {
+    text-decoration: none;
+}
+
+.acc-top-crumbs a:link, .acc-crumbs a:visited,
+.acc-top-crumbs li a:hover,
+.acc-top-crumbs li a:focus {
+    text-decoration: none;
+}
+
+.acc-top-crumbs li a:hover {
+    color:#000000;
+}
+
+.acc-top-crumbs li a:after {
+    content: "/";
+    font-style: normal;
+    font-weight: normal;
+    color: #666666;
+    font-size: 1em;
+    margin: 0 0 0 7px;
+    text-decoration:none;
+}
+
+.acc-top-crumbs li:last-child a:after {
+    content: "";
+}
+
+.acc-top-crumbs-last-item-small-text a {
+    color: #c70003;
+    font-weight: bold;
+    font-color: #00ff00;
+}
+
+.acc-top-login-container {
+    font-size: 0.85em;
+    font-weight: normal;
+    color: #777777;
+    padding: 12px 0 0 0;
+}
+
+.acc-top-login-container a,
+.acc-top-login-container a:hover {
+    color: #c70003;
+}
+
+.acc-top-login-container a:hover {
+    text-decoration: none;
+}
+
+.acc-top-login-name,
+.acc-top-login-name-behalf {
+    font-weight: bold;
+}
+
+.acc-top-login-name a,
+.acc-top-login-name-behalf a,
+.acc-top-logout a,
+.acc-top-help a {
+    color: #c70003;
+}
+
+.acc-top-login-name a:hover,
+.acc-top-login-name-behalf a:hover,
+.acc-top-logout a:hover,
+.acc-top-help a:hover {
+    color: #000000;
+}
+
+
+.acc-top-recently-worked-container a {
+    color: #64a3a8;
+    display: block !important;
+    text-transform: uppercase;
+    font-size: .75em;
+}
+
+.acc-top-recently-worked-container a:hover {
+    color: #0cc4d3;
+    text-decoration: none;
+}
+
+/******************************************** GENERAL STYLES ********************************************/
+.acc-h3 {
+    font-size: 24px;
+    color: #434040;
+    margin: 0 0 10px 0;
+    letter-spacing: 0.03em;
+}
+
+.acc-no-padding {
+    padding: 0 !important;
+}
+
+.page-header-sub {
+    font-size: 0.45em;
+    letter-spacing: 0.02em;
+    color: #6c7477;
+}
+
+
+input[type=button] {
+    background-color: transparent;
+    border: none;
+    outline: none;
+}
+
+    input[type=button]:hover {
+        color: #0cc4d3;
+    }
+
+    input[type=button].acc-top-red-icon-button:hover {
+        color: #e05456;
+        opacity: 1;
+        filter: alpha(opacity=100);
+    }
+
+input[type=checkbox] {
+    margin:8px 0 0;
+    /* IE 9, 10, 11 */
+    margin-top:1px\0;
+    line-height:normal
+}
+
+/****************************************** SELECT STYLES ******************************************/
+select[multiple] > option {
+    /*background-color: yellow !important;*/
+}
+
+/****************************************** MULTIPLE LINE STYLES ******************************************/
+.acc-multiple-line-control {
+    max-width: 190px;
+}
+
+.acc-multiple-line-long-control {
+    max-width: 280px;
+}
+
+/****************************************** DROPDOWN STYLES ******************************************/
+.dropdown,
+.acc-dropdown {
+    display: block !important;
+}
+
+.dropdown-menu {
+    top: 32px;
+    font-size: 0.9em;
+    color: #434040;
+}
+
+.dropdown-menu > li > a {
+    padding-left: 2px 0 2px 2em;
+    min-width: 180px;
+}
+
+.dropdown-menu > li > a:hover,
+.dropdown-menu > li > a:focus {
+    background-color: #d1e3e6;
+}
+
+.acc-dropdown-title {
+    max-width: 190px;
+}
+
+.acc-dropdown-small-title.btn-default:focus,
+.acc-dropdown-small-title.btn-default:hover,
+.acc-dropdown-small-title.btn-default:focus,
+.acc-dropdown-small-title.btn-default:active,
+.acc-dropdown-small-title.btn-default.active,
+.acc-dropdown-small-title .open .dropdown-toggle.btn-default,
+.acc-dropdown-title .btn-default:focus,
+.acc-dropdown-title.btn-default:hover,
+.acc-dropdown-title.btn-default:focus,
+.acc-dropdown-title.btn-default:active,
+.acc-dropdown-title.btn-default.active,
+.acc-dropdown-title .open .dropdown-toggle.btn-default {
+    background-color: #ffffff !important;
+    color: #434040 !important;
+}
+
+.acc-dropdown-long-title {
+    max-width: 210px;
+}
+
+.acc-colon {
+    margin: 0 -7px 0 1px;
+    padding: 5px;
+    text-align: center;
+}
+
+.acc-dropdown-title.acc-dropdown-title-time {
+    min-width: 55px;
+}
+
+.acc-dropdown-hour {
+    min-width: 45px !important;
+}
+
+.dropdown-menu.acc-dropdown-hour > li > a {
+    padding: 3px 17px;
+}
+
+.acc-am-pm {
+    margin: 0 0 0 32px;
+}
+
+/****************************************** LABEL STYLES ******************************************/
+.acc-normal-label {
+    font-weight: normal;
+    font-size: 1em;
+}
+
+.acc-small-italic-label {
+    font-size: 0.9em;
+    text-align: right;
+    font-style: italic;
+    font-weight: normal !important;
+}
+
+.acc-small-normal-label {
+    font-style: normal;
+    text-align: left;
+    color: #434040;
+    width: auto;
+    margin-top: .375em;
+}
+
+.acc-small-bold-label {
+    font-weight: bold;
+}
+
+.acc-small-bold-italic-label {
+    font-weight: bold;
+    font-style: italic;
+}
+
+.acc-normal-label-detail {
+    font-weight: normal;
+    font-size: 0.8em;
+    margin: 2px 0 0 0;
+    padding: 0;
+}
+
+.acc-small-vertical-divider {
+    margin: 0 0 0 10px;
+    color: #cccccc;
+
+    /* IE 9, 10, 11 */
+    margin: 0 0 0 9px\0;
+}
+
+/****************************************** CHECKBOX STYLES ******************************************/
+.checkbox {
+    margin-top: 0;
+    margin-bottom: 0;
+    line-height: 2em;
+    /* IE 9, 10, 11 */
+    margin-top: 6px\0;
+    line-height: 1.2em\0;
+}
+
+/****************************************** TEXTBOX STYLES ******************************************/
+.acc-general-input,
+.acc-long-input {
+    font-size: 0.9em;
+    color: #434040;
+    height: 38px;
+}
+
+.acc-general-input {
+    max-width: 190px;
+}
+
+.acc-long-input {
+    max-width: 210px;
+}
+
+/****************************************** FORMS STYLES ******************************************/
+.form-group {
+    min-height: 25px;
+}
+
+.control-label {
+    text-align: right;
+    padding: 0 10px 0 0 !important;
+    font-size: 0.9em;
+    color: #434040;
+}
+
+.fa-asterisk {
+    font-size: 0.6em !important;
+    color: #c70003;
+    vertical-align: top;
+}
+
+.acc-input-control-row-container {
+    margin: 0 0 10px 0;
+}
+
+.acc-input-control-col-five-container {
+    padding: 0 22px 0 0;
+}
+
+.acc-input-control-col-one-container {
+    min-height: 213px !important;
+    padding: 12% 0 0 0;
+}
+
+.acc-input-control-data-source {
+    min-height: 110px;
+}
+
+.acc-input-control-total-items {
+    margin: 5px 0 0 0;
+    text-align: left;
+}
+
+.acc-input-control-small-container {
+    margin: 2px 10px 0 0;
+}
+
+    .acc-input-control-small-container.acc-input-control-small-container-has-width {
+        margin: 2px 26px 0 0;
+    }
+
+.acc-multiple-line-control,
+.acc-dropdown-title,
+.acc-dropdown-small-title,
+.acc-input-refine-by-keyword,
+.acc-input-datetime {
+    font-size: 0.9em;
+    color: #434040;
+}
+
+.acc-dropdown-title {
+    width: 100%;
+    text-align: left !important;
+    height: 34px;
+    position: relative;
+    /*padding: 0 0 0 8px;*/
+}
+
+.acc-dropdown-small-title {
+    width: 100%;
+    text-align: left;
+    height: 34px;
+}
+
+    .acc-dropdown-small-title.acc-dropdown-small-title-has-width {
+        width: 177px;
+    }
+
+        .acc-dropdown-small-title.acc-dropdown-small-title-has-width .caret {
+            right: -6px;
+        }
+
+.acc-input-refine-by-keyword {
+    height: 38px;
+}
+
+.acc-main-checkbox-label {
+    min-height: 20px;
+    padding: 2px 0 0 0;
+}
+
+.acc-multiple-line-analysts {
+    height: 165px !important;
+}
+
+.acc-right-arrow-button,
+.acc-left-arrow-button,
+.acc-calendar-button {
+    font-family: FontAwesome;
+    width: 30px;
+    height: 33px;
+    border: none;
+    background: none;
+    font-size: 2em;
+    color: #64a3a8;
+}
+
+.acc-left-arrow-button {
+    margin: 60% 0 0 0;
+}
+
+.acc-calendar-container {
+    line-height: 2.7em;
+}
+
+.acc-input-datetime {
+    width: 90%;
+    height: 38px;
+}
+
+.acc-end-calendar-container {
+    margin: 0 0 0 43px;
+}
+
+/****************************************** HR STYLES ******************************************/
+.acc-divider,
+.acc-divider-no-margin,
+.acc-divider-no-bottom-margin,
+.acc-divider-no-top-margin {
+    background-color: #cccccc;
+}
+
+.acc-divider {
+    margin: 20px 0;
+}
+
+.acc-divider-no-margin {
+    margin: 0;
+}
+
+.acc-divider-no-bottom-margin {
+    margin: 20px 0 0 0;
+}
+
+.acc-divider-no-top-margin {
+    margin: 0 0 20px 0;
+}
+
+/****************************************** BUTTONS ******************************************/
+.btn-default:focus {
+    background-color: #4c7477;
+    color: #ffffff !important;
+}
+
+.btn-default.disabled,
+.btn-default[disabled],
+fieldset[disabled] .btn-default,
+.btn-default.disabled:hover,
+.btn-default[disabled]:hover,
+fieldset[disabled] .btn-default:hover,
+.btn-default.disabled:focus,
+.btn-default[disabled]:focus,
+fieldset[disabled] .btn-default:focus,
+.btn-default.disabled:active,
+.btn-default[disabled]:active,
+fieldset[disabled] .btn-default:active,
+.btn-default.disabled.active,
+.btn-default[disabled].active, fieldset[disabled] .btn-default.active {
+    background-color: #bcbcbc;
+    color: #ffffff !important;
+}
+
+.acc-general-button, .acc-square-button {
+    background-color: #4c7477;
+    color: #ffffff !important;
+    font-size: 1em;
+    font-weight: bold !important;
+}
+
+.acc-general-button {
+    padding: 5px 15px;
+}
+
+.acc-general-button:hover {
+    background-color: #0a8f9a;
+    color: #ffffff !important;
+}
+
+.acc-square-button {
+    width: 85px;
+    height: 82px;
+    border-radius: 10px;
+}
+
+.acc-square-button:hover {
+    background-color: #ffffff;
+    border: 2px solid #4c7477;
+    color: #4c7477 !important;
+}
+
+button.acc-secondary-button, button.acc-secondary-button.disabled, input.acc-secondary-button, input.acc-secondary-button.disabled {
+    background-color: #fff;
+    border-radius: 4px;
+    font-size: 1em;
+    font-weight: bold;
+    padding: 5px 15px;
+}
+
+button.acc-secondary-button, input.acc-secondary-button {
+    border: solid 1px #4c7477;
+    color: #4c7477;
+}
+
+button.acc-secondary-button.acc-button-disabled, input.acc-secondary-button.acc-button.disabled {
+    border: solid 1px #cccccc;
+    color: #cccccc;
+}
+
+button.acc-secondary-button.acc-button-disabled .fa.fa-copy, input.acc-secondary-button.acc-button-disabled {
+    color: #cccccc;
+}
+
+button.acc-secondary-button:hover, input.acc-secondary-button:hover {
+    background-color: #0a8f9a;
+    color: #ffffff;
+    border: solid 1px #0a8f9a;
+}
+
+button.acc-general-button.fa, button.acc-secondary-button.fa, input.acc-genera-button.fa, input.acc-secondary-button.fa {
+    font-size: 1em;
+    margin-right: 5px;
+}
+
+button.acc-secondary-button.fa, input.acc-secondary-button.fa {
+    color: #4c7477;
+}
+
+button.acc-secondary-button:hover.fa, input.acc-secondary-button:hover.fa {
+    color: #ffffff;
+}
+
+.acc-square-button {
+    width: 85px;
+    height: 82px;
+    border-radius: 10px;
+}
+
+.acc-square-button:hover {
+    background-color: #ffffff;
+    border: 2px solid #4c7477;
+    color: #4c7477 !important;
+}
+
+button.acc-secondary-button, button.acc-secondary-button.disabled {
+    background-color: #fff;
+    border-radius: 4px;
+    font-size: 1em;
+    font-weight: bold;
+    padding: 5px 15px;
+}
+
+button.acc-secondary-button {
+    border: solid 1px #4c7477;
+    color: #4c7477;
+}
+
+button.acc-secondary-button.acc-button-disabled {
+    border: solid 1px #cccccc;
+    color: #cccccc;
+}
+
+button.acc-secondary-button.acc-button-disabled .fa.fa-copy {
+    color: #cccccc;
+}
+
+button.acc-secondary-button:hover {
+    background-color: #0a8f9a;
+    color: #ffffff;
+    border: solid 1px #0a8f9a;
+}
+
+button.acc-general-button .fa, button.acc-secondary-button .fa {
+    font-size: 1em;
+    margin-right: 5px;
+}
+
+button.acc-secondary-button .fa {
+    color: #4c7477;
+}
+
+button.acc-secondary-button:hover .fa {
+    color: #ffffff;
+}
+
+.acc-square-button {
+    width: 85px;
+    height: 82px;
+    border-radius: 10px;
+}
+
+.acc-square-button:hover {
+    background-color: #ffffff;
+    border: 2px solid #4c7477;
+    color: #4c7477 !important;
+}
+
+button.acc-secondary-button, button.acc-secondary-button.disabled {
+    background-color: #fff;
+    border-radius: 4px;
+    font-size: 1em;
+    font-weight: bold;
+    padding: 5px 15px;
+}
+
+button.acc-secondary-button {
+    border: solid 1px #4c7477;
+    color: #4c7477;
+}
+
+button.acc-secondary-button.acc-button-disabled {
+    border: solid 1px #cccccc;
+    color: #cccccc;
+}
+
+button.acc-secondary-button.acc-button-disabled .fa.fa-copy {
+    color: #cccccc;
+}
+
+button.acc-secondary-button:hover {
+    background-color: #0a8f9a;
+    color: #ffffff;
+    border: solid 1px #0a8f9a;
+}
+
+button.acc-general-button .fa, button.acc-secondary-button .fa {
+    font-size: 1em;
+    margin-right: 5px;
+}
+
+button.acc-secondary-button .fa {
+    color: #4c7477;
+}
+
+button.acc-secondary-button:hover .fa {
+    color: #ffffff;
+}
+
+.acc-large-button {
+    height: 45px;
+    font-size: 1em;
+    margin-bottom: 12px;
+}
+
+.acc-transparent-bg-button {
+    background-color: transparent;
+    border: none;
+    outline: none;
+}
+
+.acc-transparent-bg-button:hover {
+    color: #0cc4d3;
+}
+
+.acc-not-important-button {
+    font-size: 1em;
+    color: #0cc4d3 !important;
+}
+
+/****************************************** RADIO STYLES ******************************************/
+.acc-radio-container .radio {
+    text-transform: none;
+    margin: 0;
+}
+
+    .acc-radio-container .radio label {
+        line-height: 2.5em;
+        padding: 0 0 0 5px;
+    }
+
+    .acc-radio-container .radio input[type=radio] {
+        margin-left: 0;
+
+        /* IE 9, 10, 11 */
+        margin-top: 7px\0;
+    }
+
+/****************************************** LINK STYLES ******************************************/
+.acc-large-link-container {
+    height: 45px;
+    text-align: center;
+    padding: 11px 0 0 0;
+}
+
+    .acc-large-link-container a {
+        text-decoration: none;
+        font-size: 1em;
+        color: #0cc4d3 !important;
+    }
+
+        .acc-large-link-container a:hover {
+            text-decoration: none;
+            color: #0a8f9a !important;
+        }
+
+/****************************************** DATEPICKER STYLES ******************************************/
+.datepicker {
+    top: 0;
+    left: 0;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+}
+
+.datepicker.dropdown-menu {
+    height: 240px;
+    min-width: 230px;
+    padding: 0;
+}
+
+.datepicker:before {
+    content: '';
+    display: inline-block;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-top: 7px solid #ccc;
+    border-top-color: rgba(0, 0, 0, 0.2);
+    position: absolute;
+    top: 238px;
+    left: 106px;
+}
+
+.datepicker:after {
+    content: '';
+    display: inline-block;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 6px solid #ffffff;
+    position: absolute;
+    top: 238px;
+    left: 107px;
+}
+
+.datepicker > div {
+    display: none;
+}
+
+.datepicker table {
+    width: 100%;
+    margin: 0;
+}
+
+.datepicker td,
+.datepicker th {
+    text-align: center;
+    width: 20px;
+    height: 20px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+}
+
+.datepicker td.year:hover,
+.datepicker td.month:hover,
+.datepicker td.day:hover {
+    background: #e0edee;
+    cursor: pointer;
+}
+
+.datepicker td.day.disabled {
+    color: #eeeeee;
+}
+
+.datepicker td.old,
+.datepicker td.new {
+    color: #999999;
+}
+
+.datepicker td.active,
+.datepicker td.active:hover {
+    color: #ffffff;
+    color: #fff;
+    background-color: #e0edee;
+}
+
+.datepicker td.active:hover,
+.datepicker td.active:hover:hover,
+.datepicker td.active:focus,
+.datepicker td.active:hover:focus,
+.datepicker td.active:active,
+.datepicker td.active:hover:active,
+.datepicker td.active.active,
+.datepicker td.active:hover.active,
+.datepicker td.active.disabled,
+.datepicker td.active:hover.disabled,
+.datepicker td.active[disabled],
+.datepicker td.active:hover[disabled] {
+    color: #ffffff;
+    background-color: #64a3a8 !important;
+}
+
+.datepicker td span {
+    display: block;
+    width: 47px;
+    height: 47px;
+    line-height: 47px;
+    float: left;
+    margin: 2px;
+    cursor: pointer;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+}
+
+.datepicker td span:hover {
+    background: #e0edee;
+}
+
+.datepicker td span.active {
+    color: #ffffff;
+    background-color: #64a3a8 !important;
+    color: #fff;
+}
+
+.datepicker td span.active:hover,
+.datepicker td span.active:focus,
+.datepicker td span.active:active,
+.datepicker td span.active.active,
+.datepicker td span.active.disabled,
+.datepicker td span.active[disabled] {
+    color: #ffffff;
+    background-color: #e0edee;
+}
+
+.datepicker td span.old {
+    color: #999999;
+}
+
+.datepicker th.next,
+.datepicker th.prev {
+    font-size: 14px;
+    color: #64a3a8;
+    line-height: 1em;
+}
+
+.datepicker thead tr:first-child th {
+    cursor: pointer;
+}
+
+.datepicker thead tr:first-child th span:hover,
+.datepicker thead tr:first-child th.switch:hover {
+    background: #dae6e7;
+}
+
+.datepicker.dropdown-menu .datepicker-days .table-condensed thead tr:last-child {
+    padding: 0;
+    background-color: transparent;
+    border-bottom: none;
+    line-height: 1.7em;
+}
+
+/* Datepicker Table */
+.datepicker.dropdown-menu .datepicker-years .table-condensed > thead > tr,
+.datepicker.dropdown-menu .datepicker-months .table-condensed > thead > tr,
+.datepicker.dropdown-menu .datepicker-days .table-condensed > thead > tr {
+    background-color: #f7f7f7;
+    border-bottom: 1px solid #ebebeb;
+    line-height: 2.5em;
+    padding: 5px;
+}
+
+.datepicker.dropdown-menu .datepicker-years .table-condensed > thead > tr > th,
+.datepicker.dropdown-menu .datepicker-months .table-condensed > thead > tr > th,
+.datepicker.dropdown-menu .datepicker-days .table-condensed > thead > tr > th {
+    padding: 2px 5px;
+}
+
+.datepicker.dropdown-menu .datepicker-months .table-condensed > tbody > tr > td,
+.datepicker.dropdown-menu .datepicker-years .table-condensed > tbody > tr > td {
+    height: 200px;
+    padding: 0 0 0 10px;
+}
+
+.datepicker.dropdown-menu .datepicker-days .table-condensed > tbody > tr > td {
+    width: 5px;
+}
+
+.datepicker.dropdown-menu .table-condensed > tbody > th {
+    text-align: center;
+}
+
+.calendar-pre-icon-container,
+.calendar-next-icon-container {
+    width: 30px;
+    height: 30px;
+    padding: 2px 5px;
+    border-radius: 4px;
+}
+
+.calendar-next-icon-container {
+    margin: 0 18px 0 0;
+}
+
+.input-append {
+    display: block !important;
+}
+
+.input-append.date .add-on i,
+.input-prepend.date .add-on i {
+    display: block;
+    cursor: pointer;
+    width: 16px;
+    height: 16px;
+}
+
+/****************************************** TAB STYLES ******************************************/
+ul.acc-tab-title {
+    margin: 0 !important;
+}
+
+.tab-content {
+    float: left;
+    background-color: #ffffff;
+    width: 100%;
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    padding: 10px;
+}
+
+.acc-schedule-popper-content .tab-content {
+    /* IE 9, 10, 11 */
+    min-width: 360px\0;
+}
+
+.nav-tabs > li > a,
+.nav-tabs > li > a:hover {
+    font-size: 0.9em;
+    color: #0cc4d3;
+    line-height: 1.9em;
+    border: 1px solid #ddd;
+    font-weight: normal;
+    background-color: #f2f0f0;
+}
+
+    .nav-tabs > li > a:hover {
+        color: #ffffff;
+        background-color: #0a8f9a;
+    }
+
+    .nav-tabs > li > a:focus {
+        outline: none;
+    }
+
+    .nav-tabs > li.active > a {
+        color: #000000;
+    }
+
+    .nav-tabs > li.active > a:hover {
+        color: #000000;
+    }
+
+.acc-tab-control-title {
+    font-size: 0.8em;
+    font-weight: normal;
+}
+
+.acc-tab-calendar-container {
+    margin: 0 0 0 52px;
+}
+
+input.acc-input-datetime.acc-tab-input-datetime {
+    border-radius: 4px !important;
+}
+
+.acc-tab-input-datetime {
+    width: 165px;
+}
+
+/****************************************** TAG STYLES ******************************************/
+.acc-bootstrap-tags {
+    background-color: transparent;
+    border: none;
+    display: inline-block;
+    padding: 5px 6px 6px 6px;
+    color: #555;
+    vertical-align: middle;
+    border-radius: 0;
+    line-height: 22px;
+    margin: 0 30px 0 0;
+}
+
+    .acc-bootstrap-tags .tag [data-role="remove"] {
+        content: "\f057";
+        font-family: FontAwesome;
+        font-size: 2em;
+        cursor: pointer;
+        position: absolute;
+        left: 10px;
+        top: -0.15em;
+        padding: 5px 0 5px 7px;
+        color: #ffffff;
+    }
+
+/****************************************** TAG INPUT STYLES ******************************************/
+.bootstrap-tagsinput {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+    display: inline-block;
+    padding: 5px 6px 6px 6px;
+    margin-bottom: 10px;
+    color: #555;
+    vertical-align: middle;
+    border-radius: 4px;
+    width: 100%;
+    line-height: 22px;
+}
+
+    .bootstrap-tagsinput input {
+        border: none;
+        box-shadow: none;
+        outline: none;
+        background-color: transparent;
+        padding: 0;
+        margin: 0;
+        width: auto !important;
+        max-width: inherit;
+    }
+
+        .bootstrap-tagsinput input:focus {
+            border: none;
+            box-shadow: none;
+        }
+
+    .bootstrap-tagsinput .tag,
+    .acc-bootstrap-tags .tag {
+        margin-right: 2px;
+        color: white;
+    }
+
+        .bootstrap-tagsinput .tag [data-role="remove"] {
+            content: "\f057";
+            font-family: FontAwesome;
+            font-size: 2em;
+            cursor: pointer;
+            position: absolute;
+            left: 10px;
+            top: 0.2em;
+            padding: 5px 0 5px 7px;
+            color: #ffffff;
+        }
+
+            .bootstrap-tagsinput .tag [data-role="remove"]:after,
+            .acc-bootstrap-tags .tag [data-role="remove"]:after {
+                content: "\f057";
+                font-family: FontAwesome;
+                font-size: 0.9em;
+            }
+
+            .bootstrap-tagsinput .tag [data-role="remove"]:hover,
+            .acc-bootstrap-tags .tag [data-role="remove"]:hover {
+                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+            }
+
+                .bootstrap-tagsinput .tag [data-role="remove"]:hover:active,
+                .acc-bootstrap-tags .tag [data-role="remove"]:hover:active {
+                    box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+                }
+
+.label-info {
+    background-color: #6f9ea2;
+    border-radius: 15px;
+    padding: 6px 12px 7px 35px;
+    font-size: 0.75em;
+    font-weight: normal;
+}
+
+/****************************************** TABLE STYLES ******************************************/
+.acc-general-table thead {
+    background-color: #434040;
+    color: #ffffff;
+}
+
+    .acc-general-table thead tr th {
+        font-size: 0.8em;
+        height: 15px;
+        text-transform: uppercase;
+        text-align: left;
+        padding: 15px;
+        position: relative;
+        white-space: nowrap;
+        vertical-align: top;
+    }
+
+#acc-analyst-performance-overview-table.acc-general-table thead tr th {
+    height: 45px;
+}
+
+
+.acc-general-table tr td {
+}
+
+.acc-general-table a {
+    text-decoration: none;
+    color: #0cc4d3;
+}
+
+    .acc-general-table a:hover {
+        text-decoration: none;
+        color: #0a8f9a;
+    }
+
+.acc-table-accordion {
+    border-left: none;
+    border-right: none;
+}
+
+    .acc-table-accordion tbody tr td:first-child {
+        border-left: none;
+    }
+
+    .acc-table-accordion tbody tr td:last-child {
+        border-right: none;
+    }
+
+.acc-title-table {
+    position: absolute;
+    left: 15px;
+    top: 15px;
+}
+
+.acc-title-table-italic {
+    font-style: italic;
+    text-transform: none;
+}
+
+table.dataTable.display tbody tr.odd,
+.table-striped > tbody > tr:nth-child(odd) > td,
+.table-striped > tbody > tr:nth-child(odd) > th,
+table.dataTable.display tbody tr.odd > .sorting_1 {
+    background-color: transparent;
+}
+
+table.dataTable.display tbody tr.even,
+.table-striped > tbody > tr:nth-child(even) > td,
+.table-striped > tbody > tr:nth-child(even) > th,
+table.dataTable.display tbody tr.even > .sorting_1 {
+    background-color: #F6F4F4;
+}
+
+/* Custom jQuery Table */
+.table.table-bordered.table-striped.acc-general-table.acc-table-accordion.hover.dataTable.no-footer,
+.table.table-bordered.table-striped.acc-general-table.hover.dataTable.no-footer {
+    padding: 0;
+}
+
+.dataTables_wrapper .dataTables_length,
+.dataTables_wrapper .dataTables_filter,
+.dataTables_wrapper .dataTables_info,
+.dataTables_wrapper .dataTables_processing,
+.dataTables_wrapper .dataTables_paginate {
+    display: none;
+}
+
+table.dataTable.no-footer {
+    border: none;
+}
+
+.acc-sort-table {
+    float: right;
+    background: url("../images/icon-sort-table.png") no-repeat scroll 0 0;
+    width: 12px !important;
+    height: 16px;
+    display: block;
+    position: absolute;
+    right: 15px;
+    top: 15px;
+}
+
+.sorting_asc .acc-sort-table {
+    background-position: -12px 0;
+}
+
+.sorting_desc .acc-sort-table {
+    background-position: -24px 0;
+}
+
+
+/****************************************** ACCORDION ******************************************/
+/* Remove Transition When Expand Accordion Items */
+/*.collapsing {
+    -webkit-transition: none;
+    transition: none;
+}*/
+
+.panel-group {
+    margin: 0 0 60px 0;
+}
+
+/* Change Collapse or Expand Icons */
+.panel-heading .accordion-heading-middle a::after {
+    font-family: FontAwesome;
+    content: "\f056";
+    float: left;
+    color: #ffffff;
+    width: 25px;
+}
+
+.panel-heading .accordion-heading-middle.collapsed a::after {
+    content: "\f055";
+}
+
+.panel-heading .accordion-heading-middle a:active::after {
+    font-family: FontAwesome;
+    content: "\f055";
+    float: left;
+    color: #ffffff;
+    width: 25px;
+}
+
+.panel-heading .accordion-heading-middle.collapsed a:active::after {
+    content: "\f056";
+}
+
+.accordion-panel {
+    background-color: transparent;
+    border-radius: 0px !important;
+    border: none;
+    box-shadow: none;
+    -webkit-box-shadow: none;
+    margin: 0 0 5px 0 !important;
+}
+
+.accordion-heading {
+    cursor: pointer;
+    position: relative;
+    height: 37px;
+    padding: 0;
+}
+
+.accordion-heading-middle {
+    height: 37px;
+    line-height: 35px;
+    padding-left: 10px;
+    background-color: #4c7476;
+    border: 1px solid #cccccc;
+    border-radius: 5px;
+    color: #ffffff;
+    font-size: 1.2em;
+    font-weight: normal;
+    position: absolute;
+    left: 0;
+    right: 0;
+}
+
+    .accordion-heading-middle a {
+        width: 37px;
+        height: 37px;
+        color: #ffffff;
+        font-size: 1.1em;
+        font-weight: normal;
+        background-color: transparent;
+        padding: 0 0 0 9px;
+        position: absolute;
+        right: 0;
+    }
+
+        .accordion-heading-middle a:hover {
+            text-decoration: none;
+        }
+
+.accordion-toggle .glyphicon-minus {
+    right: 1px;
+}
+
+.panel-group .panel-heading + .panel-collapse .panel-body {
+    border-top: none;
+}
+
+.panel-body {
+    padding: 0;
+}
+
+.panel-collapse.collapse.in {
+    position: relative;
+    left: 0;
+    top: -5px;
+    background-color: white;
+}
+
+.acc-input-control-group {
+    width: 100%;
+}
+
+.list-group {
+    margin-bottom: 0;
+}
+
+    .list-group a {
+        text-decoration: none;
+        color: #353333;
+    }
+
+.list-group-item {
+    padding: 10px;
+}
+
+    .list-group-item:first-child {
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+    }
+
+    .list-group-item:last-child {
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+
+a.list-group-item.active,
+a.list-group-item.active:focus {
+    background-color: #f0eceb;
+    color: #4c7476;
+    border-color: #cccccc !important;
+}
+
+    a.list-group-item.active:hover {
+        background-color: #f5f5f5;
+        color: #353333;
+    }
+
+/* Standard Report Accordion */
+.acc-standard-report-accordion-panel {
+    min-height: 70px;
+}
+
+.accordion-heading-standard-report {
+    height: 70px;
+}
+
+.accordion-heading-middle.accordion-heading-middle-standard-report {
+    height: 70px;
+}
+
+.acc-standard-report-accordion-title ul,
+.acc-standard-report-accordion-title li {
+    list-style-type: none;
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+}
+
+.acc-standard-report-accordion-title ul {
+    width: 100%;
+    padding: 15px 0 0 0;
+}
+
+.acc-standard-report-accordion-title li {
+    padding: 0 20px 0 0;
+}
+
+.accordion-heading-middle.accordion-heading-middle-standard-report a {
+    width: 47px;
+    height: 47px;
+    font-size: 1.5em;
+    top: 16px;
+}
+
+.acc-standard-report-panel-collapse.panel-collapse.collapse.in {
+    top: 0;
+}
+
+.acc-accordion-title-normal,
+.acc-accordion-title-bold,
+.acc-accordion-sub-title {
+    margin: 0 !important;
+    padding: 0 !important;
+    font-size: 0.7em;
+    text-align: left;
+    line-height: 1.6em;
+}
+
+.acc-accordion-title-normal,
+.acc-accordion-title-bold {
+    color: #ffffff;
+}
+
+.acc-accordion-title-normal {
+    font-weight: normal;
+}
+
+.acc-accordion-title-bold {
+    font-weight: bold;
+}
+
+/****************************************** POPOVER STYLES ******************************************/
+.popover-content {
+    padding: 0;
+}
+
+.popover.left {
+    background-color: #e0edee;
+    padding: 1px;
+    left: 42px;
+}
+
+.popover.left > .arrow {
+    border-left-color: rgba(0, 0, 0, .3);
+}
+
+.popover.left > .arrow:after {
+    border-left-color: #e0edee;
+}
+
+.popover {
+    max-width: 400px;
+}
+
+.acc-help-popover-content,
+.acc-schedule-popper-content,
+.acc-tools-popper-content {
+    padding: 15px 20px;
+}
+
+.acc-tools-popper-content ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    min-width: 260px;
+}
+
+.acc-tools-popper-content ul li {
+    padding-bottom: .25em;
+    margin: 0 0 20px 0;
+}
+
+.acc-tools-popper-content ul li a {
+    color: #0cc4d3;
+    font-size: 1em;
+    font-weight: normal;
+    line-height: 1.3em;
+    padding-right: 2em;
+}
+
+.acc-tools-popper-content ul li a:hover {
+    color: #0a8f9a;
+}
+
+.acc-tools-popper-content ul li a span {
+    color: #0cc4d3;
+    font-size: 1.3em;
+    font-weight: normal;
+}
+
+.acc-tools-popper-content ul li a span:hover {
+    color: #333333;
+}
+
+.acc-help-popover-content {
+    max-width: 210px;
+}
+
+.acc-popover-title {
+    color: #64a3a8;
+    font-size: 0.9em;
+    font-weight: bold;
+}
+
+.acc-popover-detail-contents {
+    font-size: 0.85em;
+    color: #333333;
+    padding: 0;
+}
+
+/****************************************** MODAL DIALOG STYLES ******************************************/
+.modal {
+    z-index: 10001;
+}
+
+.modal.fade .modal-dialog {
+    z-index: 10001;
+}
+
+.modal-lg {
+    width: 1005px;
+}
+
+.modal-content {
+    border-radius: 0;
+    min-height: 550px;
+    max-height: 750px;
+    overflow-y: auto;
+}
+
+.modal-header {
+    border-bottom: none;
+}
+
+    .modal-header .close {
+        margin: 0;
+    }
+
+.close {
+    opacity: 1;
+    filter: alpha(opacity=100);
+}
+
+.modal-body {
+    padding: 0 20px 20px 20px;
+}
+
+.modal-footer {
+    border-top: none;
+}
+
+.acc-h2-modal {
+    margin-top: 0;
+}
+
+.acc-top-icon-container-modal.acc-top-icon-container,
+.acc-top-icon-container-modal.acc-top-icon-container ul {
+    margin: 0;
+}
+
+.acc-panel-group-modal.panel-group {
+    margin: 0;
+}
+
+.acc-modal-calendar-container {
+    margin: 0 0 0 56px;
+
+    /* IE 9, 10, 11 */
+    margin: 0 0 0 52px\0;
+}
+
+/******************************************** BACK TO TOP STYLES ********************************************/
+#toTop {
+    display: none;
+    position: fixed;
+    bottom: 10px;
+    right: 25px;
+    width: 86px;
+    height: 86px;
+    background-image: url('../images/back-to-top.png');
+    background-repeat: no-repeat;
+    opacity: 0.8;
+    filter: alpha(opacity=80);
+    z-index: 104;
+}
+
+    #toTop:hover {
+        opacity: 1;
+    }
+
+/******************************************** INPUT CONTROL STYLES ********************************************/
+.acc-input-control-left-content {
+    width: 320px;
+    clear: both;
+}
+
+.acc-input-control-right-content {
+    width: 659px;
+    padding: 0 0 0 15px;
+}
+
+.acc-input-control-right-content-inside {
+    background-color: #f2f0f0;
+    border: 1px solid #d9d9d9;
+    padding: 15px;
+    width: 100%;
+    height: auto;
+}
+
+    .acc-input-control-right-content-inside a {
+        color: #434040;
+        text-decoration: none;
+    }
+
+.acc-input-control-runreport-container {
+    margin: 30px 0 0 0;
+}
+
+/******************************************** DATA EXTRACT DEFINITION STYLES ********************************************/
+.acc-input-control-filter-definitions {
+    margin: 0;
+}
+
+.acc-small-normal-label.acc-input-control-filter-title {
+    font-weight: bold !important;
+    padding: 0 !important;
+    margin: 0 0 10px 0;
+}
+
+.acc-input-control-definition-textbox-container {
+    margin: 0 10px 0 0;
+}
+
+.acc-input-enter-definition-name {
+    color: #434040;
+    height: 38px;
+}
+
+.acc-input-control-right-content-divider {
+    width: 100%;
+}
+
+.acc-data-extract-select-table-container {
+    width: 100%;
+}
+
+.acc-checkbox-table-container {
+    padding: 0;
+    line-height: 1.3em;
+}
+
+.acc-checkbox-select-all-table {
+    margin: 4px 0 !important;
+}
+
+.acc-input-control-total-items-table {
+    margin: 3px 0 0 0;
+    text-align: left;
+    padding: 0 0 0 10px;
+    /* IE 9, 10, 11 */
+    padding: 7px 0 0 10px\0;
+}
+
+.acc-checkbox-inside-table-container {
+    text-align: center;
+}
+
+.acc-data-extract-select-row {
+    text-align: left;
+}
+
+.acc-small-italic-table-label {
+    font-size: 0.9em;
+    text-align: right;
+    font-style: italic;
+    font-weight: normal !important;
+    padding: 0 0 0 10px;
+}
+
+.control-wrap {
+    margin: 10px 0;
+    font-size: 13px;
+}
+
+.control-wrap p {
+    margin: 0;
+    line-height: 33px;
+}
+
+.control-wrap h3 {
+    float: left;
+    width: 30%;
+}
+
+.control-wrap.button-group {
+    float: left;
+    width: 70%;
+}
+
+.control-wrap.button-group button {
+    float: left;
+    width: 70%;
+}
+
+p.header-text {
+    font-style: italic;
+    font-size: 11px;
+    font-weight: normal;
+    text-transform: lowercase;
+}
+
+.th-control-center {
+    text-align: center;
+    padding: 10px 0;
+}
+
+.txt-center {
+    text-align: center;
+}
+
+/******************************************** ADD DATA EXTRACT DEFINITION STYLES ********************************************/
+.acc-alert-container {
+    font-size: 0.9em;
+    font-weight: bold;
+    color: #a94442;
+    border-radius: 0;
+}
+
+    .acc-alert-container ul {
+        margin-left: 1.22em;
+    }
+
+.acc-add-data-exteact-required-container {
+    text-align: right;
+    padding: 0 10px 0 0;
+}
+
+/* CONTROL VALIDATE */
+.acc-control-validate {
+    color: #a94442;
+    border-radius: 0;
+    padding: 15px 15px 15px 0;
+}
+
+.acc-error-text {
+    color: #a94442;
+    font-size: 0.9em;
+    font-weight: bold;
+    margin: 0;
+    padding: 0 0 10px 0;
+}
+
+.acc-help-container {
+    padding: 0 10px 0 0;
+}
+
+.acc-help-icon {
+    font-family: FontAwesome;
+    width: 20px;
+    height: 20px;
+    border: none;
+    background: none;
+    font-size: 1.22em;
+    line-height: 1em;
+    margin: 0 5px 0 0;
+    color: #64a3a8;
+    display: block !important;
+}
+
+.control-label.acc-no-padding {
+    padding: 0 !important;
+}
+
+.acc-data-extract-col-one-container {
+    min-height: 213px !important;
+    padding: 9% 2% 8% 2%;
+}
+
+.acc-delivery-location-path-container {
+    min-height: 30px;
+    padding: 0;
+}
+
+    .acc-delivery-location-path-container label {
+        font-size: 0.8em;
+        font-weight: normal;
+    }
+
+.acc-encryption-key {
+    line-height: 2em;
+    padding: 0 !important;
+}
+
+    .acc-encryption-key .fa-asterisk {
+        line-height: 2em;
+        font-size: 0.7em !important;
+    }
+
+.acc-add-new {
+    font-family: FontAwesome;
+    width: 20px;
+    height: 23px;
+    border: none;
+    background: none;
+    font-size: 1.22em;
+    color: #64a3a8;
+    line-height: 0.1em;
+}
+
+.acc-read-agree-checkbox {
+    margin: 2px 0 0 0 !important;
+}
+
+.acc-read-agree-text {
+    margin: 0 0 0 5px;
+    font-style: italic;
+    font-size: 0.8em;
+}
+
+    .acc-read-agree-text a {
+        color: #0cc4d3;
+    }
+
+        .acc-read-agree-text a:hover {
+            color: #0a8f9a;
+        }
+
+.acc-button-container {
+    margin: 0 30px 0 0;
+}
+
+.acc-help-column-container {
+    padding: 3px 0;
+}
+
+/******************************************** STANDARD REPORT A STYLES ********************************************/
+.acc-top-icon-container {
+    margin: 24px 0 0 0;
+}
+
+    .acc-top-icon-container ul,
+    .acc-top-icon-container li {
+        list-style-type: none;
+        display: inline-block;
+    }
+
+    .acc-top-icon-container li {
+        padding: 0 0 0 10px;
+    }
+
+.acc-top-icon-button {
+    font-family: FontAwesome;
+    width: 24px;
+    height: 33px;
+    border: none;
+    background: none;
+    font-size: 1.5em;
+    color: #64a3a8;
+    display: block !important;
+}
+
+.acc-top-icon-link-container {
+    height: 33px;
+    padding: 9px 0 0 5px;
+}
+
+    .acc-top-icon-link-container a {
+        color: #64a3a8;
+        text-decoration: none;
+        font-size: 0.8em;
+    }
+
+        .acc-top-icon-link-container a:hover {
+            color: #0cc4d3;
+        }
+
+.acc-standard-report-content-container {
+    margin: 0;
+}
+
+.acc-start-end-group {
+    padding: 8px 0 0 0;
+}
+
+    .acc-start-end-group ul,
+    .acc-start-end-group li {
+        list-style-type: none;
+        display: inline-block;
+    }
+
+    .acc-start-end-group li {
+        padding: 0 0 0 10px;
+    }
+
+/******************************************** ANALYST PERFORMANCE OVERVIEW STYLES ********************************************/
+.acc-analyst-performance-report-summary-container {
+    margin: 0 0 30px 0;
+}
+
+.acc-analyst-performance-total-summary-container {
+    margin: 0 0 10px 0;
+    padding: 0;
+}
+
+.acc-analyst-performance-total-summary-column {
+    border-right: 1px solid #d9d9d9;
+    height: 56px;
+    padding: 10px 15px 15px 15px;
+}
+
+.acc-analyst-performance-total-summary-column-last {
+    border: none;
+}
+
+.acc-control-label-in-box {
+    text-align: left;
+    margin: 0;
+    font-size: 0.9em;
+    color: #434040;
+    font-weight: bold;
+}
+
+.acc-main-title-in-box {
+    font-size: 24px;
+    color: #434040;
+    letter-spacing: 0.03em;
+}
+
+.acc-expand-all-container.acc-top-icon-link-container {
+    padding: 7px 0 0 5px;
+}
+/******************************************** DETAIL ON RESOLUTION ********************************************/
+.acc-top-red-icon-button {
+    color: #c70003;
+}
+
+.acc-top-link-black.acc-top-icon-link-container {
+    padding: 7px 0 0 0;
+}
+
+    .acc-top-link-black.acc-top-icon-link-container a {
+        color: #434040;
+        text-decoration: none;
+        font-size: 1em;
+        font-weight: bold;
+    }
+
+        .acc-top-link-black.acc-top-icon-link-container a:hover {
+            color: #434040;
+        }
+
+
+/**************************************** NR MODS (TBI) ********************************************/
+
+div.content { /* overriding accertify.style.css body font */
+  font-family:'Open Sans',Tahoma, Arial, Helvetica, sans-serif; /* font-size:.9em; */
+}
+
+.errorMessages { /* in conjunction with accertify.style.css errorMessage */
+  margin:6px 0px 6px 8px;
+}
+
+/******************************************** MAIN NAVIGATION STYLES ********************************************/
+.navbar {
+    margin-bottom: 0;
+}
+
+.navbar-collapse {
+    padding: 0;
+    margin: 0;
+}
+
+.acc-nav-container {
+    margin: 0 auto;
+}
+
+.navbar-nav > li > a {
+}
+
+.navbar-default .navbar-nav > .open > a,
+.navbar-default .navbar-nav > .open > a:hover,
+.navbar-default .navbar-nav > .open > a:focus {
+    background-color: #ffffff;
+    color: #c70003;
+}
+
+/* Navigation : Dropdown Menu */
+.dropdown-menu.nav-dropdown-menu {
+    top: 50px;
+    border-bottom: 1px solid #e7e7e7;
+}
+
+.navbar-nav .dropdown:hover {
+    background-color: #ffffff;
+    color: #c70003;
+}
+
+.dropdown-menu {
+    margin-top: 0px;
+}
+
+ul li.dropdown a.dropdown-toggle {
+    font-weight: normal;
+}
+
+/******************************************** Paging styles ********************************************/
+.pagination {
+    background-color: #fff;
+    padding: 0;
+    margin: 0;
+}
+
+.pagination > .active > a, .pagination > .active > span, .pagination > .active > a:hover, .pagination > .active > span:hover, .pagination > .active > a:focus, .pagination > .active > span:focus {
+    background-color: #4c7477;
+    border-color: #ccc;
+}
+
+.pagination a:hover {
+    color: #0a8f9a;
+}
+
+.pagination > li > a, .pagination > li > span {
+    color: #4c7477;
+}
+
+.paging-wrap [class*="col-"] {
+    padding: 10px 0;
+}
+
+.paging-wrap .item-displayed {
+    margin: 0 10px 0 0;
+    line-height: 30px;
+}
+
+.paging-wrap a.link-all-rules {
+    color: #0cc4d3;
+    text-decoration: none;
+    font-style: italic;
+    font-size: 11px;
+}
+
+.paging-wrap p {
+    font-style: italic;
+    font-size: 11px;
+}
+
+.control-wrap {
+    margin: 10px 0;
+    font-size: 13px;
+}
+
+.control-wrap p {
+    margin: 0;
+    line-height: 33px;
+}
+
+.control-wrap h3 {
+    float: left;
+    width: 30%;
+}
+
+.control-wrap .button-group {
+    float: left;
+    width: 70%;
+}
+
+.control-wrap .button-group button {
+    margin-right: 5px;
+}
+
+input[type=submit].btn-default {
+    margin-right: 5px;
+}
+
+p.item-displayed {
+    font-style: italic;
+    font-size: 11px;
+    margin-right: 5px;
+    margin-left: 20px;
+}
+
+/******************************************** FOOTER STYLES ********************************************/
+.acc-footer-container-outside {
+    padding: 15px 0;
+    background-color: #f4f2f3;
+    height: 125px;
+}
+
+.acc-footer-container-inside {
+    position: relative;
+}
+
+.acc-footer-interceptas-logo {
+    position: absolute;
+    left: 50%;
+    margin-left: -115px;
+}
+
+.acc-footer-links {
+    position: absolute;
+    top: 50px;
+    text-align: center;
+    width: 100%;
+    font-size: 1em;
+    font-weight: bold;
+    color: #c70003;
+}
+
+.acc-footer-links a:hover {
+    color: #c70003;
+    text-decoration: none;
+}
+
+.acc-footer-text {
+    color: #777777;
+    font-weight: normal;
+}
+
+.acc-footer-text a, .acc-footer-text a:visited {
+    color: #c70003;
+    font-weight: bold;
+}
+
+.acc-footer-text a:hover {
+    color: #000;
+    text-decoration:underline;
+}
+
+.acc-footer-unique {
+    position: absolute;
+    top: 75px;
+    text-align: center;
+    width: 100%;
+    color: #a4a2a3;
+    font-size: 0.85em;
+}
+
+input.acc-datepicker {
+    width: 106px;
+    height: 30px;
+    display:inline-block;
+}
+
+button.ui-datepicker-trigger {
+    font-family: FontAwesome;
+    width: 30px;
+    height: 33px;
+    background: none;
+    font-size: 2em;
+    color: #64a3a8;
+    padding:0px;
+    border:none;
+    vertical-align:sub;
+} 
