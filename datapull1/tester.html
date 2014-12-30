@@ -6,9 +6,14 @@
     div.status {border:1px solid silver;padding:10px;border-radius:4px}
     div.t {font-weight:bold;}
     div.b {font-style:italic;}
-    div#data_element {color:siver;}
+    div#data_element {display:none !important;}
+      div.anct-h2 {font-size:0.8em;font-style:italic;font-weight:bold;color:#660000;text-align:center;}
+      div.anct-h3 {font-size:0.7em;color:#606060;margin-bottom:18px;}    
     </style>
     <script>
+      
+    function $ref(){return document.getElementById(arguments[0]);}  
+      
     function test() {
       doFbDp();
     }
@@ -25,7 +30,7 @@
     function callback(data) {
        console.log(console.dir(data)); 
        STATUS_OBJ = data;
-       var statusesContainer = document.getElementById('statuses');
+       var anctContainer = $ref('anct_container');
        
        // create a hidden element to hold the html snippet retrieved
        var dataElement = document.createElement('div');
@@ -34,9 +39,9 @@
        dataElement.setAttributeNode(attr);
        document.body.appendChild(dataElement);
        dataElement.innerHTML = data.data;
-       
        // parse out the data, retrive the pieces we are interested in, and put into our page
-       var statusHtml = [];
+       var announcementsHtml = [];
+       var monthlyPlan = {};
        var userContent = dataElement.querySelectorAll('div.userContent');
        for (var i = 0; i < userContent.length; i++) {
           var content = userContent[i];
@@ -64,25 +69,21 @@
               mangledAs[j].parentNode.replaceChild(newA, mangledAs[j]);
             }
             var bodyContent = content.outerHTML
-
+            // pull out monthly plan, for use elsewhere
+            if (titleContent.indexOf('Monthly Lesson') === 0) {
+                monthlyPlan.title = titleContent;
+                monthlyPlan.body = bodyContent;
+                continue; // i loop
+            }
             
-            statusHtml.push('<div class="t">' + titleContent + '</div>');
-            statusHtml.push('<div class="b">' + bodyContent +'</div>');
+            announcementsHtml.push('<div class="anct-h2">' + titleContent + '</div>');
+            announcementsHtml.push('<div class="anct-h3">' + bodyContent +'</div>');
           }
        }
-       statusesContainer.innerHTML = statusHtml.join('\n');
-       
-       /*
-       var statuses = data.statuses;
-       
-       for (var i = 0; i < statuses.length; i++) {
-         var status = statuses[i];
-         statusHtml.push('<div class="t">' + status.title + '</div>');
-         statusHtml.push('<div class="b">' + status.body +'</div>');
-       }
-       statusesContainer.innerHTML = statusHtml.join('\n');
-       */
+       anctContainer.innerHTML = announcementsHtml.join('\n');
+
     }
+
 
     </script>
   </head>
@@ -90,7 +91,7 @@
   
   <span onclick="test()">test</span>
   <hr />
-  <div id="statuses"></div>
+  <div id="anct_container"></div>
   <hr />
   </body>
 </html>

@@ -3,10 +3,10 @@ import os
 
 import json
 from HTMLParser import HTMLParser
-from lxml import html
-from lxml.etree import tostring
+#from lxml import html
+#from lxml.etree import tostring
 import urllib2
-import re
+#import re
 
 class FacebookDataParser(HTMLParser):
     def __init__(self, fb_page_url):
