@@ -16,7 +16,7 @@
     shape-rendering: crispEdges;
 }
 .grid path {
-          stroke-width: 0;
+    stroke-width: 0;
 }
 
 .overlay {
@@ -31,31 +31,29 @@
   stroke-dasharray: 10 5;
 }
       path.lt {stroke-width:1.5px;}
-      path.lt1 {stroke:#da70d6;fill:none;}
-      path.lt2 {stroke:#ff8c00;fill:none;}
-      path.lt3 {stroke:#32cd32;fill:none;}
-      path.lt4 {stroke:#1e90ff;fill:none;}  
-      path.lt5 {stroke:#909090;fill:none;}
+      path.lt0 {stroke:#da70d6;fill:none;}
+      path.lt1 {stroke:#ff8c00;fill:none;}
+      path.lt2 {stroke:#32cd32;fill:none;}
+      path.lt3 {stroke:#1e90ff;fill:none;}  
+      path.lt4 {stroke:#909090;fill:none;}
       path.ltHighlite {stroke-width:3px;}  
+      
+table#rec-code-stats {
+  
+}      
+div.rec-code-swatch {
+  width:10px;height:10px;
+}      
+
+.rc-axis-label {
+  font-weight:bold;
+}
+      
     </style>
     <script src="./res/d3.js"></script>
     <script>
 
 var COLORS = [];
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -68,8 +66,8 @@ var REC_CODE_DATA = {
     "cnttotal":4636,
     "amt":[4019.31,3345.1,2342.51,3862.67,3662.45,3832.88,3817.95,4172.71,3613.95,4734.21,1591.67,3750.68,389.64,3609.98,1802.86,2949.08,869.64,2095.9,3831.28,1519.99,1770.92,2844.39,246.85,4975.4,2858.83,4327.5,2947.74,2556.06,2447.3,1333.53],
     "amttotal":72510.85,
-    "cntreg":[[1,171.8],[30,199.7]],
-    "amtreg":[[1,146],[30,114.9]],
+    "cntreg":[50,40],
+    "amtreg":[50,65],
     "stats": {
       "cnt":{"min":16,"q1":159.25,"med":199,"q3":243,"max":295},
       "amt":{"min":246.85,"q1":1876.12,"med":2948.41,"q3":3827.9475,"max":4975.4}
@@ -81,8 +79,8 @@ var REC_CODE_DATA = {
     "cnttotal":3329,
     "amt":[4359.22,3237.15,4598.15,47.89,4745.84,2398.98,3700.76,2472.68,4694.28,3053.97,42.84,1149.99,2237.75,190.67,4013.71,2959.24,4188.18,3014.64,3551.6,3950.54,1712.57,2387.03,3115.62,4795.45,1922.54,499.99,1415.91,4205.93,878.25,4199.47],
     "amttotal":72541.29,
-    "cntreg":[[1,55.3],[30,49.9]],
-    "amtreg":[[1,139],[30,178.6]],    
+    "cntreg":[40,50],
+    "amtreg":[65,50],    
     "stats": {
       "cnt":{"min":3,"q1":54.5,"med":131,"q3":180.25,"max":296},
       "amt":{"min":42.84,"q1":1765.0625,"med":3034.305,"q3":4144.5625,"max":4795.45}
@@ -94,8 +92,8 @@ var REC_CODE_DATA = {
     "cnttotal":1358,
     "amt":[133.75,347.14,548.18,199.59,801.88,308.57,52.13,232.13,247.83,499.97,508.22,381.22,401.57,19.2,818.02,437.37,432.83,479.02,299.11,43.54,355.93,945.9,458.82,609.7,392.56,349.81,677.89,506.97,133.79,913.88],
     "amttotal":9954.18,
-    "cntreg":[[1,3525],[30,2216.5]],
-    "amtreg":[[1,3096.4],[30,2486.3]],    
+    "cntreg":[90,80],
+    "amtreg":[140,130],    
     "stats": {
       "cnt":{"min":11,"q1":35,"med":47.5,"q3":69.5,"max":93},
       "amt":{"min":19.2,"q1":260.65,"med":397.065,"q3":507.9075,"max":945.9}
@@ -107,8 +105,8 @@ var REC_CODE_DATA = {
     "cnttotal":3967,
     "amt":[862.81,321.28,702.91,748.43,897.28,44.43,400.3,849.84,678.74,242.47,384.65,431.85,847.1,33.37,85.49,468.23,626.68,815.96,324.13,227.29,662.26,794.67,214.76,892.56,289.74,420.73,432.47,134.59,595.82,228.36],
     "amttotal":12847.23,
-    "cntreg":[[1,302.4],[30,533.4]],
-    "amtreg":[[1,595.1],[30,382.2]],    
+    "cntreg":[55,60],
+    "amtreg":[130,140],    
     "stats": {
       "cnt":{"min":10,"q1":104.5,"med":181.5,"q3":222,"max":297},
       "amt":{"min":33.37,"q1":254.2875,"med":432.16,"q3":737.05,"max":897.28}
@@ -164,7 +162,7 @@ var REC_CODE_DATA = {
           .attr("width", catWidth)
           .attr("height", cntHeight + midPad + amtHeight)
           .on("mouseover", function(){d3.select('#rec-code-cursor').attr("display",null)})
-          .on("mouseout", function(){d3.select('#rec-code-cursor').attr("display","none")})
+          .on("mouseout", overlayMouseOut)
           .on("mousemove", overlayMousemove);
         // def grid cursor
         svg.append("path")
@@ -179,18 +177,30 @@ var REC_CODE_DATA = {
             .y(function(d,i) {return cntScale(d);});
         // set up the cnt values data to be passed in
         var cntValues = [];
+        var cntTrendValues = [];
         for (var i = 0; i < dataset.values.length; i++) {
           cntValues.push(dataset.values[i].cnt);
+          cntTrendValues.push(dataset.values[i].cntreg);
         }
         // gen the cnt value lines
         paths.data(cntValues)
             .enter()
             .append("path")
             .attr("d", cntLineGen)
-            .attr("class", function(d,i) {return 'lt'+(2+i) + ' lt';});
+            .attr("class", function(d,i){return 'lt'+(i) + ' lt';})
+            .attr("id", function(d,i){return 'rec-data-actual-cnt'+i;});
+        // gen cnt trend reg lines
+        cntTrendValues.forEach(function(d,i){
+            svg.append("path")
+               .attr("d","M 0 " + d[0] + " L 580 " + d[1])
+               //.attr("transform", "translate(0," + (midPad) + ")")
+               .attr("id","rec_code_cnt_reg"+i)
+               .attr("class", function(d,j) {return 'lt'+(i) + ' lt';});
+        });
+          
         // def amt line gen
         var amtLineGen = d3.svg.line()
-            .interpolate("basis")
+            //.interpolate("basis")
             .x(function(d,i) {return catScale(i);})
             .y(function(d,i) {return amtScale(d);});            
         // set up the amt values data to be passed in
@@ -206,15 +216,27 @@ var REC_CODE_DATA = {
             .append("path")
             .attr("d", amtLineGen)
             .attr("transform", "translate(0," + (cntHeight + midPad) + ")")
-            .attr("class", function(d,i) {return 'lt'+(2+i) + ' lt';});
+            .attr("class", function(d,i) {return 'lt'+(i) + ' lt';})
+            .attr("id", function(d,i){return 'rec-data-actual-amt'+i;});
         // gen amt trend reg lines
         amtTrendValues.forEach(function(d,i){
             svg.append("path")
-               .attr("d","M " + catScale(d[0][0]) + " " + amtScale(d[0][1]) + " L " + catScale(d[1][0]) + " " + amtScale(d[1][1]))
+               .attr("d","M 0 " + d[0] + " L 580 " + d[1])
                .attr("transform", "translate(0," + (cntHeight + midPad) + ")")
-               .attr("class", function(d,i) {return 'lt'+(2+i) + ' lt';});
-            //console.log('d:' + d + ' i:' + i);
+               .attr("id","rec_code_amt_reg"+i)
+               .attr("class", function(d,j) {return 'lt'+(i) + ' lt';});
+        });        
+
+        
+        /*
+        amtTrendValues.forEach(function(d,i){
+            svg.append("path")
+               .attr("d","M " + (catScale(d[0][0])-20) + " " + amtScale(d[0][1]) + " L " + (catScale(d[1][0])-20) + " " + amtScale(d[1][1]))
+               .attr("transform", "translate(0," + (cntHeight + midPad) + ")")
+               .attr("id","rec_code_amt_reg"+i)
+               .attr("class", function(d,j) {return 'lt'+(i) + ' lt';});
         });
+        */
         /*
         svg.append("line")
             .attr("x1",)
@@ -252,6 +274,26 @@ var REC_CODE_DATA = {
                 .tickSize(-(cntHeight + midPad + amtHeight), 0, 0)
                 .tickFormat("")
             );
+        // text
+        svg.append("text")
+            .attr("class","rc-axis-label")
+            .attr("x",-80)
+            .attr("y",-40)
+            .attr("transform","rotate(-90)")        
+            .text("Count");
+        svg.append("text")
+            .attr("class","rc-axis-label")
+            .attr("x",-220)
+            .attr("y",-40)
+            .attr("transform","rotate(-90)")        
+            .text("Amount");
+        svg.append("text")
+            .attr("class","rc-axis-label")
+            .attr("x",240)
+            .attr("y",312)
+            .text("Nov. 2014");
+
+                        
         function overlayMousemove() {
           var xCoord = d3.mouse(this)[0];
           var catIndex = d3.round(catScale.invert(xCoord));
@@ -259,16 +301,65 @@ var REC_CODE_DATA = {
           var xCurr = catScale(catCurr-1);
           d3.select('div#stdout').text(xCoord + ',' +  ' ' + xCurr + ' ' + catCurr);
           if (!isNaN(xCurr)) {
+            document.getElementById("rec-curr-cat").innerText = catCurr;
             d3.select('#rec-code-cursor').attr("transform","translate(" + (xCurr) + ",0)");
-            d3.selectAll(".td").attr("display","none");
-            d3.select('#rec-code-curr-cnt0').text(dataset.values[0].cnt[catIndex]);
-            d3.selectAll(".cd").attr("display","none");
+            var tds = document.querySelectorAll('#rec-code-stats .td');
+            for (var i = 0; i < tds.length; i++) {
+              tds[i].style.display = 'none';
+            }
+            for (var i = 0; i < 4; i++) {
+              d3.select('#rec-code-curr-cnt'+i).text(dataset.values[i].cnt[catIndex]);
+              d3.select('#rec-code-curr-amt'+i).text(dataset.values[i].amt[catIndex]);
+            }
+
           }
         }
-
+        function overlayMouseOut() {
+          d3.select('#rec-code-cursor').attr("display","none");
+          var tds = document.querySelectorAll('#rec-code-stats .td');
+          for (var i = 0; i < tds.length; i++) {
+            tds[i].style.display = null;
+          }
+          var cds = document.querySelectorAll('#rec-code-stats .cd');
+          for (var i = 0; i < cds.length; i++) {
+            cds[i].innerText = '';
+          }          
+        }
     }
 
+    function recCodeStatsCbChecked(ref) {
+      var cbValue = ref.value;
+      if ('rec-code-all' === cbValue) {
+        for (var i = 0; i < 4; i++) {
+          document.getElementById('rec-code-cb'+i).checked = ref.checked;
+        }
+      }
+      for (var i = 0; i < 4; i++) {
+        var show = document.getElementById('rec-code-cb'+i).checked;
+        if (document.getElementById("rec-lines-actual").checked) {
+          document.getElementById('rec-data-actual-cnt'+i).style.display = (show)? null: 'none';
+          document.getElementById('rec-data-actual-amt'+i).style.display = (show)? null: 'none';
+        }
+        if (document.getElementById("rec-lines-trend").checked) {
+          document.getElementById('rec_code_cnt_reg'+i).style.display = (show)? null: 'none';
+          document.getElementById('rec_code_amt_reg'+i).style.display = (show)? null: 'none';
+        }
+      }
+    }
 
+    function recLinesActualTrendCbChecked(ref) {
+       var cbValue = ref.value;
+       var showActual = document.getElementById("rec-lines-actual").checked;
+       var showTrend = document.getElementById("rec-lines-trend").checked;
+       for (var i = 0; i < 4; i++) {
+         if (document.getElementById("rec-code-cb"+i).checked) {
+           document.getElementById("rec-data-actual-cnt"+i).style.display = (showActual)? null: 'none';
+           document.getElementById("rec-data-actual-amt"+i).style.display = (showActual)? null: 'none';
+           document.getElementById("rec_code_cnt_reg"+i).style.display = (showTrend)? null: 'none';
+           document.getElementById("rec_code_amt_reg"+i).style.display = (showTrend)? null: 'none';
+         }
+       }
+    }
     
     function init() {
       renderRecCodeData(REC_CODE_DATA);
@@ -279,17 +370,31 @@ var REC_CODE_DATA = {
   </head>
   <body>
 
-<table>
+<table border="1">
+  <tr>
+    <td>
+     <div>By Recommendation Codes</div>
+     <div>Nov 2014</div>
+     <div style="text-align:right">
+       <input type="checkbox" id="rec-lines-actual" value="rec-lines-actual" checked="checked" onchange="recLinesActualTrendCbChecked(this)">Actual
+       &nbsp;&nbsp;
+       <input type="checkbox" id="rec-lines-trend" value="rec-lines-trend" checked="checked" onchange="recLinesActualTrendCbChecked(this)">Trend
+     </div>
+    </td>
+    <td></td>
+  </tr>
   <tr>
     <td>
      <div id="recCodeData" class="" style="border:1px solid #c0c0c0;border-radius:4px;"></div>
     </td>
     <td>
       <div>
-        <table id="rec-code-stats">
-          <tr><th></th><th></th><th>Count</th><th>Amount</th></tr>
+        <table id="rec-code-stats" border="1">
+          <tr><th colspan="5"><span class="cd" id="rec-curr-cat"></span> Nov 2014</th></tr>
+          <tr><th><input type="checkbox" value="rec-code-all" id="rec-code-cb-all" checked="checked" onchange="recCodeStatsCbChecked(this)" /></th><th></th><th></th><th>Count</th><th>Amount</th></tr>
           <tr>
-            <td><input type="checkbox" /></td>
+            <td><input type="checkbox" value="rec-code-0" id="rec-code-cb0" checked="checked" onchange="recCodeStatsCbChecked(this)" /></td>
+            <td><div class="rec-code-swatch" style="background-color:#da70d6;"></div></td>
             <td>ACCEPT</td>
             <td>
               <span class="td">4636</span>
@@ -301,7 +406,8 @@ var REC_CODE_DATA = {
             </td>            
           </tr>
           <tr>
-            <td><input type="checkbox" /></td>
+            <td><input type="checkbox" value="rec-code-1" id="rec-code-cb1" checked="checked" onchange="recCodeStatsCbChecked(this)" /></td>
+            <td><div class="rec-code-swatch" style="background-color:#ff8c00;"></div></td>
             <td>REVIEW</td>
             <td>
               <span class="td">3329</span>
@@ -313,7 +419,8 @@ var REC_CODE_DATA = {
             </td>            
           </tr>
           <tr>
-            <td><input type="checkbox" /></td>
+            <td><input type="checkbox" value="rec-code-2" id="rec-code-cb2" checked="checked" onchange="recCodeStatsCbChecked(this)" /></td>
+            <td><div class="rec-code-swatch" style="background-color:#32cd32;"></div></td>
             <td>DECLINE</td>
             <td>
               <span class="td">1358</span>
@@ -325,7 +432,8 @@ var REC_CODE_DATA = {
             </td>            
           </tr>
           <tr>
-            <td><input type="checkbox" /></td>
+            <td><input type="checkbox" value="rec-code-3" id="rec-code-cb3" checked="checked" onchange="recCodeStatsCbChecked(this)" /></td>
+            <td><div class="rec-code-swatch" style="background-color:#1e90ff;"></div></td>
             <td>OTHER</td>
             <td>
               <span class="td">3967</span>
@@ -337,7 +445,7 @@ var REC_CODE_DATA = {
             </td>            
           </tr>
           <tr>
-            <th></th><th></th><th><span class="td">13290</span></th><th><span class="td">167853.55</span></th>
+            <th></th><th></th><th></th><th><span class="td">13290</span></th><th><span class="td">167853.55</span></th>
           </tr>                 
         </table>
       </div>
