@@ -10,6 +10,15 @@
       .axis text {font-size:0.8em;}
       .line {fill: none;stroke: steelblue;stroke-width: 1.5px;}
 
+h1 {
+    color:maroon;
+    font-size:1.2em;
+}
+h2 {
+    color:brown;
+    font-size:1.1em;    
+}
+
 .grid  {
     stroke: #c0c0c0;
     stroke-opacity: 0.2;
@@ -82,6 +91,17 @@ border-right: 5px solid transparent;
 border-top: 5px solid red;
 }
 
+div.mr-bar {
+    height:12px;
+    background-color:#fe9929;
+}
+
+.mr_l1 {
+    font-weight:bold;
+}
+.mr_l3 {
+    font-weight:bold;
+}
       
     </style>
     <script src="./res/d3.js"></script>
@@ -153,6 +173,16 @@ var REC_CODE_DATA = {
    }
 };
 
+
+var MANUAL_REVIEW_DATA = [
+  {"name":"Valid","value":724},
+  {"name":"Cancel","value":120},
+  {"name":"Fraud","value":87},
+  {"name":"Release","value":211},
+  {"name":"Hostile","value":12},
+  {"name":"Missed","value":47},
+  {"name":"Chargeback","value":72},
+];
       /*
        renders the cnt graph and the amt graphs
       */
@@ -395,8 +425,28 @@ var REC_CODE_DATA = {
        }
     }
     
+    
+    function renderManualReviewData(dataset) {
+        var tableRef = document.getElementById("mr_layout_table");
+        var countTotal = 0;
+        for (var i = 0; i < dataset.length; i++) {
+            countTotal += dataset[i].value;
+        }
+        for (var i = 0; i < dataset.length; i++) {
+            var trRef = tableRef.tBodies[0].rows[i];
+            trRef.cells[0].innerText = dataset[i].name;
+            var value = dataset[i].value
+            trRef.cells[1].innerText = value;
+            var percent = ((value/countTotal)*100).toFixed(2);
+            trRef.cells[2].innerText = percent + ' %';
+            var barHtml = '<div class="mr-bar" style="width:' + (percent*10) + 'px;"></div>';
+            trRef.cells[3].innerHTML = barHtml;
+        }
+    }
+    
     function init() {
       renderRecCodeData(REC_CODE_DATA);
+      renderManualReviewData(MANUAL_REVIEW_DATA)
     }
     
     </script>
@@ -410,7 +460,7 @@ var REC_CODE_DATA = {
 <h2>Nov 2014</h2>    
 
 
-<table borderx="1">
+<table style="border:1px solid #c0c0c0;border-radius:4px;">
   <tr>
     <th>Rule</th>
     <th>Score</th>
@@ -419,6 +469,7 @@ var REC_CODE_DATA = {
     <th></th>
     <th></th>
   </tr>
+  <tr><td colspan="6"><hr /></td></tr>
   <tr>
     <td class="rt_c1">Distance IP Address</td>
     <td class="rt_c2">850</td>
@@ -595,7 +646,7 @@ var REC_CODE_DATA = {
 <h1>Resolution Stats</h1>    
 <h2>Nov 2014</h2>  
 
-<table borderx="1">
+<table style="border:1px solid #c0c0c0;border-radius:4px;">
  <tr>
    <td class="rs_l1">Av. time to Resolve</td>
    <td><svg height="18" width="80"><g><path d="M0,2L11,18L22,0L33,12L44,8L55,12L66,16L77,6" class="tm_t"></path></g></svg></td>
@@ -627,6 +678,65 @@ var REC_CODE_DATA = {
    <td class="rs_l2">$9,877</td>
  </tr>  
 </table>
+
+<hr />
+<h1>Manual Review Spread</h1>    
+<h2>Nov 2014</h2>  
+
+<table id="mr_layout_table" style="border:1px solid #c0c0c0;border-radius:4px;">
+  <thead>
+  <tr>
+    <th></th><th></th><th></th><th></th>
+  </tr>
+  </thead>  
+  <tbody>
+  <tr>
+    <td class="mr_l1"></td>
+    <td class="mr_l2"></td>
+    <td class="mr_l3"></td>
+    <td class="mr_l4"></td>
+  </tr>
+    <tr>
+    <td class="mr_l1"></td>
+    <td class="mr_l2"></td>
+    <td class="mr_l3"></td>
+    <td class="mr_l4"></td>
+  </tr>
+    <tr>
+    <td class="mr_l1"></td>
+    <td class="mr_l2"></td>
+    <td class="mr_l3"></td>
+    <td class="mr_l4"></td>
+  </tr>
+    <tr>
+    <td class="mr_l1"></td>
+    <td class="mr_l2"></td>
+    <td class="mr_l3"></td>
+    <td class="mr_l4"></td>
+  </tr>
+    <tr>
+    <td class="mr_l1"></td>
+    <td class="mr_l2"></td>
+    <td class="mr_l3"></td>
+    <td class="mr_l4"></td>
+  </tr>
+    <tr>
+    <td class="mr_l1"></td>
+    <td class="mr_l2"></td>
+    <td class="mr_l3"></td>
+    <td class="mr_l4"></td>
+  </tr>
+    <tr>
+    <td class="mr_l1">Chargeback</td>
+    <td class="mr_l2">70</td>
+    <td class="mr_l3"></td>
+    <td class="mr_l4"></td>
+  </tr>
+  </tbody>
+</table>
+
+
+
 
 <hr />
 

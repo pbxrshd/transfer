@@ -556,26 +556,67 @@ if (typeof jQuery == 'undefined') {
 <script>
   "use strict";
   
-    var DP = (function(){
+    var SC = (function(){
       function equivInDays(encoded) {
         var periodInDaysLookup = {"d":1,"w":7,"m":30};
         return periodInDaysLookup[encoded.substr(0,1)] * parseInt(encoded.substr(1));
       }
+      function enableDateSection(enable) {
+          if (enable) {
+              jQuery('#dp_date_section').show();
+          } else {
+              jQuery('#dp_date_section').hide();
+              jQuery('#dp_s').val('');
+              jQuery('#dp_e').val('');
+          }
+      }
       function changed(ref) {
-        var wRef = jQuery('#dp_w');
-        var pValue = jQuery(ref).val();
-        if (pValue === '' || pValue.indexOf('0') === 1) {
-          wRef.hide();// the selected dp_p option does not need a dp_w value
-        } else { // the selected dp_p option needs a corresponding dp_w
-          var pEquivInDays = equivInDays(pValue);
-          jQuery('#dp_w option').each(function(i,o) {
-            // loop through to enable only the relevant dp_w's for the selelcted dp_p
-            // enable if equivInDays(w) >= equivInDays(p)
-            jQuery(o).prop('disabled',(pEquivInDays > equivInDays(o.value)));
-            //console.log(o.value + ' ~ ' + o.text);
-          });
-          wRef.val(pValue);// default to the corresponding dp_w value, if available
-          wRef.show();
+        switch (jQuery(ref).attr('id')) {
+            case 'dp_p':
+                var wRef = jQuery('#dp_w');
+                var pValue = jQuery(ref).val();
+                if (pValue === '' || pValue.indexOf('0') === 1) {
+                  wRef.hide();// the selected dp_p option does not need a dp_w value
+                } else { // the selected dp_p option needs a corresponding dp_w
+                  var pEquivInDays = equivInDays(pValue);
+                  jQuery('#dp_w option').each(function(i,o) {
+                    // loop through to enable only the relevant dp_w's for the selelcted dp_p
+                    // enable if equivInDays(w) >= equivInDays(p)
+                    jQuery(o).prop('disabled',(pEquivInDays > equivInDays(o.value)));
+                    //console.log(o.value + ' ~ ' + o.text);
+                  });
+                  wRef.val(pValue);// default to the corresponding dp_w value, if available
+                  wRef.show();
+                }            
+            break;
+            case 'sw_not_now':
+                if (jQuery(ref).prop('checked')) {
+                  jQuery('#sw_panel').removeClass('hidden');
+                } else {
+                  jQuery('#sw_panel').addClass('hidden');
+                  enableDateSection(true);
+                  jQuery('input:radio[name=sw_sched_type][value="once"]').prop('checked',true);
+                  jQuery('#sw_sched_type_options').addClass('hidden');
+                }
+                //jQuery('#sw_panel').toggleClass('hidden', !jQuery(ref).prop('checked'));
+            break;
+            case 'sw_once':
+                if('once' === ref.value) {
+                  jQuery('#sw_sched_type_options').addClass('hidden');
+                  enableDateSection(true);
+                }
+            break;
+            case 'sw_future':
+                if('future' === ref.value) {
+                  jQuery('#sw_sched_type_options').removeClass('hidden');
+                  enableDateSection(false);
+                }
+            break;
+            default:
+              if (console) {
+                  console.log('bad case' + ref);
+              }
+            break;
         }
       }
       return {
@@ -583,7 +624,20 @@ if (typeof jQuery == 'undefined') {
       };
     })();
 </script>                                        
-                                        
+                                       <!--
+if repeat radio checked - disable #
+if once radio checked, enable if disabled #
+if scheduling checked
+   if repeat radio checked - disable
+   if once radio checked - enable if disabled
+if scheduling not checked
+   enable if disabled                                       
+                     jQuery('input:radio[name=sw_sched_type]:checked').val()         
+jQuery('input:radio[name=sw_sched_type][value=once]).attr('checked', true)             
+                     
+$("input[name=Tier][value=" + $('#HiddenFieldId').val() + "]").attr('checked', true);                                        
+
+-->
                                           <label class="col-md-2 control-label acc-normal-label">Date Range</label>
                                         
                                                                           
@@ -593,7 +647,7 @@ if (typeof jQuery == 'undefined') {
 <div class="row well well-sm">
     <div class="col-md-6">
         <div class="acc-small-normal-label">Select data for</div>
-        <select name="dp_p" id="dp_p" class="form-control " onchange="DP.X(this)">
+        <select name="dp_p" id="dp_p" class="form-control " onchange="SC.X(this)">
             <option></option>
             <optgroup label="Day"></optgroup>
             <option value="d0">This day</option>
@@ -643,47 +697,71 @@ if (typeof jQuery == 'undefined') {
         </select>
     </div>
 </div>
-<div class="center">or</div>
-<div class="row well well-sm">
-    <div class="col-md-6">
+<div id="dp_date_section">
+    
+<div class="text-center">or</div>
+<div class="rowx well well-sm">
+    <!-- <div class="col-md-12"> -->
         <div class="acc-small-normal-label">Data for dates between</div>
-        <input name="dp_s" id="dp_s" class="form-control acc-datepicker  hasDatepicker">
-            <button type="button" class="ui-datepicker-trigger"></button>
-        </div>
-        <div class="col-md-6">
-            <div class="acc-small-normal-label">and</div>
-            <input name="dp_e" id="dp_e" class="form-control acc-datepicker  hasDatepicker">
-                <button type="button" class="ui-datepicker-trigger"></button>
+        <div class="row">
+          <div class="col-md-3">
+            <input name="dp_s" id="dp_s" class="form-control acc-datepicker  hasDatepicker"><button type="button" class="ui-datepicker-trigger"></button>
+          </div>
+          <div class="col-md-3">
+            <select name="sw_at_hh" id="sw_at_hh" class="form-control"><option value="00">00</option><option value="01">01</option><option value="02">02</option><option value="03">03</option><option value="04">04</option><option value="05">05</option><option value="06">06</option><option value="07">07</option><option value="08">08</option><option value="09">09</option><option value="10">10</option><option value="11">11</option><option value="12">12</option></select>
+          </div>
+          <div class="col-md-3">
+            <select name="sw_at_mm" id="sw_at_mm" class="form-control"><option value="00">00</option><option value="15">15</option><option value="30">30</option><option value="45">45</option></select>
+          </div>
+          <div class="col-md-3">
+            <select name="sw_at_ampm" id="sw_at_ampm" class="form-control"><option value="am">AM</option><option value="pm">PM</option></select>
+          </div>
+        </div>        
+    <!-- </div> -->
+    <!-- <div class="col-md-12"> -->
+        <div class="acc-small-normal-label">and</div>
+        <div class="row">
+            <div class="col-md-3">
+              <input name="dp_e" id="dp_e" class="form-control acc-datepicker  hasDatepicker"><button type="button" class="ui-datepicker-trigger"></button>
+            </div>
+            <div class="col-md-9">
+               <div class="row">
+                   <div class="col-md-4">
+<select name="sw_at_hh" id="sw_at_hh" class="form-control"><option value="00">00</option><option value="01">01</option><option value="02">02</option><option value="03">03</option><option value="04">04</option><option value="05">05</option><option value="06">06</option><option value="07">07</option><option value="08">08</option><option value="09">09</option><option value="10">10</option><option value="11">11</option><option value="12">12</option></select>                   
+                   </div>
+                   <div class="col-md-4">
+<select name="sw_at_mm" id="sw_at_mm" class="form-control"><option value="00">00</option><option value="15">15</option><option value="30">30</option><option value="45">45</option></select>                   
+                   </div>
+                   <div class="col-md-4">
+<select name="sw_at_ampm" id="sw_at_ampm" class="form-control"><option value="am">AM</option><option value="pm">PM</option></select>                   
+                   </div>
+
+               </div>
             </div>
         </div>
+    <!-- </div> -->
 </div>
+</div><!-- dp_date_section -->
+
+</div>
+
+
                                         <hr class="acc-divider">
                                       </div>
                                     </div><!-- ctrl 8 -->
-                                  
-                                
-                              
-                                
-                                  
-                                  
                                     <div class="form-group row"><!-- ctrl 9 -->
-                                      
-                                        
-                                        
                                           <label class="col-md-2 control-label acc-normal-label">Scheduling</label>
-                                        
-                                                                          
                                       <div class="col-md-10 btn-group">
-                                            <input type="checkbox" name="sw_sched" value="sw_not_now" onchange="jQuery(&#39;#sw_panel&#39;).toggleClass(&#39;hidden&#39;, !jQuery(this).prop(&#39;checked&#39;))">
+                                            <input type="checkbox" name="sw_sched" value="sw_not_now" id="sw_not_now" onchange="SC.X(this)">
     <span class="acc-small-normal-label">Check this to schedule this report and set scheduling options</span>
     <div id="sw_panel" class="panel" style="padding:4px;"><br>
         <div class="well well-sm">
           <div>
-            <input type="radio" name="sw_sched_type" value="once" checked="checked" onchange="if(&#39;once&#39;===this.value)jQuery(&#39;#sw_sched_type_options&#39;).addClass(&#39;hidden&#39;)">
+            <input type="radio" name="sw_sched_type" value="once" checked="checked" id="sw_once" onchange="SC.X(this)">
             <span class="acc-small-normal-label">Schedule one time, as soon as possible</span>
           </div>
           <div>
-            <input type="radio" name="sw_sched_type" value="future" onchange="if(&#39;future&#39;===this.value)jQuery(&#39;#sw_sched_type_options&#39;).removeClass(&#39;hidden&#39;)">
+            <input type="radio" name="sw_sched_type" value="future" id="sw_future" onchange="SC.X(this)">
             <span class="acc-small-normal-label">Repeat, using the following options</span>
           </div>
           <div id="sw_sched_type_options" class="hidden">
