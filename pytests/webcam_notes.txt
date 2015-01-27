@@ -1,0 +1,35 @@
+used guvcview to set the camera settings. the same settings seemed to persist when running the webcam program, even after exiting guvcview,
+so was able to use guvcview to adjust the camera settings for the webcam program.
+
+to run the webcam program, telling it to use the config in the file webcam.config
+
+$ webcam webcam.config
+
+webcam.config looked like this
+[grab]
+device = /dev/video0
+width = 640
+height = 480
+delay = 3
+rotate = 0
+top = 0
+left = 0
+bottom = -1
+right = -1
+quality = 95
+trigger = 0
+once = 0
+archive = /home/nrasheed/Desktop/webcam/archive/img-%H%M%S.jpg
+
+note that can set "once=1" to have it take a single image and exit. that is useful for testing.
+
+ran the following to stich the jpgs into a single avi
+$ mencoder "mf:///home/nrasheed/Desktop/webcam/archive/img*.jpg" -mf fps=25 -o /home/nrasheed/Desktop/webcam/archive/movie.avi -ovc lavc -lavcopts vcodec=msmpeg4v2:vbitrate=1200
+
+used ffmpeg to convert avi to wmv
+$ ffmpeg -i movie.avi -s 640x480 -b 1000k -vcodec wmv2 -ar 44100 -ab 56000 -ac 2 -y movie.wmv
+
+
+http://popey.com/blog/2010/12/20/my-ubuntu-webcam-setup/
+http://www.r3uk.com/index.php/home/38-software/100-webcam-capture-using-fswebcam
+http://grumbel.blogspot.com/2010/07/time-lapse-fun.html

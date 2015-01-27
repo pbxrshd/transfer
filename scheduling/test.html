@@ -1,0 +1,27 @@
+<html>
+
+<head>
+<script src="Accertify_files/jquery.min.js"></script>
+
+<script>
+  var str = '{"a":["a1","a 2"],"b":["b1"]}';
+  var obj = JSON.parse(str);
+  var arr = [];
+  
+function test() {
+  for (var k in obj) {
+    console.log(k + ' : ' + typeof (obj[k]));
+    var cobj = obj[k];
+    for (var i = 0; i < cobj.length; i++) {
+       arr.push(k + '=' + encodeURIComponent(cobj[i]));
+    }
+  }
+  
+}
+
+</script>
+</head>
+<body>
+
+</body>
+</html>
