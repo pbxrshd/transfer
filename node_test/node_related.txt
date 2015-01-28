@@ -1,0 +1,77 @@
+nodejs
+-----------------------------
+$ sudo apt-get install nodejs
+$ nodejs -v
+  v0.10.25
+$ nodejs
+> console.log('this is node');  
+> this is node
+
+$ sudo apt-get install npm
+$ sudo npm install http-server -g # -g install globally, to make available from command line
+
+$ whereis http-server
+  http-server: /usr/local/bin/http-server
+# ubuntu preferring to call it "nodejs" and not "node"
+$ sudo ln -s /usr/bin/nodejs /usr/bin/node
+
+$ http-server
+
+
+server.js:
+var http = require('http');
+var url = require("url");
+var fs = require('fs');
+
+// create the http server
+http.createServer(function (request, response) {
+  var pathname = url.parse(request.url).pathname;
+  console.log("Request for " + pathname + " received.");
+  response.writeHead(200, {"Content-Type": "text/plain"});
+  response.write(fs.readFileSync('.' + pathname));
+  response.end();
+}).listen(60143);
+console.log('running on 60143...');
+
+$ node server.js
+
+
+
+
+
+
+
+
+
+
+
+
+var http = require('http') // http module
+  , fs = require('fs')  // file system module
+  , qs = require('qs'); // querystring parser
+
+// store the contents of 'index.html' to a buffer
+var html = fs.readFileSync('./index.html');
+
+// create the http server
+http.createServer(function (req, res) {
+
+  // handle the routes
+  if (req.method == 'POST') {
+
+    // pipe the request data to the console
+    req.pipe(process.stdout);
+
+    // pipe the request data to the response to view on the web
+    res.writeHead(200, {'Content-Type': 'text/plain'});
+    req.pipe(res);
+
+  } else {
+    
+    // for GET requests, serve up the contents in 'index.html'
+    res.writeHead(200, {'Content-Type': 'text/html'});
+    res.end(html);
+  }
+
+}).listen(80);
+
