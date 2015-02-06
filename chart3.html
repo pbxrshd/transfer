@@ -66,9 +66,32 @@ function test() {
     
 }
  
+function slopeToDegrees(slope) {
+  return Math.atan(slope) * (180 / Math.PI);
+}
+    
+function test1(angleDegrees) {
+  angleDegrees = -angleDegrees;
+  var width = 100;
+  var height = 50;
+  var svg = d3.select('#stdout')
+            .append("svg")
+            .attr("width", width)
+            .attr("height", height)
+            .attr("style", "border:1px dotted red;")
+            .append("g");
+  var line = svg.append("line")
+    .attr("x1", 0)
+    .attr("y1", height/2)
+    .attr("x2", width)
+    .attr("y2", height/2)
+    .style("stroke", "rgb(6,120,155)")
+    .attr("transform",'rotate('+angleDegrees+','+(width/2)+','+(height/2)+')');
+}    
     
     function init() {
         //test()
+        //test1(30);
         render(DATA);
     }
     
@@ -99,8 +122,9 @@ function test() {
         });
         // col2 trendline
         data['V'].forEach(function(d,i){
-            html = '<span>' + 'trendline' + '</span>';
-            document.getElementById('RSSR_dc_'+i+'_2').innerHTML = html;
+            //html = '<span>' + 'trendline' + '</span>';
+            //document.getElementById('RSSR_dc_'+i+'_2').innerHTML = html;
+            generateTrendline(parseFloat(d.s), '#RSSR_dc_'+i+'_2');
         });        
         // col3 af
         data['V'].forEach(function(d,i){
@@ -141,6 +165,29 @@ function test() {
                   .attr("class", "line")
                   .attr("d", sparkline(catsArray));                  
     }
+    
+    function generateTrendline(slope, elementToAttachToSelector) {
+        var angleDegrees = Math.atan(slope) * (180 / Math.PI);
+        angleDegrees = -angleDegrees;
+        var width = 100;
+        var height = 50;
+        var svg = d3.select(elementToAttachToSelector)
+                  .append("svg")
+                  .attr("width", width)
+                  .attr("height", height)
+                  .attr("style", "border:1px dotted red;")
+                  .append("g");
+        var line = svg.append("line")
+          .attr("x1", 0)
+          .attr("y1", height/2)
+          .attr("x2", width)
+          .attr("y2", height/2)
+          .style("stroke", "rgb(6,120,155)")
+          .attr("transform",'rotate('+angleDegrees+','+(width/2)+','+(height/2)+')');
+    }
+     
+    
+    
 /*
     function init() {
       var margin = {top: 30, right: 20, bottom: 30, left: 50};
@@ -196,6 +243,11 @@ function test() {
 <div id="graph1" style="border:1px solid #c0c0c0;border-radius:4px;"></div>
 
 <div id="stdout" style="border:1px solid #c0c0c0;">stdout</div>
+
+<pre>
+http://stackoverflow.com/questions/13313043/d3-js-animate-rotation (tweening)
+http://www.mathopenref.com/coordslope.html (visual slope explanation)
+</pre>
   <script>init();</script>
   </body>
 </html>
