@@ -1,0 +1,933 @@
+<html><head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">  
+    <title>Heartbeat Dashboard</title>
+
+    <!-- TODO parameterize the inclusion of the foll. -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.4.6/d3.min.js"></script>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <style type="text/css">
+html {
+  height: 100%;
+}
+
+body {
+  margin: 20;
+  padding: 0;
+}
+
+body,table {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 14px;
+  color: #434040;
+}
+
+h1 {
+  color: #800000;
+}
+
+h2 {
+
+}
+
+div.mainLayout {
+  display: table;
+  margin: 0 auto 10px auto;
+}
+
+div.section {
+  clear: both;
+  min-width: 1024px;
+  max-width: none !important;
+  margin: 0 auto 10px auto;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+div.settings1 {
+  font-size: 18px;
+  float: right;
+}
+
+div.br {
+  clear: both;
+}
+
+div.title1 {
+  clear: both;
+  min-width: 1024px;
+  max-width: none !important;
+  margin: 20px auto;
+  font-size:30px;
+  letter-spacing: 0.03em;
+  font-weight: normal;
+  text-transform: uppercase;
+  color: inherit;
+}
+div.title2 {
+  color: maroon;
+  font-size: 1.3em;
+  font-weight: bold;
+  padding: 6px 0px 12px 0px;
+}
+div.tb1 {
+  text-align:right;
+  font-size:0.8em;
+  color:silver;
+  cursor:pointer;
+}
+
+.footer1 {
+  margin: 0 auto 0 auto
+}
+
+/* common style directives */
+.em {
+  font-weight: bold;
+}
+
+.it {
+  font-style: italic;
+}
+
+.al {
+  text-align: left;
+}
+
+.am {
+  text-align: center;
+}
+
+.ar {
+  text-align: right;
+}
+
+/* report criteria block related */
+.rc-container {
+  background-color: #f2f0f0;
+  border: 1px solid #d9d9d9;
+  padding: 15px;
+  width: 100%;
+  height: auto;  
+}
+.rc-title-row {
+  
+}
+.rc-title1 {
+  font-size: 24px;
+  color: #434040;
+  margin: 0 0 10px 0;
+  letter-spacing: 0.03em;  
+}
+.rc-title2 {
+  font-weight: normal;
+  text-align:right;
+  margin:10px 0px 0px 0px;
+}
+.rc-title-label {
+  padding: 0 10px 0 0 !important;
+  text-transform: uppercase;
+  font-size: 0.9em;
+}
+.rc-title-value {
+  font-weight: normal;
+  font-size: 0.8em;
+}
+.rc-divider {
+  border:0px;
+  border-top: 1px solid #cccccc;
+  margin: 0px 0px 18px 0px;
+}
+.rc-criteria-row {
+  
+}
+.rc-label {
+  padding: 0 10px 0 0 !important;
+  text-transform: uppercase;
+  font-size: 0.9em;
+}
+.rc-value {
+  font-weight: normal;
+  font-size: 0.8em;
+}
+
+/* banner related */
+.bnr {
+  background-color: #f2f0f0;
+  border: 1px solid #d9d9d9;
+  padding: 15px;
+  width: 100%;
+  height: auto;
+}
+
+.bnr .lbl {
+  font-weight: bold;
+  font-size: 0.9em;
+  text-align: right;
+  width: 32px;
+  white-space: nowrap;
+}
+
+.bnr .vlu {
+  font-size: 0.8em;
+  padding: 6px;
+}
+
+/* data table related */
+.data {
+  width: 100%;
+}
+
+.data th {
+  padding: 15px;
+  border-radius: 2px;
+  background-color: #434040;
+  color: #ffffff;
+}
+
+.data .th1 {
+  font-size: 0.8em;
+  background-color: #f25840;
+  border-radius: 0 0 4px 4px;
+  text-transform: uppercase;
+  padding: 15px;
+  line-height: 1.42857143;
+}
+
+.data .th2 {
+  background-color: #f36953;
+  border-radius: 0 0 4px 4px;
+}
+
+/*    data contains dr datarows */
+.data tr.dr:hover {
+  background-color: #fed976;
+  border: 1px solid black;
+}
+
+.data tr.dr td {
+  padding: 4px;
+}
+
+.data th, td {
+  font-size: 0.9em;
+}
+
+tr.z0 {
+  background-color: #ffffff;
+}
+
+tr.z1 {
+  background-color: #f1f1f1;
+}
+
+.data>tbody>tr:hover>td,.data>tbody>tr:hover>th {
+  background-color:#e0edee;
+}
+
+.data tbody th, .data tbody td {
+  /*padding: 8px 10px;*/
+}
+
+div.msg { /* status mesg */
+  font-weight: bold;
+  color: #800000;
+}
+
+.spaced-box { /* evenly distribute spaced-items in this container */
+  text-align: justify;
+}
+
+.spaced-item {
+  display: inline-block;
+}
+
+.spaced-buf { /* buffer */
+  width: 100%;
+  display: inline-block;
+  font-size: 0;
+  line-height: 0;
+}
+
+.sh1 { /* subheader1 */
+  background-color: #fd8d3c;
+  margin-left: 10px;
+  padding: 6px;
+  border-radius: 0 0 0 4px;
+}
+
+.sh1 .lbl {
+  font-weight: bold;
+  padding: 4px;
+}
+
+.sh1 .vlu {
+  font-style: italic;
+  padding: 4px;
+}
+
+.sh2 { /* subheader2 */
+  background-color: #feb24c;
+  margin-left: 18px;
+  padding: 4px;
+  border-radius: 0 0 0 4px;
+}
+
+.sh2 .lbl {
+  font-weight: bold;
+  padding: 4px;
+}
+
+.sh2 .vlu {
+  font-style: italic;
+  padding: 4px;
+}
+
+.sf1 { /* subfooter1 */
+  color: gray;
+  margin-top: 12px;
+}
+
+.sf1 .vlu {
+  font-style: italic;
+  padding: 4px;
+}
+
+
+.sflabel {
+  font-size:0.9em;
+  font-style:italic;
+  color:#6c7477;
+  padding: 24px 0px 0px 0px;
+}
+
+/* link hover context menus related */
+.linkctx {
+  color: #4b0082;
+  cursor: pointer;
+  display: inline;
+}
+
+.linkctx:hover {
+  color: #ff0000;
+}
+
+.linkctx:hover>ul {
+  display: block;
+}
+
+.linkctx>ul {
+  display: none;
+  position: absolute;
+  background: rgba(255, 255, 255, 1);
+  color: #4b0082;
+  border: 1px solid black;
+  border-radius: 4px;
+  padding: 8px;
+  margin: 0px;
+  box-shadow: -8px 8px 8px #888888;
+  list-style-type: none;
+  font-weight: normal;
+}
+
+.linkctx li:hover {
+  color: #ff0000;
+}
+
+/* docked options menu related */
+div.dock1 {
+  position: fixed;
+  top: 5px;
+  right: 5px;
+}
+
+div.dock1:hover .dock1Content {
+  visibility: visible;
+}
+
+div.dock1Content {
+  position: absolute;
+  visibility: hidden;
+  background: rgba(255, 255, 255, 1);
+  top: 0px;
+  right: 0px;
+  padding: 4px;
+  border: 1px solid black;
+  border-radius: 4px;
+  box-shadow: -8px 8px 6px #c0c0c0;;
+}
+
+div.dock1 .dock1Item {
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+div.dock1 .dock1Item:hover {
+  color: red;
+}
+
+hr .divider {
+  background-color: #cccccc;
+}
+
+/********************
+ * Tree Reports
+ */
+
+.node {
+    list-style-type: none;
+}
+
+li.level-0 > label, li.level-0 > span {
+    color: #333333;
+    font-size: 20px;
+}
+
+li.level-1 > label, li.level-1 > span{
+    font-weight: bold;
+    font-size: 14px;
+}
+
+li.level-2 > label, li.level-2 > span{
+    text-transform: uppercase;
+}
+
+.bracket:after {
+    content:"]";
+}
+
+.bracket:before {
+    content:"[";
+}
+
+/* Equivalent to fa and fa-minus-square */
+li.expanded > label:first-child::before {
+    font-family:FontAwesome,'Open Sans', sans-serif;
+    font-style:normal;
+    font-weight:normal;
+    display:inline-block;
+    line-height:1;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+
+    content:"\f146";
+}
+
+/* Equivalent to fa and fa-plus-square-o */
+li.collapsed > label:first-child::before {
+    font-family:FontAwesome,'Open Sans', sans-serif;
+    font-style:normal;
+    font-weight:normal;
+    display:inline-block;
+    line-height:1;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+
+    content:"\f196"
+}
+
+ul.expanded {
+    display: inherit !important;
+}
+
+ul.collapsed {
+    display: none !important;
+}
+
+div.expand-links {
+    text-align: center;
+}
+
+.trend1-up:before {
+  content: "\f139"; /* fa-chevron-circle-up */
+  font-family:FontAwesome,'Open Sans', sans-serif;
+  font-style:normal;
+  font-weight:normal;
+  color : red;
+}
+.trend1-down:before {
+  content: "\f13a"; /* fa-chevron-circle-down */
+  font-family:FontAwesome,'Open Sans', sans-serif;
+  font-style:normal;
+  font-weight:normal;  
+  color : green;
+}
+/**
+ * End Tree Reports CSS
+ ********************/
+
+/*
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,300,400,700);
+*/
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 300;
+  src: local('Open Sans Light'), local('OpenSans-Light'), url(//fonts.gstatic.com/s/opensans/v10/DXI1ORHCpsQm3Vp6mXoaTXhCUOGz7vYGh680lGh-uXM.woff) format('woff');
+}
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Open Sans'), local('OpenSans'), url(//fonts.gstatic.com/s/opensans/v10/cJZKeOuBrn4kERxqtaUH3T8E0i7KZn-EPnyo3HZu7kw.woff) format('woff');
+}
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Open Sans Bold'), local('OpenSans-Bold'), url(//fonts.gstatic.com/s/opensans/v10/k3k702ZOKiLJc3WVjuplzHhCUOGz7vYGh680lGh-uXM.woff) format('woff');
+}
+@font-face {
+  font-family: 'Open Sans';
+  font-style: italic;
+  font-weight: 300;
+  src: local('Open Sans Light Italic'), local('OpenSansLight-Italic'), url(//fonts.gstatic.com/s/opensans/v10/PRmiXeptR36kaC0GEAetxh_xHqYgAV9Bl_ZQbYUxnQU.woff) format('woff');
+}
+@font-face {
+  font-family: 'Open Sans';
+  font-style: italic;
+  font-weight: 400;
+  src: local('Open Sans Italic'), local('OpenSans-Italic'), url(//fonts.gstatic.com/s/opensans/v10/xjAJXh38I15wypJXxuGMBobN6UDyHWBl620a-IRfuBk.woff) format('woff');
+}
+@font-face {
+  font-family: 'Open Sans';
+  font-style: italic;
+  font-weight: 700;
+  src: local('Open Sans Bold Italic'), local('OpenSans-BoldItalic'), url(//fonts.gstatic.com/s/opensans/v10/PRmiXeptR36kaC0GEAetxjqR_3kx9_hJXbbyU8S6IN0.woff) format('woff');
+}
+
+    </style>
+    <style type="text/css">
+      div.composite-div1 {
+        border:1px solid silver;
+        border-radius:4px;
+        padding:8px;
+        margin: 6px 0px 6px 0px;
+      }
+    </style>
+    <script>
+"use strict";
+
+var RPT = (function() {
+    //var CRITERIA_DATA = {};
+    var CRITERIA_SERIALIZED = 'criteria';
+    var REFERENCES_SERIALIZED = 'rptrefs';
+    var SCR_FORM_ACTION = '/report/rptcontrol/run';
+    var RDID = 'rdid';
+    var PRESET = 'preset';
+    
+    function loadReport(rptRefKey, params) {
+        var rptRefs = JSON.parse(document.getElementById(REFERENCES_SERIALIZED).value);
+        var rptRefValue = rptRefs[rptRefKey];
+
+        // TODO destroy cform, if already present
+
+        var cform = document.createElement('form');
+        cform.setAttribute('method', 'post');
+        cform.setAttribute('action', SCR_FORM_ACTION);
+        cform.setAttribute('id','rpt_cform');
+        cform.setAttribute('target','_blank');
+        // create an assoc array to hold cform fields 
+        var cfields = {};
+        //    put in some required fields...
+        cfields[RDID] = rptRefValue;
+        cfields[PRESET] = true;
+        //    add in the embedded critera...
+        var criteria = JSON.parse(document.getElementById(CRITERIA_SERIALIZED).value);
+        for (var key in criteria) {
+            if (criteria.hasOwnProperty(key)) {
+                cfields[key] = criteria[key];
+            }
+        }
+        //    now add in fields from the params, replacing any with the same name from criteria 
+        if (params) {
+            for (var key in params) {
+                if (params.hasOwnProperty(key)) {
+                    cfields[key] = params[key];
+                }
+            }
+        }
+        // create input fields from the collected fields
+        for (var key in cfields) {
+            if (cfields.hasOwnProperty(key)) {
+                var value = cfields[key];
+                if (value instanceof Array) {
+                    for (var i = 0; i < value.length;i++) {
+                        cform.appendChild(createHiddenInput(key, value[i]));
+                    }
+                } else {
+                    cform.appendChild(createHiddenInput(key, value));
+                }
+            }
+        }
+        document.body.appendChild(cform);
+        cform.submit();
+    }
+    //
+    function createHiddenInput(name,value) {
+        var input = document.createElement('input');
+        input.setAttribute('type', 'hidden');
+        input.setAttribute('name',name);
+        input.setAttribute('value',value);
+        return input;
+    }
+    //
+    function showTransaction(transactionId, bucketId) {
+        bucketId = bucketId || '1';
+        window.open('/jsp/agent/queue/transactiondetail.jsf?transId='+transactionId+'&bucketId='+bucketId+'&mode=V','_blank');
+    }
+    //
+    function makeReportData(rptId) {
+        var data = {};
+        data[RDID] = rptId;
+        var criteria = JSON.parse(document.getElementById(CRITERIA_SERIALIZED).value);
+        var criteriaKeys = Object.keys(criteria);
+        for (var i = 0; i < criteriaKeys.length; i++) {
+            var criteriaKey = criteriaKeys[i];
+            data[criteriaKey] = criteria[criteriaKey];
+        }
+        return data;
+    }
+    //
+    return {
+        CRITERIA_SERIALIZED : CRITERIA_SERIALIZED,
+        REFERENCES_SERIALIZED : REFERENCES_SERIALIZED,
+        SCR_FORM_ACTION : SCR_FORM_ACTION,
+        RDID : RDID,
+        PRESET : PRESET,
+        makeReportData : makeReportData,
+        loadReport : loadReport,
+        showTransaction : showTransaction
+    };
+})();
+
+/**
+ * Helper to retrieve report related data from radar through the interceptas report pages.
+ */
+var DATAPIPE = (function() {
+    var OUTPUT_TYPE_KEY = "fmt";
+    var OUTPUT_TYPE_HTML_FRAGMENT = "html_fragment";
+    var OUTPUT_TYPE_JSON = "json";
+    var url = RPT.SCR_FORM_ACTION;
+    /*
+     * Replace innerHTML (and execute inline scripts) into "elementRef" with result of ajax post of "data".
+     *  eg. DATAPIPE.loadFragment({a:1,b:2},document.getElementById('div1'));
+     */
+    function loadFragment(data, elementRef) {
+        if (typeof data !== 'undefined') {
+            data[OUTPUT_TYPE_KEY] = OUTPUT_TYPE_HTML_FRAGMENT;
+            data[RPT.PRESET] = true;
+            jQuery(elementRef).load(url, toPostableJson(data));
+        }
+    }
+    /*
+     * Retrieve result of ajax post of "data". Invokes the function "callback" with the result as argument.
+     *  eg. DATAPIPE.getFragment({a:1,b:2},function(recvd){console.log('recvd:'+recvd);});
+     */
+    function getFragment(data, callback) {
+        if (typeof data !== 'undefined') {
+            data[OUTPUT_TYPE_KEY] = OUTPUT_TYPE_HTML_FRAGMENT;
+            data[RPT.PRESET] = true;
+            jQuery.post(url, toPostableJson(data))
+                  .done(function(recvd) {
+                          if (typeof callback === 'function') {
+                            callback(recvd);
+                          }
+                   })
+                  .fail(function(jqXHR,textStatus,errorThrown) {
+                          if (console) {
+                            console.log('error gettingFragment'+textStatus+','+errorThrown+' for '+data);
+                          }
+                   });
+        }
+    }
+    /*
+     * Retrieve result of ajax post of "data". Expecting result to be valid JSON.
+     * Result is parsed into a javascript literal. Invokes the function "callback" with the result as argument.
+     *  eg. DATAPIPE.getJson({a:1,b:2},function(recvd){console.log('recvd:'+recvd);});
+     */
+    function getJson(data, callback) {
+        if (typeof data !== 'undefined') {
+            data[OUTPUT_TYPE_KEY] = OUTPUT_TYPE_JSON;
+            data[RPT.PRESET] = true;
+            jQuery.post(url, toPostableJson(data))
+                  .done(function(recvd) {
+                          //console.log(recvd);
+                          if (typeof callback === 'function') {
+                            //alert("parsing" + JSON.stringify(JSON.parse(recvd)));
+                            try {
+                              callback(JSON.parse(recvd));
+                            } catch(e) {
+                              if (console) {
+                                console.log('error '+e+' gettingJson for\n'+data+'\ngot '+recvd);
+                              }
+                              callback({'error':recvd});
+                            }
+                          }})
+                  .fail(function(jqXHR,textStatus,errorThrown) {
+                          if(console) {
+                            console.log('error gettingjson '+textStatus+','+errorThrown+' for '+data);
+                          }
+                          });
+        }
+    }
+    /*
+     * 
+     */
+    function toPostableJson(data) {
+        var postableArray = [];
+        var dataKeys = Object.keys(data);
+        for (var i = 0; i < dataKeys.length; i++) {
+            var dataKey = dataKeys[i];
+            var dataValue = data[dataKey];
+            if (Array.isArray(dataValue)) {
+                for (var j = 0; j < dataValue.length; j++) {
+                    postableArray.push(dataKey + '=' + encodeURIComponent(dataValue[j]));
+                }
+            } else {
+                postableArray.push(dataKey + '=' + encodeURIComponent(dataValue));
+            }
+        }
+        return postableArray.join('&');
+    }
+    
+    return {
+        loadFragment : loadFragment,
+        getFragment : getFragment,
+        getJson : getJson,
+        toPostableJson : toPostableJson
+    };
+})();
+
+var MATH = (function() {
+    // returns slope, intercept of the line
+    function leastSquares(xSeries, ySeries) {
+        var reduceSumFunc = function(prev, cur) { return prev + cur; };
+        var xBar = xSeries.reduce(reduceSumFunc) * 1.0 / xSeries.length;
+        var yBar = ySeries.reduce(reduceSumFunc) * 1.0 / ySeries.length;
+        var ssXX = xSeries.map(function(d) { return Math.pow(d - xBar, 2); })
+            .reduce(reduceSumFunc);
+        var ssYY = ySeries.map(function(d) { return Math.pow(d - yBar, 2); })
+            .reduce(reduceSumFunc);
+        var ssXY = xSeries.map(function(d, i) { return (d - xBar) * (ySeries[i] - yBar); })
+            .reduce(reduceSumFunc);
+        var slope = ssXY / ssXX;
+        var intercept = yBar - (xBar * slope);
+        //var rSquare = Math.pow(ssXY, 2) / (ssXX * ssYY);
+        return [slope, intercept];
+    }
+    //
+    return {
+        leastSquares : leastSquares
+    };
+})();
+
+
+    
+    </script>  
+    <script>
+    "use strict";
+    var COMPOSITE = (function() {
+        var REPORTS = [{"id":"5237260000000000461","name":"rulesTrippedAggregateDBReport"},{"id":"5237260000000000481","name":"resHistStatsDBReport"},{"id":"5237260000000000407","name":"resolutionSpreadDBReport"}];
+        function process() {
+            for (var i = 0; i < REPORTS.length; i++) {
+                var currentReport = REPORTS[i];
+                if (console) {
+                    console.log('processing:' + currentReport.name);
+                }
+                var data = RPT.makeReportData(currentReport.id);
+                DATAPIPE.loadFragment(data, document.getElementById('report_container_'+currentReport.name));
+            }
+        }
+
+        return {
+            REPORTS : REPORTS,
+            process : process
+        };
+  })();
+  </script>
+  </head>
+  <body>
+  <!-- composite_report_layout -->
+  <div class="mainLayout">
+
+    <div class="section">
+      <div class="title1">Heartbeat Dashboard</div>
+    </div> <!-- section -->
+  
+    <input type="hidden" id="criteria" value="{&quot;vt&quot;:[&quot;5237260000000005302&quot;,&quot;5237260000000002081&quot;],&quot;dp_p&quot;:[&quot;d2&quot;],&quot;dp_w&quot;:[&quot;d2&quot;],&quot;h&quot;:[&quot;5237260000000004022&quot;]}">
+  
+    <div class="section">
+      
+
+
+<div class="container rc-container">
+  <div class="row rc-title-row">
+    <div class="col-md-4 rc-title1">Report Criteria</div>
+    <div class="col-md-8 rc-title2"><label class="rc-title-label">Date Period:</label>  <label class="rc-title-value">Feb 11, 2015 12:00:00 AM - Feb 13, 2015 12:00:00 AM</label></div>
+  </div>
+  <hr class="rc-divider">
+  
+    
+      <div class="row rc-criteria-row">
+        <div class="col-md-2"><label class="rc-label">Data Source:</label></div>
+        <div class="col-md-10"><label class="rc-value">Best Buy Production</label></div>
+      </div>
+    
+  
+    
+      <div class="row rc-criteria-row">
+        <div class="col-md-2"><label class="rc-label">Data Type:</label></div>
+        <div class="col-md-10"><label class="rc-value">Best Buy Orders,Best Buy Mobile</label></div>
+      </div>
+    
+  
+    
+  
+</div>
+
+    </div> <!-- section -->
+  
+    <div class="section">
+      <div id="main_container">
+        
+          <div class="composite-div1" id="report_container_rulesTrippedAggregateDBReport">
+
+<style type="text/css">
+div#FRAGMENT_RTA path {
+  stroke: #696969;
+  stroke-width: 1;
+  fill: none;
+}
+div#FRAGMENT_RTA path.sparkLine1 {
+  stroke: #696969;
+  stroke-width: 1;
+  fill: none;
+}
+
+div#FRAGMENT_RTA th  {
+  color:#64a3a8;
+  font-size:0.9em;
+  border-bottom:1px solid #c0c0c0;
+  text-align:center;
+  background-color:#c0c0c0;
+  border:1px solid white;
+}
+
+td.RTA_dtcs0 {
+    padding: 2px 8px 2px 18px;
+    text-align:right;
+}
+td.RTA_dtcs1 {
+    text-align:right;
+    color:#64a3a8;
+    padding: 0px 10px 0px 18px;
+}
+td.RTA_dtcs2 {
+    text-align:right;
+    font-weight:bold;
+    color:#64a3a8;
+    padding: 0px 10px 0px 18px;
+}
+td.RTA_dtcs5 {
+    text-align:right;
+    color:#64a3a8;
+    padding: 0px 10px 0px 18px;
+}
+td.RTA_dtcs6 {
+    text-align:right;
+    font-weight:bold;
+    color:#64a3a8;
+    padding: 0px 10px 0px 18px;
+}
+td.RTA_dtcs9 {
+    text-align:right;
+    color:#64a3a8;
+    padding: 0px 10px 0px 18px;
+}
+td.RTA_dtcs10 {
+    text-align:right;
+    font-weight:bold;
+    color:#64a3a8;
+    padding: 0px 10px 0px 18px;
+}
+</style>
+
+<div id="FRAGMENT_RTA">
+  <div class="tb1" onclick="RULES_TRIPPED_ARGGREGATE_REPORT.loadData()"><span id="RTA_execOn">Feb 13, 2015 10:20:05 AM</span></div>
+  <div class="title2">Rules Tripped Aggregate (By Hour)</div>
+  
+  <div class="section">
+    <div id="RTA_status_mesg" class="msg"></div>
+  </div> <!-- section -->
+
+  <table>
+   <thead>
+    <tr class="thA">
+     <th class="th0_0" colspan="2"></th>
+     <th class="th0_1" colspan="4">Times tripped</th>
+     <th class="th0_2" colspan="5">Resolved Fraud Transactions</th>
+    </tr>   
+    <tr class="thB">
+     <th class="th1_0">Rule</th>
+     <th class="th1_1">Score</th>
+     <th class="th1_2">Count</th>
+     <th class="th1_3" colspan="3">Trend</th>
+     <th class="th1_4">Count</th>
+     <th class="th1_5" colspan="3">Trend</th>
+     <th class="th1_6">%</th>
+    </tr>
+   </thead>
+   <tbody id="RTA_dataListBody">
+    <!-- dynamic fill -->
+<tr id="RTA_dr0"><td id="RTA_dc_0_0" class="RTA_dtcs0"><span>Call Iovation Rule set</span></td><td id="RTA_dc_0_1" class="RTA_dtcs1"><span>999</span></td><td id="RTA_dc_0_2" class="RTA_dtcs2"><span>10,983</span></td><td id="RTA_dc_0_3" class="RTA_dtcs3"><svg width="100" height="30"><g transform="translate(4,16)"><path class="sparkLine1" d="M0,0Q8.177777777777777,13.460869565217392,10.222222222222221,13.130434782608695C13.288888888888888,12.634782608695652,17.377777777777776,-0.4021739130434776,20.444444444444443,-3.3043478260869565S27.599999999999998,-7.3847826086956525,30.666666666666664,-6.217391304347826S37.822222222222216,3.1999999999999993,40.888888888888886,4.478260869565217S48.044444444444444,3.2760869565217385,51.111111111111114,2.304347826086956S58.266666666666666,0.4456521739130439,61.33333333333333,-2S68.48888888888888,-10.745652173913044,71.55555555555554,-14S78.71111111111111,-22.34565217391304,81.77777777777777,-23.695652173913043Q83.82222222222222,-24.59565217391304,92,-23"></path></g></svg></td><td id="RTA_dc_0_4" class="RTA_dtcs4"><i class="trend1-up"></i></td><td id="RTA_dc_0_5" class="RTA_dtcs5"></td><td id="RTA_dc_0_6" class="RTA_dtcs6"><span>105</span></td><td id="RTA_dc_0_7" class="RTA_dtcs7"><svg width="100" height="30"><g transform="translate(4,16)"><path class="sparkLine1" d="M0,-6Q8.177777777777777,-3.2,10.222222222222221,-2C13.288888888888888,-0.19999999999999973,17.377777777777776,6.45,20.444444444444443,6S27.599999999999998,-4.1,30.666666666666664,-5S37.822222222222216,-0.15000000000000002,40.888888888888886,0S48.044444444444444,-4,51.111111111111114,-4S58.266666666666666,-0.9000000000000001,61.33333333333333,0S68.48888888888888,2.3,71.55555555555554,2S78.71111111111111,-1.0999999999999999,81.77777777777777,-2Q83.82222222222222,-2.6,92,-4"></path></g></svg></td><td id="RTA_dc_0_8" class="RTA_dtcs8"><i class="trend1-down"></i></td><td id="RTA_dc_0_9" class="RTA_dtcs9"></td><td id="RTA_dc_0_10" class="RTA_dtcs10"><span>1%</span></td></tr>
+<tr id="RTA_dr3"><td id="RTA_dc_3_0" class="RTA_dtcs0"><span>Assign Orders to ALL Nike Orders Assignment Group</span></td><td id="RTA_dc_3_1" class="RTA_dtcs1"><span>999</span></td><td id="RTA_dc_3_2" class="RTA_dtcs2"><span>10,867</span></td><td id="RTA_dc_3_3" class="RTA_dtcs3"><svg width="100" height="30"><g transform="translate(4,16)"><path class="sparkLine1" d="M0,6.4Q8.177777777777777,1.8400000000000003,10.222222222222221,1.2000000000000002C13.288888888888888,0.24,17.377777777777776,0.4800000000000001,20.444444444444443,0S27.599999999999998,-2.732,30.666666666666664,-2S37.822222222222216,4.25,40.888888888888886,4.88S48.044444444444444,4.372000000000001,51.111111111111114,2.2S58.266666666666666,-7.206000000000001,61.33333333333333,-9.600000000000001S68.48888888888888,-12.884,71.55555555555554,-13.76S78.71111111111111,-14.54,81.77777777777777,-15.44Q83.82222222222222,-16.04,92,-19.76"></path></g></svg></td><td id="RTA_dc_3_4" class="RTA_dtcs4"><i class="trend1-up"></i></td><td id="RTA_dc_3_5" class="RTA_dtcs5"></td><td id="RTA_dc_3_6" class="RTA_dtcs6"><span>97</span></td><td id="RTA_dc_3_7" class="RTA_dtcs7"><svg width="100" height="30"><g transform="translate(4,16)"><path class="sparkLine1" d="M0,-2Q8.177777777777777,5.2,10.222222222222221,6C13.288888888888888,7.2,17.377777777777776,6.9,20.444444444444443,6S27.599999999999998,1.5000000000000002,30.666666666666664,0S37.822222222222216,-1.8999999999999995,40.888888888888886,-4S48.044444444444444,-15.2,51.111111111111114,-14S58.266666666666666,0.9999999999999996,61.33333333333333,4S68.48888888888888,6.9,71.55555555555554,6S78.71111111111111,1.0000000000000004,81.77777777777777,-2Q83.82222222222222,-4,92,-14"></path></g></svg></td><td id="RTA_dc_3_8" class="RTA_dtcs8"><i class="trend1-up"></i></td><td id="RTA_dc_3_9" class="RTA_dtcs9"></td><td id="RTA_dc_3_10" class="RTA_dtcs10"><span>1%</span></td></tr>
+<tr id="RTA_dr4"><td id="RTA_dc_4_0" class="RTA_dtcs0"><span>Run Nike US Quick Check Rule Set</span></td><td id="RTA_dc_4_1" class="RTA_dtcs1"><span>999</span></td><td id="RTA_dc_4_2" class="RTA_dtcs2"><span>7,652</span></td><td id="RTA_dc_4_3" class="RTA_dtcs3"><svg width="100" height="30"><g transform="translate(4,16)"><path class="sparkLine1" d="M0,5.58974358974359Q8.177777777777777,2.4000000000000004,10.222222222222221,1.6410256410256414C13.288888888888888,0.5025641025641028,17.377777777777776,-1.3948717948717948,20.444444444444443,-2S27.599999999999998,-2.6931623931623934,30.666666666666664,-2.393162393162393S37.822222222222216,-0.9102564102564104,40.888888888888886,0S48.044444444444444,2.908547008547009,51.111111111111114,3.6752136752136755S58.266666666666666,4.8470085470085476,61.33333333333333,5.111111111111112S68.48888888888888,5.551282051282052,71.55555555555554,5.435897435897437S78.71111111111111,4.423931623931624,81.77777777777777,4.341880341880342Q83.82222222222222,4.287179487179488,92,4.888888888888889"></path></g></svg></td><td id="RTA_dc_4_4" class="RTA_dtcs4"><i class="trend1-down"></i></td><td id="RTA_dc_4_5" class="RTA_dtcs5"></td><td id="RTA_dc_4_6" class="RTA_dtcs6"><span>78</span></td><td id="RTA_dc_4_7" class="RTA_dtcs7"><svg width="100" height="30"><g transform="translate(4,16)"><path class="sparkLine1" d="M0,-10Q8.177777777777777,-6.4,10.222222222222221,-5C13.288888888888888,-2.8999999999999995,17.377777777777776,2.9499999999999997,20.444444444444443,4S27.599999999999998,2,30.666666666666664,2S37.822222222222216,4.3,40.888888888888886,4S48.044444444444444,0.6000000000000001,51.111111111111114,0S58.266666666666666,-0.7500000000000001,61.33333333333333,0S68.48888888888888,4.4,71.55555555555554,5S78.71111111111111,5.050000000000001,81.77777777777777,4Q83.82222222222222,3.3,92,-2"></path></g></svg></td><td id="RTA_dc_4_8" class="RTA_dtcs8"><i class="trend1-down"></i></td><td id="RTA_dc_4_9" class="RTA_dtcs9"></td><td id="RTA_dc_4_10" class="RTA_dtcs10"><span>1%</span></td></tr>
+<tr id="RTA_dr5"><td id="RTA_dc_5_0" class="RTA_dtcs0"><span>Run Nike US General Rule Set</span></td><td id="RTA_dc_5_1" class="RTA_dtcs1"><span>999</span></td><td id="RTA_dc_5_2" class="RTA_dtcs2"><span>7,557</span></td><td id="RTA_dc_5_3" class="RTA_dtcs3"><svg width="100" height="30"><g transform="translate(4,16)"><path class="sparkLine1" d="M0,0Q8.177777777777777,7.261728395061728,10.222222222222221,7.061728395061728C13.288888888888888,6.761728395061728,17.377777777777776,-0.6074074074074074,20.444444444444443,-2S27.599999999999998,-3.2074074074074077,30.666666666666664,-2.2222222222222223S37.822222222222216,3.1567901234567897,40.888888888888886,4.567901234567901S48.044444444444444,6.566666666666666,51.111111111111114,7.185185185185185S58.266666666666666,8.587654320987653,61.33333333333333,8.691358024691358S68.48888888888888,8.072839506172839,71.55555555555554,7.876543209876543S78.71111111111111,7.29753086419753,81.77777777777777,7.382716049382715Q83.82222222222222,7.439506172839505,92,8.444444444444445"></path></g></svg></td><td id="RTA_dc_5_4" class="RTA_dtcs4"><i class="trend1-down"></i></td><td id="RTA_dc_5_5" class="RTA_dtcs5"></td><td id="RTA_dc_5_6" class="RTA_dtcs6"><span>67</span></td><td id="RTA_dc_5_7" class="RTA_dtcs7"><svg width="100" height="30"><g transform="translate(4,16)"><path class="sparkLine1" d="M0,-6Q8.177777777777777,-3.1000000000000005,10.222222222222221,-2C13.288888888888888,-0.34999999999999964,17.377777777777776,4.25,20.444444444444443,5S27.599999999999998,3.45,30.666666666666664,3S37.822222222222216,2.45,40.888888888888886,2S48.044444444444444,-0.15000000000000002,51.111111111111114,0S58.266666666666666,2.0999999999999996,61.33333333333333,3S68.48888888888888,6.15,71.55555555555554,6S78.71111111111111,2.9000000000000004,81.77777777777777,2Q83.82222222222222,1.4,92,0"></path></g></svg></td><td id="RTA_dc_5_8" class="RTA_dtcs8"><i class="trend1-down"></i></td><td id="RTA_dc_5_9" class="RTA_dtcs9"></td><td id="RTA_dc_5_10" class="RTA_dtcs10"><span>1%</span></td></tr>
+<tr id="RTA_dr7"><td id="RTA_dc_7_0" class="RTA_dtcs0"><span>Run Nike EMEA Rule Set</span></td><td id="RTA_dc_7_1" class="RTA_dtcs1"><span>999</span></td><td id="RTA_dc_7_2" class="RTA_dtcs2"><span>3,449</span></td><td id="RTA_dc_7_3" class="RTA_dtcs3"><svg width="100" height="30"><g transform="translate(4,16)"><path class="sparkLine1" d="M0,-2.2073324905183314Q8.177777777777777,-2.2465233881163083,10.222222222222221,-2.247787610619469C13.288888888888888,-2.2496839443742096,17.377777777777776,-2.2465233881163083,20.444444444444443,-2.2199747155499368S27.599999999999998,-2.103792667509482,30.666666666666664,-2.0707964601769913S37.822222222222216,-2.0739570164348926,40.888888888888886,-2S48.044444444444444,-1.6991150442477876,51.111111111111114,-1.577749683944374S58.266666666666666,-1.3395701643489253,61.33333333333333,-1.1908975979772438S68.48888888888888,-0.7561314791403286,71.55555555555554,-0.586599241466498S78.71111111111111,-0.14867256637168136,81.77777777777777,-0.060682680151706636Q83.82222222222222,-0.0020227560050568305,92,0"></path></g></svg></td><td id="RTA_dc_7_4" class="RTA_dtcs4"><i class="trend1-down"></i></td><td id="RTA_dc_7_5" class="RTA_dtcs5"></td><td id="RTA_dc_7_6" class="RTA_dtcs6"><span>38</span></td><td id="RTA_dc_7_7" class="RTA_dtcs7"><svg width="100" height="30"><g transform="translate(4,16)"><path class="sparkLine1" d="M0,-1.7777777777777777Q8.177777777777777,-1.7555555555555555,10.222222222222221,-1.7777777777777777C13.288888888888888,-1.8111111111111111,17.377777777777776,-2.2666666666666666,20.444444444444443,-2S27.599999999999998,-0.09999999999999999,30.666666666666664,0S37.822222222222216,-1.2000000000000002,40.888888888888886,-1.3333333333333335S48.044444444444444,-0.9222222222222222,51.111111111111114,-0.8888888888888888S58.266666666666666,-1.1111111111111112,61.33333333333333,-1.1111111111111112S68.48888888888888,-0.9222222222222222,71.55555555555554,-0.8888888888888888S78.71111111111111,-0.8888888888888888,81.77777777777777,-0.8888888888888888Q83.82222222222222,-0.8888888888888888,92,-0.8888888888888888"></path></g></svg></td><td id="RTA_dc_7_8" class="RTA_dtcs8"><i class="trend1-up"></i></td><td id="RTA_dc_7_9" class="RTA_dtcs9"></td><td id="RTA_dc_7_10" class="RTA_dtcs10"><span>1%</span></td></tr>
+<tr id="RTA_dr8"><td id="RTA_dc_8_0" class="RTA_dtcs0"><span>Run Nike EMEA Quick Check Rule Set</span></td><td id="RTA_dc_8_1" class="RTA_dtcs1"><span>999</span></td><td id="RTA_dc_8_2" class="RTA_dtcs2"><span>3,081</span></td><td id="RTA_dc_8_3" class="RTA_dtcs3"><svg width="100" height="30"><g transform="translate(4,16)"><path class="sparkLine1" d="M0,-2.3324675324675326Q8.177777777777777,-2.3758441558441556,10.222222222222221,-2.381818181818182C13.288888888888888,-2.390779220779221,17.377777777777776,-2.407012987012987,20.444444444444443,-2.3922077922077922S27.599999999999998,-2.306103896103896,30.666666666666664,-2.2831168831168833S37.822222222222216,-2.2814285714285716,40.888888888888886,-2.238961038961039S48.044444444444444,-2.095844155844156,51.111111111111114,-2S58.266666666666666,-1.7636363636363637,61.33333333333333,-1.6S68.48888888888888,-1.0922077922077924,71.55555555555554,-0.9090909090909092S78.71111111111111,-0.5155844155844156,81.77777777777777,-0.3792207792207791Q83.82222222222222,-0.2883116883116882,92,0"></path></g></svg></td><td id="RTA_dc_8_4" class="RTA_dtcs4"><i class="trend1-down"></i></td><td id="RTA_dc_8_5" class="RTA_dtcs5"></td><td id="RTA_dc_8_6" class="RTA_dtcs6"><span>36</span></td><td id="RTA_dc_8_7" class="RTA_dtcs7"><svg width="100" height="30"><g transform="translate(4,16)"><path class="sparkLine1" d="M0,-2Q8.177777777777777,-1.7428571428571429,10.222222222222221,-1.7142857142857144C13.288888888888888,-1.6714285714285715,17.377777777777776,-1.9714285714285715,20.444444444444443,-1.7142857142857144S27.599999999999998,0,30.666666666666664,0S37.822222222222216,-1.5857142857142859,40.888888888888886,-1.7142857142857144S48.044444444444444,-1.1142857142857143,51.111111111111114,-0.8571428571428572S58.266666666666666,-0.042857142857142844,61.33333333333333,0S68.48888888888888,-0.5285714285714287,71.55555555555554,-0.5714285714285716S78.71111111111111,-0.24285714285714297,81.77777777777777,-0.2857142857142858Q83.82222222222222,-0.3142857142857144,92,-0.8571428571428572"></path></g></svg></td><td id="RTA_dc_8_8" class="RTA_dtcs8"><i class="trend1-up"></i></td><td id="RTA_dc_8_9" class="RTA_dtcs9"></td><td id="RTA_dc_8_10" class="RTA_dtcs10"><span>1%</span></td></tr>
+<tr id="RTA_dr9"><td id="RTA_dc_9_0" class="RTA_dtcs0"><span>Run Nike High Risk 1 Rule Set</span></td><td id="RTA_dc_9_1" class="RTA_dtcs1"><span>999</span></td><td id="RTA_dc_9_2" class="RTA_dtcs2"><span>2,611</span></td><td id="RTA_dc_9_3" class="RTA_dtcs3"><svg width="100" height="30"><g transform="translate(4,16)"><path class="sparkLine1" d="M0,-0.6127167630057804Q8.177777777777777,-1.73757225433526,10.222222222222221,-1.676300578034682C13.288888888888888,-1.584393063583815,17.377777777777776,-0.14219653179190753,20.444444444444443,0S27.599999999999998,-0.546242774566474,30.666666666666664,-0.7283236994219653S37.822222222222216,-1.130635838150289,40.888888888888886,-1.2138728323699421S48.044444444444444,-1.1653179190751446,51.111111111111114,-1.2832369942196533S58.266666666666666,-1.908092485549133,61.33333333333333,-2S68.48888888888888,-1.9670520231213873,71.55555555555554,-1.8959537572254335S78.71111111111111,-1.5450867052023123,81.77777777777777,-1.5260115606936417Q83.82222222222222,-1.5132947976878615,92,-1.7687861271676302"></path></g></svg></td><td id="RTA_dc_9_4" class="RTA_dtcs4"><i class="trend1-down"></i></td><td id="RTA_dc_9_5" class="RTA_dtcs5"></td><td id="RTA_dc_9_6" class="RTA_dtcs6"><span>33</span></td><td id="RTA_dc_9_7" class="RTA_dtcs7"><svg width="100" height="30"><g transform="translate(4,16)"><path class="sparkLine1" d="M0,2Q8.177777777777777,0.3333333333333334,10.222222222222221,0C13.288888888888888,-0.5000000000000001,17.377777777777776,-1.0833333333333335,20.444444444444443,-1.3333333333333335S27.599999999999998,-1.7166666666666668,30.666666666666664,-1.6666666666666667S37.822222222222216,-1.15,40.888888888888886,-1S48.044444444444444,-0.5666666666666668,51.111111111111114,-0.6666666666666667S58.266666666666666,-1.4666666666666668,61.33333333333333,-1.6666666666666667S68.48888888888888,-2,71.55555555555554,-2S78.71111111111111,-1.8166666666666669,81.77777777777777,-1.6666666666666667Q83.82222222222222,-1.5666666666666667,92,-1"></path></g></svg></td><td id="RTA_dc_9_8" class="RTA_dtcs8"><i class="trend1-down"></i></td><td id="RTA_dc_9_9" class="RTA_dtcs9"></td><td id="RTA_dc_9_10" class="RTA_dtcs10"><span>1%</span></td></tr>
+</tbody>
+   <tfoot>
+      <tr>
+        <td colspan="2"></td>
+        <td id="RTA_ct"></td>
+        <td colspan="3"></td>
+        <td id="RTA_ft"></td>
+        <td colspan="4"></td>
+      </tr>
+    </tfoot>
+  </table>
+</div>
+
+
+
+<div>
+
+</div></div>
+        
+
+      </div> <!-- main_container -->
+    </div> <!-- section -->  
+    
+    <div class="section">
+      
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-4 sflabel al">© 2007-2013 Accertify, Inc.</div>
+    <div class="col-md-4 sflabel am">CONFIDENTIAL</div>
+    <div class="col-md-4 sflabel ar">(host admin) Feb 13, 2015 10:20:01 AM</div>
+  </div>
+</div>
+
+    </div> <!-- section -->
+    
+  </div> <!-- mainLayout -->
+
+  
+</body></html>
