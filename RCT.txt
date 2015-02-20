@@ -1,0 +1,364 @@
+
+FLEX_LABELS
+------------------------------------------
+
+insert into flex_labels (value, tablename, fieldname, fieldvalue, image_library_id, color, hierarchy_id, locale_id, is_inherited, flex_type) values (
+'Other', 'literal', 'reportlabel', 'other', null, null, (select id from hierarchies where hierarchy_name = 'HOST'), (select id from locales where locale_cd = 'en_US'), 1, 3);
+------------------------------------------
+
+
+
+
+
+select RECOMMENDATION_CODE, 
+nvl(sum(total_count),0) count_total,
+nvl(median(total_count),0) count_median,
+nvl(trunc(avg(total_count)),0) count_avg,
+nvl(listagg( total_count , ',' ) within group (order by IMPORT_TS desc),'') count_list,
+
+trunc(nvl(sum(total_billing_amount),0),2) total_amount_total,
+trunc(nvl(median(total_billing_amount),0),2) total_amount_median,
+trunc(nvl(trunc(avg(total_billing_amount),2),0),2) total_amount_avg,
+nvl(listagg( trunc(total_billing_amount,2) , ',' ) within group (order by IMPORT_TS desc),'') total_amount_list,
+
+listagg( to_char(IMPORT_TS,'yyyy-mm-dd hh24:mi:ss') , ',' ) within group (order by IMPORT_TS) time_list
+
+from ( 
+        select here.RECOMMENDATION_CODE,TRUNC(here.IMPORT_TS,'dd') IMPORT_TS,time_period,
+        nvl(sum(RC.count),0) total_count,
+        nvl(sum(RC.BILLING_AMOUNT_SUM),0) total_billing_amount
+        from REC_CODE_HH RC
+        right outer join (
+                select RECOMMENDATION_CODE,IMPORT_TS,time_period from (
+                        select           TIMESTAMP'2015-02-08 00:00:00' - numtodsinterval(level,'hour') IMPORT_TS,
+                        extract(day from TIMESTAMP'2015-02-08 00:00:00' - numtodsinterval(level,'hour')) time_period
+                         from dual
+                        CONNECT BY LEVEL <= extract(day  from TIMESTAMP'2015-02-08 00:00:00' - TIMESTAMP'2015-02-01 00:00:00')*24
+                                          + extract(hour from TIMESTAMP'2015-02-08 00:00:00' - TIMESTAMP'2015-02-01 00:00:00')
+                )
+                cross join (
+                        select RECOMMENDATION_CODE
+                        FROM REC_CODE_HH RC
+                        WHERE HIERARCHY_ID IN (5237260000000004022)
+                        AND   VIRTUAL_TABLE_ID IN (5237260000000002081)
+                        and   IMPORT_TS >= TIMESTAMP'2015-02-01 00:00:00'
+                        and   IMPORT_TS <  TIMESTAMP'2015-02-08 00:00:00'
+                        GROUP BY RECOMMENDATION_CODE
+                )
+        ) here on sys_op_map_nonnull(here.RECOMMENDATION_CODE) = sys_op_map_nonnull(RC.RECOMMENDATION_CODE) and here.IMPORT_TS = RC.IMPORT_TS
+         group by here.RECOMMENDATION_CODE,TRUNC(here.IMPORT_TS,'dd'),time_period
+)
+group by RECOMMENDATION_CODE;
+
+
+
+
+
+RECOMMENDATION_CODE
+COUNT_TOTAL
+COUNT_MEDIAN
+COUNT_AVG
+COUNT_LIST
+TOTAL_AMOUNT_TOTAL
+TOTAL_AMOUNT_MEDIAN
+TOTAL_AMOUNT_AVG
+TOTAL_AMOUNT_LIST
+TIME_LIST
+
+
+
+
+
+
+{
+   "fmt": "JSON",
+   "G": {},
+   "C": [
+      "2015-02-01 00:00:00",
+      "2015-02-02 00:00:00",
+      "2015-02-03 00:00:00",
+      "2015-02-04 00:00:00",
+      "2015-02-05 00:00:00",
+      "2015-02-06 00:00:00",
+      "2015-02-07 00:00:00"
+   ],
+   "V": [
+      {
+         "c": {
+            "v": [
+               15615162,
+               14950610,
+               14365799,
+               14456684,
+               14420993,
+               14663111,
+               15603926
+            ],
+            "d": 14663111,
+            "df": "14,663,111",
+            "t": 104076285,
+            "s": "-19768.286",
+            "vf": [
+               "15,615,162",
+               "14,950,610",
+               "14,365,799",
+               "14,456,684",
+               "14,420,993",
+               "14,663,111",
+               "15,603,926"
+            ],
+            "a": 14868040,
+            "M": 15615162,
+            "tf": "104,076,285",
+            "m": 14365799,
+            "yy": "-308447940086.999",
+            "i": "14927345.571",
+            "af": "14,868,040"
+         },
+         "a": {
+            "v": [
+               4.5576269E9,
+               5.1619988E9,
+               4.6558275E9,
+               4.6071388E9,
+               4.6317199E9,
+               4.764119E9,
+               5.549911E9
+            ],
+            "d": 4.6558275E9,
+            "df": "4,655,827,710.74",
+            "t": 3.39283415E10,
+            "s": "77035168.061",
+            "vf": [
+               "4,557,626,847.94",
+               "5,161,998,780.42",
+               "4,655,827,710.74",
+               "4,607,138,851.54",
+               "4,631,719,900.28",
+               "4,764,118,930.13",
+               "5,549,910,920.19"
+            ],
+            "a": 4.8469059E9,
+            "M": 5.549911E9,
+            "tf": "33,928,341,941.24",
+            "m": 4.5576269E9,
+            "yy": "427538325076612540.000",
+            "i": "4615800487.423",
+            "af": "4,846,905,991.6"
+         },
+         "n": "ACCEPT"
+      },
+      {
+         "c": {
+            "v": [
+               733680,
+               683578,
+               852908,
+               900217,
+               898373,
+               888310,
+               935581
+            ],
+            "d": 888310,
+            "df": "888,310",
+            "t": 5892647,
+            "s": "37879.714",
+            "vf": [
+               "733,680",
+               "683,578",
+               "852,908",
+               "900,217",
+               "898,373",
+               "888,310",
+               "935,581"
+            ],
+            "a": 841806,
+            "M": 935581,
+            "tf": "5,892,647",
+            "m": 683578,
+            "yy": "35440269138.714",
+            "i": "728167.571",
+            "af": "841,806"
+         },
+         "a": {
+            "v": [
+               5.03349664E8,
+               4.1407488E8,
+               3.26631712E8,
+               4.85528864E8,
+               6.1126829E8,
+               5.33731744E8,
+               7.8203981E8
+            ],
+            "d": 5.03349664E8,
+            "df": "503,349,677.86",
+            "t": 3.6566249E9,
+            "s": "48572170.010",
+            "vf": [
+               "503,349,677.86",
+               "414,074,878.51",
+               "326,631,705.73",
+               "485,528,848.45",
+               "611,268,270.48",
+               "533,731,739.88",
+               "782,039,835.46"
+            ],
+            "a": 5.22375008E8,
+            "M": 7.8203981E8,
+            "tf": "3,656,624,956.37",
+            "m": 3.26631712E8,
+            "yy": "37985372219493336.000",
+            "i": "376658483.736",
+            "af": "522,374,993.76"
+         },
+         "n": "REJECT"
+      },
+      {
+         "c": {
+            "v": [
+               49276,
+               72181,
+               78050,
+               72667,
+               88001,
+               87809,
+               67770
+            ],
+            "d": 72667,
+            "df": "72,667",
+            "t": 515754,
+            "s": "3453.179",
+            "vf": [
+               "49,276",
+               "72,181",
+               "78,050",
+               "72,667",
+               "88,001",
+               "87,809",
+               "67,770"
+            ],
+            "a": 73679,
+            "M": 88001,
+            "tf": "515,754",
+            "m": 49276,
+            "yy": "234085231.393",
+            "i": "63319.607",
+            "af": "73,679"
+         },
+         "a": {
+            "v": [
+               27131228,
+               7.5123584E7,
+               1.03530096E8,
+               4.6082116E7,
+               5.3135772E7,
+               5.1296484E7,
+               2.4585748E7
+            ],
+            "d": 5.1296484E7,
+            "df": "51,296,485.43",
+            "t": 3.80885024E8,
+            "s": "-3774462.977",
+            "vf": [
+               "27,131,228",
+               "75,123,586.34",
+               "103,530,093.99",
+               "46,082,117.83",
+               "53,135,773.16",
+               "51,296,485.43",
+               "24,585,747.76"
+            ],
+            "a": 5.4412148E7,
+            "M": 1.03530096E8,
+            "tf": "380,885,032.51",
+            "m": 2.4585748E7,
+            "yy": "-92797928958737.080",
+            "i": "65735536.434",
+            "af": "54,412,147.5"
+         },
+         "n": "REVIEW"
+      },
+      {
+         "c": {
+            "v": [
+               725776,
+               928051,
+               984715,
+               979336,
+               929671,
+               854660,
+               624218
+            ],
+            "d": 928051,
+            "df": "928,051",
+            "t": 6026427,
+            "s": "-18089.286",
+            "vf": [
+               "725,776",
+               "928,051",
+               "984,715",
+               "979,336",
+               "929,671",
+               "854,660",
+               "624,218"
+            ],
+            "a": 860918,
+            "M": 984715,
+            "tf": "6,026,427",
+            "m": 624218,
+            "yy": "-11290742564.000",
+            "i": "915186.000",
+            "af": "860,918"
+         },
+         "a": {
+            "v": [
+               4.1421558E10,
+               5.4882734E9,
+               2.33061584E8,
+               2.25031504E8,
+               2.25616176E8,
+               2.12254688E8,
+               1.36106048E8
+            ],
+            "d": 2.25616176E8,
+            "df": "225,616,169.11",
+            "t": 4.7941898E10,
+            "s": "-4800565540.406",
+            "vf": [
+               "41,421,556,853.79",
+               "5,488,273,334.94",
+               "233,061,590.4",
+               "225,031,505.59",
+               "225,616,169.11",
+               "212,254,693.59",
+               "136,106,044.66"
+            ],
+            "a": 6.8488428E9,
+            "M": 4.1421558E10,
+            "tf": "47,941,900,192.12",
+            "m": 1.36106048E8,
+            "yy": "-653385966585275010.000",
+            "i": "21250539505.802",
+            "af": "6,848,842,884.58"
+         },
+         "n": "Other"
+      }
+   ],
+   "execOn": "Feb 20, 2015 2:46:48 PM"
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
