@@ -503,33 +503,76 @@ div.expand-links {
 
     <script>
 "use strict";
-var DATA = 
+var DATA = {"fmt":"JSON","G":{},
+"C":["2015-02-01 00:00:00","2015-02-02 00:00:00","2015-02-03 00:00:00","2015-02-04 00:00:00","2015-02-05 00:00:00","2015-02-06 00:00:00","2015-02-07 00:00:00"],
+"V":[
+  {"c":{"v":[480,460,442,444,443,451,480],"df":"14,663,111","s":"-0.607","vf":["15,615,162","14,950,610","14,365,799","14,456,684","14,420,993","14,663,111","15,603,926"],"M":480,"tf":"104,076,285","m":442,"yy":"455.321","i":"458.964","af":"14,868,040"},
+  "a":{"v":[394,446,403,398,401,412,480],"df":"4,655,827,710.74","s":"6.714","vf":["4,557,626,847.94","5,161,998,780.42","4,655,827,710.74","4,607,138,851.54","4,631,719,900.28","4,764,118,930.13","5,549,910,920.19"],"M":480,"tf":"33,928,341,941.24","m":394,"yy":"439.286","i":"399.000","af":"4,846,905,991.6"},
+  "n":"ACCEPT"},
+  {"c":{"v":[376,351,438,462,461,456,480],"df":"888,310","s":"19.464","vf":["733,680","683,578","852,908","900,217","898,373","888,310","935,581"],"M":480,"tf":"5,892,647","m":351,"yy":"490.393","i":"373.607","af":"841,806"},
+  "a":{"v":[309,254,200,298,375,328,480],"df":"503,349,677.86","s":"29.857","vf":["503,349,677.86","414,074,878.51","326,631,705.73","485,528,848.45","611,268,270.48","533,731,739.88","782,039,835.46"],"M":480,"tf":"3,656,624,956.37","m":200,"yy":"410.143","i":"231.000","af":"522,374,993.76"},
+  "n":"REJECT"},
+  {"c":{"v":[269,394,426,396,480,479,370],"df":"72,667","s":"18.821","vf":["49,276","72,181","78,050","72,667","88,001","87,809","67,770"],"M":480,"tf":"515,754","m":269,"yy":"458.464","i":"345.536","af":"73,679"},
+  "a":{"v":[126,348,480,214,246,238,114],"df":"51,296,485.43","s":"-17.500","vf":["27,131,228","75,123,586.34","103,530,093.99","46,082,117.83","53,135,773.16","51,296,485.43","24,585,747.76"],"M":480,"tf":"380,885,032.51","m":114,"yy":"199.786","i":"304.786","af":"54,412,147.5"},
+  "n":"REVIEW"},
+  {"c":{"v":[354,452,480,477,453,417,304],"df":"928,051","s":"-8.821","vf":["725,776","928,051","984,715","979,336","929,671","854,660","624,218"],"M":480,"tf":"6,026,427","m":304,"yy":"393.107","i":"446.036","af":"860,918"},
+  "a":{"v":[480,64,3,3,3,2,2],"df":"225,616,169.11","s":"-55.643","vf":["41,421,556,853.79","5,488,273,334.94","233,061,590.4","225,031,505.59","225,616,169.11","212,254,693.59","136,106,044.66"],"M":480,"tf":"47,941,900,192.12","m":2,"yy":"-87.357","i":"246.500","af":"6,848,842,884.58"},
+  "n":"Other"}],
+  "execOn":"Feb 23, 2015 2:25:51 PM"};
+
+
+
+function init() {
+    render(DATA);
+}
+
+function render(data) {
+      var margin = {top: 10, right: 10, bottom: 50, left: 50};
+      var width = 800 - margin.left - margin.right;
+      var height = 580 - margin.top - margin.bottom;
+
+      var xScale = d3.scale.linear()
+                  .range([0, width])
+                  .domain([0,data['C'].length - 1]);
+      var yScale = d3.scale.linear()
+                  .range([height, 0])
+                  .domain([0,480]);
+
+      var graph1 = d3.svg.line()
+                  .x(function(d) { return xScale(d); })
+                  .y(function(d) { return yScale(data['V'][0]['c']['v'][d]); })
+                  .interpolate("cardinal")
+                  ;
+      var svg = d3.select("#FRAGMENT_RTA")
+                  .append("svg")
+                  .attr("style", "background-color:cornsilk;")
+                  .attr("width", width + margin.left + margin.right)
+                  .attr("height", height + margin.top + margin.bottom)
+                  .append("g")
+                  .attr("transform",
+                  "translate(" + margin.left + "," + margin.top + ")");
+      svg.append("path")
+                  .attr("class", "line")
+                  .attr("d", graph1(d3.range(data['C'].length)));    
+                  
+      var xAxis = d3.svg.axis().scale(xScale)
+                  .orient("bottom").tickFormat(function(d){return data['C'][d]});
+      var yAxis = d3.svg.axis().scale(yScale)
+                  .orient("left");  
+      svg.append("g")
+                  .attr("class", "x axis")
+                  .attr("transform", "translate(0," + height + ")")
+                  .call(xAxis);
+      svg.append("g")
+                  .attr("class", "y axis")
+                  .call(yAxis);                   
+    
+}
 
     </script>  
 
   </head>
   <body>
-http://www.javacodegeeks.com/2012/05/functional-style-in-java-with.html
-       public static void scaleTest2() {
-        double domainMin = 10.0;
-        double domainMax = 50.0;
-        int rangeSteps = 600;
-        double[] vals  = {10.0,11.0,20.0,30.0,40.0,49.0,50.0};
-        //double[] vals = {100.0,101.0,199.0,200.0,201.0,250.0,299.0,300.0,301.0,399.0,400.0,401.0,499.0,500.0};
-        for (double val : vals) {
-            //System.out.println(val + "\t" + map2(val, domainMin, domainMax, rangeSteps));
-            map2(val, domainMin, domainMax, rangeSteps);
-        }
-        
-    }
-    
-    public static int map2(double x, double domainMin, double domainMax, int rangeSteps) {
-        double scaled = rangeSteps*(x - domainMin)/(domainMax - domainMin);
-        System.out.println(x + "\t"  + (int)Math.floor(scaled) + "\t" + Math.round(scaled));
-        return 0;
-        
-    }
-
 
 <style type="text/css">
 div#FRAGMENT_RTA path {
@@ -591,9 +634,12 @@ td.RTA_dtcs10 {
 }
 </style>
 
-<div id="FRAGMENT_RTA">
+<div id="FRAGMENT_RTA" style="border:1px solid black;">
 
 
 </div>
+ 
+ 
+ <script>init();</script>
  
 </body></html>

@@ -161,6 +161,7 @@ function test() {
                   .y(function(d) { return yScale(vals[d]); });
       var svg = d3.select('#stdout')
                   .append("svg")
+                  .attr("style","background-color:cornsilk;")
                   .attr("width", width + margin.left + margin.right)
                   .attr("height", height + margin.top + margin.bottom)
                   .append("g")
@@ -196,9 +197,9 @@ function test1(angleDegrees) {
 }    
     
     function init() {
-        //test()
+        test()
         //test1(30);
-        test2();
+        //test2();
         //render(DATA1);
     }
     
