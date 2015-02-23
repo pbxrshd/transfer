@@ -1,0 +1,599 @@
+<html><head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">  
+    <title>Heartbeat Dashboard</title>
+
+    <!-- TODO parameterize the inclusion of the foll. -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.4.6/d3.min.js"></script>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <style type="text/css">
+html {
+  height: 100%;
+}
+
+body {
+  margin: 20;
+  padding: 0;
+}
+
+body,table {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 14px;
+  color: #434040;
+}
+
+h1 {
+  color: #800000;
+}
+
+h2 {
+
+}
+
+div.mainLayout {
+  display: table;
+  margin: 0 auto 10px auto;
+}
+
+div.section {
+  clear: both;
+  min-width: 1024px;
+  max-width: none !important;
+  margin: 0 auto 10px auto;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+div.settings1 {
+  font-size: 18px;
+  float: right;
+}
+
+div.br {
+  clear: both;
+}
+
+div.title1 {
+  clear: both;
+  min-width: 1024px;
+  max-width: none !important;
+  margin: 20px auto;
+  font-size:30px;
+  letter-spacing: 0.03em;
+  font-weight: normal;
+  text-transform: uppercase;
+  color: inherit;
+}
+div.title2 {
+  color: maroon;
+  font-size: 1.3em;
+  font-weight: bold;
+  padding: 6px 0px 12px 0px;
+}
+div.tb1 {
+  text-align:right;
+  font-size:0.8em;
+  color:silver;
+  cursor:pointer;
+}
+
+.footer1 {
+  margin: 0 auto 0 auto
+}
+
+/* common style directives */
+.em {
+  font-weight: bold;
+}
+
+.it {
+  font-style: italic;
+}
+
+.al {
+  text-align: left;
+}
+
+.am {
+  text-align: center;
+}
+
+.ar {
+  text-align: right;
+}
+
+/* report criteria block related */
+.rc-container {
+  background-color: #f2f0f0;
+  border: 1px solid #d9d9d9;
+  padding: 15px;
+  width: 100%;
+  height: auto;  
+}
+.rc-title-row {
+  
+}
+.rc-title1 {
+  font-size: 24px;
+  color: #434040;
+  margin: 0 0 10px 0;
+  letter-spacing: 0.03em;  
+}
+.rc-title2 {
+  font-weight: normal;
+  text-align:right;
+  margin:10px 0px 0px 0px;
+}
+.rc-title-label {
+  padding: 0 10px 0 0 !important;
+  text-transform: uppercase;
+  font-size: 0.9em;
+}
+.rc-title-value {
+  font-weight: normal;
+  font-size: 0.8em;
+}
+.rc-divider {
+  border:0px;
+  border-top: 1px solid #cccccc;
+  margin: 0px 0px 18px 0px;
+}
+.rc-criteria-row {
+  
+}
+.rc-label {
+  padding: 0 10px 0 0 !important;
+  text-transform: uppercase;
+  font-size: 0.9em;
+}
+.rc-value {
+  font-weight: normal;
+  font-size: 0.8em;
+}
+
+/* banner related */
+.bnr {
+  background-color: #f2f0f0;
+  border: 1px solid #d9d9d9;
+  padding: 15px;
+  width: 100%;
+  height: auto;
+}
+
+.bnr .lbl {
+  font-weight: bold;
+  font-size: 0.9em;
+  text-align: right;
+  width: 32px;
+  white-space: nowrap;
+}
+
+.bnr .vlu {
+  font-size: 0.8em;
+  padding: 6px;
+}
+
+/* data table related */
+.data {
+  width: 100%;
+}
+
+.data th {
+  padding: 15px;
+  border-radius: 2px;
+  background-color: #434040;
+  color: #ffffff;
+}
+
+.data .th1 {
+  font-size: 0.8em;
+  background-color: #f25840;
+  border-radius: 0 0 4px 4px;
+  text-transform: uppercase;
+  padding: 15px;
+  line-height: 1.42857143;
+}
+
+.data .th2 {
+  background-color: #f36953;
+  border-radius: 0 0 4px 4px;
+}
+
+/*    data contains dr datarows */
+.data tr.dr:hover {
+  background-color: #fed976;
+  border: 1px solid black;
+}
+
+.data tr.dr td {
+  padding: 4px;
+}
+
+.data th, td {
+  font-size: 0.9em;
+}
+
+tr.z0 {
+  background-color: #ffffff;
+}
+
+tr.z1 {
+  background-color: #f1f1f1;
+}
+
+.data>tbody>tr:hover>td,.data>tbody>tr:hover>th {
+  background-color:#e0edee;
+}
+
+.data tbody th, .data tbody td {
+  /*padding: 8px 10px;*/
+}
+
+div.msg { /* status mesg */
+  font-weight: bold;
+  color: #800000;
+}
+
+.spaced-box { /* evenly distribute spaced-items in this container */
+  text-align: justify;
+}
+
+.spaced-item {
+  display: inline-block;
+}
+
+.spaced-buf { /* buffer */
+  width: 100%;
+  display: inline-block;
+  font-size: 0;
+  line-height: 0;
+}
+
+.sh1 { /* subheader1 */
+  background-color: #fd8d3c;
+  margin-left: 10px;
+  padding: 6px;
+  border-radius: 0 0 0 4px;
+}
+
+.sh1 .lbl {
+  font-weight: bold;
+  padding: 4px;
+}
+
+.sh1 .vlu {
+  font-style: italic;
+  padding: 4px;
+}
+
+.sh2 { /* subheader2 */
+  background-color: #feb24c;
+  margin-left: 18px;
+  padding: 4px;
+  border-radius: 0 0 0 4px;
+}
+
+.sh2 .lbl {
+  font-weight: bold;
+  padding: 4px;
+}
+
+.sh2 .vlu {
+  font-style: italic;
+  padding: 4px;
+}
+
+.sf1 { /* subfooter1 */
+  color: gray;
+  margin-top: 12px;
+}
+
+.sf1 .vlu {
+  font-style: italic;
+  padding: 4px;
+}
+
+
+.sflabel {
+  font-size:0.9em;
+  font-style:italic;
+  color:#6c7477;
+  padding: 24px 0px 0px 0px;
+}
+
+/* link hover context menus related */
+.linkctx {
+  color: #4b0082;
+  cursor: pointer;
+  display: inline;
+}
+
+.linkctx:hover {
+  color: #ff0000;
+}
+
+.linkctx:hover>ul {
+  display: block;
+}
+
+.linkctx>ul {
+  display: none;
+  position: absolute;
+  background: rgba(255, 255, 255, 1);
+  color: #4b0082;
+  border: 1px solid black;
+  border-radius: 4px;
+  padding: 8px;
+  margin: 0px;
+  box-shadow: -8px 8px 8px #888888;
+  list-style-type: none;
+  font-weight: normal;
+}
+
+.linkctx li:hover {
+  color: #ff0000;
+}
+
+/* docked options menu related */
+div.dock1 {
+  position: fixed;
+  top: 5px;
+  right: 5px;
+}
+
+div.dock1:hover .dock1Content {
+  visibility: visible;
+}
+
+div.dock1Content {
+  position: absolute;
+  visibility: hidden;
+  background: rgba(255, 255, 255, 1);
+  top: 0px;
+  right: 0px;
+  padding: 4px;
+  border: 1px solid black;
+  border-radius: 4px;
+  box-shadow: -8px 8px 6px #c0c0c0;;
+}
+
+div.dock1 .dock1Item {
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+div.dock1 .dock1Item:hover {
+  color: red;
+}
+
+hr .divider {
+  background-color: #cccccc;
+}
+
+/********************
+ * Tree Reports
+ */
+
+.node {
+    list-style-type: none;
+}
+
+li.level-0 > label, li.level-0 > span {
+    color: #333333;
+    font-size: 20px;
+}
+
+li.level-1 > label, li.level-1 > span{
+    font-weight: bold;
+    font-size: 14px;
+}
+
+li.level-2 > label, li.level-2 > span{
+    text-transform: uppercase;
+}
+
+.bracket:after {
+    content:"]";
+}
+
+.bracket:before {
+    content:"[";
+}
+
+/* Equivalent to fa and fa-minus-square */
+li.expanded > label:first-child::before {
+    font-family:FontAwesome,'Open Sans', sans-serif;
+    font-style:normal;
+    font-weight:normal;
+    display:inline-block;
+    line-height:1;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+
+    content:"\f146";
+}
+
+/* Equivalent to fa and fa-plus-square-o */
+li.collapsed > label:first-child::before {
+    font-family:FontAwesome,'Open Sans', sans-serif;
+    font-style:normal;
+    font-weight:normal;
+    display:inline-block;
+    line-height:1;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+
+    content:"\f196"
+}
+
+ul.expanded {
+    display: inherit !important;
+}
+
+ul.collapsed {
+    display: none !important;
+}
+
+div.expand-links {
+    text-align: center;
+}
+
+.trend1-up:before {
+  content: "\f139"; /* fa-chevron-circle-up */
+  font-family:FontAwesome,'Open Sans', sans-serif;
+  font-style:normal;
+  font-weight:normal;
+  color : red;
+}
+.trend1-down:before {
+  content: "\f13a"; /* fa-chevron-circle-down */
+  font-family:FontAwesome,'Open Sans', sans-serif;
+  font-style:normal;
+  font-weight:normal;  
+  color : green;
+}
+/**
+ * End Tree Reports CSS
+ ********************/
+
+/*
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,300,400,700);
+*/
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 300;
+  src: local('Open Sans Light'), local('OpenSans-Light'), url(//fonts.gstatic.com/s/opensans/v10/DXI1ORHCpsQm3Vp6mXoaTXhCUOGz7vYGh680lGh-uXM.woff) format('woff');
+}
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Open Sans'), local('OpenSans'), url(//fonts.gstatic.com/s/opensans/v10/cJZKeOuBrn4kERxqtaUH3T8E0i7KZn-EPnyo3HZu7kw.woff) format('woff');
+}
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Open Sans Bold'), local('OpenSans-Bold'), url(//fonts.gstatic.com/s/opensans/v10/k3k702ZOKiLJc3WVjuplzHhCUOGz7vYGh680lGh-uXM.woff) format('woff');
+}
+@font-face {
+  font-family: 'Open Sans';
+  font-style: italic;
+  font-weight: 300;
+  src: local('Open Sans Light Italic'), local('OpenSansLight-Italic'), url(//fonts.gstatic.com/s/opensans/v10/PRmiXeptR36kaC0GEAetxh_xHqYgAV9Bl_ZQbYUxnQU.woff) format('woff');
+}
+@font-face {
+  font-family: 'Open Sans';
+  font-style: italic;
+  font-weight: 400;
+  src: local('Open Sans Italic'), local('OpenSans-Italic'), url(//fonts.gstatic.com/s/opensans/v10/xjAJXh38I15wypJXxuGMBobN6UDyHWBl620a-IRfuBk.woff) format('woff');
+}
+@font-face {
+  font-family: 'Open Sans';
+  font-style: italic;
+  font-weight: 700;
+  src: local('Open Sans Bold Italic'), local('OpenSans-BoldItalic'), url(//fonts.gstatic.com/s/opensans/v10/PRmiXeptR36kaC0GEAetxjqR_3kx9_hJXbbyU8S6IN0.woff) format('woff');
+}
+
+    </style>
+
+    <script>
+"use strict";
+var DATA = 
+
+    </script>  
+
+  </head>
+  <body>
+http://www.javacodegeeks.com/2012/05/functional-style-in-java-with.html
+       public static void scaleTest2() {
+        double domainMin = 10.0;
+        double domainMax = 50.0;
+        int rangeSteps = 600;
+        double[] vals  = {10.0,11.0,20.0,30.0,40.0,49.0,50.0};
+        //double[] vals = {100.0,101.0,199.0,200.0,201.0,250.0,299.0,300.0,301.0,399.0,400.0,401.0,499.0,500.0};
+        for (double val : vals) {
+            //System.out.println(val + "\t" + map2(val, domainMin, domainMax, rangeSteps));
+            map2(val, domainMin, domainMax, rangeSteps);
+        }
+        
+    }
+    
+    public static int map2(double x, double domainMin, double domainMax, int rangeSteps) {
+        double scaled = rangeSteps*(x - domainMin)/(domainMax - domainMin);
+        System.out.println(x + "\t"  + (int)Math.floor(scaled) + "\t" + Math.round(scaled));
+        return 0;
+        
+    }
+
+
+<style type="text/css">
+div#FRAGMENT_RTA path {
+  stroke: #696969;
+  stroke-width: 1;
+  fill: none;
+}
+div#FRAGMENT_RTA path.sparkLine1 {
+  stroke: #696969;
+  stroke-width: 1;
+  fill: none;
+}
+
+div#FRAGMENT_RTA th  {
+  color:#64a3a8;
+  font-size:0.9em;
+  border-bottom:1px solid #c0c0c0;
+  text-align:center;
+  background-color:#c0c0c0;
+  border:1px solid white;
+}
+
+td.RTA_dtcs0 {
+    padding: 2px 8px 2px 18px;
+    text-align:right;
+}
+td.RTA_dtcs1 {
+    text-align:right;
+    color:#64a3a8;
+    padding: 0px 10px 0px 18px;
+}
+td.RTA_dtcs2 {
+    text-align:right;
+    font-weight:bold;
+    color:#64a3a8;
+    padding: 0px 10px 0px 18px;
+}
+td.RTA_dtcs5 {
+    text-align:right;
+    color:#64a3a8;
+    padding: 0px 10px 0px 18px;
+}
+td.RTA_dtcs6 {
+    text-align:right;
+    font-weight:bold;
+    color:#64a3a8;
+    padding: 0px 10px 0px 18px;
+}
+td.RTA_dtcs9 {
+    text-align:right;
+    color:#64a3a8;
+    padding: 0px 10px 0px 18px;
+}
+td.RTA_dtcs10 {
+    text-align:right;
+    font-weight:bold;
+    color:#64a3a8;
+    padding: 0px 10px 0px 18px;
+}
+</style>
+
+<div id="FRAGMENT_RTA">
+
+
+</div>
+ 
+</body></html>
