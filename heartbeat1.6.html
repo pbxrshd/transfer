@@ -503,7 +503,7 @@ div.expand-links {
 
     <script>
 "use strict";
-var DATA = {"fmt":"JSON","G":{},
+var DATA = {"fmt":"JSON","G":{"r":"480"},
 "C":["2015-02-01 00:00:00","2015-02-02 00:00:00","2015-02-03 00:00:00","2015-02-04 00:00:00","2015-02-05 00:00:00","2015-02-06 00:00:00","2015-02-07 00:00:00"],
 "V":[
   {"c":{"v":[480,460,442,444,443,451,480],"df":"14,663,111","s":"-0.607","vf":["15,615,162","14,950,610","14,365,799","14,456,684","14,420,993","14,663,111","15,603,926"],"M":480,"tf":"104,076,285","m":442,"yy":"455.321","i":"458.964","af":"14,868,040"},
@@ -528,33 +528,41 @@ function init() {
 
 function render(data) {
       var margin = {top: 10, right: 10, bottom: 50, left: 50};
-      var width = 800 - margin.left - margin.right;
-      var height = 580 - margin.top - margin.bottom;
-
+      var width = 720 - margin.left - margin.right;
+      var height = 240 - margin.top - margin.bottom;
+      var range = parseInt(data["G"]["r"]);
       var xScale = d3.scale.linear()
                   .range([0, width])
                   .domain([0,data['C'].length - 1]);
       var yScale = d3.scale.linear()
                   .range([height, 0])
-                  .domain([0,480]);
+                  .domain([0,range]);
 
       var graph1 = d3.svg.line()
                   .x(function(d) { return xScale(d); })
                   .y(function(d) { return yScale(data['V'][0]['c']['v'][d]); })
-                  .interpolate("cardinal")
-                  ;
+                  .interpolate("cardinal");
       var svg = d3.select("#FRAGMENT_RTA")
                   .append("svg")
-                  .attr("style", "background-color:cornsilk;")
+                  //.attr("style", "background-color:cornsilk;")
                   .attr("width", width + margin.left + margin.right)
                   .attr("height", height + margin.top + margin.bottom)
                   .append("g")
                   .attr("transform",
                   "translate(" + margin.left + "," + margin.top + ")");
+                  
+      data["V"].forEach(function(d,i) {
+        svg.append("path")
+                  .attr("class", "line")
+                  .attr("d", (grapher(d['c']['v'],xScale,yScale))(d3.range(data['C'].length)));           
+      });
+
+      /*
       svg.append("path")
                   .attr("class", "line")
-                  .attr("d", graph1(d3.range(data['C'].length)));    
-                  
+                  //.attr("d", graph1(d3.range(data['C'].length)));    
+                  .attr("d", (grapher(data['V'][0]['c']['v'],xScale,yScale))(d3.range(data['C'].length)));    
+      */          
       var xAxis = d3.svg.axis().scale(xScale)
                   .orient("bottom").tickFormat(function(d){return data['C'][d]});
       var yAxis = d3.svg.axis().scale(yScale)
@@ -563,10 +571,18 @@ function render(data) {
                   .attr("class", "x axis")
                   .attr("transform", "translate(0," + height + ")")
                   .call(xAxis);
+                  /*
       svg.append("g")
                   .attr("class", "y axis")
                   .call(yAxis);                   
-    
+                */
+}
+
+function grapher(yVals, xScale, yScale) {
+    return d3.svg.line()
+           .x(function(d) { return xScale(d); })
+           .y(function(d) { return yScale(yVals[d]); })
+           .interpolate("cardinal");
 }
 
     </script>  
@@ -634,7 +650,7 @@ td.RTA_dtcs10 {
 }
 </style>
 
-<div id="FRAGMENT_RTA" style="border:1px solid black;">
+<div id="FRAGMENT_RTA" style="border:1px solid silver;border-radius:4px;">
 
 
 </div>

@@ -1,0 +1,1090 @@
+<html><head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Recommendation Codes (By Hour)</title>
+
+    <!-- TODO parameterize the inclusion of the foll. -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.4.6/d3.min.js"></script>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    
+    <style type="text/css">
+html {
+  height: 100%;
+}
+
+body {
+  margin: 20;
+  padding: 0;
+}
+
+body,table {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 14px;
+  color: #434040;
+}
+
+h1 {
+  color: #800000;
+}
+
+h2 {
+
+}
+
+div.mainLayout {
+  display: table;
+  margin: 0 auto 10px auto;
+}
+
+div.section {
+  clear: both;
+  min-width: 1024px;
+  max-width: none !important;
+  margin: 0 auto 10px auto;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+div.settings1 {
+  font-size: 18px;
+  float: right;
+}
+
+div.br {
+  clear: both;
+}
+
+div.title1 {
+  clear: both;
+  min-width: 1024px;
+  max-width: none !important;
+  margin: 20px auto;
+  font-size:30px;
+  letter-spacing: 0.03em;
+  font-weight: normal;
+  text-transform: uppercase;
+  color: inherit;
+}
+div.title2 {
+  color: maroon;
+  font-size: 1.3em;
+  font-weight: bold;
+  padding: 6px 0px 12px 0px;
+}
+div.tb1 {
+  text-align:right;
+  font-size:0.8em;
+  color:silver;
+  cursor:pointer;
+}
+
+.footer1 {
+  margin: 0 auto 0 auto
+}
+
+/* common style directives */
+.em {
+  font-weight: bold;
+}
+
+.it {
+  font-style: italic;
+}
+
+.al {
+  text-align: left;
+}
+
+.am {
+  text-align: center;
+}
+
+.ar {
+  text-align: right;
+}
+
+/* report criteria block related */
+.rc-container {
+  background-color: #f2f0f0;
+  border: 1px solid #d9d9d9;
+  padding: 15px;
+  width: 100%;
+  height: auto;  
+}
+.rc-title-row {
+  
+}
+.rc-title1 {
+  font-size: 24px;
+  color: #434040;
+  margin: 0 0 10px 0;
+  letter-spacing: 0.03em;  
+}
+.rc-title2 {
+  font-weight: normal;
+  text-align:right;
+  margin:10px 0px 0px 0px;
+}
+.rc-title-label {
+  padding: 0 10px 0 0 !important;
+  text-transform: uppercase;
+  font-size: 0.9em;
+}
+.rc-title-value {
+  font-weight: normal;
+  font-size: 0.8em;
+}
+.rc-divider {
+  border:0px;
+  border-top: 1px solid #cccccc;
+  margin: 0px 0px 18px 0px;
+}
+.rc-criteria-row {
+  
+}
+.rc-label {
+  padding: 0 10px 0 0 !important;
+  text-transform: uppercase;
+  font-size: 0.9em;
+}
+.rc-value {
+  font-weight: normal;
+  font-size: 0.8em;
+}
+
+/* banner related */
+.bnr {
+  background-color: #f2f0f0;
+  border: 1px solid #d9d9d9;
+  padding: 15px;
+  width: 100%;
+  height: auto;
+}
+
+.bnr .lbl {
+  font-weight: bold;
+  font-size: 0.9em;
+  text-align: right;
+  width: 32px;
+  white-space: nowrap;
+}
+
+.bnr .vlu {
+  font-size: 0.8em;
+  padding: 6px;
+}
+
+/* data table related */
+.data {
+  width: 100%;
+}
+
+.data th {
+  padding: 15px;
+  border-radius: 2px;
+  background-color: #434040;
+  color: #ffffff;
+}
+
+.data .th1 {
+  font-size: 0.8em;
+  background-color: #f25840;
+  border-radius: 0 0 4px 4px;
+  text-transform: uppercase;
+  padding: 15px;
+  line-height: 1.42857143;
+}
+
+.data .th2 {
+  background-color: #f36953;
+  border-radius: 0 0 4px 4px;
+}
+
+/*    data contains dr datarows */
+.data tr.dr:hover {
+  background-color: #fed976;
+  border: 1px solid black;
+}
+
+.data tr.dr td {
+  padding: 4px;
+}
+
+.data th, td {
+  font-size: 0.9em;
+}
+
+tr.z0 {
+  background-color: #ffffff;
+}
+
+tr.z1 {
+  background-color: #f1f1f1;
+}
+
+.data>tbody>tr:hover>td,.data>tbody>tr:hover>th {
+  background-color:#e0edee;
+}
+
+.data tbody th, .data tbody td {
+  /*padding: 8px 10px;*/
+}
+
+div.msg { /* status mesg */
+  font-weight: bold;
+  color: #800000;
+}
+
+.spaced-box { /* evenly distribute spaced-items in this container */
+  text-align: justify;
+}
+
+.spaced-item {
+  display: inline-block;
+}
+
+.spaced-buf { /* buffer */
+  width: 100%;
+  display: inline-block;
+  font-size: 0;
+  line-height: 0;
+}
+
+.sh1 { /* subheader1 */
+  background-color: #fd8d3c;
+  margin-left: 10px;
+  padding: 6px;
+  border-radius: 0 0 0 4px;
+}
+
+.sh1 .lbl {
+  font-weight: bold;
+  padding: 4px;
+}
+
+.sh1 .vlu {
+  font-style: italic;
+  padding: 4px;
+}
+
+.sh2 { /* subheader2 */
+  background-color: #feb24c;
+  margin-left: 18px;
+  padding: 4px;
+  border-radius: 0 0 0 4px;
+}
+
+.sh2 .lbl {
+  font-weight: bold;
+  padding: 4px;
+}
+
+.sh2 .vlu {
+  font-style: italic;
+  padding: 4px;
+}
+
+.sf1 { /* subfooter1 */
+  color: gray;
+  margin-top: 12px;
+}
+
+.sf1 .vlu {
+  font-style: italic;
+  padding: 4px;
+}
+
+
+.sflabel {
+  font-size:0.9em;
+  font-style:italic;
+  color:#6c7477;
+  padding: 24px 0px 0px 0px;
+}
+
+/* link hover context menus related */
+.linkctx {
+  color: #4b0082;
+  cursor: pointer;
+  display: inline;
+}
+
+.linkctx:hover {
+  color: #ff0000;
+}
+
+.linkctx:hover>ul {
+  display: block;
+}
+
+.linkctx>ul {
+  display: none;
+  position: absolute;
+  background: rgba(255, 255, 255, 1);
+  color: #4b0082;
+  border: 1px solid black;
+  border-radius: 4px;
+  padding: 8px;
+  margin: 0px;
+  box-shadow: -8px 8px 8px #888888;
+  list-style-type: none;
+  font-weight: normal;
+}
+
+.linkctx li:hover {
+  color: #ff0000;
+}
+
+/* docked options menu related */
+div.dock1 {
+  position: fixed;
+  top: 5px;
+  right: 5px;
+}
+
+div.dock1:hover .dock1Content {
+  visibility: visible;
+}
+
+div.dock1Content {
+  position: absolute;
+  visibility: hidden;
+  background: rgba(255, 255, 255, 1);
+  top: 0px;
+  right: 0px;
+  padding: 4px;
+  border: 1px solid black;
+  border-radius: 4px;
+  box-shadow: -8px 8px 6px #c0c0c0;;
+}
+
+div.dock1 .dock1Item {
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+div.dock1 .dock1Item:hover {
+  color: red;
+}
+
+hr .divider {
+  background-color: #cccccc;
+}
+
+/********************
+ * Tree Reports
+ */
+
+.node {
+    list-style-type: none;
+}
+
+li.level-0 > label, li.level-0 > span {
+    color: #333333;
+    font-size: 20px;
+}
+
+li.level-1 > label, li.level-1 > span{
+    font-weight: bold;
+    font-size: 14px;
+}
+
+li.level-2 > label, li.level-2 > span{
+    text-transform: uppercase;
+}
+
+.bracket:after {
+    content:"]";
+}
+
+.bracket:before {
+    content:"[";
+}
+
+/* Equivalent to fa and fa-minus-square */
+li.expanded > label:first-child::before {
+    font-family:FontAwesome,'Open Sans', sans-serif;
+    font-style:normal;
+    font-weight:normal;
+    display:inline-block;
+    line-height:1;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+
+    content:"\f146";
+}
+
+/* Equivalent to fa and fa-plus-square-o */
+li.collapsed > label:first-child::before {
+    font-family:FontAwesome,'Open Sans', sans-serif;
+    font-style:normal;
+    font-weight:normal;
+    display:inline-block;
+    line-height:1;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+
+    content:"\f196"
+}
+
+ul.expanded {
+    display: inherit !important;
+}
+
+ul.collapsed {
+    display: none !important;
+}
+
+div.expand-links {
+    text-align: center;
+}
+
+.trend1-up:before {
+  content: "\f139"; /* fa-chevron-circle-up */
+  font-family:FontAwesome,'Open Sans', sans-serif;
+  font-style:normal;
+  font-weight:normal;
+  color : red;
+}
+.trend1-down:before {
+  content: "\f13a"; /* fa-chevron-circle-down */
+  font-family:FontAwesome,'Open Sans', sans-serif;
+  font-style:normal;
+  font-weight:normal;  
+  color : green;
+}
+/**
+ * End Tree Reports CSS
+ ********************/
+
+/*
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,300,400,700);
+*/
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 300;
+  src: local('Open Sans Light'), local('OpenSans-Light'), url(//fonts.gstatic.com/s/opensans/v10/DXI1ORHCpsQm3Vp6mXoaTXhCUOGz7vYGh680lGh-uXM.woff) format('woff');
+}
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Open Sans'), local('OpenSans'), url(//fonts.gstatic.com/s/opensans/v10/cJZKeOuBrn4kERxqtaUH3T8E0i7KZn-EPnyo3HZu7kw.woff) format('woff');
+}
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Open Sans Bold'), local('OpenSans-Bold'), url(//fonts.gstatic.com/s/opensans/v10/k3k702ZOKiLJc3WVjuplzHhCUOGz7vYGh680lGh-uXM.woff) format('woff');
+}
+@font-face {
+  font-family: 'Open Sans';
+  font-style: italic;
+  font-weight: 300;
+  src: local('Open Sans Light Italic'), local('OpenSansLight-Italic'), url(//fonts.gstatic.com/s/opensans/v10/PRmiXeptR36kaC0GEAetxh_xHqYgAV9Bl_ZQbYUxnQU.woff) format('woff');
+}
+@font-face {
+  font-family: 'Open Sans';
+  font-style: italic;
+  font-weight: 400;
+  src: local('Open Sans Italic'), local('OpenSans-Italic'), url(//fonts.gstatic.com/s/opensans/v10/xjAJXh38I15wypJXxuGMBobN6UDyHWBl620a-IRfuBk.woff) format('woff');
+}
+@font-face {
+  font-family: 'Open Sans';
+  font-style: italic;
+  font-weight: 700;
+  src: local('Open Sans Bold Italic'), local('OpenSans-BoldItalic'), url(//fonts.gstatic.com/s/opensans/v10/PRmiXeptR36kaC0GEAetxjqR_3kx9_hJXbbyU8S6IN0.woff) format('woff');
+}
+
+    </style>
+    
+    <script>
+"use strict";
+
+var RPT = (function() {
+    //var CRITERIA_DATA = {};
+    var CRITERIA_SERIALIZED = 'criteria';
+    var REFERENCES_SERIALIZED = 'rptrefs';
+    var SCR_FORM_ACTION = '/report/rptcontrol/run';
+    var RDID = 'rdid';
+    var PRESET = 'preset';
+    
+    function loadReport(rptRefKey, params) {
+        var rptRefs = JSON.parse(document.getElementById(REFERENCES_SERIALIZED).value);
+        var rptRefValue = rptRefs[rptRefKey];
+
+        // TODO destroy cform, if already present
+
+        var cform = document.createElement('form');
+        cform.setAttribute('method', 'post');
+        cform.setAttribute('action', SCR_FORM_ACTION);
+        cform.setAttribute('id','rpt_cform');
+        cform.setAttribute('target','_blank');
+        // create an assoc array to hold cform fields 
+        var cfields = {};
+        //    put in some required fields...
+        cfields[RDID] = rptRefValue;
+        cfields[PRESET] = true;
+        //    add in the embedded critera...
+        var criteria = JSON.parse(document.getElementById(CRITERIA_SERIALIZED).value);
+        for (var key in criteria) {
+            if (criteria.hasOwnProperty(key)) {
+                cfields[key] = criteria[key];
+            }
+        }
+        //    now add in fields from the params, replacing any with the same name from criteria 
+        if (params) {
+            for (var key in params) {
+                if (params.hasOwnProperty(key)) {
+                    cfields[key] = params[key];
+                }
+            }
+        }
+        // create input fields from the collected fields
+        for (var key in cfields) {
+            if (cfields.hasOwnProperty(key)) {
+                var value = cfields[key];
+                if (value instanceof Array) {
+                    for (var i = 0; i < value.length;i++) {
+                        cform.appendChild(createHiddenInput(key, value[i]));
+                    }
+                } else {
+                    cform.appendChild(createHiddenInput(key, value));
+                }
+            }
+        }
+        document.body.appendChild(cform);
+        cform.submit();
+    }
+    //
+    function createHiddenInput(name,value) {
+        var input = document.createElement('input');
+        input.setAttribute('type', 'hidden');
+        input.setAttribute('name',name);
+        input.setAttribute('value',value);
+        return input;
+    }
+    //
+    function showTransaction(transactionId, bucketId) {
+        bucketId = bucketId || '1';
+        window.open('/jsp/agent/queue/transactiondetail.jsf?transId='+transactionId+'&bucketId='+bucketId+'&mode=V','_blank');
+    }
+    //
+    function makeReportData(rptId) {
+        var data = {};
+        data[RDID] = rptId;
+        var criteria = JSON.parse(document.getElementById(CRITERIA_SERIALIZED).value);
+        var criteriaKeys = Object.keys(criteria);
+        for (var i = 0; i < criteriaKeys.length; i++) {
+            var criteriaKey = criteriaKeys[i];
+            data[criteriaKey] = criteria[criteriaKey];
+        }
+        return data;
+    }
+    //
+    return {
+        CRITERIA_SERIALIZED : CRITERIA_SERIALIZED,
+        REFERENCES_SERIALIZED : REFERENCES_SERIALIZED,
+        SCR_FORM_ACTION : SCR_FORM_ACTION,
+        RDID : RDID,
+        PRESET : PRESET,
+        makeReportData : makeReportData,
+        loadReport : loadReport,
+        showTransaction : showTransaction
+    };
+})();
+
+/**
+ * Helper to retrieve report related data from radar through the interceptas report pages.
+ */
+var DATAPIPE = (function() {
+    var OUTPUT_TYPE_KEY = "fmt";
+    var OUTPUT_TYPE_HTML_FRAGMENT = "html_fragment";
+    var OUTPUT_TYPE_JSON = "json";
+    var url = RPT.SCR_FORM_ACTION;
+    /*
+     * Replace innerHTML (and execute inline scripts) into "elementRef" with result of ajax post of "data".
+     *  eg. DATAPIPE.loadFragment({a:1,b:2},document.getElementById('div1'));
+     */
+    function loadFragment(data, elementRef) {
+        if (typeof data !== 'undefined') {
+            data[OUTPUT_TYPE_KEY] = OUTPUT_TYPE_HTML_FRAGMENT;
+            data[RPT.PRESET] = true;
+            jQuery(elementRef).load(url, toPostableJson(data));
+        }
+    }
+    /*
+     * Retrieve result of ajax post of "data". Invokes the function "callback" with the result as argument.
+     *  eg. DATAPIPE.getFragment({a:1,b:2},function(recvd){console.log('recvd:'+recvd);});
+     */
+    function getFragment(data, callback) {
+        if (typeof data !== 'undefined') {
+            data[OUTPUT_TYPE_KEY] = OUTPUT_TYPE_HTML_FRAGMENT;
+            data[RPT.PRESET] = true;
+            jQuery.post(url, toPostableJson(data))
+                  .done(function(recvd) {
+                          if (typeof callback === 'function') {
+                            callback(recvd);
+                          }
+                   })
+                  .fail(function(jqXHR,textStatus,errorThrown) {
+                          if (console) {
+                            console.log('error gettingFragment'+textStatus+','+errorThrown+' for '+data);
+                          }
+                   });
+        }
+    }
+    /*
+     * Retrieve result of ajax post of "data". Expecting result to be valid JSON.
+     * Result is parsed into a javascript literal. Invokes the function "callback" with the result as argument.
+     *  eg. DATAPIPE.getJson({a:1,b:2},function(recvd){console.log('recvd:'+recvd);});
+     */
+    function getJson(data, callback) {
+        if (typeof data !== 'undefined') {
+            data[OUTPUT_TYPE_KEY] = OUTPUT_TYPE_JSON;
+            data[RPT.PRESET] = true;
+            jQuery.post(url, toPostableJson(data))
+                  .done(function(recvd) {
+                          //console.log(recvd);
+                          if (typeof callback === 'function') {
+                            //alert("parsing" + JSON.stringify(JSON.parse(recvd)));
+                            try {
+                              callback(JSON.parse(recvd));
+                            } catch(e) {
+                              if (console) {
+                                console.log('error '+e+' gettingJson for\n'+data+'\ngot '+recvd);
+                              }
+                              callback({'error':recvd});
+                            }
+                          }})
+                  .fail(function(jqXHR,textStatus,errorThrown) {
+                          if(console) {
+                            console.log('error gettingjson '+textStatus+','+errorThrown+' for '+data);
+                          }
+                          });
+        }
+    }
+    /*
+     * 
+     */
+    function toPostableJson(data) {
+        var postableArray = [];
+        var dataKeys = Object.keys(data);
+        for (var i = 0; i < dataKeys.length; i++) {
+            var dataKey = dataKeys[i];
+            var dataValue = data[dataKey];
+            if (Array.isArray(dataValue)) {
+                for (var j = 0; j < dataValue.length; j++) {
+                    postableArray.push(dataKey + '=' + encodeURIComponent(dataValue[j]));
+                }
+            } else {
+                postableArray.push(dataKey + '=' + encodeURIComponent(dataValue));
+            }
+        }
+        return postableArray.join('&');
+    }
+    
+    return {
+        loadFragment : loadFragment,
+        getFragment : getFragment,
+        getJson : getJson,
+        toPostableJson : toPostableJson
+    };
+})();
+
+var MATH = (function() {
+    // returns slope, intercept of the line
+    function leastSquares(xSeries, ySeries) {
+        var reduceSumFunc = function(prev, cur) { return prev + cur; };
+        var xBar = xSeries.reduce(reduceSumFunc) * 1.0 / xSeries.length;
+        var yBar = ySeries.reduce(reduceSumFunc) * 1.0 / ySeries.length;
+        var ssXX = xSeries.map(function(d) { return Math.pow(d - xBar, 2); })
+            .reduce(reduceSumFunc);
+        var ssYY = ySeries.map(function(d) { return Math.pow(d - yBar, 2); })
+            .reduce(reduceSumFunc);
+        var ssXY = xSeries.map(function(d, i) { return (d - xBar) * (ySeries[i] - yBar); })
+            .reduce(reduceSumFunc);
+        var slope = ssXY / ssXX;
+        var intercept = yBar - (xBar * slope);
+        //var rSquare = Math.pow(ssXY, 2) / (ssXX * ssYY);
+        return [slope, intercept];
+    }
+    //
+    return {
+        leastSquares : leastSquares
+    };
+})();
+
+
+    
+    </script>   
+
+</head>
+  
+ <body data-pinterest-extension-installed="cr1.35" cz-shortcut-listen="true">
+ <!-- standard_report_template -->
+  <div class="mainLayout">
+
+    <div class="section">
+      <div class="title1">Recommendation Codes (By Hour)</div>
+    </div> <!-- section -->
+  
+    <input type="hidden" id="criteria" value="{&quot;vt&quot;:[&quot;5237260000000006162&quot;],&quot;dp_p&quot;:[&quot;d0&quot;],&quot;dp_w&quot;:[&quot;d1&quot;],&quot;h&quot;:[&quot;5237260000000001041&quot;]}">
+  
+    <div class="section">
+      
+
+
+<div class="container rc-container">
+  <div class="row rc-title-row">
+    <div class="col-md-4 rc-title1">Report Criteria</div>
+    <div class="col-md-8 rc-title2"><label class="rc-title-label">Date Period:</label>  <label class="rc-title-value">Feb 24, 2015 12:00:00 AM - </label></div>
+  </div>
+  <hr class="rc-divider">
+  
+    
+      <div class="row rc-criteria-row">
+        <div class="col-md-2"><label class="rc-label">Data Source:</label></div>
+        <div class="col-md-10"><label class="rc-value">1-800-Flowers</label></div>
+      </div>
+    
+  
+    
+      <div class="row rc-criteria-row">
+        <div class="col-md-2"><label class="rc-label">Data Type:</label></div>
+        <div class="col-md-10"><label class="rc-value">AAA</label></div>
+      </div>
+    
+  
+    
+  
+</div>
+
+    </div> <!-- section -->
+  
+    <div class="section">
+      <div id="RCT_status_mesg" class="msg"></div>
+    </div> <!-- section -->
+  
+    <div class="section">
+      <div id="main_container">
+        
+
+<style type="text/css">
+div#FRAGMENT_RCT path.linex {
+  fill: none;
+}
+div#FRAGMENT_RCT path.line1 {
+  stroke-width: 1;
+  fill: none;
+}
+div#FRAGMENT_RCT path.line2 {
+  stroke-width: 2;
+  fill: none;
+  stroke-dasharray:10,5;
+}
+
+
+.color-l-0 {
+  stroke: #88bde6;
+  fill: #88bde6;
+}
+.color-l-1 {
+  stroke: #fbb258;
+  fill: #fbb258;
+}
+.color-l-2 {
+  stroke: #fbb258;
+  fill: #fbb258;
+}
+.color-l-3 {
+  stroke: #f6aac9;
+  fill: #f6aac9;
+}
+.color-l-4 {
+  stroke: #f6aac9;
+  fill: #f6aac9;
+}
+.color-l-5 {
+  stroke: #f6aac9;
+  fill: #f6aac9;
+}
+.color-l-6 {
+  stroke: #f6aac9;
+  fill: #f6aac9;
+}
+.color-l-7 {
+  stroke: #f6aac9;
+  fill: #f6aac9;
+}
+
+div.RCT-gc {
+  border:1px solid #c0c0c0;
+  width: 800px;
+  margin: 1px 0 10px 0;
+}
+div#FRAGMENT_RCT div.legend1 {
+  font-size: 0.9em;
+  font-weight: bold;    
+}
+div#FRAGMENT_RCT div.legend2 {
+  font-size: 0.8em;
+  font-weight: bold; 
+  float:right;   
+}
+
+div#FRAGMENT_RCT svg.swatch {
+  margin: 0 4px 0 4px;
+}
+
+</style>
+
+<div id="FRAGMENT_RCT">
+  <div class="tb1" onclick="RECOMMENDATION_CODES_TREND_REPORT.loadData()"><span id="RCT_execOn">Feb 24, 2015 9:38:30 AM</span></div>
+  <div class="title2"></div>
+  
+  <div class="section">
+    <div id="RCT_status_mesg" class="msg"></div>
+  </div> <!-- section -->
+
+  <div id="RCT_contentBody">
+
+   <div id="RCT_countsGraph" class="RCT-gc">
+     <div class="legend2">
+      <input type="checkbox" />Actual<svg height="10" width="40"><path d="M0 5H40" class="line1" style="stroke:#696969;stroke-widthx:2;"/></svg>
+      <input type="checkbox" />Trend<svg height="10" width="40"><path d="M0 5H40" class="line2" style="stroke:#696969;stroke-widthx:3;"/></svg>
+     </div>        
+   <div class="legend1">COUNT</div>
+  
+   </div>
+     
+   <div id="RCT_amountsGraph" class="RCT-gc">
+     <div class="legend1">AMOUNT</div>
+   </div>
+     
+   <table id="RCT_meta" border="1">
+    <thead>
+      <tr>
+        <th class="th-a-0"></th>
+        <th class="th-a-1"></th>
+        <th class="th-a-2" colspan="2"><div id="RCT_current"></div></th>
+        <th class="th-a-3" colspan="2">MIN (MEDIAN) MAX)</th>
+        <th class="th-a-4" colspan="2">TOTAL</th>
+      </tr>
+      <tr>
+        <th class="th-b-0"><input type="checkbox"/></th>
+        <th class="th-b-1"></th>
+        <th class="th-b-2">Count</th>
+        <th class="th-b-3">Amount</th>
+        <th class="th-b-4">Count</th>
+        <th class="th-b-5">Amount</th>
+        <th class="th-b-6">Count</th>
+        <th class="th-b-7">Amount</th>
+      </tr>
+    </thead>
+    <tbody id="RCT_metaListBody">
+      <!-- dynamic fill -->
+    </tbody>
+   </table>
+  </div>
+  
+  
+</div>
+
+<script>
+var RECOMMENDATION_CODES_TREND_REPORT = (function() {
+    var RPT_ID = '5237260000000000526';
+    //var DATA = {"fmt":"JSON","G":{"r":"480"},"C":["2015-02-01 00:00:00","2015-02-02 00:00:00","2015-02-03 00:00:00","2015-02-04 00:00:00","2015-02-05 00:00:00","2015-02-06 00:00:00","2015-02-07 00:00:00"],"V":[{"c":{"v":[480,460,442,444,443,451,480],"df":"14,663,111","s":"-0.607","vf":["15,615,162","14,950,610","14,365,799","14,456,684","14,420,993","14,663,111","15,603,926"],"M":480,"tf":"104,076,285","m":442,"yy":"455.321","i":"458.964","af":"14,868,040"},"a":{"v":[394,446,403,398,401,412,480],"df":"4,655,827,710.74","s":"6.714","vf":["4,557,626,847.94","5,161,998,780.42","4,655,827,710.74","4,607,138,851.54","4,631,719,900.28","4,764,118,930.13","5,549,910,920.19"],"M":480,"tf":"33,928,341,941.24","m":394,"yy":"439.286","i":"399.000","af":"4,846,905,991.6"},"n":"ACCEPT"},{"c":{"v":[376,351,438,462,461,456,480],"df":"888,310","s":"19.464","vf":["733,680","683,578","852,908","900,217","898,373","888,310","935,581"],"M":480,"tf":"5,892,647","m":351,"yy":"490.393","i":"373.607","af":"841,806"},"a":{"v":[309,254,200,298,375,328,480],"df":"503,349,677.86","s":"29.857","vf":["503,349,677.86","414,074,878.51","326,631,705.73","485,528,848.45","611,268,270.48","533,731,739.88","782,039,835.46"],"M":480,"tf":"3,656,624,956.37","m":200,"yy":"410.143","i":"231.000","af":"522,374,993.76"},"n":"REJECT"},{"c":{"v":[269,394,426,396,480,479,370],"df":"72,667","s":"18.821","vf":["49,276","72,181","78,050","72,667","88,001","87,809","67,770"],"M":480,"tf":"515,754","m":269,"yy":"458.464","i":"345.536","af":"73,679"},"a":{"v":[126,348,480,214,246,238,114],"df":"51,296,485.43","s":"-17.500","vf":["27,131,228","75,123,586.34","103,530,093.99","46,082,117.83","53,135,773.16","51,296,485.43","24,585,747.76"],"M":480,"tf":"380,885,032.51","m":114,"yy":"199.786","i":"304.786","af":"54,412,147.5"},"n":"REVIEW"},{"c":{"v":[354,452,480,477,453,417,304],"df":"928,051","s":"-8.821","vf":["725,776","928,051","984,715","979,336","929,671","854,660","624,218"],"M":480,"tf":"6,026,427","m":304,"yy":"393.107","i":"446.036","af":"860,918"},"a":{"v":[480,64,3,3,3,2,2],"df":"225,616,169.11","s":"-55.643","vf":["41,421,556,853.79","5,488,273,334.94","233,061,590.4","225,031,505.59","225,616,169.11","212,254,693.59","136,106,044.66"],"M":480,"tf":"47,941,900,192.12","m":2,"yy":"-87.357","i":"246.500","af":"6,848,842,884.58"},"n":"Other"}],"execOn":"Feb 24, 2015 9:38:30 AM"};
+    var DATA = {"fmt":"JSON","G":{"r":"480"},"C":["2/1/15","2/2/15","2/3/15","2/4/15","2/5/15","2/6/15","2/7/15"],"Cf":["Feb 1, 2015 12:00:00 AM","Feb 2, 2015 12:00:00 AM","Feb 3, 2015 12:00:00 AM","Feb 4, 2015 12:00:00 AM","Feb 5, 2015 12:00:00 AM","Feb 6, 2015 12:00:00 AM","Feb 7, 2015 12:00:00 AM"],"V":[{"c":{"Mf":"15,615,162","v":[480,460,442,444,443,451,480],"df":"14,663,111","s":"-0.607","vf":["15,615,162","14,950,610","14,365,799","14,456,684","14,420,993","14,663,111","15,603,926"],"M":480,"tf":"104,076,285","mf":"14,365,799","m":442,"yy":"455.321","i":"458.964","af":"14,868,040"},"a":{"Mf":"$5,549,910,920.19","v":[394,446,403,398,401,412,480],"df":"$4,655,827,710.74","s":"6.714","vf":["$4,557,626,847.94","$5,161,998,780.42","$4,655,827,710.74","$4,607,138,851.54","$4,631,719,900.28","$4,764,118,930.13","$5,549,910,920.19"],"M":480,"tf":"$33,928,341,941.24","mf":"$4,557,626,847.94","m":394,"yy":"439.286","i":"399.000","af":"$4,846,905,991.60"},"n":"ACCEPT"},{"c":{"Mf":"935,581","v":[376,351,438,462,461,456,480],"df":"888,310","s":"19.464","vf":["733,680","683,578","852,908","900,217","898,373","888,310","935,581"],"M":480,"tf":"5,892,647","mf":"683,578","m":351,"yy":"490.393","i":"373.607","af":"841,806"},"a":{"Mf":"$782,039,835.46","v":[309,254,200,298,375,328,480],"df":"$503,349,677.86","s":"29.857","vf":["$503,349,677.86","$414,074,878.51","$326,631,705.73","$485,528,848.45","$611,268,270.48","$533,731,739.88","$782,039,835.46"],"M":480,"tf":"$3,656,624,956.37","mf":"$326,631,705.73","m":200,"yy":"410.143","i":"231.000","af":"$522,374,993.76"},"n":"REJECT"},{"c":{"Mf":"88,001","v":[269,394,426,396,480,479,370],"df":"72,667","s":"18.821","vf":["49,276","72,181","78,050","72,667","88,001","87,809","67,770"],"M":480,"tf":"515,754","mf":"49,276","m":269,"yy":"458.464","i":"345.536","af":"73,679"},"a":{"Mf":"$103,530,093.99","v":[126,348,480,214,246,238,114],"df":"$51,296,485.43","s":"-17.500","vf":["$27,131,228.00","$75,123,586.34","$103,530,093.99","$46,082,117.83","$53,135,773.16","$51,296,485.43","$24,585,747.76"],"M":480,"tf":"$380,885,032.51","mf":"$24,585,747.76","m":114,"yy":"199.786","i":"304.786","af":"$54,412,147.50"},"n":"REVIEW"},{"c":{"Mf":"984,715","v":[354,452,480,477,453,417,304],"df":"928,051","s":"-8.821","vf":["725,776","928,051","984,715","979,336","929,671","854,660","624,218"],"M":480,"tf":"6,026,427","mf":"624,218","m":304,"yy":"393.107","i":"446.036","af":"860,918"},"a":{"Mf":"$41,421,556,853.79","v":[480,64,3,3,3,2,2],"df":"$225,616,169.11","s":"-55.643","vf":["$41,421,556,853.79","$5,488,273,334.94","$233,061,590.40","$225,031,505.59","$225,616,169.11","$212,254,693.59","$136,106,044.66"],"M":480,"tf":"$47,941,900,192.12","mf":"$136,106,044.66","m":2,"yy":"-87.357","i":"246.500","af":"$6,848,842,884.58"},"n":"Other"}],"execOn":"Feb 24, 2015 5:10:43 PM"};
+    var FID = 'RCT';
+    //
+    function init() {
+        loadData();
+    }
+    //    
+    function loadData() {
+        //var data = RPT.makeReportData(RPT_ID);
+        //alert('made data:' + data + JSON.stringify(data));
+        //DATAPIPE.getJson(data, function(result){DATA=result;process()});
+        render(DATA);
+    }
+    //
+    function process() {
+        if (console) {
+            //console.log("DATA is" + DATA + "\n" + JSON.stringify(DATA));
+        }
+        if (DATA.statusMesg) {
+            document.getElementById(FID+'_status_mesg').innerHTML = DATA.statusMesg;
+        } else {
+            render(DATA);
+        }
+    }
+    //
+    function getData() {
+        return DATA;
+    }
+    //
+    function render(data) {
+        document.getElementById(FID+'_execOn').innerHTML = data['execOn'];
+        
+        // 
+        var margin = {top: 10, right: 10, bottom: 50, left: 50};
+        var width = 720 - margin.left - margin.right;
+        var height = 240 - margin.top - margin.bottom;
+        var range = parseInt(data["G"]["r"]);
+        var xCount = data['C'].length;
+        var xScale = d3.scale.linear()
+                  .range([0, width])
+                  .domain([0,xCount - 1]);
+        var yScale = d3.scale.linear()
+                  .range([height, 0])
+                  .domain([0,range]);
+        // generate count graphs
+        var countsSvg = d3.select('#'+FID+'_countsGraph')
+                  .append("svg")
+                  .attr("width", width + margin.left + margin.right)
+                  .attr("height", height + margin.top + margin.bottom)
+                  .append("g")
+                  .attr("transform",
+                  "translate(" + margin.left + "," + margin.top + ")");
+        data["V"].forEach(function(d,i) {
+          countsSvg.append("path")
+                  .classed('line1 color-l-'+i, true)
+                  .attr("id",FID+'c_g_'+i)
+                  .attr("d", (grapher(d['c']['v'],xScale,yScale))(d3.range(xCount)));           
+        });
+        // generate count trends
+        data["V"].forEach(function(d,i) {
+          var coords = [[0,d["c"]["i"]],[xCount-1,d["c"]["yy"]]];  
+          countsSvg.append("path")
+                  .classed('line2 color-l-'+i, true)
+                  .attr("id",FID+'c_t_'+i)                  
+                  .attr("d", (trender(coords,xScale,yScale))(d3.range(coords.length)));           
+        });        
+        // generate amount graphs
+        var countsSvg = d3.select('#'+FID+'_amountsGraph')
+                  .append("svg")
+                  .attr("width", width + margin.left + margin.right)
+                  .attr("height", height + margin.top + margin.bottom)
+                  .append("g")
+                  .attr("transform",
+                  "translate(" + margin.left + "," + margin.top + ")");
+        data["V"].forEach(function(d,i) {
+          countsSvg.append("path")
+                  .classed('line1 color-l-'+i, true)
+                  .attr("id",FID+'a_g_'+i)                  
+                  .attr("d", (grapher(d['a']['v'],xScale,yScale))(d3.range(xCount)));           
+        });
+        // generate amount trends
+        data["V"].forEach(function(d,i) {
+          var coords = [[0,d["a"]["i"]],[xCount-1,d["a"]["yy"]]];  
+          countsSvg.append("path")
+                  .classed('line2 color-l-'+i, true)
+                  .attr("id",FID+'a_t_'+i)                  
+                  .attr("d", (trender(coords,xScale,yScale))(d3.range(coords.length)));           
+        });          
+        // meta fill
+        var datarows = d3.select('#'+FID+'_metaListBody')
+            .selectAll('tr')
+            .data(d3.range(data['V'].length))
+            .enter()
+            .append('tr')
+            .attr('id',function(d){return FID+'_dr'+d;});
+        datarows.selectAll('tr')
+            .data(d3.range(8))
+            .enter()
+            .append('td')
+            .attr('id',function(d,i,p){return FID+'_dc_'+p+'_'+d;})
+            .attr('class', function(d){return FID+'_dtcs'+d;}); 
+        var html = '';
+        // col0 cb
+        data['V'].forEach(function(d,i){
+            html = '<input type="checkbox"/>';
+            document.getElementById(FID+'_dc_'+i+'_0').innerHTML = html;
+        });         
+        // col1 n
+        data['V'].forEach(function(d,i){
+            html = generateSwatch(i) + d.n;
+            document.getElementById(FID+'_dc_'+i+'_1').innerHTML = html;
+        });        
+        // col2 current count
+        data['V'].forEach(function(d,i){
+            html = '<span>' + d.n + '</span>';
+            //document.getElementById(FID+'_dc_'+i+'_2').innerHTML = html;
+        });
+        // col3 current amount
+        data['V'].forEach(function(d,i){
+            html = '<span>' + d.n + '</span>';
+            //document.getElementById(FID+'_dc_'+i+'_3').innerHTML = html;
+        });
+        // col4 m count
+        data['V'].forEach(function(d,i){
+            html = '<span>' + d.c.df + '</span>';
+            document.getElementById(FID+'_dc_'+i+'_4').innerHTML = html;
+        });
+        // col5 m amount
+        data['V'].forEach(function(d,i){
+            html = '<span>' + d.a.df + '</span>';
+            document.getElementById(FID+'_dc_'+i+'_5').innerHTML = html;
+        }); 
+        // col6 t count
+        data['V'].forEach(function(d,i){
+            html = '<span>' + d.c.tf + '</span>';
+            document.getElementById(FID+'_dc_'+i+'_6').innerHTML = html;
+        });  
+        // col7 t amount
+        data['V'].forEach(function(d,i){
+            html = '<span>' + d.a.tf + '</span>';
+            document.getElementById(FID+'_dc_'+i+'_7').innerHTML = html;
+        });                       
+    }
+    //
+    function grapher(yVals, xScale, yScale) {
+        return d3.svg.line()
+               .x(function(d) { return xScale(d); })
+               .y(function(d) { return yScale(yVals[d]); })
+               .interpolate("cardinal");
+    }
+    //
+    function trender(coords, xScale, yScale) {
+        return d3.svg.line()
+               .x(function(d) { return xScale(coords[d][0]); })
+               .y(function(d) { return yScale(coords[d][1]); });
+    }
+    //
+    function generateSwatch(colorIndex) {
+      return '<svg width="10" height="10" class="swatch"><rect width="10" height="10" class="color-l-'+colorIndex+'" /></svg>';
+    }
+    //
+    return {
+      init : init,
+      RPT_ID : RPT_ID,
+      getData : getData,
+      loadData : loadData
+    };
+})();
+RECOMMENDATION_CODES_TREND_REPORT.init();
+</script>
+      </div> <!-- main_container -->
+    </div> <!-- section -->  
+    
+    <div class="section">
+      
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-4 sflabel al">© 2007-2013 Accertify, Inc.</div>
+    <div class="col-md-4 sflabel am">CONFIDENTIAL</div>
+    <div class="col-md-4 sflabel ar">(host admin) Feb 24, 2015 9:38:30 AM</div>
+  </div>
+</div>
+
+    </div> <!-- section -->
+    
+  </div> <!-- mainLayout -->
+  
+</body></html>

@@ -138,7 +138,7 @@ var DATA = {
             .x(function(d,i) { /*console.log('x: ' + d+','+i);*/return x(i); })
             .y(function(d,i) { /*console.log('y: ' + d+','+i);*/return y(d); });
         // gen overlay to act on mouse posn
-        // def here s o will be in bottom of dom object stack and not hide value lines
+        // def here so will be in bottom of dom object stack and not hide value lines
         svg.append("rect")
           .attr("class", "overlay")
           .attr("width", w)
