@@ -504,227 +504,11 @@ div.expand-links {
     <script>
 "use strict";
 
-var RPT = (function() {
-    //var CRITERIA_DATA = {};
-    var CRITERIA_SERIALIZED = 'criteria';
-    var REFERENCES_SERIALIZED = 'rptrefs';
-    var SCR_FORM_ACTION = '/report/rptcontrol/run';
-    var RDID = 'rdid';
-    var PRESET = 'preset';
-    
-    function loadReport(rptRefKey, params) {
-        var rptRefs = JSON.parse(document.getElementById(REFERENCES_SERIALIZED).value);
-        var rptRefValue = rptRefs[rptRefKey];
-
-        // TODO destroy cform, if already present
-
-        var cform = document.createElement('form');
-        cform.setAttribute('method', 'post');
-        cform.setAttribute('action', SCR_FORM_ACTION);
-        cform.setAttribute('id','rpt_cform');
-        cform.setAttribute('target','_blank');
-        // create an assoc array to hold cform fields 
-        var cfields = {};
-        //    put in some required fields...
-        cfields[RDID] = rptRefValue;
-        cfields[PRESET] = true;
-        //    add in the embedded critera...
-        var criteria = JSON.parse(document.getElementById(CRITERIA_SERIALIZED).value);
-        for (var key in criteria) {
-            if (criteria.hasOwnProperty(key)) {
-                cfields[key] = criteria[key];
-            }
-        }
-        //    now add in fields from the params, replacing any with the same name from criteria 
-        if (params) {
-            for (var key in params) {
-                if (params.hasOwnProperty(key)) {
-                    cfields[key] = params[key];
-                }
-            }
-        }
-        // create input fields from the collected fields
-        for (var key in cfields) {
-            if (cfields.hasOwnProperty(key)) {
-                var value = cfields[key];
-                if (value instanceof Array) {
-                    for (var i = 0; i < value.length;i++) {
-                        cform.appendChild(createHiddenInput(key, value[i]));
-                    }
-                } else {
-                    cform.appendChild(createHiddenInput(key, value));
-                }
-            }
-        }
-        document.body.appendChild(cform);
-        cform.submit();
-    }
-    //
-    function createHiddenInput(name,value) {
-        var input = document.createElement('input');
-        input.setAttribute('type', 'hidden');
-        input.setAttribute('name',name);
-        input.setAttribute('value',value);
-        return input;
-    }
-    //
-    function showTransaction(transactionId, bucketId) {
-        bucketId = bucketId || '1';
-        window.open('/jsp/agent/queue/transactiondetail.jsf?transId='+transactionId+'&bucketId='+bucketId+'&mode=V','_blank');
-    }
-    //
-    function makeReportData(rptId) {
-        var data = {};
-        data[RDID] = rptId;
-        var criteria = JSON.parse(document.getElementById(CRITERIA_SERIALIZED).value);
-        var criteriaKeys = Object.keys(criteria);
-        for (var i = 0; i < criteriaKeys.length; i++) {
-            var criteriaKey = criteriaKeys[i];
-            data[criteriaKey] = criteria[criteriaKey];
-        }
-        return data;
-    }
-    //
-    return {
-        CRITERIA_SERIALIZED : CRITERIA_SERIALIZED,
-        REFERENCES_SERIALIZED : REFERENCES_SERIALIZED,
-        SCR_FORM_ACTION : SCR_FORM_ACTION,
-        RDID : RDID,
-        PRESET : PRESET,
-        makeReportData : makeReportData,
-        loadReport : loadReport,
-        showTransaction : showTransaction
-    };
-})();
-
-/**
- * Helper to retrieve report related data from radar through the interceptas report pages.
- */
-var DATAPIPE = (function() {
-    var OUTPUT_TYPE_KEY = "fmt";
-    var OUTPUT_TYPE_HTML_FRAGMENT = "html_fragment";
-    var OUTPUT_TYPE_JSON = "json";
-    var url = RPT.SCR_FORM_ACTION;
-    /*
-     * Replace innerHTML (and execute inline scripts) into "elementRef" with result of ajax post of "data".
-     *  eg. DATAPIPE.loadFragment({a:1,b:2},document.getElementById('div1'));
-     */
-    function loadFragment(data, elementRef) {
-        if (typeof data !== 'undefined') {
-            data[OUTPUT_TYPE_KEY] = OUTPUT_TYPE_HTML_FRAGMENT;
-            data[RPT.PRESET] = true;
-            jQuery(elementRef).load(url, toPostableJson(data));
-        }
-    }
-    /*
-     * Retrieve result of ajax post of "data". Invokes the function "callback" with the result as argument.
-     *  eg. DATAPIPE.getFragment({a:1,b:2},function(recvd){console.log('recvd:'+recvd);});
-     */
-    function getFragment(data, callback) {
-        if (typeof data !== 'undefined') {
-            data[OUTPUT_TYPE_KEY] = OUTPUT_TYPE_HTML_FRAGMENT;
-            data[RPT.PRESET] = true;
-            jQuery.post(url, toPostableJson(data))
-                  .done(function(recvd) {
-                          if (typeof callback === 'function') {
-                            callback(recvd);
-                          }
-                   })
-                  .fail(function(jqXHR,textStatus,errorThrown) {
-                          if (console) {
-                            console.log('error gettingFragment'+textStatus+','+errorThrown+' for '+data);
-                          }
-                   });
-        }
-    }
-    /*
-     * Retrieve result of ajax post of "data". Expecting result to be valid JSON.
-     * Result is parsed into a javascript literal. Invokes the function "callback" with the result as argument.
-     *  eg. DATAPIPE.getJson({a:1,b:2},function(recvd){console.log('recvd:'+recvd);});
-     */
-    function getJson(data, callback) {
-        if (typeof data !== 'undefined') {
-            data[OUTPUT_TYPE_KEY] = OUTPUT_TYPE_JSON;
-            data[RPT.PRESET] = true;
-            jQuery.post(url, toPostableJson(data))
-                  .done(function(recvd) {
-                          //console.log(recvd);
-                          if (typeof callback === 'function') {
-                            //alert("parsing" + JSON.stringify(JSON.parse(recvd)));
-                            try {
-                              callback(JSON.parse(recvd));
-                            } catch(e) {
-                              if (console) {
-                                console.log('error '+e+' gettingJson for\n'+data+'\ngot '+recvd);
-                              }
-                              callback({'error':recvd});
-                            }
-                          }})
-                  .fail(function(jqXHR,textStatus,errorThrown) {
-                          if(console) {
-                            console.log('error gettingjson '+textStatus+','+errorThrown+' for '+data);
-                          }
-                          });
-        }
-    }
-    /*
-     * 
-     */
-    function toPostableJson(data) {
-        var postableArray = [];
-        var dataKeys = Object.keys(data);
-        for (var i = 0; i < dataKeys.length; i++) {
-            var dataKey = dataKeys[i];
-            var dataValue = data[dataKey];
-            if (Array.isArray(dataValue)) {
-                for (var j = 0; j < dataValue.length; j++) {
-                    postableArray.push(dataKey + '=' + encodeURIComponent(dataValue[j]));
-                }
-            } else {
-                postableArray.push(dataKey + '=' + encodeURIComponent(dataValue));
-            }
-        }
-        return postableArray.join('&');
-    }
-    
-    return {
-        loadFragment : loadFragment,
-        getFragment : getFragment,
-        getJson : getJson,
-        toPostableJson : toPostableJson
-    };
-})();
-
-var MATH = (function() {
-    // returns slope, intercept of the line
-    function leastSquares(xSeries, ySeries) {
-        var reduceSumFunc = function(prev, cur) { return prev + cur; };
-        var xBar = xSeries.reduce(reduceSumFunc) * 1.0 / xSeries.length;
-        var yBar = ySeries.reduce(reduceSumFunc) * 1.0 / ySeries.length;
-        var ssXX = xSeries.map(function(d) { return Math.pow(d - xBar, 2); })
-            .reduce(reduceSumFunc);
-        var ssYY = ySeries.map(function(d) { return Math.pow(d - yBar, 2); })
-            .reduce(reduceSumFunc);
-        var ssXY = xSeries.map(function(d, i) { return (d - xBar) * (ySeries[i] - yBar); })
-            .reduce(reduceSumFunc);
-        var slope = ssXY / ssXX;
-        var intercept = yBar - (xBar * slope);
-        //var rSquare = Math.pow(ssXY, 2) / (ssXX * ssYY);
-        return [slope, intercept];
-    }
-    //
-    return {
-        leastSquares : leastSquares
-    };
-})();
-
-
-    
     </script>   
 
 </head>
   
- <body data-pinterest-extension-installed="cr1.35" cz-shortcut-listen="true">
+ <body>
  <!-- standard_report_template -->
   <div class="mainLayout">
 
@@ -774,20 +558,45 @@ var MATH = (function() {
         
 
 <style type="text/css">
-div#FRAGMENT_RCT path.linex {
-  fill: none;
-}
+
 div#FRAGMENT_RCT path.line1 {
-  stroke-width: 1;
+  stroke-width: 1.5;
   fill: none;
 }
 div#FRAGMENT_RCT path.line2 {
-  stroke-width: 2;
+  stroke-width: 1;
   fill: none;
-  stroke-dasharray:10,5;
+  stroke-dasharray:10,2;
 }
 
+div#FRAGMENT_RCT .axis path, .axis line {
+  fill:none;
+  stroke:#c0c0c0;
+  shape-rendering:crispEdges;
+}
 
+div#FRAGMENT_RCT .axis text {
+  font-size:0.8em;
+}
+
+div#FRAGMENT_RCT path.grid {
+  fill:none;
+  stroke:#c0c0c0;
+  stroke-width:1px;
+  opacity:0.2;
+  shape-rendering:crispEdges;
+}
+
+div#FRAGMENT_RCT path.cursor {
+  stroke:red;
+  stroke-width:1.5px;
+  opacity:1;
+}
+
+div#FRAGMENT_RCT rect.overlay {
+  fill: none;
+  pointer-events: all;
+}
 .color-l-0 {
   stroke: #88bde6;
   fill: #88bde6;
@@ -822,7 +631,7 @@ div#FRAGMENT_RCT path.line2 {
 }
 
 div.RCT-gc {
-  border:1px solid #c0c0c0;
+  borderx:1px solid #c0c0c0;
   width: 800px;
   margin: 1px 0 10px 0;
 }
@@ -854,8 +663,8 @@ div#FRAGMENT_RCT svg.swatch {
 
    <div id="RCT_countsGraph" class="RCT-gc">
      <div class="legend2">
-      <input type="checkbox" />Actual<svg height="10" width="40"><path d="M0 5H40" class="line1" style="stroke:#696969;stroke-widthx:2;"/></svg>
-      <input type="checkbox" />Trend<svg height="10" width="40"><path d="M0 5H40" class="line2" style="stroke:#696969;stroke-widthx:3;"/></svg>
+      <input type="checkbox" id="RCT_ctrl_actual" onclick="RECOMMENDATION_CODES_TREND_REPORT.gv()" checked />Actual<svg height="10" width="40"><path d="M0 5H40" class="line1" style="stroke:#696969;"/></svg>
+      <input type="checkbox" id="RCT_ctrl_trend" onclick="RECOMMENDATION_CODES_TREND_REPORT.gv()" />Trend<svg height="10" width="40"><path d="M0 5H40" class="line2" style="stroke:#696969;"/></svg>
      </div>        
    <div class="legend1">COUNT</div>
   
@@ -875,7 +684,7 @@ div#FRAGMENT_RCT svg.swatch {
         <th class="th-a-4" colspan="2">TOTAL</th>
       </tr>
       <tr>
-        <th class="th-b-0"><input type="checkbox"/></th>
+        <th class="th-b-0"></th>
         <th class="th-b-1"></th>
         <th class="th-b-2">Count</th>
         <th class="th-b-3">Amount</th>
@@ -900,6 +709,9 @@ var RECOMMENDATION_CODES_TREND_REPORT = (function() {
     //var DATA = {"fmt":"JSON","G":{"r":"480"},"C":["2015-02-01 00:00:00","2015-02-02 00:00:00","2015-02-03 00:00:00","2015-02-04 00:00:00","2015-02-05 00:00:00","2015-02-06 00:00:00","2015-02-07 00:00:00"],"V":[{"c":{"v":[480,460,442,444,443,451,480],"df":"14,663,111","s":"-0.607","vf":["15,615,162","14,950,610","14,365,799","14,456,684","14,420,993","14,663,111","15,603,926"],"M":480,"tf":"104,076,285","m":442,"yy":"455.321","i":"458.964","af":"14,868,040"},"a":{"v":[394,446,403,398,401,412,480],"df":"4,655,827,710.74","s":"6.714","vf":["4,557,626,847.94","5,161,998,780.42","4,655,827,710.74","4,607,138,851.54","4,631,719,900.28","4,764,118,930.13","5,549,910,920.19"],"M":480,"tf":"33,928,341,941.24","m":394,"yy":"439.286","i":"399.000","af":"4,846,905,991.6"},"n":"ACCEPT"},{"c":{"v":[376,351,438,462,461,456,480],"df":"888,310","s":"19.464","vf":["733,680","683,578","852,908","900,217","898,373","888,310","935,581"],"M":480,"tf":"5,892,647","m":351,"yy":"490.393","i":"373.607","af":"841,806"},"a":{"v":[309,254,200,298,375,328,480],"df":"503,349,677.86","s":"29.857","vf":["503,349,677.86","414,074,878.51","326,631,705.73","485,528,848.45","611,268,270.48","533,731,739.88","782,039,835.46"],"M":480,"tf":"3,656,624,956.37","m":200,"yy":"410.143","i":"231.000","af":"522,374,993.76"},"n":"REJECT"},{"c":{"v":[269,394,426,396,480,479,370],"df":"72,667","s":"18.821","vf":["49,276","72,181","78,050","72,667","88,001","87,809","67,770"],"M":480,"tf":"515,754","m":269,"yy":"458.464","i":"345.536","af":"73,679"},"a":{"v":[126,348,480,214,246,238,114],"df":"51,296,485.43","s":"-17.500","vf":["27,131,228","75,123,586.34","103,530,093.99","46,082,117.83","53,135,773.16","51,296,485.43","24,585,747.76"],"M":480,"tf":"380,885,032.51","m":114,"yy":"199.786","i":"304.786","af":"54,412,147.5"},"n":"REVIEW"},{"c":{"v":[354,452,480,477,453,417,304],"df":"928,051","s":"-8.821","vf":["725,776","928,051","984,715","979,336","929,671","854,660","624,218"],"M":480,"tf":"6,026,427","m":304,"yy":"393.107","i":"446.036","af":"860,918"},"a":{"v":[480,64,3,3,3,2,2],"df":"225,616,169.11","s":"-55.643","vf":["41,421,556,853.79","5,488,273,334.94","233,061,590.4","225,031,505.59","225,616,169.11","212,254,693.59","136,106,044.66"],"M":480,"tf":"47,941,900,192.12","m":2,"yy":"-87.357","i":"246.500","af":"6,848,842,884.58"},"n":"Other"}],"execOn":"Feb 24, 2015 9:38:30 AM"};
     var DATA = {"fmt":"JSON","G":{"r":"480"},"C":["2/1/15","2/2/15","2/3/15","2/4/15","2/5/15","2/6/15","2/7/15"],"Cf":["Feb 1, 2015 12:00:00 AM","Feb 2, 2015 12:00:00 AM","Feb 3, 2015 12:00:00 AM","Feb 4, 2015 12:00:00 AM","Feb 5, 2015 12:00:00 AM","Feb 6, 2015 12:00:00 AM","Feb 7, 2015 12:00:00 AM"],"V":[{"c":{"Mf":"15,615,162","v":[480,460,442,444,443,451,480],"df":"14,663,111","s":"-0.607","vf":["15,615,162","14,950,610","14,365,799","14,456,684","14,420,993","14,663,111","15,603,926"],"M":480,"tf":"104,076,285","mf":"14,365,799","m":442,"yy":"455.321","i":"458.964","af":"14,868,040"},"a":{"Mf":"$5,549,910,920.19","v":[394,446,403,398,401,412,480],"df":"$4,655,827,710.74","s":"6.714","vf":["$4,557,626,847.94","$5,161,998,780.42","$4,655,827,710.74","$4,607,138,851.54","$4,631,719,900.28","$4,764,118,930.13","$5,549,910,920.19"],"M":480,"tf":"$33,928,341,941.24","mf":"$4,557,626,847.94","m":394,"yy":"439.286","i":"399.000","af":"$4,846,905,991.60"},"n":"ACCEPT"},{"c":{"Mf":"935,581","v":[376,351,438,462,461,456,480],"df":"888,310","s":"19.464","vf":["733,680","683,578","852,908","900,217","898,373","888,310","935,581"],"M":480,"tf":"5,892,647","mf":"683,578","m":351,"yy":"490.393","i":"373.607","af":"841,806"},"a":{"Mf":"$782,039,835.46","v":[309,254,200,298,375,328,480],"df":"$503,349,677.86","s":"29.857","vf":["$503,349,677.86","$414,074,878.51","$326,631,705.73","$485,528,848.45","$611,268,270.48","$533,731,739.88","$782,039,835.46"],"M":480,"tf":"$3,656,624,956.37","mf":"$326,631,705.73","m":200,"yy":"410.143","i":"231.000","af":"$522,374,993.76"},"n":"REJECT"},{"c":{"Mf":"88,001","v":[269,394,426,396,480,479,370],"df":"72,667","s":"18.821","vf":["49,276","72,181","78,050","72,667","88,001","87,809","67,770"],"M":480,"tf":"515,754","mf":"49,276","m":269,"yy":"458.464","i":"345.536","af":"73,679"},"a":{"Mf":"$103,530,093.99","v":[126,348,480,214,246,238,114],"df":"$51,296,485.43","s":"-17.500","vf":["$27,131,228.00","$75,123,586.34","$103,530,093.99","$46,082,117.83","$53,135,773.16","$51,296,485.43","$24,585,747.76"],"M":480,"tf":"$380,885,032.51","mf":"$24,585,747.76","m":114,"yy":"199.786","i":"304.786","af":"$54,412,147.50"},"n":"REVIEW"},{"c":{"Mf":"984,715","v":[354,452,480,477,453,417,304],"df":"928,051","s":"-8.821","vf":["725,776","928,051","984,715","979,336","929,671","854,660","624,218"],"M":480,"tf":"6,026,427","mf":"624,218","m":304,"yy":"393.107","i":"446.036","af":"860,918"},"a":{"Mf":"$41,421,556,853.79","v":[480,64,3,3,3,2,2],"df":"$225,616,169.11","s":"-55.643","vf":["$41,421,556,853.79","$5,488,273,334.94","$233,061,590.40","$225,031,505.59","$225,616,169.11","$212,254,693.59","$136,106,044.66"],"M":480,"tf":"$47,941,900,192.12","mf":"$136,106,044.66","m":2,"yy":"-87.357","i":"246.500","af":"$6,848,842,884.58"},"n":"Other"}],"execOn":"Feb 24, 2015 5:10:43 PM"};
     var FID = 'RCT';
+    var valueSetsCount = 0;
+    var xScale;
+    var yScale;
     //
     function init() {
         loadData();
@@ -931,15 +743,16 @@ var RECOMMENDATION_CODES_TREND_REPORT = (function() {
         document.getElementById(FID+'_execOn').innerHTML = data['execOn'];
         
         // 
-        var margin = {top: 10, right: 10, bottom: 50, left: 50};
+        var margin = {top: 10, right: 20, bottom: 10, left: 50};
         var width = 720 - margin.left - margin.right;
         var height = 240 - margin.top - margin.bottom;
         var range = parseInt(data["G"]["r"]);
         var xCount = data['C'].length;
-        var xScale = d3.scale.linear()
+        valueSetsCount = data['V'].length;
+        xScale = d3.scale.linear()
                   .range([0, width])
                   .domain([0,xCount - 1]);
-        var yScale = d3.scale.linear()
+        yScale = d3.scale.linear()
                   .range([height, 0])
                   .domain([0,range]);
         // generate count graphs
@@ -962,18 +775,19 @@ var RECOMMENDATION_CODES_TREND_REPORT = (function() {
           countsSvg.append("path")
                   .classed('line2 color-l-'+i, true)
                   .attr("id",FID+'c_t_'+i)                  
-                  .attr("d", (trender(coords,xScale,yScale))(d3.range(coords.length)));           
+                  .attr("d", (trender(coords,xScale,yScale))(d3.range(coords.length)));
+          document.getElementById(FID+'c_t_'+i).style.display="none";
         });        
         // generate amount graphs
-        var countsSvg = d3.select('#'+FID+'_amountsGraph')
+        var amountsSvg = d3.select('#'+FID+'_amountsGraph')
                   .append("svg")
                   .attr("width", width + margin.left + margin.right)
-                  .attr("height", height + margin.top + margin.bottom)
+                  .attr("height", height + margin.top + margin.bottom + 50)
                   .append("g")
                   .attr("transform",
                   "translate(" + margin.left + "," + margin.top + ")");
         data["V"].forEach(function(d,i) {
-          countsSvg.append("path")
+          amountsSvg.append("path")
                   .classed('line1 color-l-'+i, true)
                   .attr("id",FID+'a_g_'+i)                  
                   .attr("d", (grapher(d['a']['v'],xScale,yScale))(d3.range(xCount)));           
@@ -981,11 +795,45 @@ var RECOMMENDATION_CODES_TREND_REPORT = (function() {
         // generate amount trends
         data["V"].forEach(function(d,i) {
           var coords = [[0,d["a"]["i"]],[xCount-1,d["a"]["yy"]]];  
-          countsSvg.append("path")
+          amountsSvg.append("path")
                   .classed('line2 color-l-'+i, true)
                   .attr("id",FID+'a_t_'+i)                  
-                  .attr("d", (trender(coords,xScale,yScale))(d3.range(coords.length)));           
-        });          
+                  .attr("d", (trender(coords,xScale,yScale))(d3.range(coords.length)));
+          document.getElementById(FID+'a_t_'+i).style.display="none";
+        });
+        // axes
+        countsSvg.append("path")
+          .attr("d",'M0 '+height+'H'+width)
+          .attr("class","grid");
+        var xAxis = d3.svg.axis().scale(xScale)
+                  .orient("bottom").tickFormat(function(d){return data['C'][d]});
+        amountsSvg.append("g")
+                  .attr("class", "x axis")
+                  .attr("transform", "translate(0," + height + ")")
+                  .call(xAxis);
+        // vert grid
+        for (var i = 0; i < xCount; i++) {
+          countsSvg.append("path")
+          .attr("d",'M'+xScale(i)+' 0V'+height)
+          .attr("class","grid")
+          .attr("id",FID+'gtc_'+i);
+          amountsSvg.append("path")
+          .attr("d",'M'+xScale(i)+' 0V'+height)
+          .attr("class","grid")
+          .attr("id",FID+'gta_'+i);
+        }
+        // cursor,overlay for mouse events
+        amountsSvg.append("path")
+          .attr("d",'M0 0V'+height)
+          .attr("id",FID+'_cursor_a')
+          .attr("class","cursor")
+        document.getElementById(FID+'_cursor_a').style.display = 'none';
+        amountsSvg.append("rect")
+          .attr("class", "overlay")
+          .attr("width", width)
+          .attr("height", height)
+          .on("mouseout", overlayMouseOut)
+          .on("mousemove", overlayMouseMove)
         // meta fill
         var datarows = d3.select('#'+FID+'_metaListBody')
             .selectAll('tr')
@@ -1002,7 +850,7 @@ var RECOMMENDATION_CODES_TREND_REPORT = (function() {
         var html = '';
         // col0 cb
         data['V'].forEach(function(d,i){
-            html = '<input type="checkbox"/>';
+            html = '<input type="checkbox" checked onclick="RECOMMENDATION_CODES_TREND_REPORT.gv()" id="'+FID+'_ctrl_'+i+ '"/>';
             document.getElementById(FID+'_dc_'+i+'_0').innerHTML = html;
         });         
         // col1 n
@@ -1022,12 +870,12 @@ var RECOMMENDATION_CODES_TREND_REPORT = (function() {
         });
         // col4 m count
         data['V'].forEach(function(d,i){
-            html = '<span>' + d.c.df + '</span>';
+            html = d.c.mf + ' (' + d.c.df + ') ' + d.c.Mf;
             document.getElementById(FID+'_dc_'+i+'_4').innerHTML = html;
         });
         // col5 m amount
         data['V'].forEach(function(d,i){
-            html = '<span>' + d.a.df + '</span>';
+            html = d.a.mf + ' (' + d.a.df + ') ' + d.a.Mf;
             document.getElementById(FID+'_dc_'+i+'_5').innerHTML = html;
         }); 
         // col6 t count
@@ -1059,11 +907,46 @@ var RECOMMENDATION_CODES_TREND_REPORT = (function() {
       return '<svg width="10" height="10" class="swatch"><rect width="10" height="10" class="color-l-'+colorIndex+'" /></svg>';
     }
     //
+    function graphVisibility() {
+      var actualChecked = document.getElementById(FID+'_ctrl_actual').checked;
+      var trendChecked = document.getElementById(FID+'_ctrl_trend').checked;
+      for (var i = 0; i < valueSetsCount; i++) {
+        var ctrl = document.getElementById(FID+'_ctrl_'+i);
+        document.getElementById(FID+'c_g_'+i).style.display = (ctrl.checked)?(actualChecked?null:'none'):'none';
+        document.getElementById(FID+'c_t_'+i).style.display = (ctrl.checked)?(trendChecked?null:'none'):'none';
+        document.getElementById(FID+'a_g_'+i).style.display = (ctrl.checked)?(actualChecked?null:'none'):'none';
+        document.getElementById(FID+'a_t_'+i).style.display = (ctrl.checked)?(trendChecked?null:'none'):'none';
+      }
+    }
+    //
+    function overlayMouseMove() {
+      var xCoord = d3.mouse(this)[0];
+      var xIndex = d3.round(xScale.invert(xCoord));
+      var xTickVal = xScale(xIndex) + 1;
+      console.log('gover ' + xCoord + '\t' + xIndex + "\t" + xTickVal);
+      d3.select('#'+FID+'_cursor_a')
+        .attr("transform", "translate("+xTickVal+")");
+      document.getElementById(FID+'_cursor_a').style.display = null;
+      document.getElementById(FID+'_current').innerHTML = DATA["Cf"][xIndex];
+      for (var i = 0; i < valueSetsCount; i++) {
+        document.getElementById(FID+'_dc_'+i+'_2').innerHTML = DATA["V"][i]["c"]["vf"][xIndex];
+      }
+    }
+    //
+    function overlayMouseOut() {
+      document.getElementById(FID+'_cursor_a').style.display = 'none';
+      document.getElementById(FID+'_current').innerHTML = '';
+      for (var i = 0; i < valueSetsCount; i++) {
+        document.getElementById(FID+'_dc_'+i+'_2').innerHTML = '';
+      }      
+    }    
+    //
     return {
       init : init,
       RPT_ID : RPT_ID,
       getData : getData,
-      loadData : loadData
+      loadData : loadData,
+      gv : graphVisibility 
     };
 })();
 RECOMMENDATION_CODES_TREND_REPORT.init();
