@@ -879,6 +879,14 @@ var RECOMMENDATION_CODES_TREND_REPORT = (function() {
                   .attr("class", "x axis")
                   .attr("transform", "translate(0," + height + ")")
                   .call(xAxis);
+         amountsSvg.append("text")
+         .attr("x","0")
+         .attr("y","0")
+         .attr("fill","red")
+         .attr("text-anchor", "end")
+         .text("1234,56.78");
+
+         
         // vert grid
         for (var i = 0; i < xCount; i++) {
           countsSvg.append("path")
@@ -892,7 +900,7 @@ var RECOMMENDATION_CODES_TREND_REPORT = (function() {
         }
         // cursor,overlay for mouse events
         countsSvg.append("path")
-          .attr("d",'M0 0V'+height)
+          .attr("d",'M0 0V'+(height+150))
           .attr("id",FID+'_cursor_c')
           .attr("class","cursor")
         document.getElementById(FID+'_cursor_c').style.display = 'none';
