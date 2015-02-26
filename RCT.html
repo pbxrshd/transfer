@@ -581,6 +581,20 @@ div#FRAGMENT_RCT .axis text {
   stroke-width:0px;
 }
 
+div#FRAGMENT_RCT text.y-tick { /* */
+  font-size:0.8em;
+  fill:#6c7477;
+  stroke-width:0px;
+}
+
+div#FRAGMENT_RCT text.y-label { /* */
+  font-size:0.9em;
+  font-weight:bold;
+  fill:#434040;
+  stroke-width:1px;
+  text-transform: uppercase;
+}
+
 div#FRAGMENT_RCT path.grid {
   fill:none;
   stroke:#c0c0c0;
@@ -639,10 +653,14 @@ div#FRAGMENT_RCT div.legend1 {
   font-size: 0.8em;
   font-weight: bold;    
 }
-div#FRAGMENT_RCT div.legend2 {
+div#FRAGMENT_RCT div.legend2 { /* */
   color: #64a3a8;
   font-size: 0.8em;
-  float:right;   
+  padding: 0 0 10px 24px;   
+}
+
+div#RCT_current {
+  min-width: 180px;
 }
 
 div#FRAGMENT_RCT svg.swatch {
@@ -726,16 +744,15 @@ div#FRAGMENT_RCT td.RCT_dtcs10,td.RCT_dtcs11 {
 
   <div id="RCT_contentBody">
 
-   <div id="RCT_countsGraph" class="RCT-gc">
-     <div class="legend2">
-      <input type="checkbox" id="RCT_ctrl_actual" onclick="RECOMMENDATION_CODES_TREND_REPORT.gv()" checked />Actual<svg height="10" width="40"><path d="M0 5H40" class="line1" style="stroke:#696969;"/></svg>
-      <input type="checkbox" id="RCT_ctrl_trend" onclick="RECOMMENDATION_CODES_TREND_REPORT.gv()" />Trend<svg height="10" width="40"><path d="M0 5H40" class="line2" style="stroke:#696969;"/></svg>
-     </div>        
-     <div class="legend1">COUNT</div>
+   <div class="legend2">
+    <input type="checkbox" id="RCT_ctrl_actual" onclick="RECOMMENDATION_CODES_TREND_REPORT.gv()" checked />Actual<svg height="10" width="40"><path d="M0 5H40" class="line1" style="stroke:#696969;"/></svg>
+    &nbsp;&nbsp;
+    <input type="checkbox" id="RCT_ctrl_trend" onclick="RECOMMENDATION_CODES_TREND_REPORT.gv()" />Trend<svg height="10" width="40"><path d="M0 5H40" class="line2" style="stroke:#696969;"/></svg>
+   </div>
+   <div id="RCT_countsGraph" class="RCT-gc">     
    </div>
      
    <div id="RCT_amountsGraph" class="RCT-gc">
-     <div class="legend1">AMOUNT</div>
    </div>
      
    <table id="RCT_meta">
@@ -743,8 +760,8 @@ div#FRAGMENT_RCT td.RCT_dtcs10,td.RCT_dtcs11 {
       <tr>
         <th class="th-a-0"></th>
         <th class="th-a-1"></th>
-        <th class="th-a-2" colspan="4">Count</th>
-        <th class="th-a-3" colspan="4">Amount</th>
+        <th class="th-a-2" colspan="4"><span id="RCT-c-label">Count</span></th>
+        <th class="th-a-3" colspan="4"><span id="RCT-a-label">Amount</span></th>
         <th class="th-a-4" colspan="2"><div id="RCT_current"></div></th>
       </tr>
       <tr>
@@ -774,8 +791,8 @@ div#FRAGMENT_RCT td.RCT_dtcs10,td.RCT_dtcs11 {
 <script>
 var RECOMMENDATION_CODES_TREND_REPORT = (function() {
     var RPT_ID = '5237260000000000526';
-    //var DATA = {"fmt":"JSON","G":{"r":"480"},"C":["2015-02-01 00:00:00","2015-02-02 00:00:00","2015-02-03 00:00:00","2015-02-04 00:00:00","2015-02-05 00:00:00","2015-02-06 00:00:00","2015-02-07 00:00:00"],"V":[{"c":{"v":[480,460,442,444,443,451,480],"df":"14,663,111","s":"-0.607","vf":["15,615,162","14,950,610","14,365,799","14,456,684","14,420,993","14,663,111","15,603,926"],"M":480,"tf":"104,076,285","m":442,"yy":"455.321","i":"458.964","af":"14,868,040"},"a":{"v":[394,446,403,398,401,412,480],"df":"4,655,827,710.74","s":"6.714","vf":["4,557,626,847.94","5,161,998,780.42","4,655,827,710.74","4,607,138,851.54","4,631,719,900.28","4,764,118,930.13","5,549,910,920.19"],"M":480,"tf":"33,928,341,941.24","m":394,"yy":"439.286","i":"399.000","af":"4,846,905,991.6"},"n":"ACCEPT"},{"c":{"v":[376,351,438,462,461,456,480],"df":"888,310","s":"19.464","vf":["733,680","683,578","852,908","900,217","898,373","888,310","935,581"],"M":480,"tf":"5,892,647","m":351,"yy":"490.393","i":"373.607","af":"841,806"},"a":{"v":[309,254,200,298,375,328,480],"df":"503,349,677.86","s":"29.857","vf":["503,349,677.86","414,074,878.51","326,631,705.73","485,528,848.45","611,268,270.48","533,731,739.88","782,039,835.46"],"M":480,"tf":"3,656,624,956.37","m":200,"yy":"410.143","i":"231.000","af":"522,374,993.76"},"n":"REJECT"},{"c":{"v":[269,394,426,396,480,479,370],"df":"72,667","s":"18.821","vf":["49,276","72,181","78,050","72,667","88,001","87,809","67,770"],"M":480,"tf":"515,754","m":269,"yy":"458.464","i":"345.536","af":"73,679"},"a":{"v":[126,348,480,214,246,238,114],"df":"51,296,485.43","s":"-17.500","vf":["27,131,228","75,123,586.34","103,530,093.99","46,082,117.83","53,135,773.16","51,296,485.43","24,585,747.76"],"M":480,"tf":"380,885,032.51","m":114,"yy":"199.786","i":"304.786","af":"54,412,147.5"},"n":"REVIEW"},{"c":{"v":[354,452,480,477,453,417,304],"df":"928,051","s":"-8.821","vf":["725,776","928,051","984,715","979,336","929,671","854,660","624,218"],"M":480,"tf":"6,026,427","m":304,"yy":"393.107","i":"446.036","af":"860,918"},"a":{"v":[480,64,3,3,3,2,2],"df":"225,616,169.11","s":"-55.643","vf":["41,421,556,853.79","5,488,273,334.94","233,061,590.4","225,031,505.59","225,616,169.11","212,254,693.59","136,106,044.66"],"M":480,"tf":"47,941,900,192.12","m":2,"yy":"-87.357","i":"246.500","af":"6,848,842,884.58"},"n":"Other"}],"execOn":"Feb 24, 2015 9:38:30 AM"};
-    var DATA = {"fmt":"JSON","G":{"r":"480"},"C":["2/1/15","2/2/15","2/3/15","2/4/15","2/5/15","2/6/15","2/7/15"],"Cf":["Feb 1, 2015 12:00:00 AM","Feb 2, 2015 12:00:00 AM","Feb 3, 2015 12:00:00 AM","Feb 4, 2015 12:00:00 AM","Feb 5, 2015 12:00:00 AM","Feb 6, 2015 12:00:00 AM","Feb 7, 2015 12:00:00 AM"],"V":[{"c":{"Mf":"15,615,162","v":[480,460,442,444,443,451,480],"df":"14,663,111","s":"-0.607","vf":["15,615,162","14,950,610","14,365,799","14,456,684","14,420,993","14,663,111","15,603,926"],"M":480,"tf":"104,076,285","mf":"14,365,799","m":442,"yy":"455.321","i":"458.964","af":"14,868,040"},"a":{"Mf":"$5,549,910,920.19","v":[394,446,403,398,401,412,480],"df":"$4,655,827,710.74","s":"6.714","vf":["$4,557,626,847.94","$5,161,998,780.42","$4,655,827,710.74","$4,607,138,851.54","$4,631,719,900.28","$4,764,118,930.13","$5,549,910,920.19"],"M":480,"tf":"$33,928,341,941.24","mf":"$4,557,626,847.94","m":394,"yy":"439.286","i":"399.000","af":"$4,846,905,991.60"},"n":"ACCEPT"},{"c":{"Mf":"935,581","v":[376,351,438,462,461,456,480],"df":"888,310","s":"19.464","vf":["733,680","683,578","852,908","900,217","898,373","888,310","935,581"],"M":480,"tf":"5,892,647","mf":"683,578","m":351,"yy":"490.393","i":"373.607","af":"841,806"},"a":{"Mf":"$782,039,835.46","v":[309,254,200,298,375,328,480],"df":"$503,349,677.86","s":"29.857","vf":["$503,349,677.86","$414,074,878.51","$326,631,705.73","$485,528,848.45","$611,268,270.48","$533,731,739.88","$782,039,835.46"],"M":480,"tf":"$3,656,624,956.37","mf":"$326,631,705.73","m":200,"yy":"410.143","i":"231.000","af":"$522,374,993.76"},"n":"REJECT"},{"c":{"Mf":"88,001","v":[269,394,426,396,480,479,370],"df":"72,667","s":"18.821","vf":["49,276","72,181","78,050","72,667","88,001","87,809","67,770"],"M":480,"tf":"515,754","mf":"49,276","m":269,"yy":"458.464","i":"345.536","af":"73,679"},"a":{"Mf":"$103,530,093.99","v":[126,348,480,214,246,238,114],"df":"$51,296,485.43","s":"-17.500","vf":["$27,131,228.00","$75,123,586.34","$103,530,093.99","$46,082,117.83","$53,135,773.16","$51,296,485.43","$24,585,747.76"],"M":480,"tf":"$380,885,032.51","mf":"$24,585,747.76","m":114,"yy":"199.786","i":"304.786","af":"$54,412,147.50"},"n":"REVIEW"},{"c":{"Mf":"984,715","v":[354,452,480,477,453,417,304],"df":"928,051","s":"-8.821","vf":["725,776","928,051","984,715","979,336","929,671","854,660","624,218"],"M":480,"tf":"6,026,427","mf":"624,218","m":304,"yy":"393.107","i":"446.036","af":"860,918"},"a":{"Mf":"$41,421,556,853.79","v":[480,64,3,3,3,2,2],"df":"$225,616,169.11","s":"-55.643","vf":["$41,421,556,853.79","$5,488,273,334.94","$233,061,590.40","$225,031,505.59","$225,616,169.11","$212,254,693.59","$136,106,044.66"],"M":480,"tf":"$47,941,900,192.12","mf":"$136,106,044.66","m":2,"yy":"-87.357","i":"246.500","af":"$6,848,842,884.58"},"n":"Other"}],"execOn":"Feb 24, 2015 5:10:43 PM"};
+    var DATA = {"fmt":"JSON","G":{"r":"480","c":{"mf":"0","Mf":"123,456"},"a":{"mf":"$0.00","Mf":"$123,456.78"}},
+      "C":["2/1/15","2/2/15","2/3/15","2/4/15","2/5/15","2/6/15","2/7/15"],"Cf":["Feb 1, 2015 12:00:00 AM","Feb 2, 2015 12:00:00 AM","Feb 3, 2015 12:00:00 AM","Feb 4, 2015 12:00:00 AM","Feb 5, 2015 12:00:00 AM","Feb 6, 2015 12:00:00 AM","Feb 7, 2015 12:00:00 AM"],"V":[{"c":{"Mf":"15,615,162","v":[480,460,442,444,443,451,480],"df":"14,663,111","s":"-0.607","vf":["15,615,162","14,950,610","14,365,799","14,456,684","14,420,993","14,663,111","15,603,926"],"M":480,"tf":"104,076,285","mf":"14,365,799","m":442,"yy":"455.321","i":"458.964","af":"14,868,040"},"a":{"Mf":"$5,549,910,920.19","v":[394,446,403,398,401,412,480],"df":"$4,655,827,710.74","s":"6.714","vf":["$4,557,626,847.94","$5,161,998,780.42","$4,655,827,710.74","$4,607,138,851.54","$4,631,719,900.28","$4,764,118,930.13","$5,549,910,920.19"],"M":480,"tf":"$33,928,341,941.24","mf":"$4,557,626,847.94","m":394,"yy":"439.286","i":"399.000","af":"$4,846,905,991.60"},"n":"ACCEPT"},{"c":{"Mf":"935,581","v":[376,351,438,462,461,456,480],"df":"888,310","s":"19.464","vf":["733,680","683,578","852,908","900,217","898,373","888,310","935,581"],"M":480,"tf":"5,892,647","mf":"683,578","m":351,"yy":"490.393","i":"373.607","af":"841,806"},"a":{"Mf":"$782,039,835.46","v":[309,254,200,298,375,328,480],"df":"$503,349,677.86","s":"29.857","vf":["$503,349,677.86","$414,074,878.51","$326,631,705.73","$485,528,848.45","$611,268,270.48","$533,731,739.88","$782,039,835.46"],"M":480,"tf":"$3,656,624,956.37","mf":"$326,631,705.73","m":200,"yy":"410.143","i":"231.000","af":"$522,374,993.76"},"n":"REJECT"},{"c":{"Mf":"88,001","v":[269,394,426,396,480,479,370],"df":"72,667","s":"18.821","vf":["49,276","72,181","78,050","72,667","88,001","87,809","67,770"],"M":480,"tf":"515,754","mf":"49,276","m":269,"yy":"458.464","i":"345.536","af":"73,679"},"a":{"Mf":"$103,530,093.99","v":[126,348,480,214,246,238,114],"df":"$51,296,485.43","s":"-17.500","vf":["$27,131,228.00","$75,123,586.34","$103,530,093.99","$46,082,117.83","$53,135,773.16","$51,296,485.43","$24,585,747.76"],"M":480,"tf":"$380,885,032.51","mf":"$24,585,747.76","m":114,"yy":"199.786","i":"304.786","af":"$54,412,147.50"},"n":"REVIEW"},{"c":{"Mf":"984,715","v":[354,452,480,477,453,417,304],"df":"928,051","s":"-8.821","vf":["725,776","928,051","984,715","979,336","929,671","854,660","624,218"],"M":480,"tf":"6,026,427","mf":"624,218","m":304,"yy":"393.107","i":"446.036","af":"860,918"},"a":{"Mf":"$41,421,556,853.79","v":[480,64,3,3,3,2,2],"df":"$225,616,169.11","s":"-55.643","vf":["$41,421,556,853.79","$5,488,273,334.94","$233,061,590.40","$225,031,505.59","$225,616,169.11","$212,254,693.59","$136,106,044.66"],"M":480,"tf":"$47,941,900,192.12","mf":"$136,106,044.66","m":2,"yy":"-87.357","i":"246.500","af":"$6,848,842,884.58"},"n":"Other"}],"execOn":"Feb 24, 2015 5:10:43 PM"};
     var FID = 'RCT';
     var valueSetsCount = 0;
     var xScale;
@@ -811,7 +828,7 @@ var RECOMMENDATION_CODES_TREND_REPORT = (function() {
         document.getElementById(FID+'_execOn').innerHTML = data['execOn'];
         
         // 
-        var margin = {top: 10, right: 20, bottom: 10, left: 50};
+        var margin = {top: 10, right: 80, bottom: 10, left: 24};
         var width = 720 - margin.left - margin.right;
         var height = 240 - margin.top - margin.bottom;
         var range = parseInt(data["G"]["r"]);
@@ -824,6 +841,7 @@ var RECOMMENDATION_CODES_TREND_REPORT = (function() {
                   .range([height, 0])
                   .domain([0,range]);
         // generate count graphs
+        document.getElementById(FID+'_countsGraph').innerHTML = '';
         var countsSvg = d3.select('#'+FID+'_countsGraph')
                   .append("svg")
                   .attr("width", width + margin.left + margin.right)
@@ -847,6 +865,7 @@ var RECOMMENDATION_CODES_TREND_REPORT = (function() {
           document.getElementById(FID+'c_t_'+i).style.display="none";
         });        
         // generate amount graphs
+        document.getElementById(FID+'_amountsGraph').innerHTML = '';
         var amountsSvg = d3.select('#'+FID+'_amountsGraph')
                   .append("svg")
                   .attr("width", width + margin.left + margin.right)
@@ -879,14 +898,43 @@ var RECOMMENDATION_CODES_TREND_REPORT = (function() {
                   .attr("class", "x axis")
                   .attr("transform", "translate(0," + height + ")")
                   .call(xAxis);
-         amountsSvg.append("text")
-         .attr("x","0")
-         .attr("y","0")
-         .attr("fill","red")
-         .attr("text-anchor", "end")
-         .text("1234,56.78");
-
-         
+        amountsSvg.append("text")
+         .attr("x",width)
+         .attr("y",height)
+         .attr("dx",4)
+         .attr("class","y-tick")
+         .text(data["G"]["a"]["mf"]);
+        amountsSvg.append("text")
+         .attr("x",width)
+         .attr("y",0)
+         .attr("dx",4)
+         .attr("class","y-tick")
+         .text(data["G"]["a"]["Mf"]);
+        amountsSvg.append("text")
+         .attr("x",width)
+         .attr("y",height/2)
+         .attr("dx",6)
+         .attr("class","y-label")
+         .text(document.getElementById(FID+'-a-label').innerHTML);
+        //
+        countsSvg.append("text")
+         .attr("x",width)
+         .attr("y",height)
+         .attr("dx",4)
+         .attr("class","y-tick")
+         .text(data["G"]["c"]["mf"]);
+        countsSvg.append("text")
+         .attr("x",width)
+         .attr("y",0)
+         .attr("dx",4)
+         .attr("class","y-tick")
+         .text(data["G"]["c"]["Mf"]);
+        countsSvg.append("text")
+         .attr("x",width)
+         .attr("y",height/2)
+         .attr("dx",6)
+         .attr("class","y-label")
+         .text(document.getElementById(FID+'-c-label').innerHTML);
         // vert grid
         for (var i = 0; i < xCount; i++) {
           countsSvg.append("path")
@@ -900,7 +948,7 @@ var RECOMMENDATION_CODES_TREND_REPORT = (function() {
         }
         // cursor,overlay for mouse events
         countsSvg.append("path")
-          .attr("d",'M0 0V'+(height+150))
+          .attr("d",'M0 0V'+(height+10))
           .attr("id",FID+'_cursor_c')
           .attr("class","cursor")
         document.getElementById(FID+'_cursor_c').style.display = 'none';
@@ -912,7 +960,7 @@ var RECOMMENDATION_CODES_TREND_REPORT = (function() {
           .on("mousemove", overlayMouseMove)
         //  
         amountsSvg.append("path")
-          .attr("d",'M0 0V'+height)
+          .attr("d",'M0 -10V'+height)
           .attr("id",FID+'_cursor_a')
           .attr("class","cursor")
         document.getElementById(FID+'_cursor_a').style.display = 'none';
