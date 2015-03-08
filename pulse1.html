@@ -1,0 +1,843 @@
+<html><head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">  
+    <title>Pulse Dashboard</title>
+
+    <!-- TODO parameterize the inclusion of the foll. -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.4.6/d3.min.js"></script>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <style type="text/css">
+html {
+  height: 100%;
+}
+
+body {
+  margin: 20;
+  padding: 0;
+}
+
+body,table {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 14px;
+  color: #434040;
+}
+
+h1 {
+  color: #800000;
+}
+
+h2 {
+
+}
+
+div.mainLayout {
+  display: table;
+  margin: 0 auto 10px auto;
+}
+
+div.section {
+  clear: both;
+  min-width: 1024px;
+  max-width: none !important;
+  margin: 0 auto 10px auto;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+div.settings1 {
+  font-size: 18px;
+  float: right;
+}
+
+div.br {
+  clear: both;
+}
+
+div.title1 {
+  clear: both;
+  min-width: 1024px;
+  max-width: none !important;
+  margin: 20px auto;
+  font-size:30px;
+  letter-spacing: 0.03em;
+  font-weight: normal;
+  text-transform: uppercase;
+  color: inherit;
+}
+div.title2 {
+  color: maroon;
+  font-size: 1.3em;
+  font-weight: bold;
+  padding: 6px 0px 12px 0px;
+}
+div.tb1 {
+  text-align:right;
+  font-size:0.8em;
+  color:silver;
+  cursor:pointer;
+}
+
+.footer1 {
+  margin: 0 auto 0 auto
+}
+
+/* common style directives */
+.em {
+  font-weight: bold;
+}
+
+.it {
+  font-style: italic;
+}
+
+.al {
+  text-align: left;
+}
+
+.am {
+  text-align: center;
+}
+
+.ar {
+  text-align: right;
+}
+
+/* report criteria block related */
+.rc-container {
+  background-color: #f2f0f0;
+  border: 1px solid #d9d9d9;
+  padding: 15px;
+  width: 100%;
+  height: auto;  
+}
+.rc-title-row {
+  
+}
+.rc-title1 {
+  font-size: 24px;
+  color: #434040;
+  margin: 0 0 10px 0;
+  letter-spacing: 0.03em;  
+}
+.rc-title2 {
+  font-weight: normal;
+  text-align:right;
+  margin:10px 0px 0px 0px;
+}
+.rc-title-label {
+  padding: 0 10px 0 0 !important;
+  text-transform: uppercase;
+  font-size: 0.9em;
+}
+.rc-title-value {
+  font-weight: normal;
+  font-size: 0.8em;
+}
+.rc-divider {
+  border:0px;
+  border-top: 1px solid #cccccc;
+  margin: 0px 0px 18px 0px;
+}
+.rc-criteria-row {
+  
+}
+.rc-label {
+  padding: 0 10px 0 0 !important;
+  text-transform: uppercase;
+  font-size: 0.9em;
+}
+.rc-value {
+  font-weight: normal;
+  font-size: 0.8em;
+}
+
+/* banner related */
+.bnr {
+  background-color: #f2f0f0;
+  border: 1px solid #d9d9d9;
+  padding: 15px;
+  width: 100%;
+  height: auto;
+}
+
+.bnr .lbl {
+  font-weight: bold;
+  font-size: 0.9em;
+  text-align: right;
+  width: 32px;
+  white-space: nowrap;
+}
+
+.bnr .vlu {
+  font-size: 0.8em;
+  padding: 6px;
+}
+
+/* data table related */
+.data {
+  width: 100%;
+}
+
+.data th {
+  padding: 15px;
+  border-radius: 2px;
+  background-color: #434040;
+  color: #ffffff;
+}
+
+.data .th1 {
+  font-size: 0.8em;
+  background-color: #f25840;
+  border-radius: 0 0 4px 4px;
+  text-transform: uppercase;
+  padding: 15px;
+  line-height: 1.42857143;
+}
+
+.data .th2 {
+  background-color: #f36953;
+  border-radius: 0 0 4px 4px;
+}
+
+/*    data contains dr datarows */
+.data tr.dr:hover {
+  background-color: #fed976;
+  border: 1px solid black;
+}
+
+.data tr.dr td {
+  padding: 4px;
+}
+
+.data th, td {
+  font-size: 0.9em;
+}
+
+tr.z0 {
+  background-color: #ffffff;
+}
+
+tr.z1 {
+  background-color: #f1f1f1;
+}
+
+.data>tbody>tr:hover>td,.data>tbody>tr:hover>th {
+  background-color:#e0edee;
+}
+
+.data tbody th, .data tbody td {
+  /*padding: 8px 10px;*/
+}
+
+div.msg { /* status mesg */
+  font-weight: bold;
+  color: #800000;
+}
+
+.spaced-box { /* evenly distribute spaced-items in this container */
+  text-align: justify;
+}
+
+.spaced-item {
+  display: inline-block;
+}
+
+.spaced-buf { /* buffer */
+  width: 100%;
+  display: inline-block;
+  font-size: 0;
+  line-height: 0;
+}
+
+.sh1 { /* subheader1 */
+  background-color: #fd8d3c;
+  margin-left: 10px;
+  padding: 6px;
+  border-radius: 0 0 0 4px;
+}
+
+.sh1 .lbl {
+  font-weight: bold;
+  padding: 4px;
+}
+
+.sh1 .vlu {
+  font-style: italic;
+  padding: 4px;
+}
+
+.sh2 { /* subheader2 */
+  background-color: #feb24c;
+  margin-left: 18px;
+  padding: 4px;
+  border-radius: 0 0 0 4px;
+}
+
+.sh2 .lbl {
+  font-weight: bold;
+  padding: 4px;
+}
+
+.sh2 .vlu {
+  font-style: italic;
+  padding: 4px;
+}
+
+.sf1 { /* subfooter1 */
+  color: gray;
+  margin-top: 12px;
+}
+
+.sf1 .vlu {
+  font-style: italic;
+  padding: 4px;
+}
+
+
+.sflabel {
+  font-size:0.9em;
+  font-style:italic;
+  color:#6c7477;
+  padding: 24px 0px 0px 0px;
+}
+
+/* link hover context menus related */
+.linkctx {
+  color: #4b0082;
+  cursor: pointer;
+  display: inline;
+}
+
+.linkctx:hover {
+  color: #ff0000;
+}
+
+.linkctx:hover>ul {
+  display: block;
+}
+
+.linkctx>ul {
+  display: none;
+  position: absolute;
+  background: rgba(255, 255, 255, 1);
+  color: #4b0082;
+  border: 1px solid black;
+  border-radius: 4px;
+  padding: 8px;
+  margin: 0px;
+  box-shadow: -8px 8px 8px #888888;
+  list-style-type: none;
+  font-weight: normal;
+}
+
+.linkctx li:hover {
+  color: #ff0000;
+}
+
+/* docked options menu related */
+div.dock1 {
+  position: fixed;
+  top: 5px;
+  right: 5px;
+}
+
+div.dock1:hover .dock1Content {
+  visibility: visible;
+}
+
+div.dock1Content {
+  position: absolute;
+  visibility: hidden;
+  background: rgba(255, 255, 255, 1);
+  top: 0px;
+  right: 0px;
+  padding: 4px;
+  border: 1px solid black;
+  border-radius: 4px;
+  box-shadow: -8px 8px 6px #c0c0c0;;
+}
+
+div.dock1 .dock1Item {
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+div.dock1 .dock1Item:hover {
+  color: red;
+}
+
+hr .divider {
+  background-color: #cccccc;
+}
+
+/********************
+ * Tree Reports
+ */
+
+.node {
+    list-style-type: none;
+}
+
+li.level-0 > label, li.level-0 > span {
+    color: #333333;
+    font-size: 20px;
+}
+
+li.level-1 > label, li.level-1 > span{
+    font-weight: bold;
+    font-size: 14px;
+}
+
+li.level-2 > label, li.level-2 > span{
+    text-transform: uppercase;
+}
+
+.bracket:after {
+    content:"]";
+}
+
+.bracket:before {
+    content:"[";
+}
+
+/* Equivalent to fa and fa-minus-square */
+li.expanded > label:first-child::before {
+    font-family:FontAwesome,'Open Sans', sans-serif;
+    font-style:normal;
+    font-weight:normal;
+    display:inline-block;
+    line-height:1;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+
+    content:"\f146";
+}
+
+/* Equivalent to fa and fa-plus-square-o */
+li.collapsed > label:first-child::before {
+    font-family:FontAwesome,'Open Sans', sans-serif;
+    font-style:normal;
+    font-weight:normal;
+    display:inline-block;
+    line-height:1;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+
+    content:"\f196"
+}
+
+ul.expanded {
+    display: inherit !important;
+}
+
+ul.collapsed {
+    display: none !important;
+}
+
+div.expand-links {
+    text-align: center;
+}
+
+.trend1-up:before {
+  content: "\f139"; /* fa-chevron-circle-up */
+  font-family:FontAwesome,'Open Sans', sans-serif;
+  font-style:normal;
+  font-weight:normal;
+  color : red;
+}
+.trend1-down:before {
+  content: "\f13a"; /* fa-chevron-circle-down */
+  font-family:FontAwesome,'Open Sans', sans-serif;
+  font-style:normal;
+  font-weight:normal;  
+  color : green;
+}
+/**
+ * End Tree Reports CSS
+ ********************/
+
+/*
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,300,400,700);
+*/
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 300;
+  src: local('Open Sans Light'), local('OpenSans-Light'), url(//fonts.gstatic.com/s/opensans/v10/DXI1ORHCpsQm3Vp6mXoaTXhCUOGz7vYGh680lGh-uXM.woff) format('woff');
+}
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Open Sans'), local('OpenSans'), url(//fonts.gstatic.com/s/opensans/v10/cJZKeOuBrn4kERxqtaUH3T8E0i7KZn-EPnyo3HZu7kw.woff) format('woff');
+}
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Open Sans Bold'), local('OpenSans-Bold'), url(//fonts.gstatic.com/s/opensans/v10/k3k702ZOKiLJc3WVjuplzHhCUOGz7vYGh680lGh-uXM.woff) format('woff');
+}
+@font-face {
+  font-family: 'Open Sans';
+  font-style: italic;
+  font-weight: 300;
+  src: local('Open Sans Light Italic'), local('OpenSansLight-Italic'), url(//fonts.gstatic.com/s/opensans/v10/PRmiXeptR36kaC0GEAetxh_xHqYgAV9Bl_ZQbYUxnQU.woff) format('woff');
+}
+@font-face {
+  font-family: 'Open Sans';
+  font-style: italic;
+  font-weight: 400;
+  src: local('Open Sans Italic'), local('OpenSans-Italic'), url(//fonts.gstatic.com/s/opensans/v10/xjAJXh38I15wypJXxuGMBobN6UDyHWBl620a-IRfuBk.woff) format('woff');
+}
+@font-face {
+  font-family: 'Open Sans';
+  font-style: italic;
+  font-weight: 700;
+  src: local('Open Sans Bold Italic'), local('OpenSans-BoldItalic'), url(//fonts.gstatic.com/s/opensans/v10/PRmiXeptR36kaC0GEAetxjqR_3kx9_hJXbbyU8S6IN0.woff) format('woff');
+}
+
+    </style>
+
+    <script>
+"use strict";
+var DATA = 
+{
+"rec":[
+        {"n":"REVIEW","v":"0.272","vf":"27.2%","V":["1","5","1","3","0","3","7","3","5","1","9","9","8","7","9","6","10","1","1","3","9","5","4","4"],"t":"1"},
+        {"n":"REJECT","v":"0.048","vf":"4.8%","V":["1","5","9","8","6","10","0","4","4","7","3","5","0","3","1","9","2","3","9","5","7","9","1","3"],"t":"-1"}
+      ],
+"res":[
+        {"n":"ACCEPT","cf":"24,631","p":"0.4823","pf":"48.23%"},
+        {"n":"REVIEW","cf":"5,329","p":"0.6771","pf":"67.71%"},
+        {"n":"DENY","cf":"97","p":"0.1235","pf":"12.35%"}
+      ],
+"q": {"atf":"8.4 mins","cf":"4,782"}
+};
+
+
+function init() {
+    render(DATA);
+}
+
+function render(data) {
+
+/* recommendation */
+  var recData = document.getElementById("rec_data");
+  var colours = ['#DF5C24','#059748'];
+  data["rec"].forEach(function(d,i) {
+    var cellRef = recData.insertCell(-1);
+    var html = "";
+    html += '<div class="rec-cell0">' + d.n + '</div>';
+    html += '<div id="rec_donut' + i + '"></div>';
+    html += '<div id="rec_trend' + i + '"></div>';
+    cellRef.innerHTML = html;
+    renderDonut(document.getElementById('rec_donut'+i), d.v, d.vf, d.t, colours[i]);
+    generateSparkline(document.getElementById('rec_trend'+i), d.V);
+    
+  });
+
+/* resolution */  
+  var resDatarows = d3.select('#res_data')
+      .selectAll('tr')
+      .data(d3.range(data["res"].length))
+      .enter()
+      .append('tr')
+      .attr('id',function(d){return 'dr'+d;});
+  resDatarows.selectAll('tr')
+      .data(d3.range(4))
+      .enter()
+      .append('td')
+      .attr('id',function(d,i,p){return 'dc_'+p+'_'+d;})
+      .attr('class', function(d){return 'dtcs'+d;});  
+  var html = '';
+  // col0 n
+  data["res"].forEach(function(d,i){
+    html = d.n;
+    document.getElementById('dc_'+i+'_0').innerHTML = html;
+  });    
+  // col1 cf
+  data["res"].forEach(function(d,i){
+    html = d.cf;
+    document.getElementById('dc_'+i+'_1').innerHTML = html;
+  });   
+  // col2 p
+  data["res"].forEach(function(d,i){
+    html = generateBar1(d.p);
+    document.getElementById('dc_'+i+'_2').innerHTML = html;
+  });   
+  // col3 pf
+  data["res"].forEach(function(d,i){
+    html = d.pf;
+    document.getElementById('dc_'+i+'_3').innerHTML = html;
+  });   
+
+/* queue */
+  document.getElementById("q_tv").innerHTML = data["q"]["atf"];
+  document.getElementById("q_cv").innerHTML = data["q"]["cf"];
+}
+
+function renderDonut(anchorRef, rawValue, displayValue, trend, colour) {
+  var html = "";
+  var width = 120;
+  var radius = (width/2);
+  var donutWidth = 18;
+  rawValue = 100*parseFloat(rawValue);
+  
+  var svg = d3.select(anchorRef)
+      .append('svg')
+      .attr('width', width)
+      .attr('height', width)
+      .attr("class","donut")
+      .append('g')
+      .attr('transform', 'translate('+radius+','+radius+')');  
+  var arc = d3.svg.arc()
+      .innerRadius(radius - donutWidth)
+      .outerRadius(radius);
+  var pie = d3.layout.pie()
+      .value(function(d){return d;})
+      .sort(null);  
+  var path = svg.selectAll('path')
+      .data(pie([rawValue,(100-rawValue)]))
+      .enter()
+      .append('path')
+      .attr('d', arc)
+      .attr('fill', function(d,i) { 
+        return [colour,'#e8e8e8'][i];
+      });  
+  svg.append('text')
+      .attr("x",0)
+      .attr("y",0)
+      .text(displayValue);
+  if (trend < 0) {
+    svg.append("path")
+        .attr("d","M-12 10 l24 0 l-12 12 z")
+        .attr("class","trend2-down");
+  } else if (trend > 0) {
+    svg.append("path")
+        .attr("d","M0 10 l12 12 l-24 0 z")
+        .attr("class","trend2-up");    
+  }
+}
+
+function generateSparkline(anchorRef, valuesArray) {
+  var margin = {top: 6, right: 0, bottom: 6, left: 0};
+  var width = 120 - margin.left - margin.right;
+  var height = 48 - margin.top - margin.bottom;
+  var catsArray = d3.range(valuesArray.length);
+  var xScale = d3.scale.linear()
+              .range([0, width])
+              .domain([0,catsArray.length-1]);
+  var yScale = d3.scale.linear()
+              .range([height, 0])
+              .domain(d3.extent(valuesArray));
+  var sparkline = d3.svg.line()
+              .x(function(d) { return xScale(parseInt(d)); })
+              .y(function(d) { return yScale(parseInt(valuesArray[d])); })
+              .interpolate('cardinal');
+  var svg = d3.select(anchorRef)
+              .append("svg")
+              .attr("width", width + margin.left + margin.right)
+              .attr("height", height + margin.top + margin.bottom)
+              .attr("class","sparkLineContainer")
+              .append("g")
+              .attr("transform","translate(" + margin.left + "," + margin.top + ")");              
+  svg.append("path")
+              .attr("class", "sparkLine")
+              .attr("d", sparkline(catsArray));
+
+}
+
+function generateBar1(value) {
+  var html = '';
+  value = (100 *parseFloat(value))/2;
+  html = '<div style="width:50px;height:12px;background-color:#f0eceb;"><div style="width:' + value + 'px;background-color:#64a3a8;height:12px;"></div></div>';
+  return html;
+}
+
+    </script>  
+
+  </head>
+  <body>
+
+<style type="text/css">
+
+  text.st0 {
+    stroke: none;
+    fill: #999999;
+    text-anchor: end;
+    font-size: 14px;
+    font-weight: bold;
+    letter-spacing: 4px;
+  }
+  
+  div.st1 {
+    color:#64a3a8;
+    font-size: 14px;
+    font-weight: bold;
+    letter-spacing: 4px;
+    text-align:center;
+    padding:12px
+  }
+  
+  div.rec-cell0 {
+    text-align:center;
+    color:#606060;
+    font-size: 12px;
+    padding:0 0 6px 0;
+  }
+
+.donut text {
+  fill: #606060;
+  font-size: 18px;
+  font-weight:bold;
+  text-anchor: middle;
+}  
+
+ path.sparkLine {
+  stroke: #696969;
+  stroke-width: 1;
+  fill: none;
+}
+.axis path,.axis line {
+  fill: none;
+  stroke: grey;
+  stroke-width: 1;
+  shape-rendering: crispEdges;
+}
+
+.trend2-up {
+  fill:red;
+  stroke-width:0;
+}
+.trend2-down {
+  fill:green;
+  stroke-width:0;
+}
+
+table#layout td {
+  padding:12px 20px 12px 20px;
+}
+
+
+.sparkLineContainer {
+  padding:6px 0 0 0;  
+}
+
+div#q_tv {
+  text-align:center;
+  color: maroon;
+  font-size: 1.8em;
+  font-weight:bold;
+}
+div#q_tl {
+  text-align:center;
+  color:#c0c0c0;
+  padding:0 0 28px 0;
+}
+div#q_cv {
+  text-align:center;
+  color: maroon;
+  font-size: 1.8em;
+  font-weight:bold;
+  letter-spacing:2px;
+}
+div#q_cl {
+  text-align:center;
+  color:#c0c0c0;
+}
+
+td.dtcs0 {
+    text-align:right;
+    color:#64a3a8;
+    font-weight:bold;
+    font-size: 12px;
+    padding:10px 6px 10px 2px !important;
+}
+td.dtcs1 {
+    text-align:right;
+    color:maroon;
+    padding:0px 8px 0px 0px !important;
+}
+td.dtcs2 {
+    padding:2px !important;
+}
+td.dtcs3 {
+    text-align:right;
+    color:maroon;
+    font-weight:bold;
+    font-size: 12px;
+    padding:2px !important;
+}
+
+
+
+  </style>
+
+
+  <table borderx="1" id="layout">
+   <tr>
+    <td colspan="3" style="text-align:center;">
+      <div class="btn-group ">
+        <button class="btn" id="cs_0">4 hours</button>
+        <button class="btn" id="cs_1">8 hours</button>
+        <button class="btn" id="cs_2">12 hours</button>
+        <button class="btn" id="cs_3">24 hours</button>
+      </div>
+      <br /><br />
+    </td>
+   </tr>
+   
+   <tr>
+     <td>
+        <div id="rec_section">
+          <table >
+           <tr id="rec_data">
+           </tr>
+          </table>
+        </div><!-- rec_section -->     
+     </td>
+     <td>
+        <div id="q_section">
+           <div id="q_tv"></div>
+           <div id="q_tl">average time</div>
+           <div id="q_cv"></div>
+           <div id="q_cl">in queue</div>
+        </div><!-- q_section -->
+     </td>
+     <td>
+        <div id="res_section">
+          <table>
+           <tr>
+             <td>
+               <table>
+                <tbody id="res_data"></tbody>
+               </table>
+             </td>
+           </tr>
+          </table>
+        </div><!-- res_section -->
+     </td>
+   </tr>
+  
+   <tr>
+     <td>
+      <div class="st1">RECOMMENDATION</div>
+     </td>
+     <td>
+      <div class="st1">QUEUE</div>
+     </td>
+     <td>
+      <div class="st1">RESOLUTION</div>
+     </td>
+   </tr>
+     
+  </table>
+
+ 
+ 
+ <script>init();</script>
+ 
+</body></html>
