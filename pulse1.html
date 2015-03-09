@@ -526,7 +526,7 @@ function render(data) {
 
 /* recommendation */
   var recData = document.getElementById("rec_data");
-  var colours = ['#DF5C24','#059748'];
+  var colours = ['#88bde6','#fbb258']; //['#DF5C24','#059748'];
   data["rec"].forEach(function(d,i) {
     var cellRef = recData.insertCell(-1);
     var html = "";
@@ -565,7 +565,7 @@ function render(data) {
   });   
   // col2 p
   data["res"].forEach(function(d,i){
-    html = generateBar1(d.p);
+    html = generateBar1(d.p, [][i]);
     document.getElementById('dc_'+i+'_2').innerHTML = html;
   });   
   // col3 pf
@@ -604,9 +604,8 @@ function renderDonut(anchorRef, rawValue, displayValue, trend, colour) {
       .enter()
       .append('path')
       .attr('d', arc)
-      .attr('fill', function(d,i) { 
-        return [colour,'#e8e8e8'][i];
-      });  
+      .attr('fill', function(d,i){return [colour,'#e8e8e8'][i];})
+      .attr("transform","rotate(-180)");  
   svg.append('text')
       .attr("x",0)
       .attr("y",0)
@@ -684,7 +683,8 @@ function generateBar1(value) {
   
   div.rec-cell0 {
     text-align:center;
-    color:#606060;
+    color:#64a3a8;
+    font-weight:bold;
     font-size: 12px;
     padding:0 0 6px 0;
   }
@@ -709,11 +709,11 @@ function generateBar1(value) {
 }
 
 .trend2-up {
-  fill:red;
+  fill:#808080;
   stroke-width:0;
 }
 .trend2-down {
-  fill:green;
+  fill:#808080;
   stroke-width:0;
 }
 
