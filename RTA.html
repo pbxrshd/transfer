@@ -1,0 +1,1119 @@
+<html><head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Top Rules Tripped (By Hour)</title>
+
+    <!-- TODO parameterize the inclusion of the foll. -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.4.6/d3.min.js"></script>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    
+    <style type="text/css">
+html {
+  height: 100%;
+}
+
+body {
+  margin: 20;
+  padding: 0;
+}
+
+body,table {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 14px;
+  color: #434040;
+}
+
+h1 {
+  color: #800000;
+}
+
+h2 {
+
+}
+
+div.mainLayout {
+  display: table;
+  margin: 0 auto 10px auto;
+}
+
+div.section {
+  clear: both;
+  min-width: 1024px;
+  max-width: none !important;
+  margin: 0 auto 10px auto;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+div.settings1 {
+  font-size: 18px;
+  float: right;
+}
+
+div.br {
+  clear: both;
+}
+
+div.title1 {
+  clear: both;
+  min-width: 1024px;
+  max-width: none !important;
+  margin: 20px auto;
+  font-size:30px;
+  letter-spacing: 0.03em;
+  font-weight: normal;
+  text-transform: uppercase;
+  color: inherit;
+}
+div.title2 {
+  color: maroon;
+  font-size: 1.3em;
+  font-weight: bold;
+  padding: 6px 0px 12px 0px;
+}
+div.tb1 {
+  text-align:right;
+  font-size:0.8em;
+  color:silver;
+  cursor:pointer;
+}
+
+.footer1 {
+  margin: 0 auto 0 auto
+}
+
+/* common style directives */
+.em {
+  font-weight: bold;
+}
+
+.it {
+  font-style: italic;
+}
+
+.al {
+  text-align: left;
+}
+
+.am {
+  text-align: center;
+}
+
+.ar {
+  text-align: right;
+}
+
+/* report criteria block related */
+.rc-container {
+  background-color: #f2f0f0;
+  border: 1px solid #d9d9d9;
+  padding: 15px;
+  width: 100%;
+  height: auto;  
+}
+.rc-title-row {
+  
+}
+.rc-title1 {
+  font-size: 24px;
+  color: #434040;
+  margin: 0 0 10px 0;
+  letter-spacing: 0.03em;  
+}
+.rc-title2 {
+  font-weight: normal;
+  text-align:right;
+  margin:10px 0px 0px 0px;
+}
+.rc-title-label {
+  padding: 0 10px 0 0 !important;
+  text-transform: uppercase;
+  font-size: 0.9em;
+}
+.rc-title-value {
+  font-weight: normal;
+  font-size: 0.8em;
+}
+.rc-divider {
+  border:0px;
+  border-top: 1px solid #cccccc;
+  margin: 0px 0px 18px 0px;
+}
+.rc-criteria-row {
+  
+}
+.rc-label {
+  padding: 0 10px 0 0 !important;
+  text-transform: uppercase;
+  font-size: 0.9em;
+}
+.rc-value {
+  font-weight: normal;
+  font-size: 0.8em;
+}
+
+/* banner related */
+.bnr {
+  background-color: #f2f0f0;
+  border: 1px solid #d9d9d9;
+  padding: 15px;
+  width: 100%;
+  height: auto;
+}
+
+.bnr .lbl {
+  font-weight: bold;
+  font-size: 0.9em;
+  text-align: right;
+  width: 32px;
+  white-space: nowrap;
+}
+
+.bnr .vlu {
+  font-size: 0.8em;
+  padding: 6px;
+}
+
+/* data table related */
+.data {
+  width: 100%;
+}
+
+.data th {
+  padding: 15px;
+  border-radius: 2px;
+  background-color: #434040;
+  color: #ffffff;
+}
+
+.data .th1 {
+  font-size: 0.8em;
+  background-color: #f25840;
+  border-radius: 0 0 4px 4px;
+  text-transform: uppercase;
+  padding: 15px;
+  line-height: 1.42857143;
+}
+
+.data .th2 {
+  background-color: #f36953;
+  border-radius: 0 0 4px 4px;
+}
+
+/*    data contains dr datarows */
+.data tr.dr:hover {
+  background-color: #fed976;
+  border: 1px solid black;
+}
+
+.data tr.dr td {
+  padding: 4px;
+}
+
+.data th, td {
+  font-size: 0.9em;
+}
+
+tr.z0 {
+  background-color: #ffffff;
+}
+
+tr.z1 {
+  background-color: #f1f1f1;
+}
+
+.data>tbody>tr:hover>td,.data>tbody>tr:hover>th {
+  background-color:#e0edee;
+}
+
+.data tbody th, .data tbody td {
+  /*padding: 8px 10px;*/
+}
+
+div.msg { /* status mesg */
+  font-weight: bold;
+  color: #800000;
+}
+
+.spaced-box { /* evenly distribute spaced-items in this container */
+  text-align: justify;
+}
+
+.spaced-item {
+  display: inline-block;
+}
+
+.spaced-buf { /* buffer */
+  width: 100%;
+  display: inline-block;
+  font-size: 0;
+  line-height: 0;
+}
+
+.sh1 { /* subheader1 */
+  background-color: #fd8d3c;
+  margin-left: 10px;
+  padding: 6px;
+  border-radius: 0 0 0 4px;
+}
+
+.sh1 .lbl {
+  font-weight: bold;
+  padding: 4px;
+}
+
+.sh1 .vlu {
+  font-style: italic;
+  padding: 4px;
+}
+
+.sh2 { /* subheader2 */
+  background-color: #feb24c;
+  margin-left: 18px;
+  padding: 4px;
+  border-radius: 0 0 0 4px;
+}
+
+.sh2 .lbl {
+  font-weight: bold;
+  padding: 4px;
+}
+
+.sh2 .vlu {
+  font-style: italic;
+  padding: 4px;
+}
+
+.sf1 { /* subfooter1 */
+  color: gray;
+  margin-top: 12px;
+}
+
+.sf1 .vlu {
+  font-style: italic;
+  padding: 4px;
+}
+
+
+.sflabel {
+  font-size:0.9em;
+  font-style:italic;
+  color:#6c7477;
+  padding: 24px 0px 0px 0px;
+}
+
+/* link hover context menus related */
+.linkctx {
+  color: #4b0082;
+  cursor: pointer;
+  display: inline;
+}
+
+.linkctx:hover {
+  color: #ff0000;
+}
+
+.linkctx:hover>ul {
+  display: block;
+}
+
+.linkctx>ul {
+  display: none;
+  position: absolute;
+  background: rgba(255, 255, 255, 1);
+  color: #4b0082;
+  border: 1px solid black;
+  border-radius: 4px;
+  padding: 8px;
+  margin: 0px;
+  box-shadow: -8px 8px 8px #888888;
+  list-style-type: none;
+  font-weight: normal;
+}
+
+.linkctx li:hover {
+  color: #ff0000;
+}
+
+/* docked options menu related */
+div.dock1 {
+  position: fixed;
+  top: 5px;
+  right: 5px;
+}
+
+div.dock1:hover .dock1Content {
+  visibility: visible;
+}
+
+div.dock1Content {
+  position: absolute;
+  visibility: hidden;
+  background: rgba(255, 255, 255, 1);
+  top: 0px;
+  right: 0px;
+  padding: 4px;
+  border: 1px solid black;
+  border-radius: 4px;
+  box-shadow: -8px 8px 6px #c0c0c0;;
+}
+
+div.dock1 .dock1Item {
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+div.dock1 .dock1Item:hover {
+  color: red;
+}
+
+hr .divider {
+  background-color: #cccccc;
+}
+
+
+/* colors */
+.color-l-0 {
+  stroke: #88bde6;
+  fill: #88bde6;
+}
+.color-l-1 {
+  stroke: #fbb258;
+  fill: #fbb258;
+}
+.color-l-2 {
+  stroke: #90cd97;
+  fill: #90cd97;
+}
+.color-l-3 {
+  stroke: #f6aac9;
+  fill: #f6aac9;
+}
+.color-l-4 {
+  stroke: #bfa554;
+  fill: #bfa554;
+}
+.color-l-5 {
+  stroke: #bc99c7;
+  fill: #bc99c7;
+}
+.color-l-6 {
+  stroke: #eddd46;
+  fill: #eddd46;
+}
+.color-l-7 {
+  stroke: #f07e6e;
+  fill: #f07e6e;
+}
+
+
+/********************
+ * Tree Reports
+ */
+
+.node {
+    list-style-type: none;
+}
+
+li.level-0 > label, li.level-0 > span {
+    color: #333333;
+    font-size: 20px;
+}
+
+li.level-1 > label, li.level-1 > span{
+    font-weight: bold;
+    font-size: 14px;
+}
+
+li.level-2 > label, li.level-2 > span{
+    text-transform: uppercase;
+}
+
+.bracket:after {
+    content:"]";
+}
+
+.bracket:before {
+    content:"[";
+}
+
+/* Equivalent to fa and fa-minus-square */
+li.expanded > label:first-child::before {
+    font-family:FontAwesome,'Open Sans', sans-serif;
+    font-style:normal;
+    font-weight:normal;
+    display:inline-block;
+    line-height:1;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+
+    content:"\f146";
+}
+
+/* Equivalent to fa and fa-plus-square-o */
+li.collapsed > label:first-child::before {
+    font-family:FontAwesome,'Open Sans', sans-serif;
+    font-style:normal;
+    font-weight:normal;
+    display:inline-block;
+    line-height:1;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+
+    content:"\f196"
+}
+
+ul.expanded {
+    display: inherit !important;
+}
+
+ul.collapsed {
+    display: none !important;
+}
+
+div.expand-links {
+    text-align: center;
+}
+
+.trend1-up:before {
+  content: "\f139"; /* fa-chevron-circle-up */
+  font-family:FontAwesome,'Open Sans', sans-serif;
+  font-style:normal;
+  font-weight:normal;
+  color : red;
+}
+.trend1-down:before {
+  content: "\f13a"; /* fa-chevron-circle-down */
+  font-family:FontAwesome,'Open Sans', sans-serif;
+  font-style:normal;
+  font-weight:normal;  
+  color : green;
+}
+
+.trend2-up:before {
+  content: "\f139"; /* fa-chevron-circle-up */
+  font-family:FontAwesome,'Open Sans', sans-serif;
+  font-style:normal;
+  font-weight:normal;
+  color:#5bdcff;
+}
+.trend2-down:before {
+  content: "\f13a"; /* fa-chevron-circle-down */
+  font-family:FontAwesome,'Open Sans', sans-serif;
+  font-style:normal;
+  font-weight:normal;  
+  color:#cc557c;
+}
+.trend2-neutral:before {
+  content: "\f192"; /* fa-dot-circle-o */
+  font-family:FontAwesome,'Open Sans', sans-serif;
+  font-style:normal;
+  font-weight:normal;  
+  color:#cccccc;
+}
+/**
+ * End Tree Reports CSS
+ ********************/
+
+/*
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,300,400,700);
+*/
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 300;
+  src: local('Open Sans Light'), local('OpenSans-Light'), url(//fonts.gstatic.com/s/opensans/v10/DXI1ORHCpsQm3Vp6mXoaTXhCUOGz7vYGh680lGh-uXM.woff) format('woff');
+}
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Open Sans'), local('OpenSans'), url(//fonts.gstatic.com/s/opensans/v10/cJZKeOuBrn4kERxqtaUH3T8E0i7KZn-EPnyo3HZu7kw.woff) format('woff');
+}
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Open Sans Bold'), local('OpenSans-Bold'), url(//fonts.gstatic.com/s/opensans/v10/k3k702ZOKiLJc3WVjuplzHhCUOGz7vYGh680lGh-uXM.woff) format('woff');
+}
+@font-face {
+  font-family: 'Open Sans';
+  font-style: italic;
+  font-weight: 300;
+  src: local('Open Sans Light Italic'), local('OpenSansLight-Italic'), url(//fonts.gstatic.com/s/opensans/v10/PRmiXeptR36kaC0GEAetxh_xHqYgAV9Bl_ZQbYUxnQU.woff) format('woff');
+}
+@font-face {
+  font-family: 'Open Sans';
+  font-style: italic;
+  font-weight: 400;
+  src: local('Open Sans Italic'), local('OpenSans-Italic'), url(//fonts.gstatic.com/s/opensans/v10/xjAJXh38I15wypJXxuGMBobN6UDyHWBl620a-IRfuBk.woff) format('woff');
+}
+@font-face {
+  font-family: 'Open Sans';
+  font-style: italic;
+  font-weight: 700;
+  src: local('Open Sans Bold Italic'), local('OpenSans-BoldItalic'), url(//fonts.gstatic.com/s/opensans/v10/PRmiXeptR36kaC0GEAetxjqR_3kx9_hJXbbyU8S6IN0.woff) format('woff');
+}
+
+    </style>
+    
+    <script>
+"use strict";
+
+var RPT = (function() {
+    //var CRITERIA_DATA = {};
+    var CRITERIA_SERIALIZED = 'criteria';
+    var REFERENCES_SERIALIZED = 'rptrefs';
+    var SCR_FORM_ACTION = '/report/rptcontrol/run';
+    var RDID = 'rdid';
+    var PRESET = 'preset';
+    
+    function loadReport(rptRefKey, params) {
+        var rptRefs = JSON.parse(document.getElementById(REFERENCES_SERIALIZED).value);
+        var rptRefValue = rptRefs[rptRefKey];
+
+        // TODO destroy cform, if already present
+
+        var cform = document.createElement('form');
+        cform.setAttribute('method', 'post');
+        cform.setAttribute('action', SCR_FORM_ACTION);
+        cform.setAttribute('id','rpt_cform');
+        cform.setAttribute('target','_blank');
+        // create an assoc array to hold cform fields 
+        var cfields = {};
+        //    put in some required fields...
+        cfields[RDID] = rptRefValue;
+        cfields[PRESET] = true;
+        //    add in the embedded critera...
+        var criteria = JSON.parse(document.getElementById(CRITERIA_SERIALIZED).value);
+        for (var key in criteria) {
+            if (criteria.hasOwnProperty(key)) {
+                cfields[key] = criteria[key];
+            }
+        }
+        //    now add in fields from the params, replacing any with the same name from criteria 
+        if (params) {
+            for (var key in params) {
+                if (params.hasOwnProperty(key)) {
+                    cfields[key] = params[key];
+                }
+            }
+        }
+        // create input fields from the collected fields
+        for (var key in cfields) {
+            if (cfields.hasOwnProperty(key)) {
+                var value = cfields[key];
+                if (value instanceof Array) {
+                    for (var i = 0; i < value.length;i++) {
+                        cform.appendChild(createHiddenInput(key, value[i]));
+                    }
+                } else {
+                    cform.appendChild(createHiddenInput(key, value));
+                }
+            }
+        }
+        document.body.appendChild(cform);
+        cform.submit();
+    }
+    //
+    function createHiddenInput(name,value) {
+        var input = document.createElement('input');
+        input.setAttribute('type', 'hidden');
+        input.setAttribute('name',name);
+        input.setAttribute('value',value);
+        return input;
+    }
+    //
+    function showTransaction(transactionId, bucketId) {
+        bucketId = bucketId || '1';
+        window.open('/jsp/agent/queue/transactiondetail.jsf?transId='+transactionId+'&bucketId='+bucketId+'&mode=V','_blank');
+    }
+    //
+    function makeReportData(rptId) {
+        var data = {};
+        data[RDID] = rptId;
+        var criteria = JSON.parse(document.getElementById(CRITERIA_SERIALIZED).value);
+        var criteriaKeys = Object.keys(criteria);
+        for (var i = 0; i < criteriaKeys.length; i++) {
+            var criteriaKey = criteriaKeys[i];
+            data[criteriaKey] = criteria[criteriaKey];
+        }
+        return data;
+    }
+    //
+    return {
+        CRITERIA_SERIALIZED : CRITERIA_SERIALIZED,
+        REFERENCES_SERIALIZED : REFERENCES_SERIALIZED,
+        SCR_FORM_ACTION : SCR_FORM_ACTION,
+        RDID : RDID,
+        PRESET : PRESET,
+        makeReportData : makeReportData,
+        loadReport : loadReport,
+        showTransaction : showTransaction
+    };
+})();
+
+/**
+ * Helper to retrieve report related data from radar through the interceptas report pages.
+ */
+var DATAPIPE = (function() {
+    var OUTPUT_TYPE_KEY = "fmt";
+    var OUTPUT_TYPE_HTML_FRAGMENT = "html_fragment";
+    var OUTPUT_TYPE_JSON = "json";
+    var url = RPT.SCR_FORM_ACTION;
+    /*
+     * Replace innerHTML (and execute inline scripts) into "elementRef" with result of ajax post of "data".
+     *  eg. DATAPIPE.loadFragment({a:1,b:2},document.getElementById('div1'));
+     */
+    function loadFragment(data, elementRef) {
+        if (typeof data !== 'undefined') {
+            data[OUTPUT_TYPE_KEY] = OUTPUT_TYPE_HTML_FRAGMENT;
+            data[RPT.PRESET] = true;
+            jQuery(elementRef).load(url, toPostableJson(data));
+        }
+    }
+    /*
+     * Retrieve result of ajax post of "data". Invokes the function "callback" with the result as argument.
+     *  eg. DATAPIPE.getFragment({a:1,b:2},function(recvd){console.log('recvd:'+recvd);});
+     */
+    function getFragment(data, callback) {
+        if (typeof data !== 'undefined') {
+            data[OUTPUT_TYPE_KEY] = OUTPUT_TYPE_HTML_FRAGMENT;
+            data[RPT.PRESET] = true;
+            jQuery.post(url, toPostableJson(data))
+                  .done(function(recvd) {
+                          if (typeof callback === 'function') {
+                            callback(recvd);
+                          }
+                   })
+                  .fail(function(jqXHR,textStatus,errorThrown) {
+                          if (console) {
+                            console.log('error gettingFragment'+textStatus+','+errorThrown+' for '+data);
+                          }
+                   });
+        }
+    }
+    /*
+     * Retrieve result of ajax post of "data". Expecting result to be valid JSON.
+     * Result is parsed into a javascript literal. Invokes the function "callback" with the result as argument.
+     *  eg. DATAPIPE.getJson({a:1,b:2},function(recvd){console.log('recvd:'+recvd);});
+     */
+    function getJson(data, callback) {
+        if (typeof data !== 'undefined') {
+            data[OUTPUT_TYPE_KEY] = OUTPUT_TYPE_JSON;
+            data[RPT.PRESET] = true;
+            jQuery.post(url, toPostableJson(data))
+                  .done(function(recvd) {
+                          //console.log(recvd);
+                          if (typeof callback === 'function') {
+                            //alert("parsing" + JSON.stringify(JSON.parse(recvd)));
+                            try {
+                              callback(JSON.parse(recvd));
+                            } catch(e) {
+                              if (console) {
+                                console.log('error '+e+' gettingJson for\n'+data+'\ngot '+recvd);
+                              }
+                              callback({'error':recvd});
+                            }
+                          }})
+                  .fail(function(jqXHR,textStatus,errorThrown) {
+                          if(console) {
+                            console.log('error gettingjson '+textStatus+','+errorThrown+' for '+data);
+                          }
+                          });
+        }
+    }
+    /*
+     * 
+     */
+    function toPostableJson(data) {
+        var postableArray = [];
+        var dataKeys = Object.keys(data);
+        for (var i = 0; i < dataKeys.length; i++) {
+            var dataKey = dataKeys[i];
+            var dataValue = data[dataKey];
+            if (Array.isArray(dataValue)) {
+                for (var j = 0; j < dataValue.length; j++) {
+                    postableArray.push(dataKey + '=' + encodeURIComponent(dataValue[j]));
+                }
+            } else {
+                postableArray.push(dataKey + '=' + encodeURIComponent(dataValue));
+            }
+        }
+        return postableArray.join('&');
+    }
+    
+    return {
+        loadFragment : loadFragment,
+        getFragment : getFragment,
+        getJson : getJson,
+        toPostableJson : toPostableJson
+    };
+})();
+
+var MATH = (function() {
+    // returns slope, intercept of the line
+    function leastSquares(xSeries, ySeries) {
+        var reduceSumFunc = function(prev, cur) { return prev + cur; };
+        var xBar = xSeries.reduce(reduceSumFunc) * 1.0 / xSeries.length;
+        var yBar = ySeries.reduce(reduceSumFunc) * 1.0 / ySeries.length;
+        var ssXX = xSeries.map(function(d) { return Math.pow(d - xBar, 2); })
+            .reduce(reduceSumFunc);
+        var ssYY = ySeries.map(function(d) { return Math.pow(d - yBar, 2); })
+            .reduce(reduceSumFunc);
+        var ssXY = xSeries.map(function(d, i) { return (d - xBar) * (ySeries[i] - yBar); })
+            .reduce(reduceSumFunc);
+        var slope = ssXY / ssXX;
+        var intercept = yBar - (xBar * slope);
+        //var rSquare = Math.pow(ssXY, 2) / (ssXX * ssYY);
+        return [slope, intercept];
+    }
+    //
+    return {
+        leastSquares : leastSquares
+    };
+})();
+
+
+    
+    </script>   
+
+</head>
+  
+ <body data-pinterest-extension-installed="cr1.35" cz-shortcut-listen="true">
+ <!-- standard_report_template -->
+  <div class="mainLayout">
+
+    <div class="section">
+      <div class="title1">Top Rules Tripped (By Hour)</div>
+    </div> <!-- section -->
+  
+    <input type="hidden" id="criteria" value="{&quot;vt&quot;:[&quot;5237260000000002081&quot;],&quot;dp_p&quot;:[&quot;d2&quot;],&quot;dp_w&quot;:[&quot;d2&quot;],&quot;h&quot;:[&quot;5237260000000004022&quot;]}">
+  
+    <div class="section">
+      
+
+
+<div class="container rc-container">
+  <div class="row rc-title-row">
+    <div class="col-md-4 rc-title1">Report Criteria</div>
+    <div class="col-md-8 rc-title2"><label class="rc-title-label">Date Period:</label>  <label class="rc-title-value">Mar 10, 2015 12:00:00 AM - Mar 12, 2015 12:00:00 AM</label></div>
+  </div>
+  <hr class="rc-divider">
+  
+    
+      <div class="row rc-criteria-row">
+        <div class="col-md-2"><label class="rc-label">Data Source:</label></div>
+        <div class="col-md-10"><label class="rc-value">Best Buy Production</label></div>
+      </div>
+    
+  
+    
+      <div class="row rc-criteria-row">
+        <div class="col-md-2"><label class="rc-label">Data Type:</label></div>
+        <div class="col-md-10"><label class="rc-value">Best Buy Orders</label></div>
+      </div>
+    
+  
+    
+  
+</div>
+
+    </div> <!-- section -->
+  
+    <div class="section">
+      <div id="RTA_status_mesg" class="msg"></div>
+    </div> <!-- section -->
+  
+    <div class="section">
+      <div id="main_container">
+        
+
+<style type="text/css">
+div#FRAGMENT_RTA path {
+  stroke: #696969;
+  stroke-width: 1;
+  fill: none;
+}
+div#FRAGMENT_RTA path.sparkLine1 {
+  stroke: #696969;
+  stroke-width: 1;
+  fill: none;
+}
+
+div#FRAGMENT_RTA  th  {
+  color:#64a3a8;
+  font-size:0.9em;
+  text-align:center;
+  padding:6px;
+}
+
+div#FRAGMENT_RTA  th.th0_1  {
+  border-left:1px solid #c0c0c0;
+  border-bottom:1px solid #c0c0c0;
+  text-transform: uppercase;
+  font-size:0.8em;
+}
+div#FRAGMENT_RTA  th.th0_2  {
+  border-right:1px solid #c0c0c0;
+  border-bottom:1px solid #c0c0c0;
+  border-left:1px solid #c0c0c0;
+  text-transform: uppercase;
+  font-size:0.8em;
+}
+
+div#FRAGMENT_RTA  th.th1_0,th.th1_1,th.th1_5  {
+  border-bottom:1px solid #c0c0c0;
+}
+div#FRAGMENT_RTA  th.th1_2,th.th1_4  {
+  border-left:1px solid #c0c0c0;
+  border-bottom:1px solid #c0c0c0;
+}
+div#FRAGMENT_RTA  th.th1_3,th.th1_6  {
+  border-right:1px solid #c0c0c0;
+  border-bottom:1px solid #c0c0c0;
+}
+
+td.RTA_dtcs0 {
+    padding: 2px 8px 2px 18px;
+    text-align:right;
+}
+td.RTA_dtcs1 {
+    text-align:right;
+    color:#64a3a8;
+    padding: 0px 10px 0px 18px;
+}
+td.RTA_dtcs2 {
+    text-align:right;
+    font-weight:bold;
+    color:#64a3a8;
+    padding: 0px 10px 0px 18px;
+    border-left:1px solid #c0c0c0;
+}
+td.RTA_dtcs4 {
+    padding:0px 4px 0px 4px;
+}
+td.RTA_dtcs5 {
+    text-align:right;
+    font-weight:bold;
+    color:#64a3a8;
+    padding: 0px 10px 0px 18px;
+    border-left:1px solid #c0c0c0;
+}
+td.RTA_dtcs7 {
+    padding:0px 4px 0px 4px;
+}
+td.RTA_dtcs8 {
+    text-align:right;
+    font-weight:bold;
+    color:#64a3a8;
+    padding: 0px 10px 0px 18px;
+    border-right:1px solid #c0c0c0;
+}
+</style>
+
+<div id="FRAGMENT_RTA">
+  <div class="tb1" onclick="RULES_TRIPPED_AGGREGATE_REPORT.loadData()"><span id="RTA_execOn">Mar 12, 2015 9:49:26 AM</span></div>
+  <div class="title2"></div>
+  
+  <div class="section">
+    <div id="RTA_status_mesg" class="msg"></div>
+  </div> <!-- section -->
+
+  <table>
+   <thead>
+    <tr class="thA">
+     <th class="th0_0" colspan="2"></th>
+     <th class="th0_1" colspan="3">Times tripped</th>
+     <th class="th0_2" colspan="4">Resolved Fraud Transactions</th>
+    </tr>   
+    <tr class="thB">
+     <th class="th1_0">Rule</th>
+     <th class="th1_1">Score</th>
+     <th class="th1_2">Count</th>
+     <th class="th1_3" colspan="2">Trend</th>
+     <th class="th1_4">Count</th>
+     <th class="th1_5" colspan="2">Trend</th>
+     <th class="th1_6">%</th>
+    </tr>
+   </thead>
+   <tbody id="RTA_dataListBody">
+    <!-- dynamic fill -->
+   <tr id="RTA_dr0"><td id="RTA_dc_0_0" class="RTA_dtcs0">Run Physical - Nested (C) - FF - CAPI Rules</td><td id="RTA_dc_0_1" class="RTA_dtcs1">0</td><td id="RTA_dc_0_2" class="RTA_dtcs2">74,838</td><td id="RTA_dc_0_3" class="RTA_dtcs3"><svg width="100" height="30"><g transform="translate(0,4)"><path class="line" d="M0,12.558333333333334L2.127659574468085,9.212499999999999L4.25531914893617,7.470833333333333L6.382978723404255,5.637499999999999L8.51063829787234,4.949999999999999L10.638297872340425,4.399999999999999L12.76595744680851,3.9875000000000007L14.893617021276595,3.758333333333333L17.02127659574468,1.6500000000000021L19.148936170212767,0.8708333333333336L21.27659574468085,1.4208333333333343L23.404255319148938,1.6500000000000021L25.53191489361702,0.6416666666666657L27.659574468085108,2.0625L29.78723404255319,5.408333333333335L31.914893617021278,11.4125L34.04255319148936,20.7625L36.170212765957444,22L38.297872340425535,18.425L40.42553191489361,13.245833333333334L42.5531914893617,22L44.680851063829785,22L46.808510638297875,22L48.93617021276596,22L51.06382978723404,16.316666666666666L53.191489361702125,8.524999999999999L55.319148936170215,5.591666666666665L57.44680851063829,3.9875000000000007L59.57446808510638,3.9416666666666664L61.702127659574465,3.9875000000000007L63.829787234042556,4.079166666666666L65.95744680851064,2.0166666666666657L68.08510638297872,1.7875000000000014L70.2127659574468,0L72.34042553191489,3.5749999999999993L74.46808510638297,3.3916666666666657L76.59574468085107,2.8874999999999993L78.72340425531915,3.9875000000000007L80.85106382978722,7.104166666666666L82.97872340425532,11.55L85.1063829787234,21.220833333333335L87.23404255319149,18.2875L89.36170212765957,19.891666666666666L91.48936170212765,20.166666666666668L93.61702127659575,19.84583333333333L95.74468085106382,19.1125L97.87234042553192,17.554166666666667L100,7.975000000000001"></path></g></svg></td><td id="RTA_dc_0_4" class="RTA_dtcs4"><i class="trend2-down"></i></td><td id="RTA_dc_0_5" class="RTA_dtcs5">1,048</td><td id="RTA_dc_0_6" class="RTA_dtcs6"><svg width="100" height="30"><g transform="translate(0,4)"><path class="line" d="M0,22L2.127659574468085,22L4.25531914893617,22L6.382978723404255,22L8.51063829787234,22L10.638297872340425,22L12.76595744680851,22L14.893617021276595,22L17.02127659574468,22L19.148936170212767,22L21.27659574468085,22L23.404255319148938,22L25.53191489361702,22L27.659574468085108,22L29.78723404255319,22L31.914893617021278,22L34.04255319148936,22L36.170212765957444,22L38.297872340425535,19.754166666666666L40.42553191489361,14.666666666666668L42.5531914893617,22L44.680851063829785,22L46.808510638297875,22L48.93617021276596,22L51.06382978723404,15.8125L53.191489361702125,8.158333333333333L55.319148936170215,6.1875L57.44680851063829,3.9416666666666664L59.57446808510638,8.158333333333333L61.702127659574465,7.883333333333335L63.829787234042556,10.175L65.95744680851064,2.841666666666665L68.08510638297872,8.158333333333333L70.2127659574468,6.1875L72.34042553191489,5.912500000000001L74.46808510638297,3.3916666666666657L76.59574468085107,5.637499999999999L78.72340425531915,9.854166666666666L80.85106382978722,12.695833333333333L82.97872340425532,15.8125L85.1063829787234,18.058333333333334L87.23404255319149,18.608333333333334L89.36170212765957,19.158333333333335L91.48936170212765,14.666666666666668L93.61702127659575,10.725000000000001L95.74468085106382,14.116666666666667L97.87234042553192,15.8125L100,0"></path></g></svg></td><td id="RTA_dc_0_7" class="RTA_dtcs7"><i class="trend2-down"></i></td><td id="RTA_dc_0_8" class="RTA_dtcs8"><span>1.40%</span></td></tr><tr id="RTA_dr1"><td id="RTA_dc_1_0" class="RTA_dtcs0">Run Physical - Nested (E) - FF - INTL Rules</td><td id="RTA_dc_1_1" class="RTA_dtcs1">0</td><td id="RTA_dc_1_2" class="RTA_dtcs2">74,527</td><td id="RTA_dc_1_3" class="RTA_dtcs3"><svg width="100" height="30"><g transform="translate(0,4)"><path class="line" d="M0,12.604166666666668L2.127659574468085,9.304166666666667L4.25531914893617,7.5625L6.382978723404255,5.820833333333333L8.51063829787234,4.995833333333334L10.638297872340425,4.399999999999999L12.76595744680851,4.033333333333335L14.893617021276595,3.804166666666667L17.02127659574468,1.6958333333333329L19.148936170212767,0.8249999999999993L21.27659574468085,1.466666666666665L23.404255319148938,1.5583333333333336L25.53191489361702,0.7333333333333343L27.659574468085108,2.0625L29.78723404255319,5.408333333333335L31.914893617021278,11.4125L34.04255319148936,20.7625L36.170212765957444,22L38.297872340425535,18.379166666666666L40.42553191489361,13.245833333333334L42.5531914893617,22L44.680851063829785,22L46.808510638297875,22L48.93617021276596,22L51.06382978723404,16.270833333333332L53.191489361702125,8.570833333333335L55.319148936170215,5.5L57.44680851063829,4.033333333333335L59.57446808510638,4.125L61.702127659574465,4.125L63.829787234042556,4.125L65.95744680851064,2.0166666666666657L68.08510638297872,1.7416666666666671L70.2127659574468,0L72.34042553191489,3.529166666666665L74.46808510638297,3.3916666666666657L76.59574468085107,2.9333333333333336L78.72340425531915,3.9875000000000007L80.85106382978722,7.058333333333334L82.97872340425532,11.55L85.1063829787234,21.220833333333335L87.23404255319149,18.2875L89.36170212765957,19.891666666666666L91.48936170212765,20.166666666666668L93.61702127659575,19.84583333333333L95.74468085106382,19.1125L97.87234042553192,17.554166666666667L100,8.1125"></path></g></svg></td><td id="RTA_dc_1_4" class="RTA_dtcs4"><i class="trend2-down"></i></td><td id="RTA_dc_1_5" class="RTA_dtcs5">989</td><td id="RTA_dc_1_6" class="RTA_dtcs6"><svg width="100" height="30"><g transform="translate(0,4)"><path class="line" d="M0,22L2.127659574468085,22L4.25531914893617,22L6.382978723404255,22L8.51063829787234,22L10.638297872340425,22L12.76595744680851,22L14.893617021276595,22L17.02127659574468,22L19.148936170212767,22L21.27659574468085,22L23.404255319148938,22L25.53191489361702,22L27.659574468085108,22L29.78723404255319,22L31.914893617021278,22L34.04255319148936,22L36.170212765957444,22L38.297872340425535,19.84583333333333L40.42553191489361,14.895833333333332L42.5531914893617,22L44.680851063829785,22L46.808510638297875,22L48.93617021276596,22L51.06382978723404,15.170833333333334L53.191489361702125,7.104166666666666L55.319148936170215,5.866666666666667L57.44680851063829,3.116666666666667L59.57446808510638,7.745833333333334L61.702127659574465,9.625L63.829787234042556,9.625L65.95744680851064,1.5583333333333336L68.08510638297872,7.104166666666666L70.2127659574468,6.8291666666666675L72.34042553191489,5.270833333333336L74.46808510638297,2.4750000000000014L76.59574468085107,5.591666666666665L78.72340425531915,8.662500000000001L80.85106382978722,12.1L82.97872340425532,15.491666666666667L85.1063829787234,17.645833333333336L87.23404255319149,18.2875L89.36170212765957,18.883333333333333L91.48936170212765,13.933333333333334L93.61702127659575,9.899999999999999L95.74468085106382,13.3375L97.87234042553192,15.491666666666667L100,0"></path></g></svg></td><td id="RTA_dc_1_7" class="RTA_dtcs7"><i class="trend2-down"></i></td><td id="RTA_dc_1_8" class="RTA_dtcs8"><span>1.33%</span></td></tr><tr id="RTA_dr2"><td id="RTA_dc_2_0" class="RTA_dtcs0"></td><td id="RTA_dc_2_1" class="RTA_dtcs1">0</td><td id="RTA_dc_2_2" class="RTA_dtcs2">73,600</td><td id="RTA_dc_2_3" class="RTA_dtcs3"><svg width="100" height="30"><g transform="translate(0,4)"><path class="line" d="M0,12.65L2.127659574468085,9.304166666666667L4.25531914893617,7.654166666666667L6.382978723404255,5.683333333333334L8.51063829787234,5.041666666666664L10.638297872340425,4.399999999999999L12.76595744680851,4.033333333333335L14.893617021276595,3.758333333333333L17.02127659574468,1.6041666666666643L19.148936170212767,0.779166666666665L21.27659574468085,1.375L23.404255319148938,1.6041666666666643L25.53191489361702,0.6416666666666657L27.659574468085108,2.0625L29.78723404255319,5.316666666666666L31.914893617021278,11.366666666666667L34.04255319148936,20.808333333333334L36.170212765957444,22L38.297872340425535,18.516666666666666L40.42553191489361,13.3375L42.5531914893617,22L44.680851063829785,22L46.808510638297875,22L48.93617021276596,22L51.06382978723404,16.454166666666666L53.191489361702125,8.754166666666666L55.319148936170215,5.683333333333334L57.44680851063829,4.308333333333334L59.57446808510638,4.079166666666666L61.702127659574465,4.079166666666666L63.829787234042556,4.033333333333335L65.95744680851064,2.1083333333333343L68.08510638297872,1.6958333333333329L70.2127659574468,0L72.34042553191489,3.5749999999999993L74.46808510638297,3.3916666666666657L76.59574468085107,2.9333333333333336L78.72340425531915,3.9875000000000007L80.85106382978722,7.012499999999999L82.97872340425532,11.641666666666667L85.1063829787234,21.220833333333335L87.23404255319149,18.2875L89.36170212765957,19.891666666666666L91.48936170212765,20.2125L93.61702127659575,19.9375L95.74468085106382,19.158333333333335L97.87234042553192,17.6L100,8.158333333333333"></path></g></svg></td><td id="RTA_dc_2_4" class="RTA_dtcs4"><i class="trend2-down"></i></td><td id="RTA_dc_2_5" class="RTA_dtcs5">1,033</td><td id="RTA_dc_2_6" class="RTA_dtcs6"><svg width="100" height="30"><g transform="translate(0,4)"><path class="line" d="M0,22L2.127659574468085,22L4.25531914893617,22L6.382978723404255,22L8.51063829787234,22L10.638297872340425,22L12.76595744680851,22L14.893617021276595,22L17.02127659574468,22L19.148936170212767,22L21.27659574468085,22L23.404255319148938,22L25.53191489361702,22L27.659574468085108,22L29.78723404255319,22L31.914893617021278,22L34.04255319148936,22L36.170212765957444,22L38.297872340425535,19.754166666666666L40.42553191489361,14.666666666666668L42.5531914893617,22L44.680851063829785,22L46.808510638297875,22L48.93617021276596,22L51.06382978723404,16.3625L53.191489361702125,8.158333333333333L55.319148936170215,6.508333333333335L57.44680851063829,4.8125L59.57446808510638,8.158333333333333L61.702127659574465,8.479166666666666L63.829787234042556,10.45L65.95744680851064,2.841666666666665L68.08510638297872,8.158333333333333L70.2127659574468,6.1875L72.34042553191489,5.912500000000001L74.46808510638297,3.3916666666666657L76.59574468085107,5.637499999999999L78.72340425531915,9.854166666666666L80.85106382978722,13.245833333333334L82.97872340425532,16.6375L85.1063829787234,18.058333333333334L87.23404255319149,18.608333333333334L89.36170212765957,19.158333333333335L91.48936170212765,14.666666666666668L93.61702127659575,10.725000000000001L95.74468085106382,14.391666666666666L97.87234042553192,15.8125L100,0"></path></g></svg></td><td id="RTA_dc_2_7" class="RTA_dtcs7"><i class="trend2-down"></i></td><td id="RTA_dc_2_8" class="RTA_dtcs8"><span>1.40%</span></td></tr><tr id="RTA_dr3"><td id="RTA_dc_3_0" class="RTA_dtcs0">Run Physical - Nested (B) - FF - BBY Mobile Rules</td><td id="RTA_dc_3_1" class="RTA_dtcs1">0</td><td id="RTA_dc_3_2" class="RTA_dtcs2">72,714</td><td id="RTA_dc_3_3" class="RTA_dtcs3"><svg width="100" height="30"><g transform="translate(0,4)"><path class="line" d="M0,12.65L2.127659574468085,9.350000000000001L4.25531914893617,7.699999999999999L6.382978723404255,5.866666666666667L8.51063829787234,5.133333333333333L10.638297872340425,4.491666666666667L12.76595744680851,4.170833333333334L14.893617021276595,3.8500000000000014L17.02127659574468,1.6958333333333329L19.148936170212767,0.9166666666666643L21.27659574468085,1.5124999999999993L23.404255319148938,1.6958333333333329L25.53191489361702,0.6416666666666657L27.659574468085108,2.1083333333333343L29.78723404255319,5.454166666666666L31.914893617021278,11.4125L34.04255319148936,20.7625L36.170212765957444,22L38.297872340425535,18.379166666666666L40.42553191489361,13.383333333333333L42.5531914893617,22L44.680851063829785,22L46.808510638297875,22L48.93617021276596,22L51.06382978723404,16.270833333333332L53.191489361702125,8.708333333333334L55.319148936170215,5.637499999999999L57.44680851063829,4.262499999999999L59.57446808510638,4.216666666666665L61.702127659574465,3.9875000000000007L63.829787234042556,4.399999999999999L65.95744680851064,2.154166666666665L68.08510638297872,1.8791666666666664L70.2127659574468,0L72.34042553191489,3.5749999999999993L74.46808510638297,3.3916666666666657L76.59574468085107,2.9791666666666643L78.72340425531915,3.9875000000000007L80.85106382978722,6.966666666666667L82.97872340425532,11.641666666666667L85.1063829787234,21.220833333333335L87.23404255319149,18.2875L89.36170212765957,19.891666666666666L91.48936170212765,20.2125L93.61702127659575,19.891666666666666L95.74468085106382,19.158333333333335L97.87234042553192,17.6L100,15.445833333333333"></path></g></svg></td><td id="RTA_dc_3_4" class="RTA_dtcs4"><i class="trend2-down"></i></td><td id="RTA_dc_3_5" class="RTA_dtcs5">952</td><td id="RTA_dc_3_6" class="RTA_dtcs6"><svg width="100" height="30"><g transform="translate(0,4)"><path class="line" d="M0,22L2.127659574468085,22L4.25531914893617,22L6.382978723404255,22L8.51063829787234,22L10.638297872340425,22L12.76595744680851,22L14.893617021276595,22L17.02127659574468,22L19.148936170212767,22L21.27659574468085,22L23.404255319148938,22L25.53191489361702,22L27.659574468085108,22L29.78723404255319,22L31.914893617021278,22L34.04255319148936,22L36.170212765957444,22L38.297872340425535,19.25L40.42553191489361,13.75L42.5531914893617,22L44.680851063829785,22L46.808510638297875,22L48.93617021276596,22L51.06382978723404,14.4375L53.191489361702125,5.5L55.319148936170215,3.070833333333333L57.44680851063829,1.6958333333333329L59.57446808510638,5.5L61.702127659574465,5.820833333333333L63.829787234042556,7.5625L65.95744680851064,0L68.08510638297872,5.5L70.2127659574468,3.4375L72.34042553191489,2.75L74.46808510638297,0L76.59574468085107,4.445833333333333L78.72340425531915,8.570833333333335L80.85106382978722,11L82.97872340425532,14.4375L85.1063829787234,17.1875L87.23404255319149,17.875L89.36170212765957,18.5625L91.48936170212765,13.0625L93.61702127659575,8.25L95.74468085106382,12.375L97.87234042553192,14.758333333333333L100,15.8125"></path></g></svg></td><td id="RTA_dc_3_7" class="RTA_dtcs7"><i class="trend2-down"></i></td><td id="RTA_dc_3_8" class="RTA_dtcs8"><span>1.31%</span></td></tr><tr id="RTA_dr4"><td id="RTA_dc_4_0" class="RTA_dtcs0">Update Threat Metrix Service Type</td><td id="RTA_dc_4_1" class="RTA_dtcs1">3</td><td id="RTA_dc_4_2" class="RTA_dtcs2">72,594</td><td id="RTA_dc_4_3" class="RTA_dtcs3"><svg width="100" height="30"><g transform="translate(0,4)"><path class="line" d="M0,12.695833333333333L2.127659574468085,9.258333333333335L4.25531914893617,7.745833333333334L6.382978723404255,5.637499999999999L8.51063829787234,5.041666666666664L10.638297872340425,4.399999999999999L12.76595744680851,4.033333333333335L14.893617021276595,3.6666666666666643L17.02127659574468,1.5124999999999993L19.148936170212767,0.6875L21.27659574468085,1.3291666666666657L23.404255319148938,1.5124999999999993L25.53191489361702,0.5500000000000007L27.659574468085108,2.0625L29.78723404255319,5.225000000000001L31.914893617021278,11.320833333333333L34.04255319148936,20.7625L36.170212765957444,22L38.297872340425535,18.516666666666666L40.42553191489361,13.383333333333333L42.5531914893617,22L44.680851063829785,22L46.808510638297875,22L48.93617021276596,22L51.06382978723404,16.454166666666666L53.191489361702125,8.708333333333334L55.319148936170215,5.683333333333334L57.44680851063829,4.216666666666665L59.57446808510638,3.9875000000000007L61.702127659574465,4.079166666666666L63.829787234042556,3.9875000000000007L65.95744680851064,2.1083333333333343L68.08510638297872,1.6500000000000021L70.2127659574468,0L72.34042553191489,3.4833333333333343L74.46808510638297,3.4375L76.59574468085107,2.8874999999999993L78.72340425531915,3.9416666666666664L80.85106382978722,7.104166666666666L82.97872340425532,11.6875L85.1063829787234,21.220833333333335L87.23404255319149,18.2875L89.36170212765957,19.891666666666666L91.48936170212765,20.2125L93.61702127659575,19.9375L95.74468085106382,19.204166666666666L97.87234042553192,17.645833333333336L100,8.066666666666666"></path></g></svg></td><td id="RTA_dc_4_4" class="RTA_dtcs4"><i class="trend2-down"></i></td><td id="RTA_dc_4_5" class="RTA_dtcs5">963</td><td id="RTA_dc_4_6" class="RTA_dtcs6"><svg width="100" height="30"><g transform="translate(0,4)"><path class="line" d="M0,22L2.127659574468085,22L4.25531914893617,22L6.382978723404255,22L8.51063829787234,22L10.638297872340425,22L12.76595744680851,22L14.893617021276595,22L17.02127659574468,22L19.148936170212767,22L21.27659574468085,22L23.404255319148938,22L25.53191489361702,22L27.659574468085108,22L29.78723404255319,22L31.914893617021278,22L34.04255319148936,22L36.170212765957444,22L38.297872340425535,19.983333333333334L40.42553191489361,14.575L42.5531914893617,22L44.680851063829785,22L46.808510638297875,22L48.93617021276596,22L51.06382978723404,16.866666666666667L53.191489361702125,8.295833333333333L55.319148936170215,7.425000000000001L57.44680851063829,5.729166666666664L59.57446808510638,8.295833333333333L61.702127659574465,8.845833333333333L63.829787234042556,11.4125L65.95744680851064,3.4375L68.08510638297872,9.120833333333334L70.2127659574468,7.149999999999999L72.34042553191489,6.554166666666667L74.46808510638297,4.858333333333334L76.59574468085107,6.554166666666667L78.72340425531915,11.137500000000001L80.85106382978722,15.125L82.97872340425532,17.416666666666664L85.1063829787234,18.5625L87.23404255319149,18.8375L89.36170212765957,19.433333333333334L91.48936170212765,14.85L93.61702127659575,11.137500000000001L95.74468085106382,14.85L97.87234042553192,16.270833333333332L100,0"></path></g></svg></td><td id="RTA_dc_4_7" class="RTA_dtcs7"><i class="trend2-down"></i></td><td id="RTA_dc_4_8" class="RTA_dtcs8"><span>1.33%</span></td></tr><tr id="RTA_dr5"><td id="RTA_dc_5_0" class="RTA_dtcs0">Update Threat Metrix Event Type</td><td id="RTA_dc_5_1" class="RTA_dtcs1">3</td><td id="RTA_dc_5_2" class="RTA_dtcs2">72,594</td><td id="RTA_dc_5_3" class="RTA_dtcs3"><svg width="100" height="30"><g transform="translate(0,4)"><path class="line" d="M0,12.695833333333333L2.127659574468085,9.258333333333335L4.25531914893617,7.745833333333334L6.382978723404255,5.637499999999999L8.51063829787234,5.041666666666664L10.638297872340425,4.399999999999999L12.76595744680851,4.033333333333335L14.893617021276595,3.6666666666666643L17.02127659574468,1.5124999999999993L19.148936170212767,0.6875L21.27659574468085,1.3291666666666657L23.404255319148938,1.5124999999999993L25.53191489361702,0.5500000000000007L27.659574468085108,2.0625L29.78723404255319,5.225000000000001L31.914893617021278,11.320833333333333L34.04255319148936,20.7625L36.170212765957444,22L38.297872340425535,18.516666666666666L40.42553191489361,13.383333333333333L42.5531914893617,22L44.680851063829785,22L46.808510638297875,22L48.93617021276596,22L51.06382978723404,16.454166666666666L53.191489361702125,8.708333333333334L55.319148936170215,5.683333333333334L57.44680851063829,4.216666666666665L59.57446808510638,3.9875000000000007L61.702127659574465,4.079166666666666L63.829787234042556,3.9875000000000007L65.95744680851064,2.1083333333333343L68.08510638297872,1.6500000000000021L70.2127659574468,0L72.34042553191489,3.4833333333333343L74.46808510638297,3.4375L76.59574468085107,2.8874999999999993L78.72340425531915,3.9416666666666664L80.85106382978722,7.104166666666666L82.97872340425532,11.6875L85.1063829787234,21.220833333333335L87.23404255319149,18.2875L89.36170212765957,19.891666666666666L91.48936170212765,20.2125L93.61702127659575,19.9375L95.74468085106382,19.204166666666666L97.87234042553192,17.645833333333336L100,8.066666666666666"></path></g></svg></td><td id="RTA_dc_5_4" class="RTA_dtcs4"><i class="trend2-down"></i></td><td id="RTA_dc_5_5" class="RTA_dtcs5">963</td><td id="RTA_dc_5_6" class="RTA_dtcs6"><svg width="100" height="30"><g transform="translate(0,4)"><path class="line" d="M0,22L2.127659574468085,22L4.25531914893617,22L6.382978723404255,22L8.51063829787234,22L10.638297872340425,22L12.76595744680851,22L14.893617021276595,22L17.02127659574468,22L19.148936170212767,22L21.27659574468085,22L23.404255319148938,22L25.53191489361702,22L27.659574468085108,22L29.78723404255319,22L31.914893617021278,22L34.04255319148936,22L36.170212765957444,22L38.297872340425535,19.983333333333334L40.42553191489361,14.575L42.5531914893617,22L44.680851063829785,22L46.808510638297875,22L48.93617021276596,22L51.06382978723404,16.866666666666667L53.191489361702125,8.295833333333333L55.319148936170215,7.425000000000001L57.44680851063829,5.729166666666664L59.57446808510638,8.295833333333333L61.702127659574465,8.845833333333333L63.829787234042556,11.4125L65.95744680851064,3.4375L68.08510638297872,9.120833333333334L70.2127659574468,7.149999999999999L72.34042553191489,6.554166666666667L74.46808510638297,4.858333333333334L76.59574468085107,6.554166666666667L78.72340425531915,11.137500000000001L80.85106382978722,15.125L82.97872340425532,17.416666666666664L85.1063829787234,18.5625L87.23404255319149,18.8375L89.36170212765957,19.433333333333334L91.48936170212765,14.85L93.61702127659575,11.137500000000001L95.74468085106382,14.85L97.87234042553192,16.270833333333332L100,0"></path></g></svg></td><td id="RTA_dc_5_7" class="RTA_dtcs7"><i class="trend2-down"></i></td><td id="RTA_dc_5_8" class="RTA_dtcs8"><span>1.33%</span></td></tr><tr id="RTA_dr6"><td id="RTA_dc_6_0" class="RTA_dtcs0"></td><td id="RTA_dc_6_1" class="RTA_dtcs1">0</td><td id="RTA_dc_6_2" class="RTA_dtcs2">72,070</td><td id="RTA_dc_6_3" class="RTA_dtcs3"><svg width="100" height="30"><g transform="translate(0,4)"><path class="line" d="M0,12.604166666666668L2.127659574468085,9.212499999999999L4.25531914893617,7.654166666666667L6.382978723404255,5.454166666666666L8.51063829787234,5.041666666666664L10.638297872340425,4.308333333333334L12.76595744680851,3.8500000000000014L14.893617021276595,3.3000000000000007L17.02127659574468,1.3291666666666657L19.148936170212767,0.5500000000000007L21.27659574468085,1.1000000000000014L23.404255319148938,1.375L25.53191489361702,0.32083333333333286L27.659574468085108,1.8333333333333357L29.78723404255319,5.225000000000001L31.914893617021278,11.320833333333333L34.04255319148936,20.808333333333334L36.170212765957444,22L38.297872340425535,18.333333333333332L40.42553191489361,13.245833333333334L42.5531914893617,22L44.680851063829785,22L46.808510638297875,22L48.93617021276596,22L51.06382978723404,16.3625L53.191489361702125,8.616666666666667L55.319148936170215,5.591666666666665L57.44680851063829,4.354166666666664L59.57446808510638,4.216666666666665L61.702127659574465,3.9416666666666664L63.829787234042556,3.8500000000000014L65.95744680851064,1.9250000000000007L68.08510638297872,1.375L70.2127659574468,0L72.34042553191489,3.2541666666666664L74.46808510638297,3.4833333333333343L76.59574468085107,2.7041666666666657L78.72340425531915,3.804166666666667L80.85106382978722,7.012499999999999L82.97872340425532,11.733333333333333L85.1063829787234,21.266666666666666L87.23404255319149,18.2875L89.36170212765957,19.891666666666666L91.48936170212765,20.258333333333333L93.61702127659575,19.9375L95.74468085106382,19.204166666666666L97.87234042553192,17.554166666666667L100,15.629166666666666"></path></g></svg></td><td id="RTA_dc_6_4" class="RTA_dtcs4"><i class="trend2-down"></i></td><td id="RTA_dc_6_5" class="RTA_dtcs5">496</td><td id="RTA_dc_6_6" class="RTA_dtcs6"><svg width="100" height="30"><g transform="translate(0,4)"><path class="line" d="M0,22L2.127659574468085,22L4.25531914893617,22L6.382978723404255,22L8.51063829787234,22L10.638297872340425,22L12.76595744680851,22L14.893617021276595,22L17.02127659574468,22L19.148936170212767,22L21.27659574468085,22L23.404255319148938,22L25.53191489361702,22L27.659574468085108,22L29.78723404255319,22L31.914893617021278,22L34.04255319148936,22L36.170212765957444,22L38.297872340425535,18.8375L40.42553191489361,15.079166666666666L42.5531914893617,22L44.680851063829785,22L46.808510638297875,22L48.93617021276596,22L51.06382978723404,15.720833333333333L53.191489361702125,3.758333333333333L55.319148936170215,5.041666666666664L57.44680851063829,6.9208333333333325L59.57446808510638,1.8791666666666664L61.702127659574465,5.041666666666664L63.829787234042556,10.679166666666667L65.95744680851064,0L68.08510638297872,6.279166666666667L70.2127659574468,7.5625L72.34042553191489,0L74.46808510638297,1.2375000000000007L76.59574468085107,6.9208333333333325L78.72340425531915,13.841666666666667L80.85106382978722,15.720833333333333L82.97872340425532,18.8375L85.1063829787234,18.8375L87.23404255319149,18.241666666666667L89.36170212765957,18.8375L91.48936170212765,8.158333333333333L93.61702127659575,2.5208333333333357L95.74468085106382,9.441666666666666L97.87234042553192,15.079166666666666L100,15.720833333333333"></path></g></svg></td><td id="RTA_dc_6_7" class="RTA_dtcs7"><i class="trend2-down"></i></td><td id="RTA_dc_6_8" class="RTA_dtcs8"><span>0.69%</span></td></tr><tr id="RTA_dr7"><td id="RTA_dc_7_0" class="RTA_dtcs0">Run Physical - Nested (D) - FF - Friends and Family Rules</td><td id="RTA_dc_7_1" class="RTA_dtcs1">0</td><td id="RTA_dc_7_2" class="RTA_dtcs2">71,573</td><td id="RTA_dc_7_3" class="RTA_dtcs3"><svg width="100" height="30"><g transform="translate(0,4)"><path class="line" d="M0,12.420833333333333L2.127659574468085,8.983333333333333L4.25531914893617,7.333333333333334L6.382978723404255,5.454166666666666L8.51063829787234,4.766666666666666L10.638297872340425,4.629166666666666L12.76595744680851,3.8500000000000014L14.893617021276595,3.758333333333333L17.02127659574468,1.7416666666666671L19.148936170212767,1.0083333333333329L21.27659574468085,1.6500000000000021L23.404255319148938,1.6500000000000021L25.53191489361702,0.779166666666665L27.659574468085108,1.9250000000000007L29.78723404255319,5.362500000000001L31.914893617021278,11.229166666666668L34.04255319148936,20.7625L36.170212765957444,22L38.297872340425535,18.333333333333332L40.42553191489361,13.154166666666667L42.5531914893617,22L44.680851063829785,22L46.808510638297875,22L48.93617021276596,22L51.06382978723404,16.133333333333333L53.191489361702125,8.25L55.319148936170215,5.316666666666666L57.44680851063829,3.5749999999999993L59.57446808510638,3.6666666666666643L61.702127659574465,3.758333333333333L63.829787234042556,3.9416666666666664L65.95744680851064,1.8333333333333357L68.08510638297872,1.6500000000000021L70.2127659574468,0L72.34042553191489,3.6666666666666643L74.46808510638297,3.4375L76.59574468085107,2.841666666666665L78.72340425531915,3.804166666666667L80.85106382978722,6.783333333333333L82.97872340425532,11.4125L85.1063829787234,21.175L87.23404255319149,18.15L89.36170212765957,19.84583333333333L91.48936170212765,20.166666666666668L93.61702127659575,19.84583333333333L95.74468085106382,19.066666666666666L97.87234042553192,17.370833333333334L100,7.379166666666666"></path></g></svg></td><td id="RTA_dc_7_4" class="RTA_dtcs4"><i class="trend2-down"></i></td><td id="RTA_dc_7_5" class="RTA_dtcs5">969</td><td id="RTA_dc_7_6" class="RTA_dtcs6"><svg width="100" height="30"><g transform="translate(0,4)"><path class="line" d="M0,22L2.127659574468085,22L4.25531914893617,22L6.382978723404255,22L8.51063829787234,22L10.638297872340425,22L12.76595744680851,22L14.893617021276595,22L17.02127659574468,22L19.148936170212767,22L21.27659574468085,22L23.404255319148938,22L25.53191489361702,22L27.659574468085108,22L29.78723404255319,22L31.914893617021278,22L34.04255319148936,22L36.170212765957444,22L38.297872340425535,19.754166666666666L40.42553191489361,15.216666666666667L42.5531914893617,22L44.680851063829785,22L46.808510638297875,22L48.93617021276596,22L51.06382978723404,15.8125L53.191489361702125,8.479166666666666L55.319148936170215,8.479166666666666L57.44680851063829,5.362500000000001L59.57446808510638,9.304166666666667L61.702127659574465,9.579166666666667L63.829787234042556,11.825000000000001L65.95744680851064,4.491666666666667L68.08510638297872,9.579166666666667L70.2127659574468,7.6083333333333325L72.34042553191489,7.333333333333334L74.46808510638297,4.8125L76.59574468085107,6.508333333333335L78.72340425531915,11L80.85106382978722,13.245833333333334L82.97872340425532,16.3625L85.1063829787234,18.883333333333333L87.23404255319149,18.608333333333334L89.36170212765957,19.479166666666668L91.48936170212765,14.941666666666666L93.61702127659575,11.55L95.74468085106382,14.391666666666666L97.87234042553192,16.0875L100,0"></path></g></svg></td><td id="RTA_dc_7_7" class="RTA_dtcs7"><i class="trend2-down"></i></td><td id="RTA_dc_7_8" class="RTA_dtcs8"><span>1.35%</span></td></tr><tr id="RTA_dr8"><td id="RTA_dc_8_0" class="RTA_dtcs0">Run Negative Lists (Original)</td><td id="RTA_dc_8_1" class="RTA_dtcs1">0</td><td id="RTA_dc_8_2" class="RTA_dtcs2">68,104</td><td id="RTA_dc_8_3" class="RTA_dtcs3"><svg width="100" height="30"><g transform="translate(0,4)"><path class="line" d="M0,12.7875L2.127659574468085,9.4875L4.25531914893617,7.745833333333334L6.382978723404255,5.912500000000001L8.51063829787234,5.225000000000001L10.638297872340425,4.445833333333333L12.76595744680851,4.170833333333334L14.893617021276595,3.712500000000002L17.02127659574468,1.7875000000000014L19.148936170212767,0.9625000000000021L21.27659574468085,1.6500000000000021L23.404255319148938,1.8791666666666664L25.53191489361702,1.1000000000000014L27.659574468085108,2.5666666666666664L29.78723404255319,5.637499999999999L31.914893617021278,11.504166666666666L34.04255319148936,20.808333333333334L36.170212765957444,22L38.297872340425535,18.516666666666666L40.42553191489361,13.566666666666666L42.5531914893617,22L44.680851063829785,22L46.808510638297875,22L48.93617021276596,22L51.06382978723404,16.5L53.191489361702125,8.8L55.319148936170215,5.866666666666667L57.44680851063829,4.491666666666667L59.57446808510638,4.399999999999999L61.702127659574465,4.262499999999999L63.829787234042556,4.308333333333334L65.95744680851064,2.429166666666667L68.08510638297872,1.8333333333333357L70.2127659574468,0L72.34042553191489,3.8500000000000014L74.46808510638297,3.712500000000002L76.59574468085107,3.116666666666667L78.72340425531915,4.308333333333334L80.85106382978722,7.195833333333335L82.97872340425532,11.9625L85.1063829787234,21.3125L87.23404255319149,18.333333333333332L89.36170212765957,20.029166666666665L91.48936170212765,20.304166666666667L93.61702127659575,19.983333333333334L95.74468085106382,19.295833333333334L97.87234042553192,17.645833333333336L100,15.720833333333333"></path></g></svg></td><td id="RTA_dc_8_4" class="RTA_dtcs4"><i class="trend2-down"></i></td><td id="RTA_dc_8_5" class="RTA_dtcs5">552</td><td id="RTA_dc_8_6" class="RTA_dtcs6"><svg width="100" height="30"><g transform="translate(0,4)"><path class="line" d="M0,22L2.127659574468085,22L4.25531914893617,22L6.382978723404255,22L8.51063829787234,22L10.638297872340425,22L12.76595744680851,22L14.893617021276595,22L17.02127659574468,22L19.148936170212767,22L21.27659574468085,22L23.404255319148938,22L25.53191489361702,22L27.659574468085108,22L29.78723404255319,22L31.914893617021278,22L34.04255319148936,22L36.170212765957444,22L38.297872340425535,20.533333333333335L40.42553191489361,15.170833333333334L42.5531914893617,22L44.680851063829785,22L46.808510638297875,22L48.93617021276596,22L51.06382978723404,17.6L53.191489361702125,5.362500000000001L55.319148936170215,5.866666666666667L57.44680851063829,6.370833333333334L59.57446808510638,8.295833333333333L61.702127659574465,10.266666666666667L63.829787234042556,12.2375L65.95744680851064,0L68.08510638297872,8.8L70.2127659574468,4.904166666666665L72.34042553191489,5.362500000000001L74.46808510638297,4.904166666666665L76.59574468085107,5.866666666666667L78.72340425531915,12.695833333333333L80.85106382978722,13.704166666666667L82.97872340425532,19.066666666666666L85.1063829787234,19.570833333333333L87.23404255319149,20.029166666666665L89.36170212765957,20.029166666666665L91.48936170212765,12.695833333333333L93.61702127659575,7.333333333333334L95.74468085106382,16.6375L97.87234042553192,15.170833333333334L100,13.704166666666667"></path></g></svg></td><td id="RTA_dc_8_7" class="RTA_dtcs7"><i class="trend2-down"></i></td><td id="RTA_dc_8_8" class="RTA_dtcs8"><span>0.81%</span></td></tr><tr id="RTA_dr9"><td id="RTA_dc_9_0" class="RTA_dtcs0">Run Physical - Nested (A) - FF - Business Services Rules</td><td id="RTA_dc_9_1" class="RTA_dtcs1">0</td><td id="RTA_dc_9_2" class="RTA_dtcs2">68,028</td><td id="RTA_dc_9_3" class="RTA_dtcs3"><svg width="100" height="30"><g transform="translate(0,4)"><path class="line" d="M0,12.466666666666667L2.127659574468085,9.212499999999999L4.25531914893617,7.837499999999999L6.382978723404255,5.270833333333336L8.51063829787234,4.949999999999999L10.638297872340425,4.262499999999999L12.76595744680851,3.712500000000002L14.893617021276595,2.9791666666666643L17.02127659574468,1.1916666666666664L19.148936170212767,0.36666666666666714L21.27659574468085,0.9166666666666643L23.404255319148938,1.1458333333333357L25.53191489361702,0.09166666666666501L27.659574468085108,1.8333333333333357L29.78723404255319,5.087499999999999L31.914893617021278,11.275L34.04255319148936,20.7625L36.170212765957444,22L38.297872340425535,18.333333333333332L40.42553191489361,13.429166666666667L42.5531914893617,22L44.680851063829785,22L46.808510638297875,22L48.93617021276596,22L51.06382978723404,16.5L53.191489361702125,8.891666666666667L55.319148936170215,5.912500000000001L57.44680851063829,4.583333333333336L59.57446808510638,4.445833333333333L61.702127659574465,4.033333333333335L63.829787234042556,3.9416666666666664L65.95744680851064,2.154166666666665L68.08510638297872,1.375L70.2127659574468,0L72.34042553191489,3.025000000000002L74.46808510638297,3.3000000000000007L76.59574468085107,2.6125000000000007L78.72340425531915,3.529166666666665L80.85106382978722,6.9208333333333325L82.97872340425532,11.6875L85.1063829787234,21.220833333333335L87.23404255319149,18.195833333333333L89.36170212765957,19.9375L91.48936170212765,20.304166666666667L93.61702127659575,19.891666666666666L95.74468085106382,19.158333333333335L97.87234042553192,17.416666666666664L100,15.445833333333333"></path></g></svg></td><td id="RTA_dc_9_4" class="RTA_dtcs4"><i class="trend2-down"></i></td><td id="RTA_dc_9_5" class="RTA_dtcs5">362</td><td id="RTA_dc_9_6" class="RTA_dtcs6"><svg width="100" height="30"><g transform="translate(0,4)"><path class="line" d="M0,22L2.127659574468085,22L4.25531914893617,22L6.382978723404255,22L8.51063829787234,22L10.638297872340425,22L12.76595744680851,22L14.893617021276595,22L17.02127659574468,22L19.148936170212767,22L21.27659574468085,22L23.404255319148938,22L25.53191489361702,22L27.659574468085108,22L29.78723404255319,22L31.914893617021278,22L34.04255319148936,22L36.170212765957444,22L38.297872340425535,19.066666666666666L40.42553191489361,20.533333333333335L42.5531914893617,22L44.680851063829785,22L46.808510638297875,22L48.93617021276596,22L51.06382978723404,16.866666666666667L53.191489361702125,5.133333333333333L55.319148936170215,7.333333333333334L57.44680851063829,10.266666666666667L59.57446808510638,0L61.702127659574465,6.600000000000001L63.829787234042556,15.4L65.95744680851064,8.8L68.08510638297872,11L70.2127659574468,11.733333333333333L72.34042553191489,3.6666666666666643L74.46808510638297,3.6666666666666643L76.59574468085107,8.8L78.72340425531915,13.933333333333334L80.85106382978722,15.4L82.97872340425532,19.066666666666666L85.1063829787234,19.066666666666666L87.23404255319149,17.6L89.36170212765957,19.066666666666666L91.48936170212765,6.600000000000001L93.61702127659575,1.466666666666665L95.74468085106382,16.133333333333333L97.87234042553192,14.666666666666668L100,14.666666666666668"></path></g></svg></td><td id="RTA_dc_9_7" class="RTA_dtcs7"><i class="trend2-down"></i></td><td id="RTA_dc_9_8" class="RTA_dtcs8"><span>0.53%</span></td></tr></tbody>
+   <tfoot>
+      <tr>
+        <td colspan="2"></td>
+        <td id="RTA_ct"></td>
+        <td colspan="2"></td>
+        <td id="RTA_ft"></td>
+        <td colspan="3"></td>
+      </tr>
+    </tfoot>
+  </table>
+</div>
+
+<script>
+var RULES_TRIPPED_AGGREGATE_REPORT = (function() {
+    var RPT_ID = '5237260000000000524';
+    var DATA = {"fmt":"JSON","G":{},"C":["2015-03-10 00:00:00","2015-03-10 01:00:00","2015-03-10 02:00:00","2015-03-10 03:00:00","2015-03-10 04:00:00","2015-03-10 05:00:00","2015-03-10 06:00:00","2015-03-10 07:00:00","2015-03-10 08:00:00","2015-03-10 09:00:00","2015-03-10 10:00:00","2015-03-10 11:00:00","2015-03-10 12:00:00","2015-03-10 13:00:00","2015-03-10 14:00:00","2015-03-10 15:00:00","2015-03-10 16:00:00","2015-03-10 17:00:00","2015-03-10 18:00:00","2015-03-10 19:00:00","2015-03-10 20:00:00","2015-03-10 21:00:00","2015-03-10 22:00:00","2015-03-10 23:00:00","2015-03-11 00:00:00","2015-03-11 01:00:00","2015-03-11 02:00:00","2015-03-11 03:00:00","2015-03-11 04:00:00","2015-03-11 05:00:00","2015-03-11 06:00:00","2015-03-11 07:00:00","2015-03-11 08:00:00","2015-03-11 09:00:00","2015-03-11 10:00:00","2015-03-11 11:00:00","2015-03-11 12:00:00","2015-03-11 13:00:00","2015-03-11 14:00:00","2015-03-11 15:00:00","2015-03-11 16:00:00","2015-03-11 17:00:00","2015-03-11 18:00:00","2015-03-11 19:00:00","2015-03-11 20:00:00","2015-03-11 21:00:00","2015-03-11 22:00:00","2015-03-11 23:00:00"],"V":[{"tpcf":"-140.00%","scr":"0","it":"2268.75","vf":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,49,160,0,0,0,0,135,302,345,394,302,308,258,418,302,345,351,406,357,265,203,135,86,74,62,160,246,172,135,480],"n":"Run Physical - Nested (C) - FF - CAPI Rules","vt":[206,279,317,357,372,384,393,398,444,461,449,444,466,435,362,231,27,0,78,191,0,0,0,0,124,294,358,393,394,393,391,436,441,480,402,406,417,393,325,228,17,81,46,40,47,63,97,306],"sf":"-40.83","tpc":"-1.400","fpcf":"-425.90%","tcf":"74,838","fc":"1048","id":"5237260000000303794","tyf":["450.580","-1468.430"],"scrf":"0","fpf":"1.40%","fcf":"1,048","fpc":"-4.259","tc":"74838","if":"450.58","st":"-67.58","tyt":["2268.750","-907.510"],"fp":"0.014"},{"tpcf":"-140.12%","scr":"0","it":"2260.08","vf":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,47,155,0,0,0,0,149,325,352,412,311,270,270,446,325,331,365,426,358,291,216,142,95,81,68,176,264,189,142,480],"n":"Run Physical - Nested (E) - FF - INTL Rules","vt":[205,277,315,353,371,384,392,397,443,462,448,446,464,435,362,231,27,0,79,191,0,0,0,0,125,293,360,392,390,390,390,436,442,480,403,406,416,393,326,228,17,81,46,40,47,63,97,303],"sf":"-38.71","tpc":"-1.401","fpcf":"-426.04%","tcf":"74,527","fc":"989","id":"5237260000000303796","tyf":["427.040","-1392.330"],"scrf":"0","fpf":"1.33%","fcf":"989","fpc":"-4.260","tc":"74527","if":"427.04","st":"-67.38","tyt":["2260.080","-906.780"],"fp":"0.01327"},{"tpcf":"-131.63%","scr":"0","it":"2172.08","vf":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,49,160,0,0,0,0,123,302,338,375,302,295,252,418,302,345,351,406,357,265,191,117,86,74,62,160,246,166,135,480],"n":"","vt":[204,277,313,356,370,384,392,398,445,463,450,445,466,435,364,232,26,0,76,189,0,0,0,0,121,289,356,386,391,391,392,434,443,480,402,406,416,393,327,226,17,81,46,39,45,62,96,302],"sf":"-40.21","tpc":"-1.316","fpcf":"-425.92%","tcf":"73,600","fc":"1033","id":"5237260000000438935","tyf":["443.710","-1446.160"],"scrf":"0","fpf":"1.40%","fcf":"1,033","fpc":"-4.259","tc":"73600","if":"443.71","st":"-60.83","tyt":["2172.080","-686.930"],"fp":"0.01404"},{"tpcf":"-72.75%","scr":"0","it":"1808.88","vf":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,60,180,0,0,0,0,165,360,413,443,360,353,315,480,360,405,420,480,383,293,240,165,105,90,75,195,300,210,158,135],"n":"Run Physical - Nested (B) - FF - BBY Mobile Rules","vt":[204,276,312,352,368,382,389,396,443,460,447,443,466,434,361,231,27,0,79,188,0,0,0,0,125,290,357,387,388,393,384,433,439,480,402,406,415,393,328,226,17,81,46,39,46,62,96,143],"sf":"-37.0","tpc":"-0.728","fpcf":"-425.88%","tcf":"72,714","fc":"952","id":"5237260000000303793","tyf":["408.330","-1330.670"],"scrf":"0","fpf":"1.31%","fcf":"952","fpc":"-4.259","tc":"72714","if":"408.33","st":"-28.0","tyt":["1808.880","492.880"],"fp":"0.01309"},{"tpcf":"-130.34%","scr":"3","it":"2133.63","vf":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,44,162,0,0,0,0,112,299,318,355,299,287,231,405,281,324,337,374,337,237,150,100,75,69,56,156,237,156,125,480],"n":"Update Threat Metrix Service Type","vt":[203,278,311,357,370,384,392,400,447,465,451,447,468,435,366,233,27,0,76,188,0,0,0,0,121,290,356,388,393,391,393,434,444,480,404,405,417,394,325,225,17,81,46,39,45,61,95,304],"sf":"-37.38","tpc":"-1.303","fpcf":"-425.91%","tcf":"72,594","fc":"963","id":"5237260000000117002","tyf":["412.500","-1344.360"],"scrf":"3","fpf":"1.33%","fcf":"963","fpc":"-4.259","tc":"72594","if":"412.5","st":"-59.17","tyt":["2133.630","-647.360"],"fp":"0.01327"},{"tpcf":"-130.34%","scr":"3","it":"2133.63","vf":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,44,162,0,0,0,0,112,299,318,355,299,287,231,405,281,324,337,374,337,237,150,100,75,69,56,156,237,156,125,480],"n":"Update Threat Metrix Event Type","vt":[203,278,311,357,370,384,392,400,447,465,451,447,468,435,366,233,27,0,76,188,0,0,0,0,121,290,356,388,393,391,393,434,444,480,404,405,417,394,325,225,17,81,46,39,45,61,95,304],"sf":"-37.38","tpc":"-1.303","fpcf":"-425.91%","tcf":"72,594","fc":"963","id":"5237260000000117001","tyf":["412.500","-1344.360"],"scrf":"3","fpf":"1.33%","fcf":"963","fpc":"-4.259","tc":"72594","if":"412.5","st":"-59.17","tyt":["2133.630","-647.360"],"fp":"0.01327"},{"tpcf":"-38.41%","scr":"0","it":"1642.33","vf":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,69,151,0,0,0,0,137,398,370,329,439,370,247,480,343,315,480,453,329,178,137,69,69,82,69,302,425,274,151,137],"n":"","vt":[205,279,313,361,370,386,396,408,451,468,456,450,473,440,366,233,26,0,80,191,0,0,0,0,123,292,358,385,388,394,396,438,450,480,409,404,421,397,327,224,16,81,46,38,45,61,97,139],"sf":"-19.33","tpc":"-0.384","fpcf":"-425.87%","tcf":"72,070","fc":"496","id":"5237260000000441024","tyf":["213.330","-695.180"],"scrf":"0","fpf":"0.69%","fcf":"496","fpc":"-4.259","tc":"72070","if":"213.33","st":"-13.42","tyt":["1642.330","1011.590"],"fp":"0.00688"},{"tpcf":"-160.17%","scr":"0","it":"2321.92","vf":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,49,148,0,0,0,0,135,295,295,363,277,271,222,382,271,314,320,375,338,240,191,123,68,74,55,154,228,166,129,480],"n":"Run Physical - Nested (D) - FF - Friends and Family Rules","vt":[209,284,320,361,376,379,396,398,442,458,444,444,463,438,363,235,27,0,80,193,0,0,0,0,128,300,364,402,400,398,394,440,444,480,400,405,418,397,332,231,18,84,47,40,47,64,101,319],"sf":"-37.71","tpc":"-1.602","fpcf":"-425.92%","tcf":"71,573","fc":"969","id":"5237260000000303795","tyf":["416.130","-1356.240"],"scrf":"0","fpf":"1.35%","fcf":"969","fpc":"-4.259","tc":"71573","if":"416.13","st":"-79.13","tyt":["2321.920","-1397.190"],"fp":"0.01354"},{"tpcf":"-56.02%","scr":"0","it":"1621.83","vf":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,32,149,0,0,0,0,96,363,352,341,299,256,213,480,288,373,363,373,352,203,181,64,53,43,43,203,320,117,149,181],"n":"Run Negative Lists (Original)","vt":[201,273,311,351,366,383,389,399,441,459,444,439,456,424,357,229,26,0,76,184,0,0,0,0,120,288,352,382,384,387,386,427,440,480,396,399,412,386,323,219,15,80,43,37,44,59,95,137],"sf":"-21.58","tpc":"-0.560","fpcf":"-425.93%","tcf":"68,104","fc":"552","id":"5237260000000238109","tyf":["238.130","-776.130"],"scrf":"0","fpf":"0.81%","fcf":"552","fpc":"-4.259","tc":"68104","if":"238.13","st":"-19.33","tyt":["1621.830","713.320"],"fp":"0.00811"},{"tpcf":"-13.13%","scr":"0","it":"1460.13","vf":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,64,32,0,0,0,0,112,368,320,256,480,336,144,288,240,224,400,400,288,176,144,64,64,96,64,336,448,128,160,160],"n":"Run Physical - Nested (A) - FF - Business Services Rules","vt":[208,279,309,365,372,387,399,415,454,472,460,455,478,440,369,234,27,0,80,187,0,0,0,0,120,286,351,380,383,392,394,433,450,480,414,408,423,403,329,225,17,83,45,37,46,62,100,143],"sf":"-14.58","tpc":"-0.131","fpcf":"-426.50%","tcf":"68,028","fc":"362","id":"5237260000000303784","tyf":["160.670","-524.590"],"scrf":"0","fpf":"0.53%","fcf":"362","fpc":"-4.265","tc":"68028","if":"160.67","st":"-4.08","tyt":["1460.130","1268.370"],"fp":"0.00532"}],"execOn":"Mar 12, 2015 9:49:26 AM"};
+    var FID = 'RTA';
+    //
+    function init() {
+        //loadData();
+        render(DATA)
+    }
+    //    
+    function loadData() {
+        var data = RPT.makeReportData(RPT_ID);
+        DATAPIPE.getJson(data, function(result){DATA=result;process()});
+    }
+    //
+    function process() {
+        if (DATA.statusMesg) {
+            document.getElementById(FID+'_status_mesg').innerHTML = DATA.statusMesg;
+        } else {
+            render(DATA);
+        }
+    }
+    //
+    function getData() {
+        return DATA;
+    }
+    //
+    function render(data) {
+        //alert('rendering' + JSON.stringify(data));
+        // generate datatable rows
+        document.getElementById(FID+'_execOn').innerHTML = data['execOn'];
+        var datarows = d3.select('#'+FID+'_dataListBody')
+            .selectAll('tr')
+            .data(d3.range(data['V'].length))
+            .enter()
+            .append('tr')
+            .attr('id',function(d){return FID+'_dr'+d;});
+        datarows.selectAll('tr')
+            .data(d3.range(9))
+            .enter()
+            .append('td')
+            .attr('id',function(d,i,p){return FID+'_dc_'+p+'_'+d;})
+            .attr('class', function(d){return FID+'_dtcs'+d;}); 
+        var html = '';
+        // col0 n
+        data['V'].forEach(function(d,i){
+            html = d.n;
+            document.getElementById(FID+'_dc_'+i+'_0').innerHTML = html;
+        });
+        // col1 scrf
+        data['V'].forEach(function(d,i){
+            html = d.scrf;
+            document.getElementById(FID+'_dc_'+i+'_1').innerHTML = html;
+        });
+        // col2 tcf
+        data['V'].forEach(function(d,i){
+            html = d.tcf;
+            document.getElementById(FID+'_dc_'+i+'_2').innerHTML = html;
+        });
+        // col3 tgraph
+        data['V'].forEach(function(d,i){
+            document.getElementById(FID+'_dc_'+i+'_3').innerHTML = '';
+            generateSparkline(d.vt,'#'+FID+'_dc_'+i+'_3');
+        });  
+        // col4 tup/down
+        data['V'].forEach(function(d,i){
+            html = generateTrendIndicator(d.tpc);
+            document.getElementById(FID+'_dc_'+i+'_4').innerHTML = html;
+        });
+        // col5 fcf
+        data['V'].forEach(function(d,i){
+            html = d.fcf;
+            document.getElementById(FID+'_dc_'+i+'_5').innerHTML = html;
+        });        
+        // col6 fgraph
+        data['V'].forEach(function(d,i){
+            document.getElementById(FID+'_dc_'+i+'_6').innerHTML = '';
+            generateSparkline(d.vf,'#'+FID+'_dc_'+i+'_6');
+        });
+        // col7 fup/down
+        data['V'].forEach(function(d,i){
+            html = generateTrendIndicator(d.fpc);
+            document.getElementById(FID+'_dc_'+i+'_7').innerHTML = html;
+        });
+        // col8 fpf
+        data['V'].forEach(function(d,i){
+            html = '<span>' + d.fpf + '</span>';
+            document.getElementById(FID+'_dc_'+i+'_8').innerHTML = html;
+        });
+    }
+    //
+    function generateSparkline(valuesArray, elementToAttachToSelector) {
+        var margin = {top: 4, right: 0, bottom: 4, left: 0};
+        var width = 100 - margin.left - margin.right;
+        var height = 30 - margin.top - margin.bottom;
+        var catsArray = d3.range(valuesArray.length);
+        var xScale = d3.scale.linear()
+                    .range([0, width])
+                    .domain([0,catsArray.length-1]);
+        var yScale = d3.scale.linear()
+                    .range([height, 0])
+                    //.clamp(true)
+                    .domain(d3.extent(valuesArray));
+        var sparkline = d3.svg.line()
+                    .x(function(d) { return xScale(parseInt(d)); })
+                    .y(function(d) { return yScale(parseInt(valuesArray[d])); });
+        var svg = d3.select(elementToAttachToSelector)
+                    .append("svg")
+                    .attr("width", width + margin.left + margin.right)
+                    .attr("height", height + margin.top + margin.bottom)
+                    .append("g")
+                    .attr("transform",
+                    "translate(" + margin.left + "," + margin.top + ")");
+        svg.append("path")
+                    .attr("class", "line")
+                    .attr("d", sparkline(catsArray));
+      }    
+    //
+    function generateTrendIndicator(value) {
+        var value = parseFloat(value);
+        if (isNaN(value)) {
+            return '';
+        }
+        if (value > 0) {
+           return '<i class="trend2-up"></i>';
+        }
+        if (value < 0) {
+            return '<i class="trend2-down"></i>';
+        }
+        return '<i class="trend2-neutral"></i>';
+    }    
+    //
+    return {
+      init : init,
+      RPT_ID : RPT_ID,
+      getData : getData,
+      loadData : loadData
+    };
+})();
+RULES_TRIPPED_AGGREGATE_REPORT.init();
+</script>
+      </div> <!-- main_container -->
+    </div> <!-- section -->  
+    
+    <div class="section">
+      
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-4 sflabel al">© 2007-2013 Accertify, Inc.</div>
+    <div class="col-md-4 sflabel am">CONFIDENTIAL</div>
+    <div class="col-md-4 sflabel ar">(host admin) Mar 12, 2015 9:49:22 AM</div>
+  </div>
+</div>
+
+    </div> <!-- section -->
+    
+  </div> <!-- mainLayout -->
+  
+</body></html>
+

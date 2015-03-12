@@ -510,8 +510,8 @@ var DATA =
         {"n":"REJECT","v":"0.048","vf":"4.8%","V":["1","5","9","8","6","10","0","4","4","7","3","5","0","3","1","9","2","3","9","5","7","9","1","3"],"t":"-1"}
       ],
 "res":[
-        {"n":"ACCEPT","cf":"24,631","p":"0.4823","pf":"48.23%"},
-        {"n":"REVIEW","cf":"5,329","p":"0.6771","pf":"67.71%"},
+        {"n":"REVIEW","cf":"24,631","p":"0.2371","pf":"23.71%"},
+        {"n":"ACCEPT","cf":"5,329","p":"0.4823","pf":"48.23%"},
         {"n":"DENY","cf":"97","p":"0.1235","pf":"12.35%"}
       ],
 "q": {"atf":"8.4 mins","cf":"4,782"}
@@ -565,7 +565,7 @@ function render(data) {
   });   
   // col2 p
   data["res"].forEach(function(d,i){
-    html = generateBar1(d.p, [][i]);
+    html = generateBar1(d.p, ['#90cd97','#f6aac9','#bfa554','#bc99c7','#eddd46'][i]);
     document.getElementById('dc_'+i+'_2').innerHTML = html;
   });   
   // col3 pf
@@ -649,10 +649,10 @@ function generateSparkline(anchorRef, valuesArray) {
 
 }
 
-function generateBar1(value) {
+function generateBar1(value, color) {
   var html = '';
   value = (100 *parseFloat(value))/2;
-  html = '<div style="width:50px;height:12px;background-color:#f0eceb;"><div style="width:' + value + 'px;background-color:#64a3a8;height:12px;"></div></div>';
+  html = '<div style="width:50px;height:12px;background-color:#f0eceb;"><div style="width:' + value + 'px;background-color:'+color+';height:12px;"></div></div>';
   return html;
 }
 
