@@ -1,7 +1,7 @@
 <html><head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Recommendation Codes (By Hour)</title>
+    <title>Recommendation Codes (By Day)</title>
 
     <!-- TODO parameterize the inclusion of the foll. -->
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
@@ -77,9 +77,10 @@ div.tb1 {
   text-align:right;
   font-size:0.8em;
   color:silver;
+}
+span.tb1 {
   cursor:pointer;
 }
-
 .footer1 {
   margin: 0 auto 0 auto
 }
@@ -373,6 +374,42 @@ hr .divider {
   background-color: #cccccc;
 }
 
+
+/* colors */
+.color-l-0 {
+  stroke: #88bde6;
+  fill: #88bde6;
+}
+.color-l-1 {
+  stroke: #fbb258;
+  fill: #fbb258;
+}
+.color-l-2 {
+  stroke: #90cd97;
+  fill: #90cd97;
+}
+.color-l-3 {
+  stroke: #f6aac9;
+  fill: #f6aac9;
+}
+.color-l-4 {
+  stroke: #bfa554;
+  fill: #bfa554;
+}
+.color-l-5 {
+  stroke: #bc99c7;
+  fill: #bc99c7;
+}
+.color-l-6 {
+  stroke: #eddd46;
+  fill: #eddd46;
+}
+.color-l-7 {
+  stroke: #f07e6e;
+  fill: #f07e6e;
+}
+
+
 /********************
  * Tree Reports
  */
@@ -455,6 +492,47 @@ div.expand-links {
   font-weight:normal;  
   color : green;
 }
+
+.trend2-up:before {
+  content: "\f139"; /* fa-chevron-circle-up */
+  font-family:FontAwesome,'Open Sans', sans-serif;
+  font-style:normal;
+  font-weight:normal;
+  color:#5bdcff;
+}
+.trend2-down:before {
+  content: "\f13a"; /* fa-chevron-circle-down */
+  font-family:FontAwesome,'Open Sans', sans-serif;
+  font-style:normal;
+  font-weight:normal;  
+  color:#cc557c;
+}
+.trend2-neutral:before {
+  content: "\f192"; /* fa-dot-circle-o */
+  font-family:FontAwesome,'Open Sans', sans-serif;
+  font-style:normal;
+  font-weight:normal;  
+  color:#cccccc;
+}
+
+.refresh1:before {
+  content: "\f021"; /* fa-refresh */
+  font-family:FontAwesome,'Open Sans', sans-serif;
+  font-style:normal;
+  font-weight:normal;
+  color:#cccccc;
+  padding:0px 4px 0px 4px;
+}
+
+.spinner1:before {
+  content: "\f110"; /* fa-spinner */
+  font-family:FontAwesome,'Open Sans', sans-serif;
+  font-style:normal;
+  font-weight:normal;  
+  color:#909090;
+  font-size:32px;
+}
+
 /**
  * End Tree Reports CSS
  ********************/
@@ -504,19 +582,235 @@ div.expand-links {
     <script>
 "use strict";
 
+var RPT = (function() {
+    //var CRITERIA_DATA = {};
+    var CRITERIA_SERIALIZED = 'criteria';
+    var REFERENCES_SERIALIZED = 'rptrefs';
+    var SCR_FORM_ACTION = '/report/rptcontrol/run';
+    var RDID = 'rdid';
+    var PRESET = 'preset';
+    
+    function loadReport(rptRefKey, params) {
+        var rptRefs = JSON.parse(document.getElementById(REFERENCES_SERIALIZED).value);
+        var rptRefValue = rptRefs[rptRefKey];
+
+        // TODO destroy cform, if already present
+
+        var cform = document.createElement('form');
+        cform.setAttribute('method', 'post');
+        cform.setAttribute('action', SCR_FORM_ACTION);
+        cform.setAttribute('id','rpt_cform');
+        cform.setAttribute('target','_blank');
+        // create an assoc array to hold cform fields 
+        var cfields = {};
+        //    put in some required fields...
+        cfields[RDID] = rptRefValue;
+        cfields[PRESET] = true;
+        //    add in the embedded critera...
+        var criteria = JSON.parse(document.getElementById(CRITERIA_SERIALIZED).value);
+        for (var key in criteria) {
+            if (criteria.hasOwnProperty(key)) {
+                cfields[key] = criteria[key];
+            }
+        }
+        //    now add in fields from the params, replacing any with the same name from criteria 
+        if (params) {
+            for (var key in params) {
+                if (params.hasOwnProperty(key)) {
+                    cfields[key] = params[key];
+                }
+            }
+        }
+        // create input fields from the collected fields
+        for (var key in cfields) {
+            if (cfields.hasOwnProperty(key)) {
+                var value = cfields[key];
+                if (value instanceof Array) {
+                    for (var i = 0; i < value.length;i++) {
+                        cform.appendChild(createHiddenInput(key, value[i]));
+                    }
+                } else {
+                    cform.appendChild(createHiddenInput(key, value));
+                }
+            }
+        }
+        document.body.appendChild(cform);
+        cform.submit();
+    }
+    //
+    function createHiddenInput(name,value) {
+        var input = document.createElement('input');
+        input.setAttribute('type', 'hidden');
+        input.setAttribute('name',name);
+        input.setAttribute('value',value);
+        return input;
+    }
+    //
+    function showTransaction(transactionId, bucketId) {
+        bucketId = bucketId || '1';
+        window.open('/jsp/agent/queue/transactiondetail.jsf?transId='+transactionId+'&bucketId='+bucketId+'&mode=V','_blank');
+    }
+    //
+    function makeReportData(rptId) {
+        var data = {};
+        data[RDID] = rptId;
+        var criteria = JSON.parse(document.getElementById(CRITERIA_SERIALIZED).value);
+        var criteriaKeys = Object.keys(criteria);
+        for (var i = 0; i < criteriaKeys.length; i++) {
+            var criteriaKey = criteriaKeys[i];
+            data[criteriaKey] = criteria[criteriaKey];
+        }
+        return data;
+    }
+    //
+    return {
+        CRITERIA_SERIALIZED : CRITERIA_SERIALIZED,
+        REFERENCES_SERIALIZED : REFERENCES_SERIALIZED,
+        SCR_FORM_ACTION : SCR_FORM_ACTION,
+        RDID : RDID,
+        PRESET : PRESET,
+        makeReportData : makeReportData,
+        loadReport : loadReport,
+        showTransaction : showTransaction
+    };
+})();
+
+/**
+ * Helper to retrieve report related data from radar through the interceptas report pages.
+ */
+var DATAPIPE = (function() {
+    var OUTPUT_TYPE_KEY = "fmt";
+    var OUTPUT_TYPE_HTML_FRAGMENT = "html_fragment";
+    var OUTPUT_TYPE_JSON = "json";
+    var url = RPT.SCR_FORM_ACTION;
+    /*
+     * Replace innerHTML (and execute inline scripts) into "elementRef" with result of ajax post of "data".
+     *  eg. DATAPIPE.loadFragment({a:1,b:2},document.getElementById('div1'));
+     */
+    function loadFragment(data, elementRef) {
+        if (typeof data !== 'undefined') {
+            data[OUTPUT_TYPE_KEY] = OUTPUT_TYPE_HTML_FRAGMENT;
+            data[RPT.PRESET] = true;
+            jQuery(elementRef).load(url, toPostableJson(data));
+        }
+    }
+    /*
+     * Retrieve result of ajax post of "data". Invokes the function "callback" with the result as argument.
+     *  eg. DATAPIPE.getFragment({a:1,b:2},function(recvd){console.log('recvd:'+recvd);});
+     */
+    function getFragment(data, callback) {
+        if (typeof data !== 'undefined') {
+            data[OUTPUT_TYPE_KEY] = OUTPUT_TYPE_HTML_FRAGMENT;
+            data[RPT.PRESET] = true;
+            jQuery.post(url, toPostableJson(data))
+                  .done(function(recvd) {
+                          if (typeof callback === 'function') {
+                            callback(recvd);
+                          }
+                   })
+                  .fail(function(jqXHR,textStatus,errorThrown) {
+                          if (console) {
+                            console.log('error gettingFragment'+textStatus+','+errorThrown+' for '+data);
+                          }
+                   });
+        }
+    }
+    /*
+     * Retrieve result of ajax post of "data". Expecting result to be valid JSON.
+     * Result is parsed into a javascript literal. Invokes the function "callback" with the result as argument.
+     *  eg. DATAPIPE.getJson({a:1,b:2},function(recvd){console.log('recvd:'+recvd);});
+     */
+    function getJson(data, callback) {
+        if (typeof data !== 'undefined') {
+            data[OUTPUT_TYPE_KEY] = OUTPUT_TYPE_JSON;
+            data[RPT.PRESET] = true;
+            jQuery.post(url, toPostableJson(data))
+                  .done(function(recvd) {
+                          //console.log(recvd);
+                          if (typeof callback === 'function') {
+                            //alert("parsing" + JSON.stringify(JSON.parse(recvd)));
+                            try {
+                              callback(JSON.parse(recvd));
+                            } catch(e) {
+                              if (console) {
+                                console.log('error '+e+' gettingJson for\n'+data+'\ngot '+recvd);
+                              }
+                              callback({'error':recvd});
+                            }
+                          }})
+                  .fail(function(jqXHR,textStatus,errorThrown) {
+                          if(console) {
+                            console.log('error gettingjson '+textStatus+','+errorThrown+' for '+data);
+                          }
+                          });
+        }
+    }
+    /*
+     * 
+     */
+    function toPostableJson(data) {
+        var postableArray = [];
+        var dataKeys = Object.keys(data);
+        for (var i = 0; i < dataKeys.length; i++) {
+            var dataKey = dataKeys[i];
+            var dataValue = data[dataKey];
+            if (Array.isArray(dataValue)) {
+                for (var j = 0; j < dataValue.length; j++) {
+                    postableArray.push(dataKey + '=' + encodeURIComponent(dataValue[j]));
+                }
+            } else {
+                postableArray.push(dataKey + '=' + encodeURIComponent(dataValue));
+            }
+        }
+        return postableArray.join('&');
+    }
+    
+    return {
+        loadFragment : loadFragment,
+        getFragment : getFragment,
+        getJson : getJson,
+        toPostableJson : toPostableJson
+    };
+})();
+
+var MATH = (function() {
+    // returns slope, intercept of the line
+    function leastSquares(xSeries, ySeries) {
+        var reduceSumFunc = function(prev, cur) { return prev + cur; };
+        var xBar = xSeries.reduce(reduceSumFunc) * 1.0 / xSeries.length;
+        var yBar = ySeries.reduce(reduceSumFunc) * 1.0 / ySeries.length;
+        var ssXX = xSeries.map(function(d) { return Math.pow(d - xBar, 2); })
+            .reduce(reduceSumFunc);
+        var ssYY = ySeries.map(function(d) { return Math.pow(d - yBar, 2); })
+            .reduce(reduceSumFunc);
+        var ssXY = xSeries.map(function(d, i) { return (d - xBar) * (ySeries[i] - yBar); })
+            .reduce(reduceSumFunc);
+        var slope = ssXY / ssXX;
+        var intercept = yBar - (xBar * slope);
+        //var rSquare = Math.pow(ssXY, 2) / (ssXX * ssYY);
+        return [slope, intercept];
+    }
+    //
+    return {
+        leastSquares : leastSquares
+    };
+})();
+
+
+    
     </script>   
 
 </head>
   
- <body>
+ <body data-pinterest-extension-installed="cr1.35" cz-shortcut-listen="true">
  <!-- standard_report_template -->
   <div class="mainLayout">
 
     <div class="section">
-      <div class="title1">Recommendation Codes (By Hour)</div>
+      <div class="title1">Recommendation Codes (By Day)</div>
     </div> <!-- section -->
   
-    <input type="hidden" id="criteria" value="{&quot;vt&quot;:[&quot;5237260000000006162&quot;],&quot;dp_p&quot;:[&quot;d0&quot;],&quot;dp_w&quot;:[&quot;d1&quot;],&quot;h&quot;:[&quot;5237260000000001041&quot;]}">
+    <input type="hidden" id="criteria" value="{&quot;vt&quot;:[&quot;5237260000000002081&quot;],&quot;dp_p&quot;:[&quot;m1&quot;],&quot;dp_w&quot;:[&quot;m1&quot;],&quot;h&quot;:[&quot;5237260000000004022&quot;]}">
   
     <div class="section">
       
@@ -525,21 +819,21 @@ div.expand-links {
 <div class="container rc-container">
   <div class="row rc-title-row">
     <div class="col-md-4 rc-title1">Report Criteria</div>
-    <div class="col-md-8 rc-title2"><label class="rc-title-label">Date Period:</label>  <label class="rc-title-value">Feb 24, 2015 12:00:00 AM - </label></div>
+    <div class="col-md-8 rc-title2"><label class="rc-title-label">Date Period:</label>  <label class="rc-title-value">Feb 1, 2015 12:00:00 AM - Mar 1, 2015 12:00:00 AM</label></div>
   </div>
   <hr class="rc-divider">
   
     
       <div class="row rc-criteria-row">
         <div class="col-md-2"><label class="rc-label">Data Source:</label></div>
-        <div class="col-md-10"><label class="rc-value">1-800-Flowers</label></div>
+        <div class="col-md-10"><label class="rc-value">Best Buy Production</label></div>
       </div>
     
   
     
       <div class="row rc-criteria-row">
         <div class="col-md-2"><label class="rc-label">Data Type:</label></div>
-        <div class="col-md-10"><label class="rc-value">AAA</label></div>
+        <div class="col-md-10"><label class="rc-value">Best Buy Orders</label></div>
       </div>
     
   
@@ -568,33 +862,28 @@ div#FRAGMENT_RCT path.line2 {
   fill: none;
   stroke-dasharray:10,2;
 }
-
 div#FRAGMENT_RCT .axis path, .axis line {
   fill:none;
   stroke:#c0c0c0;
   shape-rendering:crispEdges;
 }
-
 div#FRAGMENT_RCT .axis text {
   font-size:0.8em;
   fill:#6c7477;
   stroke-width:0px;
 }
-
-div#FRAGMENT_RCT text.y-tick { /* */
+div#FRAGMENT_RCT text.y-tick {
   font-size:0.8em;
   fill:#6c7477;
   stroke-width:0px;
 }
-
-div#FRAGMENT_RCT text.y-label { /* */
+div#FRAGMENT_RCT text.y-label {
   font-size:0.9em;
   font-weight:bold;
   fill:#434040;
   stroke-width:1px;
   text-transform: uppercase;
 }
-
 div#FRAGMENT_RCT path.grid {
   fill:none;
   stroke:#c0c0c0;
@@ -602,79 +891,35 @@ div#FRAGMENT_RCT path.grid {
   opacity:0.2;
   shape-rendering:crispEdges;
 }
-
 div#FRAGMENT_RCT path.cursor {
   stroke:#696969;
   stroke-width:1.5px;
   opacity:0.8;
   stroke-dasharray:5,2;
 }
-
 div#FRAGMENT_RCT rect.overlay {
   fill: none;
   pointer-events: all;
 }
-.color-l-0 {
-  stroke: #88bde6;
-  fill: #88bde6;
-}
-.color-l-1 {
-  stroke: #fbb258;
-  fill: #fbb258;
-}
-.color-l-2 {
-  stroke: #90cd97;
-  fill: #90cd97;
-}
-.color-l-3 {
-  stroke: #f6aac9;
-  fill: #f6aac9;
-}
-.color-l-4 {
-  stroke: #f6aac9;
-  fill: #f6aac9;
-}
-.color-l-5 {
-  stroke: #f6aac9;
-  fill: #f6aac9;
-}
-.color-l-6 {
-  stroke: #f6aac9;
-  fill: #f6aac9;
-}
-.color-l-7 {
-  stroke: #f6aac9;
-  fill: #f6aac9;
-}
-
-
 div#FRAGMENT_RCT div.legend1 {
   color: #64a3a8;
   font-size: 0.8em;
-  font-weight: bold;    
+  font-weight: bold;
 }
-div#FRAGMENT_RCT div.legend2 { /* */
+div#FRAGMENT_RCT div.legend2 {
   color: #64a3a8;
   font-size: 0.8em;
-  padding: 0 0 10px 24px;   
+  padding: 0 0 10px 24px;
 }
-
-div#RCT_current {
-  min-width: 180px;
-}
-
 div#FRAGMENT_RCT svg.swatch {
   margin: 0 4px 0 4px;
 }
-
-
 div#FRAGMENT_RCT th {
   color: #64a3a8;
   font-size: 0.9em;
   text-align: center;
   padding: 6px;
 }
-
 div#FRAGMENT_RCT th.th-a-2 {
   border-left: 1px solid #c0c0c0;
   border-right: 1px solid #c0c0c0;
@@ -700,13 +945,11 @@ div#FRAGMENT_RCT th.th-b-1 {
 div#FRAGMENT_RCT th.th-b-2 {
   font-size: 0.8em;    
 }
-
 div#FRAGMENT_RCT td {
   color: #64a3a8;  
   text-align: right;
   padding:2px 4px 2px 4px;
 }
-
 div#FRAGMENT_RCT td.RCT_dtcs1 {
   text-align: left !important;
   color: #434040 !important;
@@ -729,13 +972,11 @@ div#FRAGMENT_RCT td.RCT_dtcs10,td.RCT_dtcs11 {
   color: #434040 !important;
   background-color:#f0eceb;
 }
-  
-
-
 </style>
 
 <div id="FRAGMENT_RCT">
-  <div class="tb1" onclick="RECOMMENDATION_CODES_TREND_REPORT.loadData()"><span id="RCT_execOn">Feb 24, 2015 9:38:30 AM</span></div>
+
+    <div class="tb1"><i id="RCT_spinner" class="spinner1 fa-spin"></i><span class="tb1" id="RCT_execOn" onclick="RECOMMENDATION_CODES_TREND_REPORT.loadData()"></span></div>
   <div class="title2"></div>
   
   <div class="section">
@@ -743,18 +984,19 @@ div#FRAGMENT_RCT td.RCT_dtcs10,td.RCT_dtcs11 {
   </div> <!-- section -->
 
   <div id="RCT_contentBody">
-
+   
    <div class="legend2">
-    <input type="checkbox" id="RCT_ctrl_actual" onclick="RECOMMENDATION_CODES_TREND_REPORT.gv()" checked />Actual<svg height="10" width="40"><path d="M0 5H40" class="line1" style="stroke:#696969;"/></svg>
-    &nbsp;&nbsp;
-    <input type="checkbox" id="RCT_ctrl_trend" onclick="RECOMMENDATION_CODES_TREND_REPORT.gv()" />Trend<svg height="10" width="40"><path d="M0 5H40" class="line2" style="stroke:#696969;"/></svg>
+      <input type="checkbox" id="RCT_ctrl_actual" onclick="RECOMMENDATION_CODES_TREND_REPORT.gv()" checked="">Actual<svg height="10" width="40"><path d="M0 5H40" class="line1" style="stroke:#696969;"></path></svg>
+      &nbsp;&nbsp;
+      <input type="checkbox" id="RCT_ctrl_trend" onclick="RECOMMENDATION_CODES_TREND_REPORT.gv()">Trend<svg height="10" width="40"><path d="M0 5H40" class="line2" style="stroke:#696969;"></path></svg>
    </div>
-   <div id="RCT_countsGraph" class="RCT-gc">     
-   </div>
+   <div id="RCT_countsGraph" class="RCT-gc"><svg width="720" height="240"><g transform="translate(24,10)"><path class="line1 color-l-0" id="RCTc_g_0" d="M0,71.5Q17.066666666666666,68.33750000000002,21.333333333333332,66.91666666666669C27.733333333333334,64.78541666666668,36.266666666666666,56.81041666666666,42.666666666666664,57.29166666666666S57.6,71.98125,64,70.125S78.93333333333332,50.34791666666669,85.33333333333333,44.916666666666686S100.26666666666665,38.17916666666666,106.66666666666666,33.91666666666666S121.6,16.087500000000027,128,16.50000000000003S142.9333333333333,33.84791666666666,149.33333333333331,36.66666666666666S164.26666666666665,33.435416666666654,170.66666666666666,35.29166666666666S185.6,46.910416666666656,192,49.04166666666666S206.9333333333333,48.125,213.33333333333331,49.5S228.26666666666665,65.49583333333335,234.66666666666666,58.20833333333334S249.6,7.379166666666659,256,0.9166666666666572S270.93333333333334,10.243749999999997,277.3333333333333,15.125S292.26666666666665,34.14583333333334,298.66666666666663,33.45833333333334S313.6,7.722916666666686,320,10.541666666666686S334.93333333333334,50.66875,341.3333333333333,52.25S356.26666666666665,20.60208333333334,362.66666666666663,21.083333333333343S377.59999999999997,51.88333333333334,384,55.45833333333334S398.9333333333334,53.23541666666669,405.33333333333337,44.916666666666686S420.26666666666665,-1.4437499999999959,426.66666666666663,0S441.59999999999997,45.74166666666665,447.99999999999994,54.54166666666666S462.9333333333333,57.42916666666669,469.3333333333333,58.666666666666686S484.2666666666667,62.24166666666666,490.6666666666667,62.79166666666666S505.6,60.20208333333334,512,62.33333333333334S526.9333333333333,76.3125,533.3333333333333,77S548.2666666666667,72.00416666666669,554.6666666666666,66.91666666666669Q558.9333333333333,63.52500000000002,576,43.083333333333314"></path><path class="line1 color-l-1" id="RCTc_g_1" d="M0,218.625Q17.066666666666666,218.67083333333335,21.333333333333332,218.625C27.733333333333334,218.55625,36.266666666666666,218.23541666666665,42.666666666666664,218.16666666666666S57.6,218.16666666666666,64,218.16666666666666S78.93333333333332,218.16666666666666,85.33333333333333,218.16666666666666S100.26666666666665,218.16666666666666,106.66666666666666,218.16666666666666S121.6,218.09791666666666,128,218.16666666666666S142.9333333333333,218.625,149.33333333333331,218.625S164.26666666666665,218.23541666666665,170.66666666666666,218.16666666666666S185.6,218.09791666666666,192,218.16666666666666S206.9333333333333,218.625,213.33333333333331,218.625S228.26666666666665,218.30416666666665,234.66666666666666,218.16666666666666S249.6,217.63958333333335,256,217.70833333333334S270.93333333333334,218.4875,277.3333333333333,218.625S292.26666666666665,218.69375,298.66666666666663,218.625S313.6,218.23541666666665,320,218.16666666666666S334.93333333333334,218.16666666666666,341.3333333333333,218.16666666666666S356.26666666666665,218.09791666666666,362.66666666666663,218.16666666666666S377.59999999999997,218.55625,384,218.625S398.9333333333334,218.69375,405.33333333333337,218.625S420.26666666666665,218.09791666666666,426.66666666666663,218.16666666666666S441.59999999999997,219.08333333333334,447.99999999999994,219.08333333333334S462.9333333333333,218.23541666666665,469.3333333333333,218.16666666666666S484.2666666666667,218.625,490.6666666666667,218.625S505.6,218.37291666666667,512,218.16666666666666S526.9333333333333,217.25,533.3333333333333,217.25S548.2666666666667,217.89166666666665,554.6666666666666,218.16666666666666Q558.9333333333333,218.35,576,219.08333333333334"></path><path class="line1 color-l-2" id="RCTc_g_2" d="M0,213.58333333333334Q17.066666666666666,211.24583333333334,21.333333333333332,210.83333333333334C27.733333333333334,210.21458333333334,36.266666666666666,209.59583333333336,42.666666666666664,209.45833333333334S57.6,209.77916666666667,64,209.91666666666666S78.93333333333332,210.44375,85.33333333333333,210.375S100.26666666666665,209.38958333333335,106.66666666666666,209.45833333333334S121.6,210.48958333333334,128,210.83333333333334S142.9333333333333,211.95625,149.33333333333331,211.75S164.26666666666665,209.80208333333334,170.66666666666666,209.45833333333334S185.6,209.52708333333334,192,209.45833333333334S206.9333333333333,208.8625,213.33333333333331,209S228.26666666666665,210.58125,234.66666666666666,210.375S249.6,207.41875,256,207.625S270.93333333333334,211.2,277.3333333333333,211.75S292.26666666666665,211.70416666666665,298.66666666666663,211.29166666666666S313.6,209.1375,320,209S334.93333333333334,210.30625,341.3333333333333,210.375S356.26666666666665,209.38958333333335,362.66666666666663,209.45833333333334S377.59999999999997,210.62708333333333,384,210.83333333333334S398.9333333333334,211.03958333333335,405.33333333333337,210.83333333333334S420.26666666666665,209.18333333333334,426.66666666666663,209.45833333333334S441.59999999999997,212.59791666666666,447.99999999999994,212.66666666666666S462.9333333333333,210.26041666666666,469.3333333333333,209.91666666666666S484.2666666666667,210.375,490.6666666666667,210.375S505.6,210.05416666666665,512,209.91666666666666S526.9333333333333,209.38958333333335,533.3333333333333,209.45833333333334S548.2666666666667,210.03125,554.6666666666666,210.375Q558.9333333333333,210.60416666666666,576,211.75"></path><path class="line1 color-l-3" id="RCTc_g_3" d="M0,198.91666666666666Q17.066666666666666,183.65416666666667,21.333333333333332,181.04166666666666C27.733333333333334,177.12291666666667,36.266666666666666,173.61666666666667,42.666666666666664,172.79166666666669S57.6,175.06041666666667,64,175.54166666666666S78.93333333333332,176.1375,85.33333333333333,176S100.26666666666665,174.9,106.66666666666666,174.625S121.6,171.34791666666666,128,174.16666666666666S142.9333333333333,192.59166666666664,149.33333333333331,193.41666666666666S164.26666666666665,182.48541666666668,170.66666666666666,179.66666666666669S185.6,175.175,192,174.625S206.9333333333333,175.51875,213.33333333333331,176S228.26666666666665,177.62708333333333,234.66666666666666,177.83333333333334S249.6,177.65,256,177.375S270.93333333333334,173.45625,277.3333333333333,176S292.26666666666665,193.85208333333335,298.66666666666663,194.33333333333334S313.6,181.7520833333333,320,179.20833333333331S334.93333333333334,178.26875,341.3333333333333,177.375S356.26666666666665,173.11249999999998,362.66666666666663,173.25S377.59999999999997,177.67291666666668,384,178.29166666666669S398.9333333333334,177.7875,405.33333333333337,177.375S420.26666666666665,172.86041666666665,426.66666666666663,175.54166666666666S441.59999999999997,194.08124999999998,447.99999999999994,195.25S462.9333333333333,185.67083333333335,469.3333333333333,183.33333333333334S484.2666666666667,180.42291666666668,490.6666666666667,179.66666666666669S505.6,178.4291666666667,512,178.29166666666669S526.9333333333333,178.88750000000002,533.3333333333333,178.75S548.2666666666667,177.65,554.6666666666666,177.375Q558.9333333333333,177.19166666666666,576,176.91666666666666"></path><path class="line2 color-l-0" id="RCTc_t_0" d="M0,43.279958333333326L576,45.93141666666665" style="display: none;"></path><path class="line2 color-l-1" id="RCTc_t_1" d="M0,218.317L576,218.34404166666667" style="display: none;"></path><path class="line2 color-l-2" id="RCTc_t_2" d="M0,210.420375L576,210.26454166666667" style="display: none;"></path><path class="line2 color-l-3" id="RCTc_t_3" d="M0,180.41054166666666L576,179.08641666666665" style="display: none;"></path><path d="M0 220H576" class="grid"></path><text x="576" y="220" dx="4" class="y-tick">0</text><text x="576" y="0" dx="4" class="y-tick">64,752</text><text x="576" y="110" dx="6" class="y-label">Count</text><path d="M0 0V220" class="grid" id="RCTgtc_0"></path><path d="M21.333333333333332 0V220" class="grid" id="RCTgtc_1"></path><path d="M42.666666666666664 0V220" class="grid" id="RCTgtc_2"></path><path d="M64 0V220" class="grid" id="RCTgtc_3"></path><path d="M85.33333333333333 0V220" class="grid" id="RCTgtc_4"></path><path d="M106.66666666666666 0V220" class="grid" id="RCTgtc_5"></path><path d="M128 0V220" class="grid" id="RCTgtc_6"></path><path d="M149.33333333333331 0V220" class="grid" id="RCTgtc_7"></path><path d="M170.66666666666666 0V220" class="grid" id="RCTgtc_8"></path><path d="M192 0V220" class="grid" id="RCTgtc_9"></path><path d="M213.33333333333331 0V220" class="grid" id="RCTgtc_10"></path><path d="M234.66666666666666 0V220" class="grid" id="RCTgtc_11"></path><path d="M256 0V220" class="grid" id="RCTgtc_12"></path><path d="M277.3333333333333 0V220" class="grid" id="RCTgtc_13"></path><path d="M298.66666666666663 0V220" class="grid" id="RCTgtc_14"></path><path d="M320 0V220" class="grid" id="RCTgtc_15"></path><path d="M341.3333333333333 0V220" class="grid" id="RCTgtc_16"></path><path d="M362.66666666666663 0V220" class="grid" id="RCTgtc_17"></path><path d="M384 0V220" class="grid" id="RCTgtc_18"></path><path d="M405.33333333333337 0V220" class="grid" id="RCTgtc_19"></path><path d="M426.66666666666663 0V220" class="grid" id="RCTgtc_20"></path><path d="M447.99999999999994 0V220" class="grid" id="RCTgtc_21"></path><path d="M469.3333333333333 0V220" class="grid" id="RCTgtc_22"></path><path d="M490.6666666666667 0V220" class="grid" id="RCTgtc_23"></path><path d="M512 0V220" class="grid" id="RCTgtc_24"></path><path d="M533.3333333333333 0V220" class="grid" id="RCTgtc_25"></path><path d="M554.6666666666666 0V220" class="grid" id="RCTgtc_26"></path><path d="M576 0V220" class="grid" id="RCTgtc_27"></path><path d="M0 0V230" id="RCT_cursor_c" class="cursor" transform="translate(171.66666666666666)" style=""></path><rect class="overlay" width="576" height="220"></rect></g></svg></div>
      
-   <div id="RCT_amountsGraph" class="RCT-gc">
-   </div>
-     
+   <div id="RCT_amountsGraph" class="RCT-gc"><svg width="720" height="290"><g transform="translate(24,10)"><path class="line1 color-l-0" id="RCTa_g_0" d="M0,82.04166666666666Q17.066666666666666,70.99583333333334,21.333333333333332,69.20833333333334C27.733333333333334,66.52708333333334,36.266666666666666,62.99791666666666,42.666666666666664,64.16666666666666S57.6,75.41875,64,77S78.93333333333332,77.52708333333334,85.33333333333333,74.70833333333334S100.26666666666665,63.089583333333344,106.66666666666666,58.20833333333334S121.6,40.79166666666666,128,42.16666666666666S142.9333333333333,64.83125,149.33333333333331,67.375S164.26666666666665,59.74375,170.66666666666666,59.125S185.6,63.18125,192,63.25S206.9333333333333,59.85833333333334,213.33333333333331,59.58333333333334S228.26666666666665,69.66666666666666,234.66666666666666,61.41666666666666S249.6,6.783333333333342,256,4.583333333333343S270.93333333333334,41.18125,277.3333333333333,46.75S292.26666666666665,48.720833333333346,298.66666666666663,41.70833333333334S313.6,-4.125000000000001,320,0S334.93333333333334,60.752083333333346,341.3333333333333,69.20833333333334S356.26666666666665,56.03125,362.66666666666663,56.375S377.59999999999997,69.9875,384,71.5S398.9333333333334,71.33958333333334,405.33333333333337,66.45833333333334S420.26666666666665,37.308333333333344,426.66666666666663,38.95833333333334S441.59999999999997,74.22708333333331,447.99999999999994,77.45833333333331S462.9333333333333,60.0875,469.3333333333333,60.5S484.2666666666667,77.11458333333334,490.6666666666667,80.20833333333334S505.6,83.4625,512,81.125S526.9333333333333,63.86875,533.3333333333333,64.625S548.2666666666667,83.82916666666668,554.6666666666666,86.16666666666669Q558.9333333333333,87.72500000000002,576,80.20833333333334"></path><path class="line1 color-l-1" id="RCTa_g_1" d="M0,220Q17.066666666666666,220,21.333333333333332,220C27.733333333333334,220,36.266666666666666,220,42.666666666666664,220S57.6,220,64,220S78.93333333333332,220,85.33333333333333,220S100.26666666666665,220,106.66666666666666,220S121.6,220,128,220S142.9333333333333,220,149.33333333333331,220S164.26666666666665,220,170.66666666666666,220S185.6,220,192,220S206.9333333333333,220.06875,213.33333333333331,220S228.26666666666665,219.54166666666666,234.66666666666666,219.54166666666666S249.6,219.93125,256,220S270.93333333333334,220,277.3333333333333,220S292.26666666666665,220,298.66666666666663,220S313.6,220.06875,320,220S334.93333333333334,219.54166666666666,341.3333333333333,219.54166666666666S356.26666666666665,219.93125,362.66666666666663,220S377.59999999999997,220,384,220S398.9333333333334,220,405.33333333333337,220S420.26666666666665,220,426.66666666666663,220S441.59999999999997,220,447.99999999999994,220S462.9333333333333,220,469.3333333333333,220S484.2666666666667,220,490.6666666666667,220S505.6,220.06875,512,220S526.9333333333333,219.54166666666666,533.3333333333333,219.54166666666666S548.2666666666667,219.93125,554.6666666666666,220Q558.9333333333333,220.04583333333335,576,220"></path><path class="line1 color-l-2" id="RCTa_g_2" d="M0,199.375Q17.066666666666666,191.07916666666668,21.333333333333332,189.75C27.733333333333334,187.75625,36.266666666666666,186.8395833333333,42.666666666666664,186.08333333333331S57.6,184.57083333333333,64,184.70833333333334S78.93333333333332,186.8625,85.33333333333333,187S100.26666666666665,185.2125,106.66666666666666,185.625S121.6,188.2375,128,189.75S142.9333333333333,196.25833333333335,149.33333333333331,195.70833333333334S164.26666666666665,187.73333333333332,170.66666666666666,186.08333333333331S185.6,185.18958333333333,192,184.70833333333334S206.9333333333333,182.53125,213.33333333333331,182.875S228.26666666666665,187.4125,234.66666666666666,187S249.6,179.4375,256,180.125S270.93333333333334,189.65833333333333,277.3333333333333,191.58333333333334S292.26666666666665,194.26458333333335,298.66666666666663,192.95833333333334S313.6,183.7,320,182.875S334.93333333333334,187.38958333333335,341.3333333333333,187.45833333333334S356.26666666666665,183.33333333333334,362.66666666666663,183.33333333333334S377.59999999999997,186.83958333333334,384,187.45833333333334S398.9333333333334,187.38958333333335,405.33333333333337,187.45833333333334S420.26666666666665,186.61041666666665,426.66666666666663,187.91666666666666S441.59999999999997,196.51041666666666,447.99999999999994,196.16666666666666S462.9333333333333,187.06875,469.3333333333333,185.625S484.2666666666667,186.40416666666667,490.6666666666667,186.54166666666669S505.6,186.7479166666667,512,186.54166666666669S526.9333333333333,185.0979166666667,533.3333333333333,185.16666666666669S548.2666666666667,185.625,554.6666666666666,187Q558.9333333333333,187.91666666666666,576,194.33333333333334"></path><path class="line1 color-l-3" id="RCTa_g_3" d="M0,220Q17.066666666666666,220,21.333333333333332,220C27.733333333333334,220,36.266666666666666,220,42.666666666666664,220S57.6,220,64,220S78.93333333333332,220,85.33333333333333,220S100.26666666666665,220,106.66666666666666,220S121.6,220,128,220S142.9333333333333,220,149.33333333333331,220S164.26666666666665,220,170.66666666666666,220S185.6,220,192,220S206.9333333333333,220,213.33333333333331,220S228.26666666666665,220,234.66666666666666,220S249.6,220,256,220S270.93333333333334,220,277.3333333333333,220S292.26666666666665,220,298.66666666666663,220S313.6,220,320,220S334.93333333333334,220,341.3333333333333,220S356.26666666666665,220,362.66666666666663,220S377.59999999999997,220,384,220S398.9333333333334,220,405.33333333333337,220S420.26666666666665,220,426.66666666666663,220S441.59999999999997,220,447.99999999999994,220S462.9333333333333,220,469.3333333333333,220S484.2666666666667,220,490.6666666666667,220S505.6,220,512,220S526.9333333333333,220,533.3333333333333,220S548.2666666666667,220,554.6666666666666,220Q558.9333333333333,220,576,220"></path><path class="line2 color-l-0" id="RCTa_t_0" d="M0,57.43283333333332L576,64.28766666666667" style="display: none;"></path><path class="line2 color-l-1" id="RCTa_t_1" d="M0,219.98991666666666L576,219.912" style="display: none;"></path><path class="line2 color-l-2" id="RCTa_t_2" d="M0,188.44054166666666L576,187.36025" style="display: none;"></path><path class="line2 color-l-3" id="RCTa_t_3" d="M0,220L576,220" style="display: none;"></path><g class="x axis" transform="translate(0,220)"><g class="tick" transform="translate(0,0)" style="opacity: 1;"><line y2="6" x2="0"></line><text y="9" x="0" dy=".71em" style="text-anchor: middle;">2/1/15</text></g><g class="tick" transform="translate(42.666666666666664,0)" style="opacity: 1;"><line y2="6" x2="0"></line><text y="9" x="0" dy=".71em" style="text-anchor: middle;">2/3/15</text></g><g class="tick" transform="translate(85.33333333333333,0)" style="opacity: 1;"><line y2="6" x2="0"></line><text y="9" x="0" dy=".71em" style="text-anchor: middle;">2/5/15</text></g><g class="tick" transform="translate(128,0)" style="opacity: 1;"><line y2="6" x2="0"></line><text y="9" x="0" dy=".71em" style="text-anchor: middle;">2/7/15</text></g><g class="tick" transform="translate(170.66666666666666,0)" style="opacity: 1;"><line y2="6" x2="0"></line><text y="9" x="0" dy=".71em" style="text-anchor: middle;">2/9/15</text></g><g class="tick" transform="translate(213.33333333333331,0)" style="opacity: 1;"><line y2="6" x2="0"></line><text y="9" x="0" dy=".71em" style="text-anchor: middle;">2/11/15</text></g><g class="tick" transform="translate(256,0)" style="opacity: 1;"><line y2="6" x2="0"></line><text y="9" x="0" dy=".71em" style="text-anchor: middle;">2/13/15</text></g><g class="tick" transform="translate(298.66666666666663,0)" style="opacity: 1;"><line y2="6" x2="0"></line><text y="9" x="0" dy=".71em" style="text-anchor: middle;">2/15/15</text></g><g class="tick" transform="translate(341.3333333333333,0)" style="opacity: 1;"><line y2="6" x2="0"></line><text y="9" x="0" dy=".71em" style="text-anchor: middle;">2/17/15</text></g><g class="tick" transform="translate(384,0)" style="opacity: 1;"><line y2="6" x2="0"></line><text y="9" x="0" dy=".71em" style="text-anchor: middle;">2/19/15</text></g><g class="tick" transform="translate(426.66666666666663,0)" style="opacity: 1;"><line y2="6" x2="0"></line><text y="9" x="0" dy=".71em" style="text-anchor: middle;">2/21/15</text></g><g class="tick" transform="translate(469.3333333333333,0)" style="opacity: 1;"><line y2="6" x2="0"></line><text y="9" x="0" dy=".71em" style="text-anchor: middle;">2/23/15</text></g><g class="tick" transform="translate(512,0)" style="opacity: 1;"><line y2="6" x2="0"></line><text y="9" x="0" dy=".71em" style="text-anchor: middle;">2/25/15</text></g><g class="tick" transform="translate(554.6666666666666,0)" style="opacity: 1;"><line y2="6" x2="0"></line><text y="9" x="0" dy=".71em" style="text-anchor: middle;">2/27/15</text></g><path class="domain" d="M0,6V0H576V6"></path></g><text x="576" y="220" dx="4" class="y-tick">$0.00</text><text x="576" y="0" dx="4" class="y-tick">$11,353,102.97</text><text x="576" y="110" dx="6" class="y-label">Amount</text><path d="M0 0V220" class="grid" id="RCTgta_0"></path><path d="M21.333333333333332 0V220" class="grid" id="RCTgta_1"></path><path d="M42.666666666666664 0V220" class="grid" id="RCTgta_2"></path><path d="M64 0V220" class="grid" id="RCTgta_3"></path><path d="M85.33333333333333 0V220" class="grid" id="RCTgta_4"></path><path d="M106.66666666666666 0V220" class="grid" id="RCTgta_5"></path><path d="M128 0V220" class="grid" id="RCTgta_6"></path><path d="M149.33333333333331 0V220" class="grid" id="RCTgta_7"></path><path d="M170.66666666666666 0V220" class="grid" id="RCTgta_8"></path><path d="M192 0V220" class="grid" id="RCTgta_9"></path><path d="M213.33333333333331 0V220" class="grid" id="RCTgta_10"></path><path d="M234.66666666666666 0V220" class="grid" id="RCTgta_11"></path><path d="M256 0V220" class="grid" id="RCTgta_12"></path><path d="M277.3333333333333 0V220" class="grid" id="RCTgta_13"></path><path d="M298.66666666666663 0V220" class="grid" id="RCTgta_14"></path><path d="M320 0V220" class="grid" id="RCTgta_15"></path><path d="M341.3333333333333 0V220" class="grid" id="RCTgta_16"></path><path d="M362.66666666666663 0V220" class="grid" id="RCTgta_17"></path><path d="M384 0V220" class="grid" id="RCTgta_18"></path><path d="M405.33333333333337 0V220" class="grid" id="RCTgta_19"></path><path d="M426.66666666666663 0V220" class="grid" id="RCTgta_20"></path><path d="M447.99999999999994 0V220" class="grid" id="RCTgta_21"></path><path d="M469.3333333333333 0V220" class="grid" id="RCTgta_22"></path><path d="M490.6666666666667 0V220" class="grid" id="RCTgta_23"></path><path d="M512 0V220" class="grid" id="RCTgta_24"></path><path d="M533.3333333333333 0V220" class="grid" id="RCTgta_25"></path><path d="M554.6666666666666 0V220" class="grid" id="RCTgta_26"></path><path d="M576 0V220" class="grid" id="RCTgta_27"></path><path d="M0 -10V220" id="RCT_cursor_a" class="cursor" transform="translate(171.66666666666666)" style=""></path><rect class="overlay" width="576" height="220"></rect></g></svg></div>
+
+
+
+
    <table id="RCT_meta">
     <thead>
       <tr>
@@ -762,7 +1004,7 @@ div#FRAGMENT_RCT td.RCT_dtcs10,td.RCT_dtcs11 {
         <th class="th-a-1"></th>
         <th class="th-a-2" colspan="4"><span id="RCT-c-label">Count</span></th>
         <th class="th-a-3" colspan="4"><span id="RCT-a-label">Amount</span></th>
-        <th class="th-a-4" colspan="2"><div id="RCT_current"></div></th>
+        <th class="th-a-4" colspan="2"><div id="RCT_current">Feb 9, 2015 12:00:00 AM</div></th>
       </tr>
       <tr>
         <th class="th-b-0"></th>
@@ -781,32 +1023,32 @@ div#FRAGMENT_RCT td.RCT_dtcs10,td.RCT_dtcs11 {
     </thead>
     <tbody id="RCT_metaListBody">
       <!-- dynamic fill -->
-    </tbody>
+    <tr id="RCT_dr0"><td id="RCT_dc_0_0" class="RCT_dtcs0"><input type="checkbox" checked="" onclick="RECOMMENDATION_CODES_TREND_REPORT.gv()" id="RCT_ctrl_0"></td><td id="RCT_dc_0_1" class="RCT_dtcs1"><svg width="10" height="10" class="swatch"><rect width="10" height="10" class="color-l-0"></rect></svg>ACCEPT</td><td id="RCT_dc_0_2" class="RCT_dtcs2">42,101</td><td id="RCT_dc_0_3" class="RCT_dtcs3">50,235.5</td><td id="RCT_dc_0_4" class="RCT_dtcs4">64,752</td><td id="RCT_dc_0_5" class="RCT_dtcs5">1,445,041</td><td id="RCT_dc_0_6" class="RCT_dtcs6">$6,895,004.35</td><td id="RCT_dc_0_7" class="RCT_dtcs7">$8,027,667.75</td><td id="RCT_dc_0_8" class="RCT_dtcs8">$11,353,102.97</td><td id="RCT_dc_0_9" class="RCT_dtcs9">$229,942,113.90</td><td id="RCT_dc_0_10" class="RCT_dtcs10">54,384</td><td id="RCT_dc_0_11" class="RCT_dtcs11">$8,297,941.24</td></tr><tr id="RCT_dr1"><td id="RCT_dc_1_0" class="RCT_dtcs0"><input type="checkbox" checked="" onclick="RECOMMENDATION_CODES_TREND_REPORT.gv()" id="RCT_ctrl_1"></td><td id="RCT_dc_1_1" class="RCT_dtcs1"><svg width="10" height="10" class="swatch"><rect width="10" height="10" class="color-l-1"></rect></svg>REJECT</td><td id="RCT_dc_1_2" class="RCT_dtcs2">307</td><td id="RCT_dc_1_3" class="RCT_dtcs3">493</td><td id="RCT_dc_1_4" class="RCT_dtcs4">792</td><td id="RCT_dc_1_5" class="RCT_dtcs5">13,807</td><td id="RCT_dc_1_6" class="RCT_dtcs6">$48.34</td><td id="RCT_dc_1_7" class="RCT_dtcs7">$4,848.08</td><td id="RCT_dc_1_8" class="RCT_dtcs8">$23,747.22</td><td id="RCT_dc_1_9" class="RCT_dtcs9">$174,997.52</td><td id="RCT_dc_1_10" class="RCT_dtcs10">556</td><td id="RCT_dc_1_11" class="RCT_dtcs11">$7,744.01</td></tr><tr id="RCT_dr2"><td id="RCT_dc_2_0" class="RCT_dtcs0"><input type="checkbox" checked="" onclick="RECOMMENDATION_CODES_TREND_REPORT.gv()" id="RCT_ctrl_2"></td><td id="RCT_dc_2_1" class="RCT_dtcs1"><svg width="10" height="10" class="swatch"><rect width="10" height="10" class="color-l-2"></rect></svg>REVIEW</td><td id="RCT_dc_2_2" class="RCT_dtcs2">1,943</td><td id="RCT_dc_2_3" class="RCT_dtcs3">2,857.5</td><td id="RCT_dc_2_4" class="RCT_dtcs4">3,647</td><td id="RCT_dc_2_5" class="RCT_dtcs5">79,472</td><td id="RCT_dc_2_6" class="RCT_dtcs6">$1,067,233.45</td><td id="RCT_dc_2_7" class="RCT_dtcs7">$1,705,189.08</td><td id="RCT_dc_2_8" class="RCT_dtcs8">$2,064,367.08</td><td id="RCT_dc_2_9" class="RCT_dtcs9">$46,411,234.49</td><td id="RCT_dc_2_10" class="RCT_dtcs10">3,113</td><td id="RCT_dc_2_11" class="RCT_dtcs11">$1,740,597.46</td></tr><tr id="RCT_dr3"><td id="RCT_dc_3_0" class="RCT_dtcs0"><input type="checkbox" checked="" onclick="RECOMMENDATION_CODES_TREND_REPORT.gv()" id="RCT_ctrl_3"></td><td id="RCT_dc_3_1" class="RCT_dtcs1"><svg width="10" height="10" class="swatch"><rect width="10" height="10" class="color-l-3"></rect></svg>Other</td><td id="RCT_dc_3_2" class="RCT_dtcs2">6,205</td><td id="RCT_dc_3_3" class="RCT_dtcs3">12,524</td><td id="RCT_dc_3_4" class="RCT_dtcs4">13,836</td><td id="RCT_dc_3_5" class="RCT_dtcs5">331,651</td><td id="RCT_dc_3_6" class="RCT_dtcs6">$0.00</td><td id="RCT_dc_3_7" class="RCT_dtcs7">$0.00</td><td id="RCT_dc_3_8" class="RCT_dtcs8">$0.00</td><td id="RCT_dc_3_9" class="RCT_dtcs9">$0.00</td><td id="RCT_dc_3_10" class="RCT_dtcs10">11,846</td><td id="RCT_dc_3_11" class="RCT_dtcs11">$0.00</td></tr></tbody>
    </table>
-  </div>
-  
+
+
   
 </div>
 
 <script>
 var RECOMMENDATION_CODES_TREND_REPORT = (function() {
-    var RPT_ID = '5237260000000000526';
-    var DATA = {"fmt":"JSON","G":{"r":"480","c":{"mf":"0","Mf":"123,456"},"a":{"mf":"$0.00","Mf":"$123,456.78"}},
-      "C":["2/1/15","2/2/15","2/3/15","2/4/15","2/5/15","2/6/15","2/7/15"],"Cf":["Feb 1, 2015 12:00:00 AM","Feb 2, 2015 12:00:00 AM","Feb 3, 2015 12:00:00 AM","Feb 4, 2015 12:00:00 AM","Feb 5, 2015 12:00:00 AM","Feb 6, 2015 12:00:00 AM","Feb 7, 2015 12:00:00 AM"],"V":[{"c":{"Mf":"15,615,162","v":[480,460,442,444,443,451,480],"df":"14,663,111","s":"-0.607","vf":["15,615,162","14,950,610","14,365,799","14,456,684","14,420,993","14,663,111","15,603,926"],"M":480,"tf":"104,076,285","mf":"14,365,799","m":442,"yy":"455.321","i":"458.964","af":"14,868,040"},"a":{"Mf":"$5,549,910,920.19","v":[394,446,403,398,401,412,480],"df":"$4,655,827,710.74","s":"6.714","vf":["$4,557,626,847.94","$5,161,998,780.42","$4,655,827,710.74","$4,607,138,851.54","$4,631,719,900.28","$4,764,118,930.13","$5,549,910,920.19"],"M":480,"tf":"$33,928,341,941.24","mf":"$4,557,626,847.94","m":394,"yy":"439.286","i":"399.000","af":"$4,846,905,991.60"},"n":"ACCEPT"},{"c":{"Mf":"935,581","v":[376,351,438,462,461,456,480],"df":"888,310","s":"19.464","vf":["733,680","683,578","852,908","900,217","898,373","888,310","935,581"],"M":480,"tf":"5,892,647","mf":"683,578","m":351,"yy":"490.393","i":"373.607","af":"841,806"},"a":{"Mf":"$782,039,835.46","v":[309,254,200,298,375,328,480],"df":"$503,349,677.86","s":"29.857","vf":["$503,349,677.86","$414,074,878.51","$326,631,705.73","$485,528,848.45","$611,268,270.48","$533,731,739.88","$782,039,835.46"],"M":480,"tf":"$3,656,624,956.37","mf":"$326,631,705.73","m":200,"yy":"410.143","i":"231.000","af":"$522,374,993.76"},"n":"REJECT"},{"c":{"Mf":"88,001","v":[269,394,426,396,480,479,370],"df":"72,667","s":"18.821","vf":["49,276","72,181","78,050","72,667","88,001","87,809","67,770"],"M":480,"tf":"515,754","mf":"49,276","m":269,"yy":"458.464","i":"345.536","af":"73,679"},"a":{"Mf":"$103,530,093.99","v":[126,348,480,214,246,238,114],"df":"$51,296,485.43","s":"-17.500","vf":["$27,131,228.00","$75,123,586.34","$103,530,093.99","$46,082,117.83","$53,135,773.16","$51,296,485.43","$24,585,747.76"],"M":480,"tf":"$380,885,032.51","mf":"$24,585,747.76","m":114,"yy":"199.786","i":"304.786","af":"$54,412,147.50"},"n":"REVIEW"},{"c":{"Mf":"984,715","v":[354,452,480,477,453,417,304],"df":"928,051","s":"-8.821","vf":["725,776","928,051","984,715","979,336","929,671","854,660","624,218"],"M":480,"tf":"6,026,427","mf":"624,218","m":304,"yy":"393.107","i":"446.036","af":"860,918"},"a":{"Mf":"$41,421,556,853.79","v":[480,64,3,3,3,2,2],"df":"$225,616,169.11","s":"-55.643","vf":["$41,421,556,853.79","$5,488,273,334.94","$233,061,590.40","$225,031,505.59","$225,616,169.11","$212,254,693.59","$136,106,044.66"],"M":480,"tf":"$47,941,900,192.12","mf":"$136,106,044.66","m":2,"yy":"-87.357","i":"246.500","af":"$6,848,842,884.58"},"n":"Other"}],"execOn":"Feb 24, 2015 5:10:43 PM"};
+    var RPT_ID = '5237260000000000541';
+    var DATA = {"fmt":"JSON","G":{"c":{"mf":"0","Mf":"64,752"},"r":"480","a":{"mf":"$0.00","Mf":"$11,353,102.97"}},"C":["2/1/15","2/2/15","2/3/15","2/4/15","2/5/15","2/6/15","2/7/15","2/8/15","2/9/15","2/10/15","2/11/15","2/12/15","2/13/15","2/14/15","2/15/15","2/16/15","2/17/15","2/18/15","2/19/15","2/20/15","2/21/15","2/22/15","2/23/15","2/24/15","2/25/15","2/26/15","2/27/15","2/28/15"],"Cf":["Feb 1, 2015 12:00:00 AM","Feb 2, 2015 12:00:00 AM","Feb 3, 2015 12:00:00 AM","Feb 4, 2015 12:00:00 AM","Feb 5, 2015 12:00:00 AM","Feb 6, 2015 12:00:00 AM","Feb 7, 2015 12:00:00 AM","Feb 8, 2015 12:00:00 AM","Feb 9, 2015 12:00:00 AM","Feb 10, 2015 12:00:00 AM","Feb 11, 2015 12:00:00 AM","Feb 12, 2015 12:00:00 AM","Feb 13, 2015 12:00:00 AM","Feb 14, 2015 12:00:00 AM","Feb 15, 2015 12:00:00 AM","Feb 16, 2015 12:00:00 AM","Feb 17, 2015 12:00:00 AM","Feb 18, 2015 12:00:00 AM","Feb 19, 2015 12:00:00 AM","Feb 20, 2015 12:00:00 AM","Feb 21, 2015 12:00:00 AM","Feb 22, 2015 12:00:00 AM","Feb 23, 2015 12:00:00 AM","Feb 24, 2015 12:00:00 AM","Feb 25, 2015 12:00:00 AM","Feb 26, 2015 12:00:00 AM","Feb 27, 2015 12:00:00 AM","Feb 28, 2015 12:00:00 AM"],"V":[{"c":{"Mf":"64,752","v":[324,334,355,327,382,406,444,400,403,373,372,353,478,447,407,457,366,434,359,382,480,361,352,343,344,312,334,386],"df":"50,235.5","s":"-0.214","vf":["43,688","45,061","47,844","44,137","51,506","54,801","59,838","53,940","54,384","50,270","50,201","47,639","64,462","60,244","54,844","61,608","49,430","58,524","48,412","51,493","64,752","48,649","47,466","46,271","46,444","42,101","45,016","52,016"],"M":480,"tf":"1,445,041","mf":"42,101","m":312,"yy":"379.786","i":"385.571","af":"51,608"},"a":{"Mf":"$11,353,102.97","v":[301,329,340,312,317,353,388,333,351,342,350,346,470,378,389,480,329,357,324,335,395,311,348,305,303,339,292,305],"df":"$8,027,667.75","s":"-0.554","vf":["$7,124,658.37","$7,775,642.71","$8,036,654.73","$7,387,742.35","$7,505,062.03","$8,360,780.11","$9,177,521.82","$7,865,120.24","$8,297,941.24","$8,086,862.79","$8,268,170.64","$8,187,587.52","$11,116,053.93","$8,936,463.36","$9,201,687.35","$11,353,102.97","$7,779,784.80","$8,450,075.09","$7,656,085.86","$7,933,624.82","$9,338,330.53","$7,360,997.00","$8,222,186.41","$7,214,055.08","$7,175,747.85","$8,018,680.77","$6,895,004.35","$7,216,489.18"],"M":480,"tf":"$229,942,113.90","mf":"$6,895,004.35","m":292,"yy":"339.736","i":"354.692","af":"$8,212,218.35"},"n":"ACCEPT"},{"c":{"Mf":"792","v":[3,3,4,4,4,4,4,3,4,4,3,4,5,3,3,4,4,4,3,3,4,2,4,3,4,6,4,2],"df":"493","s":"-0.002","vf":["368","464","500","596","511","535","541","383","556","557","460","486","727","426","398","594","501","516","405","410","531","331","522","431","481","792","478","307"],"M":6,"tf":"13,807","mf":"307","m":2,"yy":"3.613","i":"3.672","af":"493"},"a":{"Mf":"$23,747.22","v":[0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0],"df":"$4,848.08","s":"0.006","vf":["$1,414.17","$1,424.06","$7,472.13","$2,244.46","$2,727.20","$9,128.26","$5,070.87","$1,833.71","$7,744.01","$4,085.35","$1,582.95","$21,381.20","$7,644.25","$5,306.80","$3,141.10","$2,116.34","$12,870.31","$7,675.47","$4,625.29","$7,061.93","$48.34","$1,999.41","$10,783.38","$7,987.42","$3,404.85","$23,747.22","$3,003.37","$7,473.67"],"M":1,"tf":"$174,997.52","mf":"$48.34","m":0,"yy":"0.192","i":"0.022","af":"$6,249.91"},"n":"REJECT"},{"c":{"Mf":"3,647","v":[14,20,23,22,21,23,20,18,23,23,24,21,27,18,19,24,21,23,20,20,23,16,22,21,22,23,21,18],"df":"2,857.5","s":"0.013","vf":["1,943","2,681","3,039","2,939","2,841","3,039","2,659","2,392","3,113","3,130","3,279","2,874","3,647","2,492","2,507","3,260","2,795","3,073","2,729","2,679","3,122","2,192","2,967","2,825","3,002","3,051","2,816","2,386"],"M":27,"tf":"79,472","mf":"1,943","m":14,"yy":"21.241","i":"20.901","af":"2,838"},"a":{"Mf":"$2,064,367.08","v":[45,66,74,77,72,75,66,53,74,77,81,72,87,62,59,81,71,80,71,71,70,52,75,73,73,76,72,56],"df":"$1,705,189.08","s":"0.087","vf":["$1,067,233.45","$1,572,083.83","$1,741,375.11","$1,814,495.54","$1,698,528.98","$1,782,769.69","$1,567,214.25","$1,260,332.50","$1,740,597.46","$1,818,424.70","$1,920,455.69","$1,703,162.37","$2,064,367.08","$1,462,259.91","$1,384,783.12","$1,922,746.05","$1,668,399.85","$1,896,898.60","$1,681,498.91","$1,690,804.44","$1,666,410.51","$1,220,347.40","$1,783,892.28","$1,731,373.78","$1,725,768.19","$1,805,078.84","$1,707,215.80","$1,312,716.16"],"M":87,"tf":"$46,411,234.49","mf":"$1,067,233.45","m":45,"yy":"71.214","i":"68.857","af":"$1,657,544.08"},"n":"REVIEW"},{"c":{"Mf":"13,836","v":[46,85,103,97,96,99,100,58,88,99,96,92,93,96,56,89,93,102,91,93,97,54,80,88,91,90,93,94],"df":"12,524","s":"0.107","vf":["6,205","11,505","13,836","13,074","12,901","13,315","13,509","7,871","11,846","13,321","12,964","12,347","12,584","12,977","7,603","12,011","12,499","13,737","12,274","12,549","13,039","7,253","10,761","11,895","12,340","12,172","12,601","12,662"],"M":103,"tf":"331,651","mf":"6,205","m":46,"yy":"89.266","i":"86.377","af":"11,844"},"a":{"Mf":"$0.00","v":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"df":"$0.00","s":"0.000","vf":["$0.00","$0.00","$0.00","$0.00","$0.00","$0.00","$0.00","$0.00","$0.00","$0.00","$0.00","$0.00","$0.00","$0.00","$0.00","$0.00","$0.00","$0.00","$0.00","$0.00","$0.00","$0.00","$0.00","$0.00","$0.00","$0.00","$0.00","$0.00"],"M":0,"tf":"$0.00","mf":"$0.00","m":0,"yy":"0.000","i":"0.000","af":"$0.00"},"n":"Other"}],"execOn":"Mar 12, 2015 1:43:02 PM"};
     var FID = 'RCT';
-    var valueSetsCount = 0;
-    var xScale;
-    var yScale;
     //
     function init() {
         loadData();
     }
     //    
     function loadData() {
+        document.getElementById(FID+'_execOn').innerHTML = '';
+        document.getElementById(FID+'_spinner').style.display = null;
         //var data = RPT.makeReportData(RPT_ID);
-        //alert('made data:' + data + JSON.stringify(data));
         //DATAPIPE.getJson(data, function(result){DATA=result;process()});
-        render(DATA);
+
+        setTimeout(render, 5000, DATA);
+        
+        
     }
     //
     function process() {
@@ -825,8 +1067,7 @@ var RECOMMENDATION_CODES_TREND_REPORT = (function() {
     }
     //
     function render(data) {
-        document.getElementById(FID+'_execOn').innerHTML = data['execOn'];
-        
+        document.getElementById(FID+'_execOn').innerHTML = (new Date()) + '<i class="refresh1"></i>';//data['execOn'];
         // 
         var margin = {top: 10, right: 120, bottom: 10, left: 24};
         var width = 720 - margin.left - margin.right;
@@ -850,15 +1091,15 @@ var RECOMMENDATION_CODES_TREND_REPORT = (function() {
                   .attr("transform",
                   "translate(" + margin.left + "," + margin.top + ")");
         data["V"].forEach(function(d,i) {
-          countsSvg.append("path")
+            countsSvg.append("path")
                   .classed('line1 color-l-'+i, true)
                   .attr("id",FID+'c_g_'+i)
-                  .attr("d", (grapher(d['c']['v'],xScale,yScale))(d3.range(xCount)));           
+                  .attr("d", (grapher(d['c']['v'],xScale,yScale))(d3.range(xCount)));
         });
         // generate count trends
         data["V"].forEach(function(d,i) {
-          var coords = [[0,d["c"]["i"]],[xCount-1,d["c"]["yy"]]];  
-          countsSvg.append("path")
+            var coords = [[0,d["c"]["i"]],[xCount-1,d["c"]["yy"]]];  
+            countsSvg.append("path")
                   .classed('line2 color-l-'+i, true)
                   .attr("id",FID+'c_t_'+i)                  
                   .attr("d", (trender(coords,xScale,yScale))(d3.range(coords.length)));
@@ -874,17 +1115,17 @@ var RECOMMENDATION_CODES_TREND_REPORT = (function() {
                   .attr("transform",
                   "translate(" + margin.left + "," + margin.top + ")");
         data["V"].forEach(function(d,i) {
-          amountsSvg.append("path")
+            amountsSvg.append("path")
                   .classed('line1 color-l-'+i, true)
                   .attr("id",FID+'a_g_'+i)                  
-                  .attr("d", (grapher(d['a']['v'],xScale,yScale))(d3.range(xCount)));           
+                  .attr("d", (grapher(d['a']['v'],xScale,yScale))(d3.range(xCount)));
         });
         // generate amount trends
         data["V"].forEach(function(d,i) {
-          var coords = [[0,d["a"]["i"]],[xCount-1,d["a"]["yy"]]];  
+          var coords = [[0,d["a"]["i"]],[xCount-1,d["a"]["yy"]]];
           amountsSvg.append("path")
                   .classed('line2 color-l-'+i, true)
-                  .attr("id",FID+'a_t_'+i)                  
+                  .attr("id",FID+'a_t_'+i)
                   .attr("d", (trender(coords,xScale,yScale))(d3.range(coords.length)));
           document.getElementById(FID+'a_t_'+i).style.display="none";
         });
@@ -899,42 +1140,42 @@ var RECOMMENDATION_CODES_TREND_REPORT = (function() {
                   .attr("transform", "translate(0," + height + ")")
                   .call(xAxis);
         amountsSvg.append("text")
-         .attr("x",width)
-         .attr("y",height)
-         .attr("dx",4)
-         .attr("class","y-tick")
-         .text(data["G"]["a"]["mf"]);
-        amountsSvg.append("text")
-         .attr("x",width)
-         .attr("y",0)
-         .attr("dx",4)
-         .attr("class","y-tick")
-         .text(data["G"]["a"]["Mf"]);
-        amountsSvg.append("text")
-         .attr("x",width)
-         .attr("y",height/2)
-         .attr("dx",6)
-         .attr("class","y-label")
-         .text(document.getElementById(FID+'-a-label').innerHTML);
-        //
-        countsSvg.append("text")
-         .attr("x",width)
-         .attr("y",height)
-         .attr("dx",4)
-         .attr("class","y-tick")
-         .text(data["G"]["c"]["mf"]);
-        countsSvg.append("text")
-         .attr("x",width)
-         .attr("y",0)
-         .attr("dx",4)
-         .attr("class","y-tick")
-         .text(data["G"]["c"]["Mf"]);
-        countsSvg.append("text")
-         .attr("x",width)
-         .attr("y",height/2)
-         .attr("dx",6)
-         .attr("class","y-label")
-         .text(document.getElementById(FID+'-c-label').innerHTML);
+        .attr("x",width)
+        .attr("y",height)
+        .attr("dx",4)
+        .attr("class","y-tick")
+        .text(data["G"]["a"]["mf"]);
+       amountsSvg.append("text")
+        .attr("x",width)
+        .attr("y",0)
+        .attr("dx",4)
+        .attr("class","y-tick")
+        .text(data["G"]["a"]["Mf"]);
+       amountsSvg.append("text")
+        .attr("x",width)
+        .attr("y",height/2)
+        .attr("dx",6)
+        .attr("class","y-label")
+        .text(document.getElementById(FID+'-a-label').innerHTML);
+       //
+       countsSvg.append("text")
+        .attr("x",width)
+        .attr("y",height)
+        .attr("dx",4)
+        .attr("class","y-tick")
+        .text(data["G"]["c"]["mf"]);
+       countsSvg.append("text")
+        .attr("x",width)
+        .attr("y",0)
+        .attr("dx",4)
+        .attr("class","y-tick")
+        .text(data["G"]["c"]["Mf"]);
+       countsSvg.append("text")
+        .attr("x",width)
+        .attr("y",height/2)
+        .attr("dx",6)
+        .attr("class","y-label")
+        .text(document.getElementById(FID+'-c-label').innerHTML);
         // vert grid
         for (var i = 0; i < xCount; i++) {
           countsSvg.append("path")
@@ -958,7 +1199,7 @@ var RECOMMENDATION_CODES_TREND_REPORT = (function() {
           .attr("height", height)
           .on("mouseout", overlayMouseOut)
           .on("mousemove", overlayMouseMove)
-        //  
+        //
         amountsSvg.append("path")
           .attr("d",'M0 -10V'+height)
           .attr("id",FID+'_cursor_a')
@@ -1036,6 +1277,9 @@ var RECOMMENDATION_CODES_TREND_REPORT = (function() {
         }); 
         // col10 current count
         // col11 current amount
+        
+        
+        document.getElementById(FID+'_spinner').style.display = 'none';
     }
     //
     function grapher(yVals, xScale, yScale) {
@@ -1089,15 +1333,15 @@ var RECOMMENDATION_CODES_TREND_REPORT = (function() {
       for (var i = 0; i < valueSetsCount; i++) {
         document.getElementById(FID+'_dc_'+i+'_10').innerHTML = '';
         document.getElementById(FID+'_dc_'+i+'_11').innerHTML = '';
-      }      
-    }    
+      }
+    }
     //
     return {
       init : init,
       RPT_ID : RPT_ID,
       getData : getData,
       loadData : loadData,
-      gv : graphVisibility 
+      gv : graphVisibility
     };
 })();
 RECOMMENDATION_CODES_TREND_REPORT.init();
@@ -1113,7 +1357,7 @@ RECOMMENDATION_CODES_TREND_REPORT.init();
   <div class="row">
     <div class="col-md-4 sflabel al">© 2007-2013 Accertify, Inc.</div>
     <div class="col-md-4 sflabel am">CONFIDENTIAL</div>
-    <div class="col-md-4 sflabel ar">(host admin) Feb 24, 2015 9:38:30 AM</div>
+    <div class="col-md-4 sflabel ar">(host admin) Mar 12, 2015 1:42:34 PM</div>
   </div>
 </div>
 
@@ -1121,4 +1365,4 @@ RECOMMENDATION_CODES_TREND_REPORT.init();
     
   </div> <!-- mainLayout -->
   
-</body></html>
+</div></body></html>
