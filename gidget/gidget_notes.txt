@@ -1,0 +1,118 @@
+----------------------------------------------------
+BigPipe:
+----------------------------------------------------
+Traditional model does not allow for overlapping between browser processing and server processing.
+BigPipe allows speeding up page rendering times by loading the page in small parts called pagelets.
+This allows the browser to start rendering the page while the server is still processing the rest of the content.
+This allows traditional page rendering to follow a pipelining or parallelizing approach.
+So from the user's perspective the page becomes visible sooner, and the rest is rendered progressively, 
+perceived latency is reduced the effective TTI is reduced.
+From the server side, can be considered single flush vs incremental flush model.
+Changes are more evident on old browsers, slow networks and cold caches.
+Another way of looking at this is downloading and rendering is broken up into multiple stages, 
+so progressive rendering can happen.
+
+steps:
+ - browser requests page from server
+ - server quickly renders a page skeleton containing the <head> tag and a <body> tag with <div> elements as placeholders for the pagelets
+   (<body> is not closed, so HTTP connection is still open as the page is not yet finished)
+ - bigpipe.js is in the <head> tag, so browser downloads it, and then start rendering the page
+ - server is rendering the rest of the page, one pagelet at a time. 
+   each pagelet is flushed and sent to the browser inside a <script>BigPipe.onArrive(...)</script> snippet.
+   snippet is a JSON object containing all the css, js resources, html, metadat required for that pagelet
+   eg. <script>bigpipe.onPageletArrive({id:id1,content:<div></div>,css:[...],js:[...]})</script>
+ - browser bigpipe.js sees the onPageletArrive, downloads it's css if any, then injects the html into the corresponding div innerHTML
+ - js is always lower priority that css and html, so after all pagelets have been recvd and rendered, 
+   the browser starts to asynchronously download all external js files needed by the pagelets
+ - downloaded js can now be executed in any order as they arrive, as they only affect their specific pagelet.
+
+result should be several pagelets executing simultaneously in different stages
+
+time components:
+- Network time - between browser and server. 
+   dependent on network
+   could reduce by reducing bytes (cookies,html,css, js, images)
+   facilitate caching?
+- Generation time - webserver request to response.
+   improve backend code
+- Render time - 
+    dependent on client machine and browser
+    reduce bytes that need to be processed
+    execute js after showing page to user.
+
+TTI (time to interact) is a measure of how long the user has to wait before there is something on 
+ the page that they can see and start working with.
+
+https://www.facebook.com/notes/facebook-engineering/bigpipe-pipelining-web-pages-for-high-performance/389414033919
+see http://stevesouders.com/hpws/rules.php 14 Rules for Faster-Loading Web Sites
+https://github.com/orygens/bigpipe-js
+https://github.com/garo/bigpipe
+https://www.safaribooksonline.com/library/view/high-performance-javascript/9781449382308/ch01.html
+http://www.html5rocks.com/en/tutorials/speed/script-loading/ (very good)
+
+
+
+
+steps:
+------
+ - fragments can expect to be executed within a shared context, so needs to have a unique namespace
+   come up with a naming scheme
+ - unique namespace for the html (particuarly when using id's)
+ - unique variable names for the globally exposed js
+ - each fragment should have all its js in an external file
+   external js should be self executing
+
+
+
+to address:
+----------
+ - fragment security, should not be able to bypass, because calling from browser
+ - be able to request js files from radar through interceptas
+
+
+script loading and execution order related:
+------------------------------------------
+i need to be able to 
+ - download dynamically
+ - control order of execution
+
+
+composite.html
+standalone.html
+f1.html
+f2.html
+js/
+ gidget.js
+ common0.js
+ common1.js
+ common2.js
+ f1.js
+ f2.js
+css/
+ common1.css
+ common2.css
+ f1.css
+ f2.css
+
+
+loader needs to be able to
+  - download a given html and innerhtml it into a target
+  investigate: load without running embedded external scripts. (not if you use jquery to insert, have to pull raw response AND do a non-jQuery insert
+  
+  - investgate: will external css automatically get loaded and parsed? or do we have to do like fo rscripts and individually load?
+  
+  -download and run an external script
+   investigate: don't load and execute already available scripts 
+ 
+  
+ 
+ 
+use cases:
+
+
+
+
+
+
+
+
