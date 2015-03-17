@@ -2,16 +2,18 @@
 "use strict";
 var DATAPIPE = (function() {
 
+    var SCRIPTS = [];
+
     function init() {
         console.log("DATAPIPE inited");
         var frags = getParam('frags').split(',');
         
-        var scripts = [];
+        //var scripts = [];
         // TODO first add the scripts that are already here in the main page hosting the DATAPIPE script
         
         
         jQuery(document).ready( function(){
-              console.log('scripts:' + scripts);
+              //console.log('scripts:' + scripts);
             });
         
         
@@ -23,14 +25,16 @@ var DATAPIPE = (function() {
         
         // load the html for each of the fragments
         frags.forEach( function(frag, i) {
+          if ('' !== frag) {
             console.log('  processing:' + frag);
             jQuery('#main_content').append('<div id="' + fragIds[i] + '"></div><hr />');
             var data = {};
-            loadHTML(frag + '.html', data, fragIds[i], function(){extractScripts(fragIds[i], scripts)});
+            loadHTML(frag + '.html', data, fragIds[i], function(){extractScripts(fragIds[i], SCRIPTS)});
+          }
         });
         
 
-        console.log(scripts);
+        //console.log(scripts);
     }
 
     function loadScript(url, getFromCache) {
@@ -97,7 +101,8 @@ var DATAPIPE = (function() {
     }
     
     return {
-        init : init
+        init : init,
+        scripts : SCRIPTS
     };
 })();
 
