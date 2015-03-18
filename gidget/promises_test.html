@@ -1,0 +1,109 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Promises Test</title>
+    <script src="../res/jquery.min.js"></script>
+    
+    <script>
+      "use strict";
+      
+      function main() {
+          //test1();
+          //test2();
+          test3();
+      }
+      
+      function test1() {
+          var promise1 = deferredAsync1({label:'p1',timeout:1000,reject:true});
+          promise1.done(function(ret){
+            console.log('promise1 done ' + ret);
+          });
+          promise1.fail(function(ret){
+            console.log('promise1 failed ' + ret);
+          });          
+      }
+    
+      function test2() {
+          var promise1 = deferredAsync2({label:'p1',timeout:1000,reject:false});
+          promise1.done(function(ret){
+            console.log('promise1 done ' + ret.label + ' success:' + ret.success);
+          });
+          promise1.fail(function(ret){
+            console.log('promise1 failed ' + ret);
+          });          
+      }    
+    
+      function test3() {
+        var promises = [];
+        
+        promises.push(deferredAsync2({label:'p1',timeout:500,reject:false}));
+        promises.push(deferredAsync2({label:'p2',timeout:1000,reject:true}));
+        promises.push(deferredAsync2({label:'p3',timeout:1500,reject:false}));
+        
+        var whens = jQuery.when.apply(jQuery, promises);
+        whens.done(function(){
+            //console.log('whens done ' + JSON.stringify(ret));
+            var results = [];
+            if (arguments) {
+                for (var i = 0; i < arguments.length; i++) {
+                    results.push(arguments[i]);
+                }
+            }
+            console.log('whens done ' + JSON.stringify(results));
+        });
+        
+        whens.fail(function(){
+            console.log('whens fail ');
+        });
+        
+      }
+      
+    
+      // resolves or rejects
+      function deferredAsync1(options) {
+          var deferred = jQuery.Deferred();
+          var label = (options && options.label) ? options.label : '';
+          var timeout = (options && options.timeout) ? options.timeout : 1000;
+          var causeError = (options && options.reject);
+          
+          setTimeout(function() {
+               if (causeError) {
+                   deferred.reject(label + ' rejected');
+               } else {
+                   deferred.resolve(label + ' resolved');
+               }
+            }, 
+            timeout
+          );
+          return deferred.promise();
+      }
+      
+      // always resolves, inspect return value to determine if actually succeeded or not
+      function deferredAsync2(options) {
+          var deferred = jQuery.Deferred();
+          var label = (options && options.label) ? options.label : '';
+          var timeout = (options && options.timeout) ? options.timeout : 1000;
+          var causeError = (options && options.reject);
+          setTimeout(function() {
+               console.log(label + ' exec`d');
+               deferred.resolve({label:label,success:!causeError});
+            }, 
+            timeout
+          );
+          return deferred.promise();
+      }
+      
+    
+    </script>
+    
+    
+  </head>
+  <body>
+  
+  <hr />
+  <div id="main_content"></div>
+  
+    <script>main();</script>
+  </body>
+</html>  

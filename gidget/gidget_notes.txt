@@ -51,6 +51,9 @@ https://www.safaribooksonline.com/library/view/high-performance-javascript/97814
 http://www.html5rocks.com/en/tutorials/speed/script-loading/ (very good)
 
 
+promises related:
+ - https://msdn.microsoft.com/en-us/magazine/gg723713.aspx
+ - http://tutorials.jenkov.com/jquery/deferred-objects.html (very good)
 
 
 steps:
