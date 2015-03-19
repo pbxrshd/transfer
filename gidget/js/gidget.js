@@ -5,78 +5,80 @@ var DATAPIPE = (function() {
     var SCRIPTS = [];
 
     function init() {
-        //main1();
-        main2();
+        main1();
     }
 
-    function main1() {
-        console.log("DATAPIPE inited");
-        var frags = getParam('frags').split(',');
-        
-        //var scripts = [];
-        // TODO first add the scripts that are already here in the main page hosting the DATAPIPE script
-        
-        
-        jQuery(document).ready( function(){
-              //console.log('scripts:' + scripts);
-            });
-        
-        
-        // generate ids for all the fragments we'll be using
-        var fragIds = [];
-        frags.forEach( function(frag) {
-            fragIds.push('frag_container_' + frag);
-        });
-        
-        // load the html for each of the fragments
-        frags.forEach( function(frag, i) {
-          if ('' !== frag) {
-            console.log('  processing:' + frag);
-            jQuery('#main_content').append('<div id="' + fragIds[i] + '"></div><hr />');
-            var data = {};
-            loadHTML(frag + '.html', data, fragIds[i], function(){extractScripts(fragIds[i], SCRIPTS)});
-          }
-        });
-        
+/*
+prep:
+  - get fragment ids
+  - get fragment urls
+  - generate fragment placeholders
+htmls:
+  - perform async parallel load of fragment htmls into their placeholders
+  - keep track of succesfully loaded fragments
+scripts:
+  - create scriptsCollection
+    - scriptsCollection is a set
+    - scan base container and add to scriptsCollection
+    - for each successfully loaded fragment
+       - scan fragment and add to scriptsCollection
+  - for each script in scriptsCollection
+    - load and execute
+*/
 
-        //console.log(scripts);
-    }
 
-    function main2() {
-        console.log("DATAPIPE inited");
-        var fragIds = getParam('frags').split(',');
-        
-        var scripts = []; // TODO first add the scripts that are already here in the main page hosting the DATAPIPE script
-         
-        var promises = []; 
-        // process each of the frags
-        var frags = [];
-        fragIds.forEach( function(fragId) {
-            if ('' !== fragId) {
-                jQuery('#main_content').append('<div id="' + idToElement(fragId) + '"></div><hr />');
-                promises.push({id:fragId,url:fragId+'.html'});
-            }
-        });
-        
-        var whensPool = jQuery.when.apply(jQuery, promises);
-        whensPool.done(function(){
-            var results = [];
-            if (arguments) {
-                for (var i = 0; i < arguments.length; i++) {
-                    results.push(arguments[i]);
-                }
-            }
-            console.log('whens done ' + JSON.stringify(results));
-        });
-        
-        whensPool.fail(function(){
-            console.log('whens fail ');
-        });        
+  function main1() {
+    console.log("DATAPIPE inited");
+    
+    // get fragment ids
+    var fragIds = getParam('frags').split(',');
+    fragIds = jQuery.grep(fragIds, function(e) {
+                return '' !== e;
+    });
 
-    }
+    // generate placeholders for each of the frags
+    fragIds.forEach(function(fragId) {
+        jQuery('#main_content').append('<div id="' + idToElement(fragId) + '"></div>');
+    });
+
+    // prepare fragments to be loaded
+    var promises = [];
+    fragIds.forEach(function(fragId) {
+      promises.push(loadHTMLAsync(fragId, idToUrl(fragId), idToElement(fragId), {}));
+    });        
+
+    // load fragments, async and parallel
+    var fragsState = [];
+    var whensPool = jQuery.when.apply(jQuery, promises);
+    whensPool.done(function(){
+      if (arguments) { // arguments will be sized and correspond to the promises array
+        for (var i = 0; i < arguments.length; i++) {
+          fragsState.push(arguments[i]);
+        }
+      }
+      // gather scripts
+      var scripts = []; // TODO first add the scripts that are already here in the main page hosting the DATAPIPE script
+      fragsState.forEach(function(fragState) {
+        if (fragState.success) {
+          extractScripts(idToElement(fragState.id), scripts);
+        }
+      });
+      // execute scripts
+      scripts.forEach(function(s){
+        loadScript(s);
+      });
+    });
+    whensPool.fail(function(){
+      console.log('whens fail ');
+    });        
+  }
 
     function idToElement(fragId) {
-        return 'frag_container_' + id;
+        return 'frag_container_' + fragId;
+    }
+    
+    function idToUrl(fragId) {
+        return fragId + '.html';
     }
 
     function loadScript(url, getFromCache) {
@@ -95,29 +97,23 @@ var DATAPIPE = (function() {
     
     // idOfParentToExtractScriptFrom, arrayToAddExtractedScriptsTo
     function extractScripts(id, scripts) {
-        console.log('extractScripts:' + id);
         var fragScripts = (document.getElementById(id)).getElementsByTagName("script");
         for (var i = 0; i < fragScripts.length; i++) {
             var scriptSrc = fragScripts[i].src;
-            // naive set implementation, add only if not already there
-            //console.log('scriptSrc:' + scriptSrc);
+            // simple set implementation, add only if not already there
             if (scripts.indexOf(scriptSrc) === -1) {
                 scripts.push(scriptSrc);
             }
         }
     }
     
-    
-    
-    function loadHTMLAsync(id, url, data, elementId) {
+    function loadHTMLAsync(id, url, elementId, payload) {
         var deferred = jQuery.Deferred();
-        
         // wrapping so we always return resolved, to avoid short circuiting when exec'ing in parallel  
-          
         jQuery.ajax({
              url: url,
              dataType: "html"})
-          .done(function(data, textStatus, jqXHR) {
+          .done(function(payload, textStatus, jqXHR) {
              // have to use .innerHTML, otherwise using jqUery.append actually executes the inline script, which we don't want
              // we are accumulating and exec'ing the scripts later
              document.getElementById(elementId).innerHTML = jqXHR.responseText;
@@ -128,30 +124,7 @@ var DATAPIPE = (function() {
              console.log('loadHTML error:' + id + '(' + url + ') ' + textStatus + ' ' + errorThrown);
              deferred.resolve({id:id,success:false});
           }); 
-
           return deferred.promise();        
-    }
-    
-    // does NOT execute any inline scripts embedded in the HTML
-    // callback, if present, executed after success
-    function loadHTML(url, data, elementId, callback) {
-        jQuery.ajax({
-          url: url,
-          dataType: "html"
-        })
-          .done(function(data, textStatus, jqXHR) {
-            // have to use .innerHTML, otherwise using jqUery.append actually executes the inline script, which we don;t want
-            // we are accumulating and exec'ing the scripts later
-            document.getElementById(elementId).innerHTML = jqXHR.responseText;
-            if (typeof callback !== 'undefined') {
-                callback();
-            }
-          })
-          .fail(function(jqXHR, textStatus, errorThrown) {
-            console.log('loadHTML error:' + textStatus + errorThrown);
-          })
-          //.always(function() {console.log(frag + ' completed...');})
-          ; 
     }
 
     function getParam(paramKey) {
@@ -166,8 +139,7 @@ var DATAPIPE = (function() {
     }
     
     return {
-        init : init,
-        scripts : SCRIPTS
+        init : init
     };
 })();
 

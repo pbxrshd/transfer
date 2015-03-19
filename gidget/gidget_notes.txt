@@ -65,20 +65,33 @@ steps:
  - each fragment should have all its js in an external file
    external js should be self executing
 
+ 
 
-
-to address:
-----------
+to investigate:
+---------------
+ - how to load without running embedded external scripts. 
+   (not if you use jquery to insert, have to pull raw response AND do a non-jQuery insert)
+   
+ - how to not reload/execute scripts that have already been loaded (require.js?)
+ 
+ - dependencies between scripts
+ 
+ - does external css in the fragments have to be manually loaded
+ 
+ - do we have to worry about repeated css loading
+ 
  - fragment security, should not be able to bypass, because calling from browser
- - be able to request js files from radar through interceptas
+ 
+ - be able to request js files from radar through interceptas 
+ 
+ - does angular have support for this async loading/executing
+  
+ - retry failed html downloads
 
+ - retry failed script downloads
 
-script loading and execution order related:
-------------------------------------------
-i need to be able to 
- - download dynamically
- - control order of execution
-
+ - layout of fragments through frontend
+ 
 
 composite.html
 standalone.html
@@ -98,19 +111,27 @@ css/
  f2.css
 
 
-loader needs to be able to
-  - download a given html and innerhtml it into a target
-  investigate: load without running embedded external scripts. (not if you use jquery to insert, have to pull raw response AND do a non-jQuery insert
-  
-  - investgate: will external css automatically get loaded and parsed? or do we have to do like fo rscripts and individually load?
-  
-  -download and run an external script
-   investigate: don't load and execute already available scripts 
+outline:
+--------
+prep:
+  - get fragment ids
+  - get fragment urls
+  - generate fragment placeholders
+htmls:
+  - perform async parallel load of fragment htmls into their placeholders
+  - keep track of succesfully loaded fragments
+scripts:
+  - create scriptsCollection
+    - scriptsCollection is a set
+    - scan base container and add to scriptsCollection
+    - for each successfully loaded fragment
+       - scan fragment and add to scriptsCollection
+  - for each script in scriptsCollection
+    - load and execute
  
   
  
- 
-use cases:
+
 
 
 
