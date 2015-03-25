@@ -43,6 +43,30 @@ time components:
 TTI (time to interact) is a measure of how long the user has to wait before there is something on 
  the page that they can see and start working with.
 
+
+HTML5 specifies that a <script> tag inserted via innerHTML should not execute.
+
+In HTML5, you can tell browser when to run your JavaScript code. There are 3 possibilities:
+(best explanation http://www.growingwiththeweb.com/2014/02/async-vs-defer-attributes.html)
+note: defer not supported by <=IE9
+note: defer may not be well supported, in markup vs dynamic (https://github.com/h5bp/lazyweb-requests/issues/42)
+Normal: <script src="file.js"></script>
+Use async attribute: <script async src="file.js"></script>
+Use defer attribute: <script defer src="file.js"></script>
+Without async or defer, browser will run your script immediately, before rendering the elements that's below your script tag.
+With async (asynchronous), browser will continue to load the HTML page and render it while the browser load and execute the script at the same time.
+With defer, browser will run your script when the page finished parsing. (not necessary finishing downloading all image files. This is good.)
+Note: there's no “=true” or “=false” after async or defer.
+As of 2013-07-11, all major browser's latest public versions support async
+for older browsers that do not support async:
+  var ele = document.createElement("script");
+  ele.src = "xyz.js";
+  document.body.appendChild(ele);
+
+
+
+
+http://ajaxpatterns.org/On-Demand_Javascript (JavaScript being pulled from the server after the page has loaded)
 https://www.facebook.com/notes/facebook-engineering/bigpipe-pipelining-web-pages-for-high-performance/389414033919
 see http://stevesouders.com/hpws/rules.php 14 Rules for Faster-Loading Web Sites
 https://github.com/orygens/bigpipe-js
@@ -63,8 +87,17 @@ steps:
  - unique namespace for the html (particuarly when using id's)
  - unique variable names for the globally exposed js
  - each fragment should have all its js in an external file
-   external js should be self executing
+ - external js should be self executing
 
+ 
+ - everything is a fragment, so even standalone will be executed as a single in a container page
+   - they can expect certain globals js (jQUery, gidget) , css (bootstrap) to be always provided
+   - anything other js they need, should be added at end of the fragment
+   - non-global js can be repeated in tehe fragments, gidget will take care of loading them only once
+ - need a way of passing in fragment info to the container page
+ - need a way of passing in layout info for the fragments, to the container page
+   - layout is optional, if not passed in, will just layout as a stack
+   - else can use bootstrap layout ?
  
 
 to investigate:
@@ -92,6 +125,9 @@ to investigate:
 
  - layout of fragments through frontend
  
+ - layout support
+     - if none passed in, use bootstrap spec?
+
 
 composite.html
 standalone.html
