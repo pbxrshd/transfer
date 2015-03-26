@@ -99,6 +99,9 @@ steps:
    - layout is optional, if not passed in, will just layout as a stack
    - else can use bootstrap layout ?
  
+ - compositing, so need to be resilient and handle fragment failure, failure tolerant
+ - don't think in terms of dependencies, think in terms of shared state (scope in angular?)
+ - don't let failure cascade
 
 to investigate:
 ---------------
