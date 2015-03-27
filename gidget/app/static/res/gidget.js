@@ -21,10 +21,10 @@ var DATAPIPE = (function() {
       fragsState.forEach(function(fragState) {
         if (fragState.success) {
           jQuery('#' + fragState.id + ' script').each(function(i,e) {
-            if (scripts.indexOf(e.src) === -1) { //add only if not already there
+            if (scripts.indexOf(e.src) === -1) { // add only if not already there
               scripts.push(e.src);
-            }        
-          });          
+            }
+          });
         }
       });
       // load and execute the gathered scripts

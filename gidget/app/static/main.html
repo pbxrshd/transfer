@@ -5,35 +5,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Main</title>
     <script src="res/jquery.min.js"></script>
-    <script src="res/common.js"></script>
     <script src="res/gidget.js"></script>
     <link rel="stylesheet" href="res/bootstrap.min.css" />
+    <link rel="stylesheet" href="res/global.css" />
+
+    <script>
+      function test1() {
+          var promise = MAIN.getData('f1');
+          promise.done(function(data) {
+              console.log('test1 got data ' + data + ' ' + data.length);
+          });
+      }
+    
+    </script>
 
   </head>
   <body>
-
-  <hr />
     <ul>
-      <li><span onclick="MAIN.getData(1)" >data1</span></li>
+      <li><span onclick="test1()">test1</span></li>
       <li></li>
     </ul>
   <hr />
 
-  <div id="main_content"></div>
-  
-  <hr />
-  <div class="container">
-    <div class="row">
-      <div id="f1" data-pipe-id="f1" class="fragment-container col-md-4"></div>
-      <div id="f2" data-pipe-id="f2" class="fragment-container col-md-4"></div>
-      <div id="f3" data-pipe-id="f3" class="fragment-container col-md-4"></div>
+  <div id="main_content">
+    <div class="container">
+      <div class="row">
+        <div id="f1" data-pipe-id="f1" class="fragment-container col-md-4"></div>
+        <div id="f2" data-pipe-id="f2" class="fragment-container col-md-4"></div>
+        <div id="f3" data-pipe-id="f3" class="fragment-container col-md-4"></div>
+      </div>
+      <div class="row">
+        <div id="f4" data-pipe-id="f4" class="fragment-container col-md-4"></div>
+        <div id="f5" data-pipe-id="f5" class="fragment-container col-md-4"></div>
+        <div id="f6" data-pipe-id="f6" class="fragment-container col-md-4"></div>
+      </div>  
     </div>
-    <div class="row">
-      <div id="f4" data-pipe-id="f4" class="fragment-container col-md-4"></div>
-      <div id="f5" data-pipe-id="f5" class="fragment-container col-md-4"></div>
-      <div id="f6" data-pipe-id="f6" class="fragment-container col-md-4"></div>
-    </div>  
   </div>
+
+  <hr />
 
   <script src="res/main.js"></script>
   </body>

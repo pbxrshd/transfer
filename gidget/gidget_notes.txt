@@ -102,6 +102,8 @@ steps:
  - compositing, so need to be resilient and handle fragment failure, failure tolerant
  - don't think in terms of dependencies, think in terms of shared state (scope in angular?)
  - don't let failure cascade
+ - view broken up into static (html fast) and dynamic (json data creating and modifying)
+ - design by having the html return fast, 
 
 to investigate:
 ---------------
