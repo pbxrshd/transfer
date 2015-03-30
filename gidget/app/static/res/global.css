@@ -9,16 +9,56 @@ div.fragment-container {
 
 div.fragment {
   min-height: 150px;
-  border: 1px solid #cccccc;
+  border: 1px solid #e0e0e0;
   border-radius: 4px;
   padding: 10px;
   margin: 10px 0 10px 0;
 }
 
 div.title {
-
+  color: maroon;
+  font-size: 1.3em;
+  font-weight: bold;
 }
 
 div.sub-title {
+  font-size: 0.9em;
+  font-weight: bold;
+  margin-bottom:8px;
+}
 
+div.status {
+  color: #a0a0a0;
+}
+
+div.bar1 {
+  height:12px;
+  margin:4px;
+}
+
+
+/* colors */
+.color-l-0 {
+  background-color: #88bde6;
+}
+.color-l-1 {
+  background-color: #fbb258;
+}
+.color-l-2 {
+  background-color: #90cd97;
+}
+.color-l-3 {
+  background-color: #f6aac9;
+}
+.color-l-4 {
+  background-color: #bfa554;
+}
+.color-l-5 {
+  background-color: #bc99c7;
+}
+.color-l-6 {
+  background-color: #eddd46;
+}
+.color-l-7 {
+  background-color: #f07e63;
 }

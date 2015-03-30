@@ -11,7 +11,7 @@ var F5 = (function() {
     promise.done(function(data) {
       var html = '';
       data.forEach(function(e) {
-          html += '<li>' + e + '</li>';
+          html += '<li>' + e + '%</li>';
         });
       html = '<ul>' + html + '</ul>';
       document.querySelector('#'+ID+' div.content').innerHTML = html;

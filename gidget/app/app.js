@@ -47,19 +47,19 @@ var DATAGEN = (function() {
     var data = {};
     switch (id) {
       case "f1":
-        data = randomInts(0,100,10);
+        data = randomInts(0,100,8);
         break;
       case "f2":
         data = randomFloats(0,50,5);
         break;
       case "f3":
-        data = randomInts(0,50,5);
+        data = randomInts(0,100,8);
         break;
       case "f4":
-        data = randomFloats(0,50,5);
+        data = [randomFloats(0,50,5),randomFloats(0,100,5),randomInts(0,800,5),randomFloats(0,50,5)];
         break;
       case "f5":
-        data = randomFloats(0,50,5);
+        data = randomFloats(0,100,9);
         break;
       case "f6":
         data = randomNames(10);

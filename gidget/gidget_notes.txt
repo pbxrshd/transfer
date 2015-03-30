@@ -133,25 +133,6 @@ to investigate:
  - layout support
      - if none passed in, use bootstrap spec?
 
-
-composite.html
-standalone.html
-f1.html
-f2.html
-js/
- gidget.js
- common0.js
- common1.js
- common2.js
- f1.js
- f2.js
-css/
- common1.css
- common2.css
- f1.css
- f2.css
-
-
 outline:
 --------
 prep:

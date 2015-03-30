@@ -1,0 +1,373 @@
+<html><head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">  
+    <title>dynamic testing</title>
+
+    <!-- TODO parameterize the inclusion of the foll. -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.4.6/d3.min.js"></script>
+
+    <style type="text/css">
+html {
+  height: 100%;
+}
+
+body,table {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 14px;
+  color: #434040;
+}
+
+    </style>
+
+    <script>
+"use strict";
+var DATA = 
+{
+"rec":[
+        {"n":"REVIEW","v":"0.272","vf":"27.2%","V":["1","5","1","3","0","3","7","3","5","1","9","9","8","7","9","6","10","1","1","3","9","5","4","4"],"t":"1"},
+        {"n":"REJECT","v":"0.048","vf":"4.8%","V":["1","5","9","8","6","10","0","4","4","7","3","5","0","3","1","9","2","3","9","5","7","9","1","3"],"t":"-1"}
+      ],
+"res":[
+        {"n":"REVIEW","cf":"24,631","p":"0.2371","pf":"23.71%"},
+        {"n":"ACCEPT","cf":"5,329","p":"0.4823","pf":"48.23%"},
+        {"n":"DENY","cf":"97","p":"0.1235","pf":"12.35%"}
+      ],
+"q": {"atf":"8.4 mins","cf":"4,782"}
+};
+
+  //  
+  function randomInts(min, max, count) {
+    count = count || 1;
+    var ints = [];
+    for (var i = 0;i < count; i++) {
+      //ints.push(Math.floor((Math.random() * max) + min));
+      ints.push(Math.floor(Math.random() * (max - min + 1)) + min);
+    }
+    return ints;
+  }
+
+
+function init() {
+    render(DATA);
+}
+
+function render(data) {
+
+/* recommendation */
+  var recData = document.getElementById("rec_data");
+  var colours = ['#88bde6','#fbb258']; //['#DF5C24','#059748'];
+  data["rec"].forEach(function(d,i) {
+    var cellRef = recData.insertCell(-1);
+    var html = "";
+    html += '<div class="rec-cell0">' + d.n + '</div>';
+    html += '<div id="rec_donut' + i + '"></div>';
+    html += '<div id="rec_trend' + i + '"></div>';
+    cellRef.innerHTML = html;
+    renderDonut(document.getElementById('rec_donut'+i), d.v, d.vf, d.t, colours[i]);
+    generateSparkline(document.getElementById('rec_trend'+i), d.V);
+    
+  });
+
+/* resolution */  
+  var resDatarows = d3.select('#res_data')
+      .selectAll('tr')
+      .data(d3.range(data["res"].length))
+      .enter()
+      .append('tr')
+      .attr('id',function(d){return 'dr'+d;});
+  resDatarows.selectAll('tr')
+      .data(d3.range(4))
+      .enter()
+      .append('td')
+      .attr('id',function(d,i,p){return 'dc_'+p+'_'+d;})
+      .attr('class', function(d){return 'dtcs'+d;});  
+  var html = '';
+  // col0 n
+  data["res"].forEach(function(d,i){
+    html = d.n;
+    document.getElementById('dc_'+i+'_0').innerHTML = html;
+  });    
+  // col1 cf
+  data["res"].forEach(function(d,i){
+    html = d.cf;
+    document.getElementById('dc_'+i+'_1').innerHTML = html;
+  });   
+  // col2 p
+  data["res"].forEach(function(d,i){
+    html = generateBar1(d.p, ['#90cd97','#f6aac9','#bfa554','#bc99c7','#eddd46'][i]);
+    document.getElementById('dc_'+i+'_2').innerHTML = html;
+  });   
+  // col3 pf
+  data["res"].forEach(function(d,i){
+    html = d.pf;
+    document.getElementById('dc_'+i+'_3').innerHTML = html;
+  });   
+
+/* queue */
+  document.getElementById("q_tv").innerHTML = data["q"]["atf"];
+  document.getElementById("q_cv").innerHTML = data["q"]["cf"];
+}
+
+function renderDonut(anchorRef, rawValue, displayValue, trend, colour) {
+  var html = "";
+  var width = 120;
+  var radius = (width/2);
+  var donutWidth = 18;
+  rawValue = 100*parseFloat(rawValue);
+  
+  var svg = d3.select(anchorRef)
+      .append('svg')
+      .attr('width', width)
+      .attr('height', width)
+      .attr("class","donut")
+      .append('g')
+      .attr('transform', 'translate('+radius+','+radius+')');  
+  var arc = d3.svg.arc()
+      .innerRadius(radius - donutWidth)
+      .outerRadius(radius);
+  var pie = d3.layout.pie()
+      .value(function(d){return d;})
+      .sort(null);  
+  var path = svg.selectAll('path')
+      .data(pie([rawValue,(100-rawValue)]))
+      .enter()
+      .append('path')
+      .attr('d', arc)
+      .attr('fill', function(d,i){return [colour,'#e8e8e8'][i];})
+      .attr("transform","rotate(-180)");  
+  svg.append('text')
+      .attr("x",0)
+      .attr("y",0)
+      .text(displayValue);
+  if (trend < 0) {
+    svg.append("path")
+        .attr("d","M-12 10 l24 0 l-12 12 z")
+        .attr("class","trend2-down");
+  } else if (trend > 0) {
+    svg.append("path")
+        .attr("d","M0 10 l12 12 l-24 0 z")
+        .attr("class","trend2-up");    
+  }
+}
+
+function generateSparkline(anchorRef, valuesArray) {
+  var margin = {top: 6, right: 0, bottom: 6, left: 0};
+  var width = 120 - margin.left - margin.right;
+  var height = 48 - margin.top - margin.bottom;
+  var catsArray = d3.range(valuesArray.length);
+  var xScale = d3.scale.linear()
+              .range([0, width])
+              .domain([0,catsArray.length-1]);
+  var yScale = d3.scale.linear()
+              .range([height, 0])
+              .domain(d3.extent(valuesArray));
+  var sparkline = d3.svg.line()
+              .x(function(d) { return xScale(parseInt(d)); })
+              .y(function(d) { return yScale(parseInt(valuesArray[d])); })
+              .interpolate('cardinal');
+  var svg = d3.select(anchorRef)
+              .append("svg")
+              .attr("width", width + margin.left + margin.right)
+              .attr("height", height + margin.top + margin.bottom)
+              .attr("class","sparkLineContainer")
+              .append("g")
+              .attr("transform","translate(" + margin.left + "," + margin.top + ")");              
+  svg.append("path")
+              .attr("class", "sparkLine")
+              .attr("d", sparkline(catsArray));
+
+}
+
+function generateBar1(value, color) {
+  var html = '';
+  value = (100 *parseFloat(value))/2;
+  html = '<div style="width:50px;height:12px;background-color:#f0eceb;"><div style="width:' + value + 'px;background-color:'+color+';height:12px;"></div></div>';
+  return html;
+}
+
+    </script>  
+
+  </head>
+  <body>
+
+<style type="text/css">
+
+  text.st0 {
+    stroke: none;
+    fill: #999999;
+    text-anchor: end;
+    font-size: 14px;
+    font-weight: bold;
+    letter-spacing: 4px;
+  }
+  
+  div.st1 {
+    color:#64a3a8;
+    font-size: 14px;
+    font-weight: bold;
+    letter-spacing: 4px;
+    text-align:center;
+    padding:12px
+  }
+  
+  div.rec-cell0 {
+    text-align:center;
+    color:#64a3a8;
+    font-weight:bold;
+    font-size: 12px;
+    padding:0 0 6px 0;
+  }
+
+.donut text {
+  fill: #606060;
+  font-size: 18px;
+  font-weight:bold;
+  text-anchor: middle;
+}  
+
+ path.sparkLine {
+  stroke: #696969;
+  stroke-width: 1;
+  fill: none;
+}
+.axis path,.axis line {
+  fill: none;
+  stroke: grey;
+  stroke-width: 1;
+  shape-rendering: crispEdges;
+}
+
+.trend2-up {
+  fill:#808080;
+  stroke-width:0;
+}
+.trend2-down {
+  fill:#808080;
+  stroke-width:0;
+}
+
+table#layout td {
+  padding:12px 20px 12px 20px;
+}
+
+
+.sparkLineContainer {
+  padding:6px 0 0 0;  
+}
+
+div#q_tv {
+  text-align:center;
+  color: maroon;
+  font-size: 1.8em;
+  font-weight:bold;
+}
+div#q_tl {
+  text-align:center;
+  color:#c0c0c0;
+  padding:0 0 28px 0;
+}
+div#q_cv {
+  text-align:center;
+  color: maroon;
+  font-size: 1.8em;
+  font-weight:bold;
+  letter-spacing:2px;
+}
+div#q_cl {
+  text-align:center;
+  color:#c0c0c0;
+}
+
+td.dtcs0 {
+    text-align:right;
+    color:#64a3a8;
+    font-weight:bold;
+    font-size: 12px;
+    padding:10px 6px 10px 2px !important;
+}
+td.dtcs1 {
+    text-align:right;
+    color:maroon;
+    padding:0px 8px 0px 0px !important;
+}
+td.dtcs2 {
+    padding:2px !important;
+}
+td.dtcs3 {
+    text-align:right;
+    color:maroon;
+    font-weight:bold;
+    font-size: 12px;
+    padding:2px !important;
+}
+
+
+
+  </style>
+
+
+  <table borderx="1" id="layout">
+   <tr>
+    <td colspan="3" style="text-align:center;">
+      <div class="btn-group ">
+        <button class="btn" id="cs_0">4 hours</button>
+        <button class="btn" id="cs_1">8 hours</button>
+        <button class="btn" id="cs_2">12 hours</button>
+        <button class="btn" id="cs_3">24 hours</button>
+      </div>
+      <br /><br />
+    </td>
+   </tr>
+   
+   <tr>
+     <td>
+        <div id="rec_section">
+          <table >
+           <tr id="rec_data">
+           </tr>
+          </table>
+        </div><!-- rec_section -->     
+     </td>
+     <td>
+        <div id="q_section">
+           <div id="q_tv"></div>
+           <div id="q_tl">average time</div>
+           <div id="q_cv"></div>
+           <div id="q_cl">in queue</div>
+        </div><!-- q_section -->
+     </td>
+     <td>
+        <div id="res_section">
+          <table>
+           <tr>
+             <td>
+               <table>
+                <tbody id="res_data"></tbody>
+               </table>
+             </td>
+           </tr>
+          </table>
+        </div><!-- res_section -->
+     </td>
+   </tr>
+  
+   <tr>
+     <td>
+      <div class="st1">RECOMMENDATION</div>
+     </td>
+     <td>
+      <div class="st1">QUEUE</div>
+     </td>
+     <td>
+      <div class="st1">RESOLUTION</div>
+     </td>
+   </tr>
+     
+  </table>
+
+ 
+ 
+ <script>init();</script>
+ 
+</body></html>

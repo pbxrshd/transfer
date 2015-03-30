@@ -10,10 +10,9 @@ var F1 = (function() {
     var promise = MAIN.getData(ID);
     promise.done(function(data) {
       var html = '';
-      data.forEach(function(e) {
-          html += '<li>' + e + '</li>';
+      data.forEach(function(e,i) {
+          html += '<div><div class="bar1 color-l-'+i+'" style="width:'+(2*e)+'px;">&nbsp;</div></div>';
         });
-      html = '<ul>' + html + '</ul>';
       document.querySelector('#'+ID+' div.content').innerHTML = html;
     });    
     promise.fail(function() {
@@ -25,6 +24,6 @@ var F1 = (function() {
     init : init,
     getData : getData
   };
-})(function(){console.log('jigga!!!')});
+})();
 
 F1.init();
