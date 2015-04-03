@@ -1,72 +1,57 @@
 <html>
 <head>
-  <script src="jquery.min.js"></script>
-  <script>
-  var ID = "6237260000000005306";
-  function mrd() {
-      console.log('mrddd');
-      var data = {};
-      data['rdid'] = ID;
-      var criteria = JSON.parse(document.getElementById('criteria').value);
-      var criteriaKeys = Object.keys(criteria);
-      for (var i = 0; i < criteriaKeys.length; i++) {
-        var criteriaKey = criteriaKeys[i];
-        data[criteriaKey] = criteria[criteriaKey];
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    
+    <script>
+      function s1() {
+        //setTimeout(function(){submitForm('form1')}, 1000);
+        jQuery
+          .post("test3.html", jQuery('#form1').serialize())
+          .done(function(data){submitForm('form1')})
+          .fail(function(){console.log('failed')});
       }
-      data['fmt'] = 'JSON';
-      data['preset'] = true;
+      function s2() {
+        //setTimeout(function(){submitForm('form2')}, 1000);
+        jQuery
+          .post("test3.html", jQuery('#form3').serialize())
+          .done(function(data){submitForm('form3')})
+          .fail(function(){console.log('failed')});
+      }
+      function s3() {
+        //setTimeout(function(){submitForm('form3')}, 1000);
+        jQuery
+          .post("test3.html", jQuery('#form3').serialize())
+          .done(function(data){submitForm('form3')})
+          .fail(function(){console.log('failed')});
+      }
+
       
-      var postableArray = [];
-      var dataKeys = Object.keys(data);
-      for (var i = 0; i < dataKeys.length; i++) {
-        var dataKey = dataKeys[i];
-        var value = data[dataKey];
-        console.log(dataKey + ':' + value + '\t' + typeof(value));
-        if (Array.isArray(value)) {
-            console.log('\t is array');
-            for (var j = 0; j < value.length; j++) {
-                postableArray.push(dataKey + '=' + encodeURIComponent(value[j]));
-            }
-        } else {
-            postableArray.push(dataKey + '=' + encodeURIComponent(value));
-        }
-      }      
-      
-      var postable = postableArray.join('&');
-      
-      
-      jQuery.post('test1.html', postable).done(function(recvd){
-                console.log('recvd:');
-      });
-      
-      //console.log(postable);
-      
-      return postable;
-  }
-  
-  </script>
+      function submitForm(formId) {
+       jQuery('#' + formId).submit();
+      }
+    </script>    
+    
 </head>
 <body>
-main
-<hr />
-<form action="test1.html" method="POST">
-  t1:<input type="text" name="t1" value="" /><br />
-  s1:<select name="s1"  multiple>
-       <option value="volvo">Volvo</option>
-       <option value="saab">Saab</option>
-       <option value="opel">Opel</option>
-       <option value="audi">Audi</option>
-    </select><br />
-  r1: RA<input type="radio" name="r1" value="RA" checked /> RB<input type="radio" name="r1" value="RB"/ ><br />
-  c1: CA<input type="checkbox" name="c1" value="CA" /><br />
 
-  <input type="submit" value="Submit">
-  <hr />
-  <input type="text" id="criteria" size="80" value='{"d1":["1422252000000"],"vt":["5237260000000005302","5237260000000002081"],"h":["5237260000000004022"]}'>
-</form>  
 
+<form id="form1" action="test2.html">
+ <span onclick="s1()">s1</span><br />
+</form>
 
 <hr />
-JavaScript's typeof operator is well known to have confusing behavior: typeof null === "object", and typeof null !== "null".
+<form id="form2" action="test2.html" target="_blank">
+ <span onclick="s2()">s2</span><br />
+</form>
+
+<hr />
+<form id="form3" action="test2.html" target="named1">
+ <span onclick="s3()">s3</span><br />
+</form>
+
 </body>
 </html>
+    

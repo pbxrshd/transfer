@@ -1,0 +1,72 @@
+<html>
+<head>
+  <script src="jquery.min.js"></script>
+  <script>
+  var ID = "6237260000000005306";
+  function mrd() {
+      console.log('mrddd');
+      var data = {};
+      data['rdid'] = ID;
+      var criteria = JSON.parse(document.getElementById('criteria').value);
+      var criteriaKeys = Object.keys(criteria);
+      for (var i = 0; i < criteriaKeys.length; i++) {
+        var criteriaKey = criteriaKeys[i];
+        data[criteriaKey] = criteria[criteriaKey];
+      }
+      data['fmt'] = 'JSON';
+      data['preset'] = true;
+      
+      var postableArray = [];
+      var dataKeys = Object.keys(data);
+      for (var i = 0; i < dataKeys.length; i++) {
+        var dataKey = dataKeys[i];
+        var value = data[dataKey];
+        console.log(dataKey + ':' + value + '\t' + typeof(value));
+        if (Array.isArray(value)) {
+            console.log('\t is array');
+            for (var j = 0; j < value.length; j++) {
+                postableArray.push(dataKey + '=' + encodeURIComponent(value[j]));
+            }
+        } else {
+            postableArray.push(dataKey + '=' + encodeURIComponent(value));
+        }
+      }      
+      
+      var postable = postableArray.join('&');
+      
+      
+      jQuery.post('test1.html', postable).done(function(recvd){
+                console.log('recvd:');
+      });
+      
+      //console.log(postable);
+      
+      return postable;
+  }
+  
+  </script>
+</head>
+<body>
+main
+<hr />
+<form action="test1.html" method="POST">
+  t1:<input type="text" name="t1" value="" /><br />
+  s1:<select name="s1"  multiple>
+       <option value="volvo">Volvo</option>
+       <option value="saab">Saab</option>
+       <option value="opel">Opel</option>
+       <option value="audi">Audi</option>
+    </select><br />
+  r1: RA<input type="radio" name="r1" value="RA" checked /> RB<input type="radio" name="r1" value="RB"/ ><br />
+  c1: CA<input type="checkbox" name="c1" value="CA" /><br />
+
+  <input type="submit" value="Submit">
+  <hr />
+  <input type="text" id="criteria" size="80" value='{"d1":["1422252000000"],"vt":["5237260000000005302","5237260000000002081"],"h":["5237260000000004022"]}'>
+</form>  
+
+
+<hr />
+JavaScript's typeof operator is well known to have confusing behavior: typeof null === "object", and typeof null !== "null".
+</body>
+</html>
