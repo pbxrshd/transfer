@@ -3,35 +3,189 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="jquery.min.js"></script>
     
     <script>
+    
+    /*
       function s1() {
-        //setTimeout(function(){submitForm('form1')}, 1000);
         jQuery
           .post("test3.html", jQuery('#form1').serialize())
           .done(function(data){submitForm('form1')})
           .fail(function(){console.log('failed')});
       }
       function s2() {
-        //setTimeout(function(){submitForm('form2')}, 1000);
         jQuery
           .post("test3.html", jQuery('#form3').serialize())
-          .done(function(data){submitForm('form3')})
+          .done(function(data){submitForm('form2')})
           .fail(function(){console.log('failed')});
       }
       function s3() {
-        //setTimeout(function(){submitForm('form3')}, 1000);
         jQuery
           .post("test3.html", jQuery('#form3').serialize())
           .done(function(data){submitForm('form3')})
           .fail(function(){console.log('failed')});
       }
+      */
+      
+      var CALL_RESULT = false;      
+      var TIMER_REF = null; 
+      
+      function s1() {
+        CALL_RESULT = false;
+        TIMER_REF = setInterval(function(){watchAndSubmitForm('form1')}, 500);
+        
+        jQuery
+          .post("test3.html", jQuery('#form1').serialize())
+          .done(function(data){CALL_RESULT = true;})
+          .fail(function(){console.log('failed')});
+      }      
 
+      function s2() {
+        CALL_RESULT = false;
+        TIMER_REF = setInterval(function(){watchAndSubmitForm('form2')}, 500);
+        
+        jQuery
+          .post("test3.html", jQuery('#form1').serialize())
+          .done(function(data){CALL_RESULT = true;})
+          .fail(function(){console.log('failed')});
+      }     
+
+      function s3() {
+        CALL_RESULT = false;
+        TIMER_REF = setInterval(function(){watchAndSubmitForm('form3')}, 500);
+        
+        jQuery
+          .post("test3.html", jQuery('#form1').serialize())
+          .done(function(data){CALL_RESULT = true;})
+          .fail(function(){console.log('failed')});
+      }    
+      
+      function watchAndSubmitForm(formId) {
+        if (CALL_RESULT) {
+          clearInterval(TIMER_REF);
+          CALL_RESULT = false;
+          console.log('successful call...');
+          submitForm(formId)
+        } else {
+          console.log('retrying...');        
+        }
+      }
+      
       
       function submitForm(formId) {
        jQuery('#' + formId).submit();
       }
+      
+var SCR = (function(){
+  "use strict";
+  
+  var RETRY = {TIMEOUT:5000, COUNT:0, INTERVAL:120};
+  var CALL_STATUS = {UNINTIATED:-1, PENDING:0, FULFILLED:1, REJECTED:2};
+  //
+  var CALL_STATE = CALL_STATUS.UNINTIATED;
+  var TIMER_REF = null;
+  
+  function submit() {
+    jQuery('#error_messages_container').hide();
+    jQuery('#error_messages_container div.errorMessages').html('');
+    CALL_STATE = CALL_STATUS.PENDING;
+    RETRY.COUNT = 0;
+    TIMER_REF = setInterval(watchAndSubmit, RETRY.INTERVAL);
+    // TODO disable submit
+    jQuery.post("/report/rptcontrol/prevalidate", jQuery('#scr_form').serialize())
+    .done(function(jsonData) {
+          if (jQuery.isEmptyObject(jsonData)) {
+              CALL_STATE = CALL_STATUS.FULFILLED;
+          } else {
+            CALL_STATE = CALL_STATUS.REJECTED;
+            jQuery.each(jsonData, function(e) {
+                var mesg = '<span class="errorMessage">' + jsonData[e] + '</span><br />';
+                jQuery('#error_messages_container div.errorMessages').append(mesg);
+            });
+            jQuery('#error_messages_container').show();
+          }
+        }
+      )
+      .fail(function(jqXHR, textStatus, errorThrown) {
+            CALL_STATE = CALL_STATUS.REJECTED;
+            jQuery('#error_messages_container div.errorMessages').append('<span class="errorMessage">Validation check failed</span>');
+            jQuery('#error_messages_container').show();
+            if (console) {
+              console.log(' could not execute prevalidation for ' + rdid + '(' + textStatus + ', ' + errorThrown + ')');
+            }
+          }
+      );
+  }
+  //
+  function watchAndSubmit() {
+      switch (CALL_STATE) {
+       case CALL_STATUS.UNINTIATED:
+        case CALL_STATUS.REJECTED:
+          resetCall();
+        break;
+        case CALL_STATUS.FULFILLED:
+          resetCall();
+          submitForm();
+        break;
+        case CALL_STATUS.PENDING:
+          if ((++RETRY.COUNT * RETRY.INTERVAL) > RETRY.TIMEOUT) {
+            resetCall();
+            if (console) {
+              console.log('retry timeout reached...');
+            }
+          } // else fallthrough and retry after interval to see if call came back
+          break;
+      }
+  }
+  //
+  function resetCall() {
+    // TODO renable submit
+    RETRY.COUNT = 0;
+    clearInterval(TIMER_REF);
+    CALL_STATE = CALL_STATUS.UNINTIATED;
+  }
+  
+  /*
+  function submit() {
+    jQuery('#error_messages_container').hide();
+    jQuery('#error_messages_container div.errorMessages').html('');
+    //
+    jQuery.post("/report/rptcontrol/prevalidate", jQuery('#scr_form').serialize())
+          .done(function(jsonData) {
+                if (jQuery.isEmptyObject(jsonData)) {
+                  submitForm();
+                } else {
+                  jQuery.each(jsonData, function(e) {
+                      var mesg = '<span class="errorMessage">' + jsonData[e] + '</span><br />';
+                      jQuery('#error_messages_container div.errorMessages').append(mesg);
+                  });
+                  jQuery('#error_messages_container').show();
+                }
+              }
+            )
+            .fail(function(jqXHR, textStatus, errorThrown) {
+                  jQuery('#error_messages_container div.errorMessages').append('<span class="errorMessage">Validation check failed</span>');
+                  jQuery('#error_messages_container').show();
+                  if (console) {
+                    console.log(" could not execute prevalidation for " + rdid + '(' + textStatus + ', ' + errorThrown + ')');
+                  }
+                }
+            );
+  }
+  */
+  //
+  function submitForm() {
+      jQuery('#scr_form').attr('target', jQuery('#scr_target_control').prop('checked') ? '_blank' : 'interceptas_report');
+      jQuery('#scr_form').submit();
+  }
+
+  return {
+      submit : submit
+    };
+})();
+      
+      
     </script>    
     
 </head>
