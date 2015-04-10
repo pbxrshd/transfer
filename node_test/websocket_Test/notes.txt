@@ -1,0 +1,9 @@
+ example using websocket lobrary
+ 
+ npm install websocket
+ 
+ 
+ todo:
+  - how to create node server to also serve up pages, like the base client html page. (done)
+  - clean up the code
+  - identify onn server when client closes, or walks away
