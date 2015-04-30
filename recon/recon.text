@@ -1,7 +1,60 @@
 
 https://gist.github.com/Grathio/1175994 (for arduino sr04 distance sensing code)
 
+https://thomashunter.name/blog/female-voice-using-espeak/
+ espeak -s 150 -v english_rp+f4 "Hello, would you like some information about us?"
 
+ 
+ imageserver.py:
+--------------
+import sys
+import SimpleHTTPServer
+import urllib
+import time
+class MyHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
+    def pushImages(self):
+        self.separator = "abcdef"
+        self.maxFrames = 0
+        try:
+            self.send_response(200)
+            self.send_header("Content-type","multipart/x-mixed-replace;boundary=%s" % self.separator)
+            self.end_headers()
+            self.wfile.write("--%s\r\n" % self.separator)
+            frameNo = 0
+            while 1:
+                for i in range(1,4):
+                    self.wfile.write("Content-type: image/jpg\r\n")
+                    self.wfile.write("\r\n")
+                    f = open('seq%d.jpg' % i , 'r')
+                    self.wfile.write(f.read())
+                    self.wfile.write("\r\n--%s\r\n" % self.separator)
+                    f.close()
+                    time.sleep(0.5)                
+        except:
+            self.send_response(200)
+            self.send_header("Content-type", "text/plain")
+            self.end_headers()
+            self.wfile.write("Problem sending image: %s\n" % self.path)
+ 
+    def do_GET(self):
+        """Serve a GET request."""
+        if self.path[:len("/img")] == "/img":
+            self.pushImages()
+            return
+        SimpleHTTPServer.SimpleHTTPRequestHandler.do_GET(self)
+        return
+ 
+if len(sys.argv) == 1:
+    sys.argv = (sys.argv[0], "9999")
+ 
+SimpleHTTPServer.test(MyHandler)           
+ 
+ 
+ 
+ 
+ 
+ 
+ 
 $ npm install serialport
 # https://github.com/voodootikigod/node-serialport/wiki
 

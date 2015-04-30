@@ -1,9 +1,27 @@
- example using websocket lobrary
+example using websocket library
  
- npm install websocket
+npm install websocket
  
  
- todo:
+todo:
   - how to create node server to also serve up pages, like the base client html page. (done)
   - clean up the code
   - identify onn server when client closes, or walks away
+  - how to watch for memory leaks
+  
+
+
+R.E.C.O.N
+
+Reconfigurable Experimental Configuration for Observation and Navigation   
+  
+  
+  
+node code to:
+  - run websocket server
+  - run http server
+  - comunicate with arduino through serial
+  
+command central
+
+recon
