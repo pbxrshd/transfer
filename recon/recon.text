@@ -1,4 +1,7 @@
 
+https://gist.github.com/Grathio/1175994 (for arduino sr04 distance sensing code)
+
+
 $ npm install serialport
 # https://github.com/voodootikigod/node-serialport/wiki
 
