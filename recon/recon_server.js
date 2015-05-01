@@ -12,7 +12,7 @@ var	SerialPort  = serialport.SerialPort;
 var websocketServerOptions = {port:61337};
 var httpServerOptions = {port:61336};
 var serialPortOptions = {baudRate:9600, parser:serialport.parsers.readline("\n")};
-var serialPortName = "/dev/tty-usbserial1";
+var serialPortName = "/dev/ttyUSB0";
 
 /* http server */
 var httpServer = http.createServer(function(request,response) {
