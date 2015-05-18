@@ -1,0 +1,1220 @@
+<html><head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Recommendation Codes Rate</title>
+
+    <!-- TODO parameterize the inclusion of the foll. -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.4.6/d3.min.js"></script>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    
+    <style type="text/css">
+html {
+  height: 100%;
+}
+
+body {
+  margin: 20;
+  padding: 0;
+}
+
+body,table {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 14px;
+  color: #434040;
+}
+
+h1 {
+  color: #800000;
+}
+
+h2 {
+
+}
+
+div.mainLayout {
+  display: table;
+  margin: 0 auto 10px auto;
+}
+
+div.section {
+  clear: both;
+  min-width: 1024px;
+  max-width: none !important;
+  margin: 0 auto 10px auto;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+div.settings1 {
+  font-size: 18px;
+  float: right;
+}
+
+div.br {
+  clear: both;
+}
+
+div.title1 {
+  clear: both;
+  min-width: 1024px;
+  max-width: none !important;
+  margin: 20px auto;
+  font-size:30px;
+  letter-spacing: 0.03em;
+  font-weight: normal;
+  text-transform: uppercase;
+  color: inherit;
+}
+div.title2 {
+  color: maroon;
+  font-size: 1.3em;
+  font-weight: bold;
+  padding: 6px 0px 12px 0px;
+}
+div.tb1 {
+  text-align:right;
+  font-size:0.8em;
+  color:silver;
+}
+span.tb1 {
+  cursor:pointer;
+}
+
+.footer1 {
+  margin: 0 auto 0 auto
+}
+
+/* common style directives */
+.em {
+  font-weight: bold;
+}
+
+.it {
+  font-style: italic;
+}
+
+.al {
+  text-align: left;
+}
+
+.am {
+  text-align: center;
+}
+
+.ar {
+  text-align: right;
+}
+
+/* report criteria block related */
+.rc-container {
+  background-color: #f2f0f0;
+  border: 1px solid #d9d9d9;
+  padding: 15px;
+  width: 100%;
+  height: auto;  
+}
+.rc-title-row {
+  
+}
+.rc-title1 {
+  font-size: 24px;
+  color: #434040;
+  margin: 0 0 10px 0;
+  letter-spacing: 0.03em;  
+}
+.rc-title2 {
+  font-weight: normal;
+  text-align:right;
+  margin:10px 0px 0px 0px;
+}
+.rc-title-label {
+  padding: 0 10px 0 0 !important;
+  text-transform: uppercase;
+  font-size: 0.9em;
+}
+.rc-title-value {
+  font-weight: normal;
+  font-size: 0.8em;
+}
+.rc-divider {
+  border:0px;
+  border-top: 1px solid #cccccc;
+  margin: 0px 0px 18px 0px;
+}
+.rc-criteria-row {
+  
+}
+.rc-label {
+  padding: 0 10px 0 0 !important;
+  text-transform: uppercase;
+  font-size: 0.9em;
+}
+.rc-value {
+  font-weight: normal;
+  font-size: 0.8em;
+}
+
+/* banner related */
+.bnr {
+  background-color: #f2f0f0;
+  border: 1px solid #d9d9d9;
+  padding: 15px;
+  width: 100%;
+  height: auto;
+}
+
+.bnr .lbl {
+  font-weight: bold;
+  font-size: 0.9em;
+  text-align: right;
+  width: 32px;
+  white-space: nowrap;
+}
+
+.bnr .vlu {
+  font-size: 0.8em;
+  padding: 6px;
+}
+
+/* data table related */
+.data {
+  width: 100%;
+}
+
+.data th {
+  padding: 15px;
+  border-radius: 2px;
+  background-color: #434040;
+  color: #ffffff;
+}
+
+.data .th1 {
+  font-size: 0.8em;
+  background-color: #f25840;
+  border-radius: 0 0 4px 4px;
+  text-transform: uppercase;
+  padding: 15px;
+  line-height: 1.42857143;
+}
+
+.data .th2 {
+  background-color: #f36953;
+  border-radius: 0 0 4px 4px;
+}
+
+/*    data contains dr datarows */
+.data tr.dr:hover {
+  background-color: #fed976;
+  border: 1px solid black;
+}
+
+.data tr.dr td {
+  padding: 4px;
+}
+
+.data th, td {
+  font-size: 0.9em;
+}
+
+tr.z0 {
+  background-color: #ffffff;
+}
+
+tr.z1 {
+  background-color: #f1f1f1;
+}
+
+.data>tbody>tr:hover>td,.data>tbody>tr:hover>th {
+  background-color:#e0edee;
+}
+
+.data tbody th, .data tbody td {
+  /*padding: 8px 10px;*/
+}
+
+div.msg { /* status mesg */
+  font-weight: bold;
+  color: #800000;
+}
+
+.spaced-box { /* evenly distribute spaced-items in this container */
+  text-align: justify;
+}
+
+.spaced-item {
+  display: inline-block;
+}
+
+.spaced-buf { /* buffer */
+  width: 100%;
+  display: inline-block;
+  font-size: 0;
+  line-height: 0;
+}
+
+.sh1 { /* subheader1 */
+  background-color: #fd8d3c;
+  margin-left: 10px;
+  padding: 6px;
+  border-radius: 0 0 0 4px;
+}
+
+.sh1 .lbl {
+  font-weight: bold;
+  padding: 4px;
+}
+
+.sh1 .vlu {
+  font-style: italic;
+  padding: 4px;
+}
+
+.sh2 { /* subheader2 */
+  background-color: #feb24c;
+  margin-left: 18px;
+  padding: 4px;
+  border-radius: 0 0 0 4px;
+}
+
+.sh2 .lbl {
+  font-weight: bold;
+  padding: 4px;
+}
+
+.sh2 .vlu {
+  font-style: italic;
+  padding: 4px;
+}
+
+.sf1 { /* subfooter1 */
+  color: gray;
+  margin-top: 12px;
+}
+
+.sf1 .vlu {
+  font-style: italic;
+  padding: 4px;
+}
+
+
+.sflabel {
+  font-size:0.9em;
+  font-style:italic;
+  color:#6c7477;
+  padding: 24px 0px 0px 0px;
+}
+
+/* link hover context menus related */
+.linkctx {
+  color: #4b0082;
+  cursor: pointer;
+  display: inline;
+}
+
+.linkctx:hover {
+  color: #ff0000;
+}
+
+.linkctx:hover>ul {
+  display: block;
+}
+
+.linkctx>ul {
+  display: none;
+  position: absolute;
+  background: rgba(255, 255, 255, 1);
+  color: #4b0082;
+  border: 1px solid black;
+  border-radius: 4px;
+  padding: 8px;
+  margin: 0px;
+  box-shadow: -8px 8px 8px #888888;
+  list-style-type: none;
+  font-weight: normal;
+}
+
+.linkctx li:hover {
+  color: #ff0000;
+}
+
+/* docked options menu related */
+div.dock1 {
+  position: fixed;
+  top: 5px;
+  right: 5px;
+}
+
+div.dock1:hover .dock1Content {
+  visibility: visible;
+}
+
+div.dock1Content {
+  position: absolute;
+  visibility: hidden;
+  background: rgba(255, 255, 255, 1);
+  top: 0px;
+  right: 0px;
+  padding: 4px;
+  border: 1px solid black;
+  border-radius: 4px;
+  box-shadow: -8px 8px 6px #c0c0c0;;
+}
+
+div.dock1 .dock1Item {
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+div.dock1 .dock1Item:hover {
+  color: red;
+}
+
+hr .divider {
+  background-color: #cccccc;
+}
+
+div.error-mesg {
+  color:#cccccc;
+}
+
+/* colors */
+.color-l-0 {
+  stroke: #88bde6;
+  fill: #88bde6;
+}
+.color-l-1 {
+  stroke: #fbb258;
+  fill: #fbb258;
+}
+.color-l-2 {
+  stroke: #90cd97;
+  fill: #90cd97;
+}
+.color-l-3 {
+  stroke: #f6aac9;
+  fill: #f6aac9;
+}
+.color-l-4 {
+  stroke: #bfa554;
+  fill: #bfa554;
+}
+.color-l-5 {
+  stroke: #bc99c7;
+  fill: #bc99c7;
+}
+.color-l-6 {
+  stroke: #eddd46;
+  fill: #eddd46;
+}
+.color-l-7 {
+  stroke: #f07e6e;
+  fill: #f07e6e;
+}
+
+
+/********************
+ * Tree Reports
+ */
+
+.node {
+    list-style-type: none;
+}
+
+li.level-0 > label, li.level-0 > span {
+    color: #333333;
+    font-size: 20px;
+}
+
+li.level-1 > label, li.level-1 > span{
+    font-weight: bold;
+    font-size: 14px;
+}
+
+li.level-2 > label, li.level-2 > span{
+    text-transform: uppercase;
+}
+
+.bracket:after {
+    content:"]";
+}
+
+.bracket:before {
+    content:"[";
+}
+
+/* Equivalent to fa and fa-minus-square */
+li.expanded > label:first-child::before {
+    font-family:FontAwesome,'Open Sans', sans-serif;
+    font-style:normal;
+    font-weight:normal;
+    display:inline-block;
+    line-height:1;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+
+    content:"\f146";
+}
+
+/* Equivalent to fa and fa-plus-square-o */
+li.collapsed > label:first-child::before {
+    font-family:FontAwesome,'Open Sans', sans-serif;
+    font-style:normal;
+    font-weight:normal;
+    display:inline-block;
+    line-height:1;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+
+    content:"\f196"
+}
+
+ul.expanded {
+    display: inherit !important;
+}
+
+ul.collapsed {
+    display: none !important;
+}
+
+div.expand-links {
+    text-align: center;
+}
+
+.trend1-up:before {
+  content: "\f139"; /* fa-chevron-circle-up */
+  font-family:FontAwesome,'Open Sans', sans-serif;
+  font-style:normal;
+  font-weight:normal;
+  color : red;
+}
+.trend1-down:before {
+  content: "\f13a"; /* fa-chevron-circle-down */
+  font-family:FontAwesome,'Open Sans', sans-serif;
+  font-style:normal;
+  font-weight:normal;  
+  color : green;
+}
+
+.trend2-up:before {
+  content: "\f139"; /* fa-chevron-circle-up */
+  font-family:FontAwesome,'Open Sans', sans-serif;
+  font-style:normal;
+  font-weight:normal;
+  color:#5bdcff;
+}
+.trend2-down:before {
+  content: "\f13a"; /* fa-chevron-circle-down */
+  font-family:FontAwesome,'Open Sans', sans-serif;
+  font-style:normal;
+  font-weight:normal;  
+  color:#cc557c;
+}
+.trend2-neutral:before {
+  content: "\f192"; /* fa-dot-circle-o */
+  font-family:FontAwesome,'Open Sans', sans-serif;
+  font-style:normal;
+  font-weight:normal;  
+  color:#cccccc;
+}
+
+.refresh1:before {
+  content: "\f021"; /* fa-refresh */
+  font-family:FontAwesome,'Open Sans', sans-serif;
+  font-style:normal;
+  font-weight:normal;
+  color:#cccccc;
+  padding:0px 4px 0px 4px;
+}
+
+.spinner1:before {
+  content: "\f110"; /* fa-spinner */
+  font-family:FontAwesome,'Open Sans', sans-serif;
+  font-style:normal;
+  font-weight:normal;  
+  color:#909090;
+  font-size:32px;
+}
+/**
+ * End Tree Reports CSS
+ ********************/
+
+/*
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,300,400,700);
+*/
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 300;
+  src: local('Open Sans Light'), local('OpenSans-Light'), url(//fonts.gstatic.com/s/opensans/v10/DXI1ORHCpsQm3Vp6mXoaTXhCUOGz7vYGh680lGh-uXM.woff) format('woff');
+}
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Open Sans'), local('OpenSans'), url(//fonts.gstatic.com/s/opensans/v10/cJZKeOuBrn4kERxqtaUH3T8E0i7KZn-EPnyo3HZu7kw.woff) format('woff');
+}
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Open Sans Bold'), local('OpenSans-Bold'), url(//fonts.gstatic.com/s/opensans/v10/k3k702ZOKiLJc3WVjuplzHhCUOGz7vYGh680lGh-uXM.woff) format('woff');
+}
+@font-face {
+  font-family: 'Open Sans';
+  font-style: italic;
+  font-weight: 300;
+  src: local('Open Sans Light Italic'), local('OpenSansLight-Italic'), url(//fonts.gstatic.com/s/opensans/v10/PRmiXeptR36kaC0GEAetxh_xHqYgAV9Bl_ZQbYUxnQU.woff) format('woff');
+}
+@font-face {
+  font-family: 'Open Sans';
+  font-style: italic;
+  font-weight: 400;
+  src: local('Open Sans Italic'), local('OpenSans-Italic'), url(//fonts.gstatic.com/s/opensans/v10/xjAJXh38I15wypJXxuGMBobN6UDyHWBl620a-IRfuBk.woff) format('woff');
+}
+@font-face {
+  font-family: 'Open Sans';
+  font-style: italic;
+  font-weight: 700;
+  src: local('Open Sans Bold Italic'), local('OpenSans-BoldItalic'), url(//fonts.gstatic.com/s/opensans/v10/PRmiXeptR36kaC0GEAetxjqR_3kx9_hJXbbyU8S6IN0.woff) format('woff');
+}
+
+    </style>
+    
+    <script>
+"use strict";
+
+var RPT = (function() {
+    var CRITERIA_SERIALIZED = 'criteria';
+    var REFERENCES_SERIALIZED = 'rptrefs';
+    var SCR_FORM_ACTION = '/report/rptcontrol/run';
+    var RDID = 'rdid';
+    var PRESET = 'preset';
+    var USER_SUBMITTED = 'user_submitted';
+    
+    function loadReport(rptRefKey, params) {
+        var rptRefs = JSON.parse(document.getElementById(REFERENCES_SERIALIZED).value);
+        var rptRefValue = rptRefs[rptRefKey];
+
+        // TODO destroy cform, if already present
+
+        var cform = document.createElement('form');
+        cform.setAttribute('method', 'post');
+        cform.setAttribute('action', SCR_FORM_ACTION);
+        cform.setAttribute('id','rpt_cform');
+        cform.setAttribute('target','_blank');
+        // create an assoc array to hold cform fields 
+        var cfields = {};
+        //    put in some required fields...
+        cfields[RDID] = rptRefValue;
+        //cfields[PRESET] = true;
+        cfields[USER_SUBMITTED] = true;
+        //    add in the embedded critera...
+        var criteria = JSON.parse(document.getElementById(CRITERIA_SERIALIZED).value);
+        for (var key in criteria) {
+            if (criteria.hasOwnProperty(key)) {
+                cfields[key] = criteria[key];
+            }
+        }
+        //    now add in fields from the params, replacing any with the same name from criteria 
+        if (params) {
+            for (var key in params) {
+                if (params.hasOwnProperty(key)) {
+                    cfields[key] = params[key];
+                }
+            }
+        }
+        // create input fields from the collected fields
+        for (var key in cfields) {
+            if (cfields.hasOwnProperty(key)) {
+                var value = cfields[key];
+                if (value instanceof Array) {
+                    for (var i = 0; i < value.length;i++) {
+                        cform.appendChild(createHiddenInput(key, value[i]));
+                    }
+                } else {
+                    cform.appendChild(createHiddenInput(key, value));
+                }
+            }
+        }
+        document.body.appendChild(cform);
+        cform.submit();
+    }
+    //
+    function createHiddenInput(name,value) {
+        var input = document.createElement('input');
+        input.setAttribute('type', 'hidden');
+        input.setAttribute('name',name);
+        input.setAttribute('value',value);
+        return input;
+    }
+    /*
+     * usage:
+     *  - showTransaction(dataHeaderId, optionalBucketId)
+     *  - showTransaction(transactionId, bucketId, virtualTableId)
+     */
+    function showTransaction(transactionOrDataHeaderId, bucketId, virtualTableId) {
+        bucketId = bucketId || '1'; // 'falsy' check and defaulting value
+        var transId = '';
+        if (virtualTableId) { // 'truthy' check for virtualTableId, indicating that transactionId was passed in as transactionOrDataHeaderId 
+            // lookup the dataHeaderId using transactionId and virtualTableId
+            var data = {request:"locate", transactionString:''+transactionOrDataHeaderId, virtualTableIdString:''+virtualTableId};
+            jQuery.ajax({
+                type: "POST",
+                dataType: "json",
+                url: "/ajaxHandler",
+                data: data
+            })
+            .done(function(jsonData) {
+                if ('success' === jsonData.status) {
+                    transId = jsonData.transactionId;
+                    bucketId = jsonData.businessProcess;
+                    openTransactionWindow(transId, bucketId);
+                } else  {
+                    if (console) {
+                        console.log("error locating transId for " + data + '(' + jsonData.message + ')');
+                    }
+                }
+            })
+            .fail(function(jqXHR, textStatus, errorThrown) {
+                if (console) {
+                    console.log("failed locating transId for " + data + '(' + textStatus + ', ' + errorThrown + ')');
+                }                
+            });
+        } else { // no virtualTableId, indicating dataHeaderId was passed in as transactionOrDataHeaderId
+            openTransactionWindow(transactionOrDataHeaderId, bucketId);
+        }
+    }
+    //
+    function openTransactionWindow(transId, bucketId) {
+        window.open('/jsp/agent/queue/transactiondetail.jsf?transId='+transId+'&bucketId='+bucketId+'&mode=V','_blank');
+    }
+    //
+    function makeReportData(rptId) {
+        var data = {};
+        data[RDID] = rptId;
+        var criteria = JSON.parse(document.getElementById(CRITERIA_SERIALIZED).value);
+        var criteriaKeys = Object.keys(criteria);
+        for (var i = 0; i < criteriaKeys.length; i++) {
+            var criteriaKey = criteriaKeys[i];
+            data[criteriaKey] = criteria[criteriaKey];
+        }
+        return data;
+    }
+    //
+    var COLORS = {L: ['#88bde6', // 0
+                      '#fbb258', // 1
+                      '#90cd97', // 2
+                      '#f6aac9', // 3
+                      '#bfa554', // 4
+                      '#bc99c7', // 5
+                      '#eddd46', // 6
+                      '#f07e6e', // 7
+                      ]}
+    //
+    return {
+        CRITERIA_SERIALIZED : CRITERIA_SERIALIZED,
+        REFERENCES_SERIALIZED : REFERENCES_SERIALIZED,
+        SCR_FORM_ACTION : SCR_FORM_ACTION,
+        RDID : RDID,
+        PRESET : PRESET,
+        USER_SUBMITTED : USER_SUBMITTED,
+        makeReportData : makeReportData,
+        loadReport : loadReport,
+        showTransaction : showTransaction,
+        COLORS : COLORS
+    };
+})();
+
+/**
+ * Helper to retrieve report related data from radar through the interceptas report pages.
+ */
+var DATAPIPE = (function() {
+    var OUTPUT_TYPE_KEY = "fmt";
+    var OUTPUT_TYPE_HTML_FRAGMENT = "html_fragment";
+    var OUTPUT_TYPE_JSON = "json";
+    var url = RPT.SCR_FORM_ACTION;
+    /*
+     * Replace innerHTML (and execute inline scripts) into "elementRef" with result of ajax post of "data".
+     *  eg. DATAPIPE.loadFragment({a:1,b:2},document.getElementById('div1'));
+     */
+    function loadFragment(data, elementRef) {
+        if (typeof data !== 'undefined') {
+            data[OUTPUT_TYPE_KEY] = OUTPUT_TYPE_HTML_FRAGMENT;
+            data[RPT.PRESET] = true;
+            data[RPT.USER_SUBMITTED] = true;
+            jQuery(elementRef).load(url, toPostableJson(data), function(responseText,textStatus,jqXHR) {
+                if ("success" != textStatus && "notmodified" != textStatus) {
+                    throw ({'message':'Error loading fragment:'+jqXHR.status+' '+jqXHR.statusText});
+                }
+            });
+        }
+    }
+    /*
+     * Retrieve result of ajax post of "data". Invokes the function "callback" with the result as argument.
+     *  eg. DATAPIPE.getFragment({a:1,b:2},function(recvd){console.log('recvd:'+recvd);});
+     */
+    function getFragment(data, callback) {
+        if (typeof data !== 'undefined') {
+            data[OUTPUT_TYPE_KEY] = OUTPUT_TYPE_HTML_FRAGMENT;
+            data[RPT.PRESET] = true;
+            data[RPT.USER_SUBMITTED] = true;            
+            jQuery.post(url, toPostableJson(data))
+                  .done(function(recvd) {
+                          if (typeof callback === 'function') {
+                            callback(recvd);
+                          }
+                   })
+                  .fail(function(jqXHR,textStatus,errorThrown) {
+                          if (console) {
+                            console.log('error gettingFragment'+textStatus+','+errorThrown+' for '+data);
+                          }
+                   });
+        }
+    }
+    /*
+     * Retrieve result of ajax post of "data". Expecting result to be valid JSON.
+     * Result is parsed into a javascript literal. Invokes the function "callback" with the result as argument.
+     *  eg. DATAPIPE.getJson({a:1,b:2},function(recvd){console.log('recvd:'+recvd);});
+     */
+    function getJson(data, callback) {
+        if (typeof data !== 'undefined') {
+            data[OUTPUT_TYPE_KEY] = OUTPUT_TYPE_JSON;
+            data[RPT.PRESET] = true;
+            data[RPT.USER_SUBMITTED] = true;            
+            jQuery.post(url, toPostableJson(data))
+                  .done(function(recvd) {
+                          if (typeof callback === 'function') {
+                            try {
+                              callback(JSON.parse(recvd));
+                            } catch(e) {
+                              if (console) {
+                                console.log('error '+e+' gettingJson for\n'+data+'\ngot '+recvd);
+                              }
+                              callback({'statusMesg':'Error retrieving data.'});
+                            }
+                          }})
+                  .fail(function(jqXHR,textStatus,errorThrown) {
+                              if(console) {
+                                console.log('error gettingjson '+textStatus+','+errorThrown+' for '+data);
+                              }
+                              if (typeof callback === 'function') {
+                                  callback({'statusMesg':'Error retrieving data..'});
+                              }
+                          });
+        }
+    }
+    /*
+     * 
+     */
+    function toPostableJson(data) {
+        var postableArray = [];
+        var dataKeys = Object.keys(data);
+        for (var i = 0; i < dataKeys.length; i++) {
+            var dataKey = dataKeys[i];
+            var dataValue = data[dataKey];
+            if (Array.isArray(dataValue)) {
+                for (var j = 0; j < dataValue.length; j++) {
+                    postableArray.push(dataKey + '=' + encodeURIComponent(dataValue[j]));
+                }
+            } else {
+                postableArray.push(dataKey + '=' + encodeURIComponent(dataValue));
+            }
+        }
+        return postableArray.join('&');
+    }
+    
+    return {
+        loadFragment : loadFragment,
+        getFragment : getFragment,
+        getJson : getJson,
+        toPostableJson : toPostableJson
+    };
+})();
+
+var MATH = (function() {
+    // returns slope, intercept of the line
+    function leastSquares(xSeries, ySeries) {
+        var reduceSumFunc = function(prev, cur) { return prev + cur; };
+        var xBar = xSeries.reduce(reduceSumFunc) * 1.0 / xSeries.length;
+        var yBar = ySeries.reduce(reduceSumFunc) * 1.0 / ySeries.length;
+        var ssXX = xSeries.map(function(d) { return Math.pow(d - xBar, 2); })
+            .reduce(reduceSumFunc);
+        var ssYY = ySeries.map(function(d) { return Math.pow(d - yBar, 2); })
+            .reduce(reduceSumFunc);
+        var ssXY = xSeries.map(function(d, i) { return (d - xBar) * (ySeries[i] - yBar); })
+            .reduce(reduceSumFunc);
+        var slope = ssXY / ssXX;
+        var intercept = yBar - (xBar * slope);
+        //var rSquare = Math.pow(ssXY, 2) / (ssXX * ssYY);
+        return [slope, intercept];
+    }
+    //
+    return {
+        leastSquares : leastSquares
+    };
+})();
+
+
+    
+    </script>   
+
+</head>
+  
+ <body >
+ <!-- standard_report_template -->
+  <div class="mainLayout">
+
+    <div class="section">
+      <div class="title1">Recommendation Codes Rate</div>
+    </div> <!-- section -->
+  
+    <input type="hidden" id="criteria" value="{&quot;dp_p&quot;:[&quot;d1&quot;],&quot;h&quot;:[&quot;5237260000000004022&quot;],&quot;dp_w&quot;:[&quot;d1&quot;],&quot;vt&quot;:[&quot;5237260000000002081&quot;]}">
+  
+    <div class="section">
+      
+
+
+<div class="container rc-container">
+  <div class="row rc-title-row">
+    <div class="col-md-4 rc-title1">Report Criteria</div>
+    <div class="col-md-8 rc-title2"><label class="rc-title-label">Date Period:</label>  <label class="rc-title-value">May 17, 2015 12:00:00 AM - May 18, 2015 12:00:00 AM</label></div>
+  </div>
+  <hr class="rc-divider">
+  
+    
+      <div class="row rc-criteria-row">
+        <div class="col-md-2"><label class="rc-label">Data Source:</label></div>
+        <div class="col-md-10"><label class="rc-value">Best Buy Production</label></div>
+      </div>
+    
+  
+    
+      <div class="row rc-criteria-row">
+        <div class="col-md-2"><label class="rc-label">Data Type:</label></div>
+        <div class="col-md-10"><label class="rc-value">Best Buy Orders</label></div>
+      </div>
+    
+  
+    
+  
+</div>
+
+    </div> <!-- section -->
+  
+    <div class="section">
+      <div id="RecommendationCodesRate_status_mesg" class="msg"></div>
+    </div> <!-- section -->
+  
+    <div class="section">
+      <div id="main_container">
+        
+
+<style type="text/css">
+/*
+  div#FRAGMENT_RecommendationCodesRate text.st0 {
+    stroke: none;
+    fill: #999999;
+    text-anchor: end;
+    font-size: 14px;
+    font-weight: bold;
+    letter-spacing: 4px;
+  }
+  div#FRAGMENT_RecommendationCodesRate div.st1 {
+    color:#64a3a8;
+    font-size: 14px;
+    font-weight: bold;
+    letter-spacing: 4px;
+    text-align:center;
+    padding:12px
+  }
+  */
+  
+  
+  div#FRAGMENT_RecommendationCodesRate div.rec-cell {
+  border:1px solid black;
+    padding:20px 20px 20px 20px;
+  }  
+  
+  div#FRAGMENT_RecommendationCodesRate div.rec-cell0 {
+    text-align:center;
+    color:#64a3a8;
+    font-weight:bold;
+    font-size: 12px;
+    padding:0 0 6px 0;
+  }
+  div#FRAGMENT_RecommendationCodesRate .donut text {
+    fill: #606060;
+    font-size: 18px;
+    font-weight:bold;
+    text-anchor: middle;
+  }  
+  div#FRAGMENT_RecommendationCodesRate path.sparkLine {
+    stroke: #696969;
+    stroke-width: 1;
+    fill: none;
+  }
+  div#FRAGMENT_RecommendationCodesRate .axis path,.axis line {
+    fill: none;
+    stroke: grey;
+    stroke-width: 1;
+    shape-rendering: crispEdges;
+  }
+  div#FRAGMENT_RecommendationCodesRate .trend2-up {
+    fill:#808080;
+    stroke-width:0;
+  }
+  div#FRAGMENT_RecommendationCodesRate .trend2-down {
+    fill:#808080;
+    stroke-width:0;
+  }
+  /*
+  table#RecommendationCodesRate_layout td {
+    padding:12px 20px 12px 20px;
+  }
+  */
+  div#FRAGMENT_RecommendationCodesRate .sparkLineContainer {
+    padding:6px 0 0 0;  
+  }
+  /*
+  div#RecommendationCodesRate_q_tv {
+    text-align:center;
+    color: maroon;
+    font-size: 1.8em;
+    font-weight:bold;
+  }
+  div#RecommendationCodesRate_q_tl {
+    text-align:center;
+    color:#c0c0c0;
+    padding:0 0 28px 0;
+  }
+  div#RecommendationCodesRate_q_cv {
+    text-align:center;
+    color: maroon;
+    font-size: 1.8em;
+    font-weight:bold;
+    letter-spacing:2px;
+  }
+  div#RecommendationCodesRate_q_cl {
+    text-align:center;
+    color:#c0c0c0;
+  }
+  td.RecommendationCodesRate_dtcs0 {
+      text-align:right;
+      color:#64a3a8;
+      font-weight:bold;
+      font-size: 12px;
+      padding:10px 6px 10px 2px !important;
+  }
+  td.RecommendationCodesRate_dtcs1 {
+      text-align:right;
+      color:maroon;
+      padding:0px 8px 0px 0px !important;
+  }
+  td.RecommendationCodesRate_dtcs2 {
+      padding:2px !important;
+  }
+  td.RecommendationCodesRate_dtcs3 {
+      text-align:right;
+      color:maroon;
+      font-weight:bold;
+      font-size: 12px;
+      padding:2px !important;
+  }
+  */
+</style>
+
+<div id="FRAGMENT_RecommendationCodesRate">
+  <div class="tb1"><i id="RecommendationCodesRate_spinner" class="spinner1 fa-spin" style="display: none;"></i><span class="tb1" id="RecommendationCodesRate_execOn" onclick="RecommendationCodesRate.loadData()">May 18, 2015 2:32:20 PM<i class="refresh1"></i></span></div>
+  <div class="title2"></div>
+  
+  <div class="section">
+    <div id="RecommendationCodesRate_status_mesg" class="msg"></div>
+  </div> <!-- section -->  
+
+  <div id="RecommendationCodesRate_rec_section">
+    <table>
+     <tbody>
+       <tr id="RecommendationCodesRate_rec_data">
+     <td>
+     
+     <div class="rec-cell">
+     
+       <div class="rec-cell0">REVIEW</div>
+       <div id="RecommendationCodesRate_rec_donut0"><svg width="120" height="120" class="donut">
+       <g transform="translate(60,60)"><path d="M3.67394039744206e-15,-60A60,60 0 0,1 59.42768554179907,8.2674174410783L41.59937987925935,5.78719220875481A42,42 0 0,0 2.5717582782094417e-15,-42Z" fill="#88bde6" transform="rotate(-180)"></path>
+       <path d="M59.42768554179907,8.2674174410783A60,60 0 1,1 4.226888398968133e-14,-60L2.958821879277693e-14,-42A42,42 0 1,0 41.59937987925935,5.78719220875481Z" fill="#e8e8e8" transform="rotate(-180)"></path>
+       <text x="0" y="0">27.20%</text>
+       <path d="M0 10 l12 12 l-24 0 z" class="trend2-up"></path></g></svg>
+       </div>
+       <div id="RecommendationCodesRate_rec_trend0">
+       <svg width="120" height="48" class="sparkLineContainer">
+       <g transform="translate(0,6)"><path class="sparkLine" d="M0,32Q4.173913043478261,16,5.217391304347826,16C6.782608695652174,16,8.869565217391305,30.8,10.434782608695652,32S14.08695652173913,23.4,15.652173913043478,24S19.304347826086957,36,20.869565217391305,36S24.52173913043478,28.2,26.08695652173913,24S29.73913043478261,8.000000000000004,31.304347826086957,8.000000000000004S34.95652173913043,22.8,36.52173913043478,24S40.173913043478265,14.8,41.73913043478261,16S45.391304347826086,34.4,46.95652173913043,32S50.60869565217391,4.800000000000001,52.17391304347826,0S55.826086956521735,-0.6000000000000001,57.391304347826086,0S61.04347826086957,2.7999999999999994,62.608695652173914,4S66.26086956521739,8.600000000000003,67.82608695652173,8.000000000000004S71.47826086956522,-0.5999999999999995,73.04347826086956,0S76.69565217391305,12.6,78.26086956521739,12S81.91304347826087,-7,83.47826086956522,-4S87.13043478260869,26.6,88.69565217391303,32S92.34782608695652,33.2,93.91304347826086,32S97.56521739130436,28.8,99.1304347826087,24S102.78260869565217,1.2000000000000002,104.34782608695652,0S108,13,109.56521739130434,16S113.21739130434783,19.4,114.78260869565217,20Q115.82608695652173,20.4,120,20">
+       </path></g></svg>
+       </div>
+     
+     </div>
+     
+     </td>
+     
+     <td>
+     <div class="rec-cell">
+       <div class="rec-cell0">REJECT</div><div id="RecommendationCodesRate_rec_donut1"><svg width="120" height="120" class="donut"><g transform="translate(60,60)"><path d="M3.67394039744206e-15,-60A60,60 0 0,1 17.822494894622093,-57.29187268479858L12.475746426235464,-40.104310879359005A42,42 0 0,0 2.5717582782094417e-15,-42Z" fill="#fbb258" transform="rotate(-180)"></path><path d="M17.822494894622093,-57.29187268479858A60,60 0 1,1 4.226888398968133e-14,-60L2.958821879277693e-14,-42A42,42 0 1,0 12.475746426235464,-40.104310879359005Z" fill="#e8e8e8" transform="rotate(-180)"></path><text x="0" y="0">4.80%</text><path d="M-12 10 l24 0 l-12 12 z" class="trend2-down"></path></g></svg></div><div id="RecommendationCodesRate_rec_trend1"><svg width="120" height="48" class="sparkLineContainer"><g transform="translate(0,6)"><path class="sparkLine" d="M0,32Q4.173913043478261,19.2,5.217391304347826,16C6.782608695652174,11.2,8.869565217391305,1.8000000000000003,10.434782608695652,0S14.08695652173913,2.1999999999999997,15.652173913043478,4S19.304347826086957,13.2,20.869565217391305,12S24.52173913043478,-7.6000000000000005,26.08695652173913,-4S29.73913043478261,32.4,31.304347826086957,36S34.95652173913043,22.4,36.52173913043478,20S40.173913043478265,21.8,41.73913043478261,20S45.391304347826086,7.400000000000004,46.95652173913043,8.000000000000004S50.60869565217391,22.8,52.17391304347826,24S55.826086956521735,14.2,57.391304347826086,16S61.04347826086957,34.8,62.608695652173914,36S66.26086956521739,24.6,67.82608695652173,24S71.47826086956522,35.6,73.04347826086956,32S76.69565217391305,0.6000000000000001,78.26086956521739,0S81.91304347826087,24.4,83.47826086956522,28S87.13043478260869,28.200000000000003,88.69565217391303,24S92.34782608695652,1.2000000000000002,93.91304347826086,0S97.56521739130436,14.799999999999999,99.1304347826087,16S102.78260869565217,10.400000000000004,104.34782608695652,8.000000000000004S108,-3.6,109.56521739130434,0S113.21739130434783,28.4,114.78260869565217,32Q115.82608695652173,34.4,120,24"></path>
+       </g></svg></div>
+     
+     </div>
+     </td>
+     
+     </tr></tbody>
+     
+    </table>
+  </div><!-- rec_section -->
+
+</div>
+
+<script>
+var RecommendationCodesRate = (function() {
+    var RPT_ID = '5237260000000000621';
+    var DATA = {};
+    var FID = 'RecommendationCodesRate';
+    //
+    function init() {
+        loadData();
+    }
+    //    
+    function loadData() {
+        document.getElementById(FID+'_execOn').innerHTML = '';
+        document.getElementById(FID+'_spinner').style.display = null;
+        var data = RPT.makeReportData(RPT_ID);
+        DATAPIPE.getJson(data, function(result){DATA=result;process()});
+    }
+    //
+    function process() {
+        if (DATA.statusMesg) {
+            document.getElementById(FID+'_status_mesg').innerHTML = DATA.statusMesg;
+        } else {
+            render(DATA);
+        }
+        document.getElementById(FID+'_spinner').style.display = 'none';
+    }
+    //
+    function getData() {
+        return DATA;
+    }
+    //
+    function render(data) {
+        document.getElementById(FID+'_execOn').innerHTML = data['execOn'] + '<i class="refresh1"></i>';
+        var recData = document.getElementById(FID + "_rec_data");
+        data["C"].forEach(function(d,i) {
+          var cellRef = recData.insertCell(-1);
+          var html = "";
+          html += '<div class="rec-cell0">' + d.n + '</div>';
+          html += '<div id="'+FID +'_rec_donut' + i + '"></div>';
+          html += '<div id="'+FID +'_rec_trend' + i + '"></div>';
+          cellRef.innerHTML = html;
+          renderDonut(document.getElementById(FID+'_rec_donut'+i), d.p, d.pf, d.i, RPT.COLORS.L[i]);
+          generateSparkline(document.getElementById(FID+'_rec_trend'+i), d.V);
+        });
+    }
+    //
+    function renderDonut(anchorRef, rawValue, displayValue, trend, colour) {
+        var html = "";
+        var width = 120;
+        var radius = (width/2);
+        var donutWidth = 18;
+        rawValue = 100*parseFloat(rawValue);
+        
+        var svg = d3.select(anchorRef)
+            .append('svg')
+            .attr('width', width)
+            .attr('height', width)
+            .attr("class","donut")
+            .append('g')
+            .attr('transform', 'translate('+radius+','+radius+')');  
+        var arc = d3.svg.arc()
+            .innerRadius(radius - donutWidth)
+            .outerRadius(radius);
+        var pie = d3.layout.pie()
+            .value(function(d){return d;})
+            .sort(null);  
+        var path = svg.selectAll('path')
+            .data(pie([rawValue,(100-rawValue)]))
+            .enter()
+            .append('path')
+            .attr('d', arc)
+            .attr('fill', function(d,i){return [colour,'#e8e8e8'][i];})
+            .attr("transform","rotate(-180)");  
+
+        svg.append('text')
+            .attr("x",0)
+            .attr("y",0)
+            .text(displayValue);
+        if (trend < 0) {
+          svg.append("path")
+              .attr("d","M-12 10 l24 0 l-12 12 z")
+              .attr("class","trend2-down");
+        } else if (trend > 0) {
+          svg.append("path")
+              .attr("d","M0 10 l12 12 l-24 0 z")
+              .attr("class","trend2-up");    
+        }
+    }
+    //
+    function generateSparkline(anchorRef, valuesArray) {
+      var margin = {top: 6, right: 0, bottom: 6, left: 0};
+      var width = 120 - margin.left - margin.right;
+      var height = 48 - margin.top - margin.bottom;
+      var catsArray = d3.range(valuesArray.length);
+      var xScale = d3.scale.linear()
+                  .range([0, width])
+                  .domain([0,catsArray.length-1]);
+      var yScale = d3.scale.linear()
+                  .range([height, 0])
+                  .domain(d3.extent(valuesArray));
+      var sparkline = d3.svg.line()
+                  .x(function(d) { return xScale(parseInt(d)); })
+                  .y(function(d) { return yScale(parseInt(valuesArray[d])); })
+                  .interpolate('cardinal');
+      var svg = d3.select(anchorRef)
+                  .append("svg")
+                  .attr("width", width + margin.left + margin.right)
+                  .attr("height", height + margin.top + margin.bottom)
+                  .attr("class","sparkLineContainer")
+                  .append("g")
+                  .attr("transform","translate(" + margin.left + "," + margin.top + ")");              
+      svg.append("path")
+                  .attr("class", "sparkLine")
+                  .attr("d", sparkline(catsArray));
+    }
+    //
+    return {
+      init : init,
+      RPT_ID : RPT_ID,
+      getData : getData,
+      loadData : loadData
+    };
+})();
+
+//RecommendationCodesRate.init();
+</script>
+      </div> <!-- main_container -->
+    </div> <!-- section -->  
+    
+    <div class="section">
+      
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-4 sflabel al">© 2007-2013 Accertify, Inc.</div>
+    <div class="col-md-4 sflabel am">CONFIDENTIAL</div>
+    <div class="col-md-4 sflabel ar">(host admin) May 18, 2015 2:32:18 PM</div>
+  </div>
+</div>
+
+    </div> <!-- section -->
+    
+  </div> <!-- mainLayout -->
+  
+</body></html>

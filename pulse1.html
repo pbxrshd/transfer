@@ -506,15 +506,15 @@ div.expand-links {
 var DATA = 
 {
 "rec":[
-        {"n":"REVIEW","v":"0.272","vf":"27.2%","V":["1","5","1","3","0","3","7","3","5","1","9","9","8","7","9","6","10","1","1","3","9","5","4","4"],"t":"1"},
-        {"n":"REJECT","v":"0.048","vf":"4.8%","V":["1","5","9","8","6","10","0","4","4","7","3","5","0","3","1","9","2","3","9","5","7","9","1","3"],"t":"-1"}
+        {"n":"REVIEW","p":"0.272","pf":"27.2%","c":"","cf":"","V":["1","5","1","3","0","3","7","3","5","1","9","9","8","7","9","6","10","1","1","3","9","5","4","4"],"i":"1"},
+        {"n":"REJECT","p":"0.048","pf":"4.8%","c":"","cf":"","V":["1","5","9","8","6","10","0","4","4","7","3","5","0","3","1","9","2","3","9","5","7","9","1","3"],"i":"-1"}
       ],
 "res":[
         {"n":"REVIEW","cf":"24,631","p":"0.2371","pf":"23.71%"},
         {"n":"ACCEPT","cf":"5,329","p":"0.4823","pf":"48.23%"},
         {"n":"DENY","cf":"97","p":"0.1235","pf":"12.35%"}
       ],
-"q": {"atf":"8.4 mins","cf":"4,782"}
+"q": {"vf":"8.4 mins","cf":"4,782"}
 };
 
 
@@ -534,7 +534,7 @@ function render(data) {
     html += '<div id="rec_donut' + i + '"></div>';
     html += '<div id="rec_trend' + i + '"></div>';
     cellRef.innerHTML = html;
-    renderDonut(document.getElementById('rec_donut'+i), d.v, d.vf, d.t, colours[i]);
+    renderDonut(document.getElementById('rec_donut'+i), d.p, d.pf, d.i, colours[i]);
     generateSparkline(document.getElementById('rec_trend'+i), d.V);
     
   });
@@ -575,7 +575,7 @@ function render(data) {
   });   
 
 /* queue */
-  document.getElementById("q_tv").innerHTML = data["q"]["atf"];
+  document.getElementById("q_tv").innerHTML = data["q"]["vf"];
   document.getElementById("q_cv").innerHTML = data["q"]["cf"];
 }
 
@@ -720,7 +720,6 @@ function generateBar1(value, color) {
 table#layout td {
   padding:12px 20px 12px 20px;
 }
-
 
 .sparkLineContainer {
   padding:6px 0 0 0;  
