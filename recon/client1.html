@@ -25,7 +25,7 @@
         console.log('socket opened...');
     };
     socket.onmessage = function (message) {
-        content.innerHTML += message.data +'<br />';
+        content.innerHTML = message.data +'<br />';
     };
     socket.onerror = function (error) {
         console.log('WebSocket error: ' + error);
