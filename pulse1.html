@@ -519,7 +519,8 @@ var DATA =
 
 
 function init() {
-    render(DATA);
+    //render(DATA);
+    arctest1();
 }
 
 function render(data) {
@@ -565,8 +566,14 @@ function render(data) {
   });   
   // col2 p
   data["res"].forEach(function(d,i){
-    html = generateBar1(d.p, ['#90cd97','#f6aac9','#bfa554','#bc99c7','#eddd46'][i]);
+    //html = generateBar1(d.p, ['#90cd97','#f6aac9','#bfa554','#bc99c7','#eddd46'][i]);
+    //document.getElementById('dc_'+i+'_2').innerHTML = html;
+    
+    html = generateBar2(['#90cd97','#f6aac9','#bfa554','#bc99c7','#eddd46'][i],'testres');
     document.getElementById('dc_'+i+'_2').innerHTML = html;
+    var widthValue = (100 *parseFloat(d.p))/2;
+    d3.select(document.querySelector('#dc_'+i+'_2 .testres')).transition().duration(1000).style('width',widthValue);
+    
   });   
   // col3 pf
   data["res"].forEach(function(d,i){
@@ -580,6 +587,50 @@ function render(data) {
 }
 
 function renderDonut(anchorRef, rawValue, displayValue, trend, colour) {
+  var html = "";
+  var width = 120;
+  var radius = (width/2);
+  var donutWidth = 18;
+  rawValue = 100*parseFloat(rawValue);
+  
+  var svg = d3.select(anchorRef)
+      .append('svg')
+      .attr('width', width)
+      .attr('height', width)
+      .attr("class","donut")
+      .append('g')
+      .attr('transform', 'translate('+radius+','+radius+')');  
+  var arc = d3.svg.arc()
+      .innerRadius(radius - donutWidth)
+      .outerRadius(radius);
+  var pie = d3.layout.pie()
+      .value(function(d){return d;})
+      .sort(null);  
+  var path = svg.selectAll('path')
+      .data(pie([rawValue,(100-rawValue)]))
+      .enter()
+      .append('path')
+      .attr('d', arc)
+      .attr("transform","rotate(-180)")
+      .attr('fill', function(d,i){return [colour,'#e8e8e8'][i];})
+      ;
+  svg.append('text')
+      .attr("x",0)
+      .attr("y",0)
+      .text(displayValue);
+  if (trend < 0) {
+    svg.append("path")
+        .attr("d","M-12 10 l24 0 l-12 12 z")
+        .attr("class","trend2-down");
+  } else if (trend > 0) {
+    svg.append("path")
+        .attr("d","M0 10 l12 12 l-24 0 z")
+        .attr("class","trend2-up");    
+  }
+}
+
+
+function renderDonutOrig(anchorRef, rawValue, displayValue, trend, colour) {
   var html = "";
   var width = 120;
   var radius = (width/2);
@@ -621,6 +672,7 @@ function renderDonut(anchorRef, rawValue, displayValue, trend, colour) {
   }
 }
 
+
 function generateSparkline(anchorRef, valuesArray) {
   var margin = {top: 6, right: 0, bottom: 6, left: 0};
   var width = 120 - margin.left - margin.right;
@@ -655,6 +707,63 @@ function generateBar1(value, color) {
   html = '<div style="width:50px;height:12px;background-color:#f0eceb;"><div style="width:' + value + 'px;background-color:'+color+';height:12px;"></div></div>';
   return html;
 }
+
+function generateBar2(color, classValue) {
+  var html = '';
+  html = '<div style="width:50px;height:12px;background-color:#f0eceb;"><div style="width:0px;background-color:'+color+';height:12px;" class="'+classValue+'"></div></div>';
+  return html;
+}
+
+// see http://bl.ocks.org/mbostock/5100636 arc tweening
+function arctest1() {
+ var tau = 2 * Math.PI;
+ var extents = {w:500,h:500};
+ 
+ var arc = d3.svg.arc()
+    .innerRadius(180)
+    .outerRadius(240)
+    .startAngle(tau/2);
+ 
+ 
+function arcTween(transition, newAngle) {
+  transition.attrTween("d", function(d) {
+  var interpolate = d3.interpolate(d.endAngle, newAngle);
+    return function(t) {
+      d.endAngle = interpolate(t);
+      return arc(d);
+    };
+  });
+} 
+ 
+ var svg = d3.select('#test1')
+      .append('svg')
+      .attr('width', extents.w)
+      .attr('height', extents.h)
+      .append("g")
+      .attr("transform", "translate(" + extents.w / 2 + "," + extents.h / 2 + ")");
+      
+ var background = svg.append("path")
+    .datum({endAngle: 2*tau})
+    .style("fill", "#ddd")
+    .attr("d", arc);      
+  /*      
+  var foreground = svg.append("path")
+    .datum({endAngle: .127 * tau})
+    .style("fill", "orange")
+    .attr("d", arc);      
+  */    
+  var foreground = svg.append("path")
+    .datum({endAngle: tau/2})
+    .style("fill", "orange")
+    .attr("d", arc);      
+
+  foreground.transition().duration(750).call(arcTween,.127 * tau + (tau/2));  
+    
+}
+
+
+
+
 
     </script>  
 
@@ -835,6 +944,11 @@ td.dtcs3 {
      
   </table>
 
+  
+  <hr />
+  <div id="test1" style="border:1px solid silver;">
+  
+  </div>
  
  
  <script>init();</script>
