@@ -519,8 +519,8 @@ var DATA =
 
 
 function init() {
-    //render(DATA);
-    arctest1();
+    render(DATA);
+    //arctest1();
 }
 
 function render(data) {
@@ -566,9 +566,6 @@ function render(data) {
   });   
   // col2 p
   data["res"].forEach(function(d,i){
-    //html = generateBar1(d.p, ['#90cd97','#f6aac9','#bfa554','#bc99c7','#eddd46'][i]);
-    //document.getElementById('dc_'+i+'_2').innerHTML = html;
-    
     html = generateBar2(['#90cd97','#f6aac9','#bfa554','#bc99c7','#eddd46'][i],'testres');
     document.getElementById('dc_'+i+'_2').innerHTML = html;
     var widthValue = (100 *parseFloat(d.p))/2;
@@ -586,12 +583,29 @@ function render(data) {
   document.getElementById("q_cv").innerHTML = data["q"]["cf"];
 }
 
+
+/*
+  tweening helper function for transitions on d3 arcs.
+  arcRef is the d3 arc.
+  newAngle is the new ending angle, in % of 2pi, so 0.127 to show 12.7%
+  @see http://bl.ocks.org/mbostock/5100636
+*/
+function arcTween(transition, arcRef, newAngle) {
+  newAngle = newAngle * 2 * Math.PI + Math.PI; // shift relative to 6 o'clock and cw
+  transition.attrTween("d", function(d) {
+  var interpolate = d3.interpolate(d.endAngle, newAngle);
+    return function(t) {
+      d.endAngle = interpolate(t);
+      return arcRef(d);
+    };
+  });
+} 
+
 function renderDonut(anchorRef, rawValue, displayValue, trend, colour) {
   var html = "";
   var width = 120;
   var radius = (width/2);
   var donutWidth = 18;
-  rawValue = 100*parseFloat(rawValue);
   
   var svg = d3.select(anchorRef)
       .append('svg')
@@ -599,21 +613,24 @@ function renderDonut(anchorRef, rawValue, displayValue, trend, colour) {
       .attr('height', width)
       .attr("class","donut")
       .append('g')
-      .attr('transform', 'translate('+radius+','+radius+')');  
+      .attr('transform', 'translate('+radius+','+radius+')'); // shifting origin to center
   var arc = d3.svg.arc()
       .innerRadius(radius - donutWidth)
-      .outerRadius(radius);
-  var pie = d3.layout.pie()
-      .value(function(d){return d;})
-      .sort(null);  
-  var path = svg.selectAll('path')
-      .data(pie([rawValue,(100-rawValue)]))
-      .enter()
-      .append('path')
-      .attr('d', arc)
-      .attr("transform","rotate(-180)")
-      .attr('fill', function(d,i){return [colour,'#e8e8e8'][i];})
-      ;
+      .outerRadius(radius)
+      .startAngle(Math.PI); // shifting origin from 12 to 6 o'clock
+  // draw background donut
+  svg.append("path")
+      .datum({endAngle: -Math.PI})
+      .style("fill", "#e8e8e8")
+      .attr("d", arc);  
+  // setup the foreground...
+  var foreground = svg.append("path")
+    .datum({endAngle: Math.PI})
+    .style("fill", colour)
+    .attr("d", arc);      
+  // ... and transition to render it
+  foreground.transition().duration(750).call(arcTween, arc, parseFloat(rawValue));       
+  
   svg.append('text')
       .attr("x",0)
       .attr("y",0)
@@ -628,6 +645,8 @@ function renderDonut(anchorRef, rawValue, displayValue, trend, colour) {
         .attr("class","trend2-up");    
   }
 }
+
+
 
 
 function renderDonutOrig(anchorRef, rawValue, displayValue, trend, colour) {
@@ -716,21 +735,21 @@ function generateBar2(color, classValue) {
 
 // see http://bl.ocks.org/mbostock/5100636 arc tweening
 function arctest1() {
- var tau = 2 * Math.PI;
  var extents = {w:500,h:500};
  
  var arc = d3.svg.arc()
     .innerRadius(180)
     .outerRadius(240)
-    .startAngle(tau/2);
+    .startAngle(Math.PI);
  
- 
-function arcTween(transition, newAngle) {
+ // newAngle 12.7% is 0.127
+function arcTween(transition, arcRef, newAngle) {
+  newAngle = newAngle * 2 * Math.PI + Math.PI;
   transition.attrTween("d", function(d) {
   var interpolate = d3.interpolate(d.endAngle, newAngle);
     return function(t) {
       d.endAngle = interpolate(t);
-      return arc(d);
+      return arcRef(d);
     };
   });
 } 
@@ -743,22 +762,31 @@ function arcTween(transition, newAngle) {
       .attr("transform", "translate(" + extents.w / 2 + "," + extents.h / 2 + ")");
       
  var background = svg.append("path")
-    .datum({endAngle: 2*tau})
+    .datum({endAngle: -Math.PI})
     .style("fill", "#ddd")
     .attr("d", arc);      
-  /*      
   var foreground = svg.append("path")
-    .datum({endAngle: .127 * tau})
-    .style("fill", "orange")
-    .attr("d", arc);      
-  */    
-  var foreground = svg.append("path")
-    .datum({endAngle: tau/2})
+    .datum({endAngle: Math.PI})
     .style("fill", "orange")
     .attr("d", arc);      
 
-  foreground.transition().duration(750).call(arcTween,.127 * tau + (tau/2));  
-    
+  foreground.transition().duration(750).call(arcTween,arc,0.05); 
+  /*
+  foreground
+    .transition()
+    .duration(750)
+    .call(
+      function (transition, newAngle) {
+        transition.attrTween("d", function(d) {
+          var interpolate = d3.interpolate(d.endAngle, newAngle);
+          return function(t) {
+            d.endAngle = interpolate(t);
+            return arc(d);
+          };
+        });
+      },
+    0.127 * 2 * Math.PI + Math.PI); // 12.7% is 0.127
+    */
 }
 
 
