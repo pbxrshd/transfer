@@ -107,3 +107,22 @@ function showPortClose() {
 function showError(error) {
    console.log('Serial port error: ' + error);
 }
+
+
+
+
+
+
+r clockwise
+f counter clockwise
+stepDwell can be as low as 2
+
+alpha   red-orange  1A
+beta    yellow      2B
+gamma   red-brown   1B
+delta   black       2A
+
+
+
+
+

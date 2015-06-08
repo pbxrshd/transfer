@@ -1,0 +1,134 @@
+
+
+CONCEPTS: 
+ 
+Working Tree: is the project directory where edits are done
+Bare Repository: is the structure that holds the project files and describes the repo, on a central remote server. 
+  edits are NOT done on bare repos. bare repos do NOT have working trees.
+Remote: is the bare repository is called.
+Local Repository: is connected to a remote central bare repo.
+Cloning: is how a local repo creates a working tree of a repo on a remote.
+Origin: local repo calls the remote it was cloned from "origin", by convention.
+Branch: structure that stores a series of commits in a repo. 
+  branch is also a pointer to the latest commit on that branch?
+Local Branch: a branch that exists on a repo.
+  remote repos can have local branches, but these CANNOT be worked on directly.
+  local repos can have local branches, which have working trees (which allow them to be worked on directly).
+  local repos can have local branches that just exist on the local repo.
+  local repos can also have remote branches.
+Remote Branch: a local branch on a local repo that is matched to a local branch on a remote repo.
+Tracking Branch: the local branch on a local repo that is matched to the local branch on the remote repo.
+Tracked Branch: the local branch on the remote that the local branch on the local repo is matched with.
+
+Commit: takes a snapshot of the current state of the staged working tree
+
+Index: staging area where changes to the working tree are collected, prior to being committed.
+Untracked: git does not know aout these files, they have never been added.
+Tracked: git knows about these files, they have been added at some point.
+Staged: this is a tracked file that has been modified and added to the index, but not yet committed from the index.
+Modified: this is a tracked file that has been changed since the last time it was staged.
+Unmodified: this is a tracked file that has not been changed, since the last time it was committed.
+
+HEAD
+head: a pointer to a commit that is the last commit on it's branch, and is not the parent of any other commit
+
+
+Fast-forward Merge: if the tracked branch is ahead of the tracking branch, and the tracking branch has no commits that are not in the tracked branch
+
+
+HOWTO: create a bare repository, to host a remote yourself
+ created using $ git init --bare
+ see http://www.thehorrors.org.uk/snippets/git-local-filesystem-remotes/
+ 
+HOWTO: create a local repository from an existing remote repository
+  use $ git init or $ git clone to get a working tree from a bare repo
+ 
+HOWTO: authenticate with github
+can authenticate with github using:
+ - username/password: this would be if you cloned using the https
+ - ssh: see how to setup for using this method.
+for password-less ssh connections to github
+ - added contents of ~/.ssh/id_dsa.pub to ssh keys from github settings
+ - test with ssh -T git@github.com
+ - see remotes using git remote -v
+ - to change to ssh git, from https
+  git remote set-url origin git@github.com:pbxrshd/scratch.git 
+ 
+HOWTO: set up the git config 
+  git stores configuration variables that control all aspects of how Git looks and operates. 
+  These variables can be stored in three different places:
+    /etc/gitconfig file: Contains values for every user on the system and all their repositories. If you pass the option --system to git config, it reads and writes from this file specifically.
+    ~/.gitconfig or ~/.config/git/config file: Specific to your user. You can make Git read and write to this file specifically by passing the --global option.
+    config file in the Git directory (that is, .git/config) of whatever repository you’re currently using: Specific to that single repository.
+  Each level overrides values in the previous level, so values in .git/config trump those in /etc/gitconfig.
+  You may see keys more than once, because Git reads the same key from different files 
+  (/etc/gitconfig and ~/.gitconfig, for example). In this case, Git uses the last 
+  value for each unique key it sees.
+  $ git config user.name check what Git thinks a specific key’s value is by typing git config <key>:
+  $ git config --list command to list all the settings Git can find at that point
+  $ git config --global user.name "John Doe"
+  $ git config --global user.email johndoe@example.com
+  If you want to override this with a different name or e-mail address for specific projects, 
+  you can run the command without the --global option when you’re in that project.
+
+HOWTO: create a git repo from an existing project that is not under source control
+  go to the root directory of the project
+  $ git init # this creates the necessary git repository files in the project folder
+  a local repo is created
+  the files can then be added and committed to the local repo
+  to put this repo under source control to a remote central server,
+  
+HOWTO: clone a remote repo into a local repo, using https
+  $ git clone https://httpsClone Url
+  this is useful if you just want to just get a copy of the project, and don't intend to make changes to be pushed
+  if you want to push changes, this will use username/password
+
+HOWTO: clone a remote repo into a local repo, using ssh
+  $ git clone git://sshCloneUrl
+  this can support ssh password-less authentication
+
+HOWTO: add a file
+  add is used to add a file to start being tracked
+  add is used to stage a tracked file
+  $ git add <file> # adds just the <file>
+  $ git add <directory> # recursively adds all files from <directory>
+  
+  
+HOWTO: use git short status
+$ git -s status
+ M file_that_was_modified_and_staged
+MM file_that_was modified_and_staged_and_then_modified_again
+A  new_file_that_is_being_staged_for_the_first_time
+M  file_that_has_been_modified_since_the_last_stage_but_not_yet_staged_again
+?? file_that_is_untracked
+  
+HOWTO: checkout a commit by it's SHA-ID
+ 
+HOWTO: know when to merge vs rebase 
+ 
+HOWTO: use blame to track which commit a piece of code was introduced in
+
+HOWTO: amend the last commit hat has not been pushed yet
+
+HOWTO: squash multiple commits into a single commit
+
+HOWTO: stash files temporarily
+
+workingDirectory -> index(stage,tracked) -> remoteRepo
+             git add                  git clone
+             git rm                   git push
+             git commit               git pull
+
+ 
+
+"HEAD" -  is a reference to the current (most recent) commit
+ 
+ 
+ git objects:
+ - blob is used to store file data
+ - tree can be thought of as a directory; it references other trees and blobs
+ - commit a commit points to a single tree
+ - tag marks a commit as special
+
+ref is a variable that holds an identifier to a single git object.
+
