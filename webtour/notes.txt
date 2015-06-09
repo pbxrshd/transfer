@@ -1,0 +1,7 @@
+https://github.com/zurb/joyride 
+http://tympanus.net/codrops/2010/12/21/website-tour/
+http://bootstraptour.com/
+http://www.sitepoint.com/web-tour-instructional-plugins/
+http://usablica.github.io/intro.js/
+http://github.hubspot.com/shepherd/
+

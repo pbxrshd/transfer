@@ -88,15 +88,58 @@ HOWTO: clone a remote repo into a local repo, using ssh
   this can support ssh password-less authentication
 
 HOWTO: add a file
-  add is used to add a file to start being tracked
-  add is used to stage a tracked file
-  $ git add <file> # adds just the <file>
-  $ git add <directory> # recursively adds all files from <directory>
+  $ git add untracked_file # add is used to add a file to start being tracked
+  $ git add already_tracked_but_just_modified_file # add is used to stage a tracked file
+  $ git add file_to_be_added # adds just this file
+  $ git add directory_to_be_added # recursively adds all files from this directory
   
   
 HOWTO: use git short status
-$ git -s status
- M file_that_was_modified_and_staged
+      In the short-format, the status of each path is shown as
+           XY PATH1 -> PATH2
+       where PATH1 is the path in the HEAD, and the " -> PATH2" part is shown only when PATH1 corresponds to a different path in the index/worktree (i.e. the file is renamed).
+       The XY is a two-letter status code.
+       The fields (including the ->) are separated from each other by a single space. If a filename contains whitespace or other nonprintable characters, that field will be
+       quoted in the manner of a C string literal: surrounded by ASCII double quote (34) characters, and with interior special characters backslash-escaped.
+       For paths with merge conflicts, X and Y show the modification states of each side of the merge. For paths that do not have merge conflicts, X shows the status of the
+       index, and Y shows the status of the work tree. For untracked paths, XY are ??. Other status codes can be interpreted as follows:
+       ·   ' ' = unmodified
+       ·   M = modified
+       ·   A = added
+       ·   D = deleted
+       ·   R = renamed
+       ·   C = copied
+       ·   U = updated but unmerged
+       Ignored files are not listed, unless --ignored option is in effect, in which case XY are !!.
+           X          Y     Meaning
+           -------------------------------------------------
+                     [MD]   not updated
+           M        [ MD]   updated in index
+           A        [ MD]   added to index
+           D         [ M]   deleted from index
+           R        [ MD]   renamed in index
+           C        [ MD]   copied in index
+           [MARC]           index and work tree matches
+           [ MARC]     M    work tree changed since index
+           [ MARC]     D    deleted in work tree
+           -------------------------------------------------
+           D           D    unmerged, both deleted
+           A           U    unmerged, added by us
+           U           D    unmerged, deleted by them
+           U           A    unmerged, added by them
+           D           U    unmerged, deleted by us
+           A           A    unmerged, both added
+           U           U    unmerged, both modified
+           -------------------------------------------------
+           ?           ?    untracked
+           !           !    ignored
+           -------------------------------------------------
+
+
+
+
+$ git -s status # 2 letter status code shows index state and working tree state
+ M tracked_file_that_is_modified_but_not_yet_staged
 MM file_that_was modified_and_staged_and_then_modified_again
 A  new_file_that_is_being_staged_for_the_first_time
 M  file_that_has_been_modified_since_the_last_stage_but_not_yet_staged_again

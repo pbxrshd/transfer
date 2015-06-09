@@ -1,0 +1,121 @@
+-- original query
+select attr,attrval,cnt,pct,
+medscore, min(medscore) over () minmedscore, max(medscore) over () maxmedscore,
+medamt, min(medamt) over () minmedamt, max(medamt) over () maxmedamt,
+totamt, min(totamt) over () mintotamt, max(totamt) over () maxtotamt 
+from (select * from (
+  select 'BILLING_CITY' attr, to_char(rh.BILLING_CITY) attrval, count(rh.BILLING_CITY) cnt, trunc(100*(ratio_to_report(count(*)) over()),2) pct, trunc(median(rh.score),2) medscore, trunc(median(rh.billing_amount),2) medAmt, trunc(sum(rh.billing_amount),2) totAmt 
+  from resolution_history rh where 1 = 1  and rh.is_fraud = 1     and ( rh.data_hierarchy_id in (5237260000000004702) ) and ( rh.virtual_table_id in (5237260000000002442) ) and rh.score > 100  AND rh.end_time >= TIMESTAMP'2015-06-08 00:00:00 -05:00'  AND rh.end_time < TIMESTAMP'2015-06-09 00:00:00 -05:00' group by rh.BILLING_CITY order by cnt desc )  where rownum <= 5
+ union all 
+select * from (
+  select 'BILLING_COUNTRY' attr, to_char(rh.BILLING_COUNTRY) attrval, count(rh.BILLING_COUNTRY) cnt, trunc(100*(ratio_to_report(count(*)) over()),2) pct, trunc(median(rh.score),2) medscore, trunc(median(rh.billing_amount),2) medAmt, trunc(sum(rh.billing_amount),2) totAmt 
+  from resolution_history rh where 1 = 1  and rh.is_fraud = 1     and ( rh.data_hierarchy_id in (5237260000000004702) ) and ( rh.virtual_table_id in (5237260000000002442) ) and rh.score > 100  AND rh.end_time >= TIMESTAMP'2015-06-08 00:00:00 -05:00'  AND rh.end_time < TIMESTAMP'2015-06-09 00:00:00 -05:00' group by rh.BILLING_COUNTRY order by cnt desc )  where rownum <= 5
+ union all 
+select * from (
+  select 'PURCHASE_DATE' attr, to_char(rh.PURCHASE_DATE) attrval, count(rh.PURCHASE_DATE) cnt, trunc(100*(ratio_to_report(count(*)) over()),2) pct, trunc(median(rh.score),2) medscore, trunc(median(rh.billing_amount),2) medAmt, trunc(sum(rh.billing_amount),2) totAmt 
+  from resolution_history rh where 1 = 1  and rh.is_fraud = 1     and ( rh.data_hierarchy_id in (5237260000000004702) ) and ( rh.virtual_table_id in (5237260000000002442) ) and rh.score > 100  AND rh.end_time >= TIMESTAMP'2015-06-08 00:00:00 -05:00'  AND rh.end_time < TIMESTAMP'2015-06-09 00:00:00 -05:00' group by rh.PURCHASE_DATE order by cnt desc )  where rownum <= 5
+)
+
+
+-- farhan query
+SELECT
+ATTR,
+ATTRVAL,
+GROUPING (ATTR) G_ATTR,
+GROUPING (ATTRVAL) G_ATTRVAL,
+SUM(CNT) CNT,
+MAX(TOTAL_CNT) TOTAL_CNT,
+SUM(PCT) PCT,
+MEDIAN(MEDSCORE) MEDSCORE,
+MEDIAN(MEDAMT) MEDAMT,
+SUM(TOTAMT),
+MAX(GRANTAMT) GRANTAMT
+FROM (SELECT * FROM (
+  SELECT 'BILLING_CITY' ATTR, TO_CHAR(RH.BILLING_CITY) ATTRVAL, COUNT(RH.BILLING_CITY) CNT, SUM(COUNT(RH.BILLING_CITY)) OVER () TOTAL_CNT, TRUNC(100*(RATIO_TO_REPORT(COUNT(*)) OVER()),2) PCT, TRUNC(MEDIAN(RH.SCORE),2) MEDSCORE, TRUNC(MEDIAN(RH.BILLING_AMOUNT),2) MEDAMT, TRUNC(SUM(RH.BILLING_AMOUNT),2) TOTAMT, ROUND(SUM(SUM(RH.BILLING_AMOUNT)) OVER (),2) GRANTAMT
+  FROM RESOLUTION_HISTORY RH WHERE 1 = 1  AND RH.IS_FRAUD = 1     AND ( RH.DATA_HIERARCHY_ID IN (5237260000000004702) ) AND ( RH.VIRTUAL_TABLE_ID IN (5237260000000002442) ) AND RH.SCORE > 100  AND RH.END_TIME >= TIMESTAMP'2015-06-08 00:00:00 -05:00'  AND RH.END_TIME < TIMESTAMP'2015-06-09 00:00:00 -05:00' GROUP BY RH.BILLING_CITY ORDER BY CNT DESC )  WHERE ROWNUM <= 5
+UNION ALL
+SELECT * FROM (
+  SELECT 'BILLING_COUNTRY' ATTR, TO_CHAR(RH.BILLING_COUNTRY) ATTRVAL, COUNT(RH.BILLING_COUNTRY) CNT, SUM(COUNT(RH.BILLING_COUNTRY)) OVER () TOTAL_CNT, TRUNC(100*(RATIO_TO_REPORT(COUNT(*)) OVER()),2) PCT, TRUNC(MEDIAN(RH.SCORE),2) MEDSCORE, TRUNC(MEDIAN(RH.BILLING_AMOUNT),2) MEDAMT, TRUNC(SUM(RH.BILLING_AMOUNT),2) TOTAMT, ROUND(SUM(SUM(RH.BILLING_AMOUNT)) OVER (),2) GRANTAMT
+  FROM RESOLUTION_HISTORY RH WHERE 1 = 1  AND RH.IS_FRAUD = 1     AND ( RH.DATA_HIERARCHY_ID IN (5237260000000004702) ) AND ( RH.VIRTUAL_TABLE_ID IN (5237260000000002442) ) AND RH.SCORE > 100  AND RH.END_TIME >= TIMESTAMP'2015-06-08 00:00:00 -05:00'  AND RH.END_TIME < TIMESTAMP'2015-06-09 00:00:00 -05:00' GROUP BY RH.BILLING_COUNTRY ORDER BY CNT DESC )  WHERE ROWNUM <= 5
+UNION ALL
+SELECT * FROM (
+  SELECT 'PURCHASE_DATE' ATTR, TO_CHAR(RH.PURCHASE_DATE) ATTRVAL, COUNT(RH.PURCHASE_DATE) CNT, SUM(COUNT(RH.PURCHASE_DATE)) OVER () TOTAL_CNT, TRUNC(100*(RATIO_TO_REPORT(COUNT(*)) OVER()),2) PCT, TRUNC(MEDIAN(RH.SCORE),2) MEDSCORE, TRUNC(MEDIAN(RH.BILLING_AMOUNT),2) MEDAMT, TRUNC(SUM(RH.BILLING_AMOUNT),2) TOTAMT, ROUND(SUM(SUM(RH.BILLING_AMOUNT)) OVER (),2) GRANTAMT
+  FROM RESOLUTION_HISTORY RH WHERE 1 = 1  AND RH.IS_FRAUD = 1     AND ( RH.DATA_HIERARCHY_ID IN (5237260000000004702) ) AND ( RH.VIRTUAL_TABLE_ID IN (5237260000000002442) ) AND RH.SCORE > 100  AND RH.END_TIME >= TIMESTAMP'2015-06-08 00:00:00 -05:00'  AND RH.END_TIME < TIMESTAMP'2015-06-09 00:00:00 -05:00' GROUP BY RH.PURCHASE_DATE ORDER BY CNT DESC )  WHERE ROWNUM <= 5
+)
+GROUP BY ROLLUP (ATTR,(ATTRVAL))
+ORDER BY attr,g_attr,g_attrval,cnt desc;
+
+
+-- jbc
+this shows only resolutions 
+  grouped by billing city
+  within the timePeriod 
+  that are fraud 
+  and are filtered by the scoreCriterion
+shows 253 billing cities (counting blank separately, and (null) separately)
+total count is 402
+total billing_amount is 93375.74
+
+SELECT 
+  'BILLING_CITY' ATTR, 
+  TO_CHAR(RH.BILLING_CITY) ATTRVAL, 
+  COUNT(RH.BILLING_CITY) CNT, 
+  SUM(COUNT(RH.BILLING_CITY)) OVER () TOTAL_CNT, 
+  COUNT(*) OVER() PCT, 
+  TRUNC(MEDIAN(RH.SCORE),2) MEDSCORE, 
+  TRUNC(MEDIAN(RH.BILLING_AMOUNT),2) MEDAMT, 
+  TRUNC(SUM(RH.BILLING_AMOUNT),2) TOTAMT, 
+  ROUND(SUM(SUM(RH.BILLING_AMOUNT)) OVER (),2) GRANTAMT
+  FROM RESOLUTION_HISTORY RH WHERE 1 = 1  AND RH.IS_FRAUD = 1     
+  AND ( RH.DATA_HIERARCHY_ID IN (5237260000000004702) ) AND ( RH.VIRTUAL_TABLE_ID IN (5237260000000002442) ) 
+  AND RH.SCORE > 100  
+  AND RH.END_TIME >= TIMESTAMP'2015-06-08 00:00:00 -05:00'  AND RH.END_TIME < TIMESTAMP'2015-06-09 00:00:00 -05:00' 
+  GROUP BY RH.BILLING_CITY
+  
+-- jbcns
+this shows only resolutions
+  grouped by billing city
+  within the timePeriod 
+  that are fraud 
+  and are NOT filtered by the scoreCriterion
+shows 266 billing cities (counting blank separately, and (null) separately)
+total count is 426
+total billing_amount is 96090.26
+
+SELECT 
+  'BILLING_CITY' ATTR, 
+  TO_CHAR(RH.BILLING_CITY) ATTRVAL, 
+  COUNT(RH.BILLING_CITY) CNT, 
+  SUM(COUNT(RH.BILLING_CITY)) OVER () TOTAL_CNT, 
+  COUNT(*) OVER() PCT, 
+  TRUNC(MEDIAN(RH.SCORE),2) MEDSCORE, 
+  TRUNC(MEDIAN(RH.BILLING_AMOUNT),2) MEDAMT, 
+  TRUNC(SUM(RH.BILLING_AMOUNT),2) TOTAMT, 
+  ROUND(SUM(SUM(RH.BILLING_AMOUNT)) OVER (),2) GRANTAMT
+  FROM RESOLUTION_HISTORY RH WHERE 1 = 1  AND RH.IS_FRAUD = 1     
+  AND ( RH.DATA_HIERARCHY_ID IN (5237260000000004702) ) AND ( RH.VIRTUAL_TABLE_ID IN (5237260000000002442) ) 
+  --AND RH.SCORE > 100  
+  AND RH.END_TIME >= TIMESTAMP'2015-06-08 00:00:00 -05:00'  AND RH.END_TIME < TIMESTAMP'2015-06-09 00:00:00 -05:00' 
+  GROUP BY RH.BILLING_CITY
+
+  
+--jbcng
+SELECT 
+  TO_CHAR(RH.BILLING_CITY) ATTRVAL, 
+  RH.SCORE,
+  RH.BILLING_AMOUNT
+  FROM RESOLUTION_HISTORY RH WHERE 1 = 1  AND RH.IS_FRAUD = 1     
+  AND ( RH.DATA_HIERARCHY_ID IN (5237260000000004702) ) AND ( RH.VIRTUAL_TABLE_ID IN (5237260000000002442) ) 
+  AND RH.SCORE > 100  
+  AND RH.END_TIME >= TIMESTAMP'2015-06-08 00:00:00 -05:00'  AND RH.END_TIME < TIMESTAMP'2015-06-09 00:00:00 -05:00' 
+  
+--jbcngns
+SELECT 
+  TO_CHAR(RH.BILLING_CITY) ATTRVAL, 
+  RH.SCORE,
+  RH.BILLING_AMOUNT
+  FROM RESOLUTION_HISTORY RH WHERE 1 = 1  AND RH.IS_FRAUD = 1     
+  AND ( RH.DATA_HIERARCHY_ID IN (5237260000000004702) ) AND ( RH.VIRTUAL_TABLE_ID IN (5237260000000002442) ) 
+  --AND RH.SCORE > 100  
+  AND RH.END_TIME >= TIMESTAMP'2015-06-08 00:00:00 -05:00'  AND RH.END_TIME < TIMESTAMP'2015-06-09 00:00:00 -05:00' 
+  

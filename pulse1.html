@@ -566,11 +566,14 @@ function render(data) {
   });   
   // col2 p
   data["res"].forEach(function(d,i){
+    var widthPercent = Math.round(100*parseFloat(d.p));
+    generateBar3('#dc_'+i+'_2', widthPercent, ['#90cd97','#f6aac9','#bfa554','#bc99c7','#eddd46'][i]);
+    /*
     html = generateBar2(['#90cd97','#f6aac9','#bfa554','#bc99c7','#eddd46'][i],'testres');
     document.getElementById('dc_'+i+'_2').innerHTML = html;
     var widthValue = (100 *parseFloat(d.p))/2;
     d3.select(document.querySelector('#dc_'+i+'_2 .testres')).transition().duration(1000).style('width',widthValue);
-    
+    */
   });   
   // col3 pf
   data["res"].forEach(function(d,i){
@@ -582,6 +585,49 @@ function render(data) {
   document.getElementById("q_tv").innerHTML = data["q"]["vf"];
   document.getElementById("q_cv").innerHTML = data["q"]["cf"];
 }
+
+
+function generateBar3(anchorSelector, widthPercent, color) {
+  var extents = {width:50, height:12};
+  var widthValue = widthPercent/(100/extents.width);
+  var svg = d3.select(anchorSelector).append("svg")
+      .attr("width", extents.width)
+      .attr("height", extents.height);
+  svg.append("rect") // bg
+      .attr("width", extents.width)
+      .attr("height", extents.height)
+      .attr("fill",'#f0eceb');
+  svg.append("rect") // fg
+      .attr("width", 0)
+      .attr("height", extents.height)
+      .attr("fill",color)
+      .transition().duration(1000).attr('width',widthValue);
+      
+      /*
+  var html = '';
+  html = '<div style="width:50px;height:12px;background-color:#f0eceb;"><div style="width:0px;background-color:'+color+';height:12px;" class="'+classValue+'"></div></div>';
+  return html;
+  */
+
+  
+}
+
+function generateBar2(color, classValue) {
+  var html = '';
+  html = '<div style="width:50px;height:12px;background-color:#f0eceb;"><div style="width:0px;background-color:'+color+';height:12px;" class="'+classValue+'"></div></div>';
+  return html;
+}
+
+function generateBar1(value, color) {
+  var html = '';
+  value = (100 *parseFloat(value))/2;
+  html = '<div style="width:50px;height:12px;background-color:#f0eceb;"><div style="width:' + value + 'px;background-color:'+color+';height:12px;"></div></div>';
+  return html;
+}
+
+
+
+
 
 
 /*
@@ -720,18 +766,6 @@ function generateSparkline(anchorRef, valuesArray) {
 
 }
 
-function generateBar1(value, color) {
-  var html = '';
-  value = (100 *parseFloat(value))/2;
-  html = '<div style="width:50px;height:12px;background-color:#f0eceb;"><div style="width:' + value + 'px;background-color:'+color+';height:12px;"></div></div>';
-  return html;
-}
-
-function generateBar2(color, classValue) {
-  var html = '';
-  html = '<div style="width:50px;height:12px;background-color:#f0eceb;"><div style="width:0px;background-color:'+color+';height:12px;" class="'+classValue+'"></div></div>';
-  return html;
-}
 
 // see http://bl.ocks.org/mbostock/5100636 arc tweening
 function arctest1() {

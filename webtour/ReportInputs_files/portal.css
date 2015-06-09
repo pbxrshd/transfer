@@ -1,0 +1,285 @@
+#portal .portal-column {
+  float: left;
+  width: 31%;
+  margin-left: 2px;
+  padding-left: 2px;
+  padding-top: 5px;
+  min-width: 303px;
+}
+#portal .portal-column h2 {
+  text-align: center;
+  color:#EAEAEA;
+}
+
+#portal #portal-column-block-list {
+  position: absolute;
+  width: 400px;
+  top: 230px;
+  left: 0;
+  z-index: 10;
+  background-color: #FFEAB1;
+  padding: 0px;
+  border-left: 1px solid #888888;
+  border-right: 3px solid #555555;
+  border-top: 1px solid #888888;
+  border-bottom: 3px solid #555555;
+}
+#portal #portal-column-block-list .block {
+  margin: 5px;
+}
+#portal #portal-column-block-list .block .portletcontent {
+  display: none;
+}
+
+#portal .block {
+  margin-top: 15px;
+  margin-left: 5px;
+  margin-right: 5px;
+  padding: 0px;
+  border: 1px solid #AAAAAA;
+}
+#portal .block h3 {
+  margin: 0;
+
+  font-size:0.8em;
+  color:#333333;
+  font-weight:normal;
+  text-align:left;
+  background-color:#CCCCCC;
+  padding:5px;
+  padding-left:10px;
+
+}
+#portal .block .portletcontent {
+  padding: 0px;
+  overflow: auto;
+}
+#portal .block .block-toggle {
+  background-color:#CCCCCC;
+  display: block;
+  float: right;
+  width: 13px;
+  height: 12px;
+  background-repeat: no-repeat;
+  background-position: center;
+  cursor: pointer;
+  margin-left: 5px;
+}
+#portal .block .block-toggle span {
+  display: none;
+}
+#portal .block .block-close {
+  display: block;
+  float: right;
+  width: 13px;
+  height: 12px;
+  background-repeat: no-repeat;
+  background-position: center;
+  cursor: pointer;
+  margin-left: 3px;
+}
+#portal .block .block-close span {
+  display: none;
+}
+
+#portal .block .block-remove {
+  display: block;
+  float: right;
+  width: 13px;
+  height: 12px;
+  background-repeat: no-repeat;
+  background-position: center;
+  cursor: pointer;
+  margin-left: 3px;
+}
+#portal .block .block-remove span {
+  display: none;
+}
+
+
+#portal .block-hover {
+  border: 1px dashed #f00;
+  background: #F1F6FE;
+  color: #bbb;
+  text-align: center;
+}
+
+#portal .block-editmode {
+  background: #F1F6FE;
+  padding-bottom: 25px;
+}
+
+#portal .block-list-handle, #portal .handle {
+  cursor: move;
+  font-size:1.1em;
+  color:#333333;
+  font-weight:normal;
+  text-align:left;
+   background-color:#CCCCCC;
+  padding:5px;
+  padding-left:10px;
+}
+#portal .block-list-handle .block-close {
+  display: block;
+  float: right;
+  width: 13px;
+  height: 12px;
+  background-repeat: no-repeat;
+  background-position: center;
+  cursor: pointer;
+  margin-left: 3px;
+}
+#portal .block-list-handle .block-close span {
+  display: none;
+}
+
+
+
+* html body #portal .handle {
+  width: 100%;
+}
+#portal #portal-column-block-list .block .block-toggle {
+  display: none;
+}
+#portal #portal-column-block-list .block .block-close {
+  display: none;
+}
+
+#portal #portal-column-block-list .block .block-remove {
+  display: none;
+}
+
+
+
+
+
+/* this portion of the style is for the detail data panel on the transaction detail screen */
+.detailPanel  {
+  margin-top: 5px;
+  margin-left: 9px;
+  margin-right: 5px;
+  padding: 0px;
+  border: 1px solid #AAAAAA;
+  width: 93%;
+}
+.detailPanel .handle {
+  margin: 0;
+  font-size:0.8em;
+  color:#333333;
+  font-weight:normal;
+  text-align:left;
+  background-color:#CCCCCC;
+  padding:5px;
+  padding-left:10px;
+}
+.detailPanel .portletcontent {
+  padding: 0px;
+}
+
+.detailPanel .block-toggle {
+  display: block;
+  float: right;
+  width: 13px;
+  height: 12px;
+  background-repeat: no-repeat;
+  background-position: center;
+  cursor: pointer;
+  margin-left: 5px;
+}
+.detailPanel .block-toggle span {
+  display: none;
+}
+.detailPanel .block-close {
+  display: block;
+  float: right;
+  width: 13px;
+  height: 12px;
+  background-repeat: no-repeat;
+  background-position: center;
+  cursor: pointer;
+  margin-left: 3px;
+}
+.detailPanel .block-close span {
+  display: none;
+}
+
+.detailPanel .block-move {
+  display: block;
+  float: right;
+  width: 13px;
+  height: 12px;
+  background-repeat: no-repeat;
+  background-position: center;
+  cursor: pointer;
+  margin-left: 3px;
+}
+.detailPanel .block-move span {
+  display: none;
+}
+
+
+/* this portion of the style is for the portlet adder links */
+#portal .blocklike {
+  margin-top: 5px;
+  margin-left: 5px;
+  margin-right: 5px;
+  padding: 0px;
+  border: 1px solid #AAAAAA;
+}
+#portal .blocklike h3 {
+  margin: 0;
+  cursor: pointer;
+  font-size:0.8em;
+  color:#333333;
+  font-weight:normal;
+  text-align:left;
+  background-color:#CCCCCC;
+  padding:5px;
+  padding-left:10px;
+  height:19px;
+}
+
+
+/* this portion of the style is for the link panel on the transaction detail screen */
+#portal .block .hidden-element {
+  display: none;
+}
+#portal .block .hidden-cell {
+  display: none;
+  width: 0px;
+  margin: 0px;
+  padding: 0px;
+}
+#portal .block .visible-cell {
+  white-space: nowrap;
+}
+
+#portal .block .hidden-table {
+  display: none;
+  width: 0px;
+  margin: 0px;
+  padding: 0px;
+}
+#portal .block .visible-table {
+  white-space: nowrap;
+}
+
+.hiddenArrow {
+    display: none;
+}
+
+.portletHeaderRow {
+  font-weight: bold;
+  color:#AD002A;
+}
+
+.jsButtonText {
+  font-size: 0.8em;
+}
+
+.invisible {
+  display: none;
+  width: 0px;
+  margin: 0px;
+  padding: 0px;
+}

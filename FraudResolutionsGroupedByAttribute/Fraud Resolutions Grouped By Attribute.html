@@ -1,0 +1,1403 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0043)http://localhost:8081/report/rptcontrol/run -->
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Fraud Resolutions Grouped By Attribute</title>
+    <style type="text/css">
+html {
+  height: 100%;
+}
+
+body {
+  margin: 20;
+  padding: 0;
+}
+
+body,table {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 14px;
+  color: #434040;
+}
+
+h1 {
+  color: #800000;
+}
+
+h2 {
+
+}
+
+div.mainLayout {
+  display: table;
+  margin: 0 auto 10px auto;
+}
+
+div.section {
+  clear: both;
+  min-width: 1024px;
+  max-width: none !important;
+  margin: 0 auto 10px auto;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+div.settings1 {
+  font-size: 18px;
+  float: right;
+}
+
+div.br {
+  clear: both;
+}
+
+div.title1 {
+  clear: both;
+  min-width: 1024px;
+  max-width: none !important;
+  margin: 20px auto;
+  font-size:30px;
+  letter-spacing: 0.03em;
+  font-weight: normal;
+  text-transform: uppercase;
+  color: inherit;
+}
+div.title2 {
+  color: maroon;
+  font-size: 1.3em;
+  font-weight: bold;
+  padding: 6px 0px 12px 0px;
+}
+div.tb1 {
+  text-align:right;
+  font-size:0.8em;
+  color:silver;
+}
+span.tb1 {
+  cursor:pointer;
+}
+span.tb1:hover {
+  color:maroon;
+  font-weight: bold;
+}
+
+.footer1 {
+  margin: 0 auto 0 auto
+}
+
+/* common style directives */
+.em {
+  font-weight: bold;
+}
+
+.it {
+  font-style: italic;
+}
+
+.al {
+  text-align: left;
+}
+
+.am {
+  text-align: center;
+}
+
+.ar {
+  text-align: right;
+}
+
+/* report criteria block related */
+.rc-container {
+  background-color: #f2f0f0;
+  border: 1px solid #d9d9d9;
+  padding: 15px;
+  width: 100%;
+  height: auto;  
+}
+.rc-title-row {
+  
+}
+.rc-title1 {
+  font-size: 24px;
+  color: #434040;
+  margin: 0 0 10px 0;
+  letter-spacing: 0.03em;  
+}
+.rc-title2 {
+  font-weight: normal;
+  text-align:right;
+  margin:10px 0px 0px 0px;
+}
+.rc-title-label {
+  padding: 0 10px 0 0 !important;
+  text-transform: uppercase;
+  font-size: 0.9em;
+}
+.rc-title-value {
+  font-weight: normal;
+  font-size: 0.8em;
+}
+.rc-divider {
+  border:0px;
+  border-top: 1px solid #cccccc;
+  margin: 0px 0px 18px 0px;
+}
+.rc-criteria-row {
+  
+}
+.rc-label {
+  padding: 0 10px 0 0 !important;
+  text-transform: uppercase;
+  font-size: 0.9em;
+}
+.rc-value {
+  font-weight: normal;
+  font-size: 0.8em;
+}
+
+/* banner related */
+.bnr {
+  background-color: #f2f0f0;
+  border: 1px solid #d9d9d9;
+  padding: 15px;
+  width: 100%;
+  height: auto;
+}
+
+.bnr .lbl {
+  font-weight: bold;
+  font-size: 0.9em;
+  text-align: right;
+  width: 32px;
+  white-space: nowrap;
+}
+
+.bnr .vlu {
+  font-size: 0.8em;
+  padding: 6px;
+}
+
+/* data table related */
+.data {
+  width: 100%;
+}
+
+.data th {
+  padding: 15px;
+  border-radius: 2px;
+  background-color: #434040;
+  color: #ffffff;
+}
+
+.data .th1 {
+  font-size: 0.8em;
+  background-color: #f25840;
+  border-radius: 0 0 4px 4px;
+  text-transform: uppercase;
+  padding: 15px;
+  line-height: 1.42857143;
+}
+
+.data .th2 {
+  background-color: #f36953;
+  border-radius: 0 0 4px 4px;
+}
+
+/*    data contains dr datarows */
+.data tr.dr:hover {
+  background-color: #fed976;
+  border: 1px solid black;
+}
+
+.data tr.dr td {
+  padding: 4px;
+}
+
+.data th, td {
+  font-size: 0.9em;
+}
+
+tr.z0 {
+  background-color: #ffffff;
+}
+
+tr.z1 {
+  background-color: #f1f1f1;
+}
+
+.data>tbody>tr:hover>td,.data>tbody>tr:hover>th {
+  background-color:#e0edee;
+}
+
+.data tbody th, .data tbody td {
+  /*padding: 8px 10px;*/
+}
+
+div.msg { /* status mesg */
+  font-weight: bold;
+  color: #800000;
+}
+
+.spaced-box { /* evenly distribute spaced-items in this container */
+  text-align: justify;
+}
+
+.spaced-item {
+  display: inline-block;
+}
+
+.spaced-buf { /* buffer */
+  width: 100%;
+  display: inline-block;
+  font-size: 0;
+  line-height: 0;
+}
+
+.sh1 { /* subheader1 */
+  background-color: #fd8d3c;
+  margin-left: 10px;
+  padding: 6px;
+  border-radius: 0 0 0 4px;
+}
+
+.sh1 .lbl {
+  font-weight: bold;
+  padding: 4px;
+}
+
+.sh1 .vlu {
+  font-style: italic;
+  padding: 4px;
+}
+
+.sh2 { /* subheader2 */
+  background-color: #feb24c;
+  margin-left: 18px;
+  padding: 4px;
+  border-radius: 0 0 0 4px;
+}
+
+.sh2 .lbl {
+  font-weight: bold;
+  padding: 4px;
+}
+
+.sh2 .vlu {
+  font-style: italic;
+  padding: 4px;
+}
+
+.sf1 { /* subfooter1 */
+  color: gray;
+  margin-top: 12px;
+}
+
+.sf1 .vlu {
+  font-style: italic;
+  padding: 4px;
+}
+
+
+.sflabel {
+  font-size:0.9em;
+  font-style:italic;
+  color:#6c7477;
+  padding: 24px 0px 0px 0px;
+}
+
+/* link hover context menus related */
+.linkctx {
+  color: #4b0082;
+  cursor: pointer;
+  display: inline;
+}
+
+.linkctx:hover {
+  color: #ff0000;
+}
+
+.linkctx:hover>ul {
+  display: block;
+}
+
+.linkctx>ul {
+  display: none;
+  position: absolute;
+  background: rgba(255, 255, 255, 1);
+  color: #4b0082;
+  border: 1px solid black;
+  border-radius: 4px;
+  padding: 8px;
+  margin: 0px;
+  box-shadow: -8px 8px 8px #888888;
+  list-style-type: none;
+  font-weight: normal;
+}
+
+.linkctx li:hover {
+  color: #ff0000;
+}
+
+/* docked options menu related */
+div.dock1 {
+  position: fixed;
+  top: 5px;
+  right: 5px;
+}
+
+div.dock1:hover .dock1Content {
+  visibility: visible;
+}
+
+div.dock1Content {
+  position: absolute;
+  visibility: hidden;
+  background: rgba(255, 255, 255, 1);
+  top: 0px;
+  right: 0px;
+  padding: 4px;
+  border: 1px solid black;
+  border-radius: 4px;
+  box-shadow: -8px 8px 6px #c0c0c0;;
+}
+
+div.dock1 .dock1Item {
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+div.dock1 .dock1Item:hover {
+  color: red;
+}
+
+hr .divider {
+  background-color: #cccccc;
+}
+
+div.error-mesg {
+  color:#cccccc;
+}
+
+/* colors */
+.color-l-0 {
+  stroke: #88bde6;
+  fill: #88bde6;
+}
+.color-l-1 {
+  stroke: #fbb258;
+  fill: #fbb258;
+}
+.color-l-2 {
+  stroke: #90cd97;
+  fill: #90cd97;
+}
+.color-l-3 {
+  stroke: #f6aac9;
+  fill: #f6aac9;
+}
+.color-l-4 {
+  stroke: #bfa554;
+  fill: #bfa554;
+}
+.color-l-5 {
+  stroke: #bc99c7;
+  fill: #bc99c7;
+}
+.color-l-6 {
+  stroke: #eddd46;
+  fill: #eddd46;
+}
+.color-l-7 {
+  stroke: #f07e6e;
+  fill: #f07e6e;
+}
+
+
+/********************
+ * Tree Reports
+ */
+
+.node {
+    list-style-type: none;
+}
+
+li.level-0 > label, li.level-0 > span {
+    color: #333333;
+    font-size: 20px;
+}
+
+li.level-1 > label, li.level-1 > span{
+    font-weight: bold;
+    font-size: 14px;
+}
+
+li.level-2 > label, li.level-2 > span{
+    text-transform: uppercase;
+}
+
+.bracket:after {
+    content:"]";
+}
+
+.bracket:before {
+    content:"[";
+}
+
+/* Equivalent to fa and fa-minus-square */
+li.expanded > label:first-child::before {
+    font-family:FontAwesome,'Open Sans', sans-serif;
+    font-style:normal;
+    font-weight:normal;
+    display:inline-block;
+    line-height:1;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+
+    content:"\f146";
+}
+
+/* Equivalent to fa and fa-plus-square-o */
+li.collapsed > label:first-child::before {
+    font-family:FontAwesome,'Open Sans', sans-serif;
+    font-style:normal;
+    font-weight:normal;
+    display:inline-block;
+    line-height:1;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+
+    content:"\f196"
+}
+
+ul.expanded {
+    display: inherit !important;
+}
+
+ul.collapsed {
+    display: none !important;
+}
+
+div.expand-links {
+    text-align: center;
+}
+
+.trend1-up:before {
+  content: "\f139"; /* fa-chevron-circle-up */
+  font-family:FontAwesome,'Open Sans', sans-serif;
+  font-style:normal;
+  font-weight:normal;
+  color : red;
+}
+.trend1-down:before {
+  content: "\f13a"; /* fa-chevron-circle-down */
+  font-family:FontAwesome,'Open Sans', sans-serif;
+  font-style:normal;
+  font-weight:normal;  
+  color : green;
+}
+
+.trend2-up:before {
+  content: "\f139"; /* fa-chevron-circle-up */
+  font-family:FontAwesome,'Open Sans', sans-serif;
+  font-style:normal;
+  font-weight:normal;
+  color:#5bdcff;
+}
+.trend2-down:before {
+  content: "\f13a"; /* fa-chevron-circle-down */
+  font-family:FontAwesome,'Open Sans', sans-serif;
+  font-style:normal;
+  font-weight:normal;  
+  color:#cc557c;
+}
+.trend2-neutral:before {
+  content: "\f192"; /* fa-dot-circle-o */
+  font-family:FontAwesome,'Open Sans', sans-serif;
+  font-style:normal;
+  font-weight:normal;  
+  color:#cccccc;
+}
+
+.refresh1:before {
+  content: "\f021"; /* fa-refresh */
+  font-family:FontAwesome,'Open Sans', sans-serif;
+  font-style:normal;
+  font-weight:normal;
+  color:#cccccc;
+  padding:0px 4px 0px 4px;
+}
+
+.spinner1:before {
+  content: "\f110"; /* fa-spinner */
+  font-family:FontAwesome,'Open Sans', sans-serif;
+  font-style:normal;
+  font-weight:normal;  
+  color:#909090;
+  font-size:32px;
+}
+/**
+ * End Tree Reports CSS
+ ********************/
+
+/*
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,300,400,700);
+*/
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 300;
+  src: local('Open Sans Light'), local('OpenSans-Light'), url(//fonts.gstatic.com/s/opensans/v10/DXI1ORHCpsQm3Vp6mXoaTXhCUOGz7vYGh680lGh-uXM.woff) format('woff');
+}
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Open Sans'), local('OpenSans'), url(//fonts.gstatic.com/s/opensans/v10/cJZKeOuBrn4kERxqtaUH3T8E0i7KZn-EPnyo3HZu7kw.woff) format('woff');
+}
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Open Sans Bold'), local('OpenSans-Bold'), url(//fonts.gstatic.com/s/opensans/v10/k3k702ZOKiLJc3WVjuplzHhCUOGz7vYGh680lGh-uXM.woff) format('woff');
+}
+@font-face {
+  font-family: 'Open Sans';
+  font-style: italic;
+  font-weight: 300;
+  src: local('Open Sans Light Italic'), local('OpenSansLight-Italic'), url(//fonts.gstatic.com/s/opensans/v10/PRmiXeptR36kaC0GEAetxh_xHqYgAV9Bl_ZQbYUxnQU.woff) format('woff');
+}
+@font-face {
+  font-family: 'Open Sans';
+  font-style: italic;
+  font-weight: 400;
+  src: local('Open Sans Italic'), local('OpenSans-Italic'), url(//fonts.gstatic.com/s/opensans/v10/xjAJXh38I15wypJXxuGMBobN6UDyHWBl620a-IRfuBk.woff) format('woff');
+}
+@font-face {
+  font-family: 'Open Sans';
+  font-style: italic;
+  font-weight: 700;
+  src: local('Open Sans Bold Italic'), local('OpenSans-BoldItalic'), url(//fonts.gstatic.com/s/opensans/v10/PRmiXeptR36kaC0GEAetxjqR_3kx9_hJXbbyU8S6IN0.woff) format('woff');
+}
+
+    </style>
+    
+    <script language="javascript">
+"use strict";
+
+var RPT = (function() {
+    var CRITERIA_SERIALIZED = 'criteria';
+    var REFERENCES_SERIALIZED = 'rptrefs';
+    var SCR_FORM_ACTION = '/report/rptcontrol/run';
+    var RDID = 'rdid';
+    var PRESET = 'preset';
+    var USER_SUBMITTED = 'user_submitted';
+    
+    function loadReport(rptRefKey, params) {
+        var rptRefs = JSON.parse(document.getElementById(REFERENCES_SERIALIZED).value);
+        var rptRefValue = rptRefs[rptRefKey];
+
+        // TODO destroy cform, if already present
+
+        var cform = document.createElement('form');
+        cform.setAttribute('method', 'post');
+        cform.setAttribute('action', SCR_FORM_ACTION);
+        cform.setAttribute('id','rpt_cform');
+        cform.setAttribute('target','_blank');
+        // create an assoc array to hold cform fields 
+        var cfields = {};
+        //    put in some required fields...
+        cfields[RDID] = rptRefValue;
+        //cfields[PRESET] = true;
+        cfields[USER_SUBMITTED] = true;
+        //    add in the embedded critera...
+        var criteria = JSON.parse(document.getElementById(CRITERIA_SERIALIZED).value);
+        for (var key in criteria) {
+            if (criteria.hasOwnProperty(key)) {
+                cfields[key] = criteria[key];
+            }
+        }
+        //    now add in fields from the params, replacing any with the same name from criteria 
+        if (params) {
+            for (var key in params) {
+                if (params.hasOwnProperty(key)) {
+                    cfields[key] = params[key];
+                }
+            }
+        }
+        // create input fields from the collected fields
+        for (var key in cfields) {
+            if (cfields.hasOwnProperty(key)) {
+                var value = cfields[key];
+                if (value instanceof Array) {
+                    for (var i = 0; i < value.length;i++) {
+                        cform.appendChild(createHiddenInput(key, value[i]));
+                    }
+                } else {
+                    cform.appendChild(createHiddenInput(key, value));
+                }
+            }
+        }
+        document.body.appendChild(cform);
+        cform.submit();
+    }
+    //
+    function createHiddenInput(name,value) {
+        var input = document.createElement('input');
+        input.setAttribute('type', 'hidden');
+        input.setAttribute('name',name);
+        input.setAttribute('value',value);
+        return input;
+    }
+    /*
+     * usage:
+     *  - showTransaction(dataHeaderId, optionalBucketId)
+     *  - showTransaction(transactionId, bucketId, virtualTableId)
+     */
+    function showTransaction(transactionOrDataHeaderId, bucketId, virtualTableId) {
+        bucketId = bucketId || '1'; // 'falsy' check and defaulting value
+        var transId = '';
+        if (virtualTableId) { // 'truthy' check for virtualTableId, indicating that transactionId was passed in as transactionOrDataHeaderId 
+            // lookup the dataHeaderId using transactionId and virtualTableId
+            var data = {request:"locate", transactionString:''+transactionOrDataHeaderId, virtualTableIdString:''+virtualTableId};
+            jQuery.ajax({
+                type: "POST",
+                dataType: "json",
+                url: "/ajaxHandler",
+                data: data
+            })
+            .done(function(jsonData) {
+                if ('success' === jsonData.status) {
+                    transId = jsonData.transactionId;
+                    bucketId = jsonData.businessProcess;
+                    openTransactionWindow(transId, bucketId);
+                } else  {
+                    if (console) {
+                        console.log("error locating transId for " + data + '(' + jsonData.message + ')');
+                    }
+                }
+            })
+            .fail(function(jqXHR, textStatus, errorThrown) {
+                if (console) {
+                    console.log("failed locating transId for " + data + '(' + textStatus + ', ' + errorThrown + ')');
+                }                
+            });
+        } else { // no virtualTableId, indicating dataHeaderId was passed in as transactionOrDataHeaderId
+            openTransactionWindow(transactionOrDataHeaderId, bucketId);
+        }
+    }
+    //
+    function openTransactionWindow(transId, bucketId) {
+        window.open('/jsp/agent/queue/transactiondetail.jsf?transId='+transId+'&bucketId='+bucketId+'&mode=V','_blank');
+    }
+    //
+    function makeReportData(rptId) {
+        var data = {};
+        data[RDID] = rptId;
+        var criteria = JSON.parse(document.getElementById(CRITERIA_SERIALIZED).value);
+        var criteriaKeys = Object.keys(criteria);
+        for (var i = 0; i < criteriaKeys.length; i++) {
+            var criteriaKey = criteriaKeys[i];
+            data[criteriaKey] = criteria[criteriaKey];
+        }
+        return data;
+    }
+    //
+    var COLORS = {L: ['#88bde6', // 0
+                      '#fbb258', // 1
+                      '#90cd97', // 2
+                      '#f6aac9', // 3
+                      '#bfa554', // 4
+                      '#bc99c7', // 5
+                      '#eddd46', // 6
+                      '#f07e6e', // 7
+                      ]}
+    //
+    return {
+        CRITERIA_SERIALIZED : CRITERIA_SERIALIZED,
+        REFERENCES_SERIALIZED : REFERENCES_SERIALIZED,
+        SCR_FORM_ACTION : SCR_FORM_ACTION,
+        RDID : RDID,
+        PRESET : PRESET,
+        USER_SUBMITTED : USER_SUBMITTED,
+        makeReportData : makeReportData,
+        loadReport : loadReport,
+        showTransaction : showTransaction,
+        COLORS : COLORS
+    };
+})();
+
+/**
+ * Helper to retrieve report related data from radar through the interceptas report pages.
+ */
+var DATAPIPE = (function() {
+    var OUTPUT_TYPE_KEY = "fmt";
+    var OUTPUT_TYPE_HTML_FRAGMENT = "html_fragment";
+    var OUTPUT_TYPE_JSON = "json";
+    var url = RPT.SCR_FORM_ACTION;
+    /*
+     * Replace innerHTML (and execute inline scripts) into "elementRef" with result of ajax post of "data".
+     *  eg. DATAPIPE.loadFragment({a:1,b:2},document.getElementById('div1'));
+     */
+    function loadFragment(data, elementRef) {
+        if (typeof data !== 'undefined') {
+            data[OUTPUT_TYPE_KEY] = OUTPUT_TYPE_HTML_FRAGMENT;
+            data[RPT.PRESET] = true;
+            data[RPT.USER_SUBMITTED] = true;
+            jQuery(elementRef).load(url, toPostableJson(data), function(responseText,textStatus,jqXHR) {
+                if ("success" != textStatus && "notmodified" != textStatus) {
+                    throw ({'message':'Error loading fragment:'+jqXHR.status+' '+jqXHR.statusText});
+                }
+            });
+        }
+    }
+    /*
+     * Retrieve result of ajax post of "data". Invokes the function "callback" with the result as argument.
+     *  eg. DATAPIPE.getFragment({a:1,b:2},function(recvd){console.log('recvd:'+recvd);});
+     */
+    function getFragment(data, callback) {
+        if (typeof data !== 'undefined') {
+            data[OUTPUT_TYPE_KEY] = OUTPUT_TYPE_HTML_FRAGMENT;
+            data[RPT.PRESET] = true;
+            data[RPT.USER_SUBMITTED] = true;            
+            jQuery.post(url, toPostableJson(data))
+                  .done(function(recvd) {
+                          if (typeof callback === 'function') {
+                            callback(recvd);
+                          }
+                   })
+                  .fail(function(jqXHR,textStatus,errorThrown) {
+                          if (console) {
+                            console.log('error gettingFragment'+textStatus+','+errorThrown+' for '+data);
+                          }
+                   });
+        }
+    }
+    /*
+     * Retrieve result of ajax post of "data". Expecting result to be valid JSON.
+     * Result is parsed into a javascript literal. Invokes the function "callback" with the result as argument.
+     *  eg. DATAPIPE.getJson({a:1,b:2},function(recvd){console.log('recvd:'+recvd);});
+     */
+    function getJson(data, callback) {
+        if (typeof data !== 'undefined') {
+            data[OUTPUT_TYPE_KEY] = OUTPUT_TYPE_JSON;
+            data[RPT.PRESET] = true;
+            data[RPT.USER_SUBMITTED] = true;            
+            jQuery.post(url, toPostableJson(data))
+                  .done(function(recvd) {
+                          if (typeof callback === 'function') {
+                            try {
+                              callback(JSON.parse(recvd));
+                            } catch(e) {
+                              if (console) {
+                                console.log('error '+e+' gettingJson for\n'+data+'\ngot '+recvd);
+                              }
+                              callback({'statusMesg':'Error retrieving data.'});
+                            }
+                          }})
+                  .fail(function(jqXHR,textStatus,errorThrown) {
+                              if(console) {
+                                console.log('error gettingjson '+textStatus+','+errorThrown+' for '+data);
+                              }
+                              if (typeof callback === 'function') {
+                                  callback({'statusMesg':'Error retrieving data..'});
+                              }
+                          });
+        }
+    }
+    /*
+     * 
+     */
+    function toPostableJson(data) {
+        var postableArray = [];
+        var dataKeys = Object.keys(data);
+        for (var i = 0; i < dataKeys.length; i++) {
+            var dataKey = dataKeys[i];
+            var dataValue = data[dataKey];
+            if (Array.isArray(dataValue)) {
+                for (var j = 0; j < dataValue.length; j++) {
+                    postableArray.push(dataKey + '=' + encodeURIComponent(dataValue[j]));
+                }
+            } else {
+                postableArray.push(dataKey + '=' + encodeURIComponent(dataValue));
+            }
+        }
+        return postableArray.join('&');
+    }
+    
+    return {
+        loadFragment : loadFragment,
+        getFragment : getFragment,
+        getJson : getJson,
+        toPostableJson : toPostableJson
+    };
+})();
+
+var MATH = (function() {
+    // returns slope, intercept of the line
+    function leastSquares(xSeries, ySeries) {
+        var reduceSumFunc = function(prev, cur) { return prev + cur; };
+        var xBar = xSeries.reduce(reduceSumFunc) * 1.0 / xSeries.length;
+        var yBar = ySeries.reduce(reduceSumFunc) * 1.0 / ySeries.length;
+        var ssXX = xSeries.map(function(d) { return Math.pow(d - xBar, 2); })
+            .reduce(reduceSumFunc);
+        var ssYY = ySeries.map(function(d) { return Math.pow(d - yBar, 2); })
+            .reduce(reduceSumFunc);
+        var ssXY = xSeries.map(function(d, i) { return (d - xBar) * (ySeries[i] - yBar); })
+            .reduce(reduceSumFunc);
+        var slope = ssXY / ssXX;
+        var intercept = yBar - (xBar * slope);
+        //var rSquare = Math.pow(ssXY, 2) / (ssXX * ssYY);
+        return [slope, intercept];
+    }
+    //
+    return {
+        leastSquares : leastSquares
+    };
+})();
+    
+    </script>
+    
+
+<script src="./Fraud Resolutions Grouped By Attribute_files/d3.min.js"></script>
+
+    <style type="text/css">
+    /* local styles */
+      span.tn_dv {display:none;}
+      .posBar1 {
+         background-color:DarkTurquoise;height:10px;border:1px solid darkgray;
+      }
+      .negBar1 {
+         background-color:red;height:10px;border:1px solid darkslategray;
+      }
+      .maxPosBar1 {
+         background-color:CadetBlue;height:10px;border:1px solid black;
+      }
+      .maxNegBar1 {
+      
+      }
+      div.tn_shr {font-size:12px;font-weight:bold;color:darkslategray;margin-top:22px;
+          background:url(data:image/gif;base64,R0lGODlhCwAKALMAALIVO7APNq8IMK8KMrMfQ7EVO7IaP7AQN60AKv///wAAAAAAAAAAAAAAAAAAAAAAACH5BAEAAAkALAAAAAALAAoAAAQLEMlJq7046827rxEAOw==)
+          no-repeat left center;
+            padding:5px 2px 2px 20px;
+          }
+      tr.tn_hr {background-color:LightGray;color:darkslategray;}
+    </style>        
+    
+    
+    <script language="javascript">
+    /* local scripts */
+    var TN = {
+            mM : {"tmin":"49.98","smin":"280","smax":"2248","amin":"24.99","amax":"599","tmax":"89545.02"},
+            barHtml : function (unscaledValue,scaledValue,scaledMinValue,scaledMaxValue,displayValue,posClass,negClass) {
+                //scaledValue = scaledValue || unscaledValue;
+                var html = '<div ';
+                if (posClass && negClass)
+                    html += ' class="' + ((unscaledValue >= 0) ? posClass : negClass) + '" ';
+                html += ' style="width:' + scaledValue + 'px;';
+                if (scaledMinValue && unscaledValue >= 0) 
+                    html += 'margin-left:' + scaledMinValue + 'px;';
+                if (scaledMaxValue)
+                    html += 'margin-right:' + (scaledMaxValue - scaledValue) + 'px;';
+                html += '"';
+                if (displayValue)
+                    html += ' title="' + displayValue + '"';
+                html += '></div>';
+                return html;
+            },
+            renderGraphics : function () {
+                    var rows = document.getElementById('tn_data').rows;
+                    var sScale = d3.scale.linear().domain([TN.mM.smin,TN.mM.smax]).rangeRound([0,100]);
+                    var sScaledMin = sScale(TN.mM.smin);
+                    var aScale = d3.scale.linear().domain([TN.mM.amin,TN.mM.amax]).rangeRound([0,100]);
+                    var aScaledMin = aScale(TN.mM.amin);
+                    var tScale = d3.scale.linear().domain([TN.mM.tmin,TN.mM.tmax]).rangeRound([0,100]);
+                    var tScaledMin = tScale(TN.mM.tmin);
+                    for (var i = 0; i < rows.length; i++) {
+                        var row = rows[i];
+                        var cellRef,rawValue,value,displayValue,posClass,html;
+                        if (row.classList.contains('tn_dr')) {
+                            cellRef = row.cells[3];
+                            rawValue = cellRef.childNodes[0].textContent;
+                            value = parseInt(rawValue);
+                            displayValue = row.cells[2].textContent;
+                            html = TN.barHtml(value, value, 0, 100, displayValue, 'posBar1','negBar1');
+                            cellRef.childNodes[1].innerHTML = html;
+                            //
+                            cellRef = row.cells[5];
+                            rawValue = cellRef.childNodes[0].textContent;
+                            value = parseInt(rawValue);
+                            displayValue = row.cells[4].textContent;
+                            posClass = (TN.mM.smax == rawValue) ? 'maxPosBar1' : 'posBar1';
+                            html = TN.barHtml(value, sScale(value), sScaledMin, null, displayValue, posClass,'negBar1');
+                            cellRef.childNodes[1].innerHTML = html;
+                            //
+                            cellRef = row.cells[7];
+                            rawValue = cellRef.childNodes[0].textContent;
+                            value = parseInt(rawValue);
+                            displayValue = row.cells[6].textContent;
+                            posClass = (TN.mM.amax == rawValue) ? 'maxPosBar1' : 'posBar1';
+                            html = TN.barHtml(value, aScale(value), aScaledMin, null, displayValue, posClass,'negBar1');
+                            cellRef.childNodes[1].innerHTML = html;                
+                            //
+                            cellRef = row.cells[9];
+                            rawValue = cellRef.childNodes[0].textContent;
+                            value = parseInt(rawValue);
+                            displayValue = row.cells[8].textContent;
+                            posClass = (TN.mM.tmax == rawValue) ? 'maxPosBar1' : 'posBar1';
+                            html = TN.barHtml(value, tScale(value), tScaledMin, null, displayValue, posClass,'negBar1');
+                            cellRef.childNodes[1].innerHTML = html;                
+                        }
+                    }            
+                }
+        };    
+    
+    function init() {
+    	TN.renderGraphics();
+    }
+    </script>
+
+</head>
+  
+  <body onload="init();" data-pinterest-extension-installed="cr1.37" cz-shortcut-listen="true">
+<div class="mainLayout">
+
+  <div class="section">
+    <div class="title1">Fraud Resolutions Grouped By Attribute</div>
+  </div> <!-- section -->
+  
+  <div class="br"></div>
+
+  <div class="section">
+    <table class="bnr">
+      <tbody><tr>
+        <td class="lbl">Data Type:</td>
+        <td class="vlu">Target Orders</td>
+      </tr>
+      <tr>
+        <td class="lbl">Data Source:</td>
+        <td class="vlu">Target Production</td>
+      </tr>
+          
+    
+    <tr>
+      <td class="lbl">Score:</td>
+      <td class="vlu">Greater than 100  </td>
+    </tr>
+          
+      <tr>
+        <td class="lbl">Start Date:</td>
+        <td class="vlu">Jun 8, 2015 12:00:00 AM</td>
+      </tr>
+      <tr>
+        <td class="lbl">End Date:</td>
+        <td class="vlu">Jun 9, 2015 12:00:00 AM</td>
+      </tr>
+    </tbody></table>
+  </div> <!-- section -->
+
+  <div class="section">
+      <span onclick="toggleRD(this)" class="settings2"></span>
+  </div>
+  
+  <div class="br"></div>
+  
+  <div class="section"> 
+
+  
+
+  
+  
+  
+  
+  <table id="tn_data">
+  
+  
+    
+     
+     
+       
+        <tbody><tr class="tn_shr">
+          <td colspan="10"><div class="tn_shr">BILLING_CITY</div></td>
+        </tr>
+        <tr class="tn_hr">
+          <th>Value</th>
+          <th>Count</th>
+          <th colspan="2">Percent</th>
+          <th colspan="2">Med Score</th>
+          <th colspan="2">Med Amount</th>
+          <th colspan="2">Tot Amount</th>        
+        </tr>
+        </tbody><tbody id="dataset_0">
+        
+    
+     
+    <tr class="tn_dr">
+     <td>LOS ANGELES</td>
+     <td>24</td>
+     <td>5.91</td>
+     <td><span class="tn_dv">5.91</span><span class="tn_g0"><div class="posBar1" style="width:5px;margin-right:95px;" title="5.91"></div></span><span class="tn_g1"></span></td>
+     <td>825</td>
+     <td><span class="tn_dv">825</span><span class="tn_g0"><div class="posBar1" style="width:28px;" title="825"></div></span><span class="tn_g1"></span></td>
+     <td>$25.00</td>
+     <td><span class="tn_dv">25</span><span class="tn_g0"><div class="posBar1" style="width:0px;" title="$25.00"></div></span><span class="tn_g1"></span></td>
+     <td>$2,152.31</td>
+     <td><span class="tn_dv">2152.31</span><span class="tn_g0"><div class="posBar1" style="width:2px;" title="$2,152.31"></div></span><span class="tn_g1"></span></td>
+   </tr>
+   
+    
+    
+      
+    
+  
+    
+     
+     
+     
+    <tr class="tn_dr">
+     <td>HOUSTON</td>
+     <td>24</td>
+     <td>5.91</td>
+     <td><span class="tn_dv">5.91</span><span class="tn_g0"><div class="posBar1" style="width:5px;margin-right:95px;" title="5.91"></div></span><span class="tn_g1"></span></td>
+     <td>455</td>
+     <td><span class="tn_dv">455</span><span class="tn_g0"><div class="posBar1" style="width:9px;" title="455"></div></span><span class="tn_g1"></span></td>
+     <td>$599.00</td>
+     <td><span class="tn_dv">599</span><span class="tn_g0"><div class="maxPosBar1" style="width:100px;" title="$599.00"></div></span><span class="tn_g1"></span></td>
+     <td>$10,543.36</td>
+     <td><span class="tn_dv">10543.36</span><span class="tn_g0"><div class="posBar1" style="width:12px;" title="$10,543.36"></div></span><span class="tn_g1"></span></td>
+   </tr>
+   
+    
+    
+      
+    
+  
+    
+     
+     
+     
+    <tr class="tn_dr">
+     <td>NEW YORK</td>
+     <td>10</td>
+     <td>2.46</td>
+     <td><span class="tn_dv">2.46</span><span class="tn_g0"><div class="posBar1" style="width:2px;margin-right:98px;" title="2.46"></div></span><span class="tn_g1"></span></td>
+     <td>619</td>
+     <td><span class="tn_dv">619</span><span class="tn_g0"><div class="posBar1" style="width:17px;" title="619"></div></span><span class="tn_g1"></span></td>
+     <td>$25.00</td>
+     <td><span class="tn_dv">25</span><span class="tn_g0"><div class="posBar1" style="width:0px;" title="$25.00"></div></span><span class="tn_g1"></span></td>
+     <td>$375.00</td>
+     <td><span class="tn_dv">375</span><span class="tn_g0"><div class="posBar1" style="width:0px;" title="$375.00"></div></span><span class="tn_g1"></span></td>
+   </tr>
+   
+    
+    
+      
+    
+  
+    
+     
+     
+     
+    <tr class="tn_dr">
+     <td>LONGVIEW</td>
+     <td>10</td>
+     <td>2.46</td>
+     <td><span class="tn_dv">2.46</span><span class="tn_g0"><div class="posBar1" style="width:2px;margin-right:98px;" title="2.46"></div></span><span class="tn_g1"></span></td>
+     <td>2,248</td>
+     <td><span class="tn_dv">2248</span><span class="tn_g0"><div class="maxPosBar1" style="width:100px;" title="2,248"></div></span><span class="tn_g1"></span></td>
+     <td>$50.00</td>
+     <td><span class="tn_dv">50</span><span class="tn_g0"><div class="posBar1" style="width:4px;" title="$50.00"></div></span><span class="tn_g1"></span></td>
+     <td>$525.00</td>
+     <td><span class="tn_dv">525</span><span class="tn_g0"><div class="posBar1" style="width:1px;" title="$525.00"></div></span><span class="tn_g1"></span></td>
+   </tr>
+   
+    
+    
+      
+    
+  
+    
+     
+     
+     
+    <tr class="tn_dr">
+     <td>BROOKLYN</td>
+     <td>10</td>
+     <td>2.46</td>
+     <td><span class="tn_dv">2.46</span><span class="tn_g0"><div class="posBar1" style="width:2px;margin-right:98px;" title="2.46"></div></span><span class="tn_g1"></span></td>
+     <td>1,189</td>
+     <td><span class="tn_dv">1189</span><span class="tn_g0"><div class="posBar1" style="width:46px;" title="1,189"></div></span><span class="tn_g1"></span></td>
+     <td>$314.98</td>
+     <td><span class="tn_dv">314.98</span><span class="tn_g0"><div class="posBar1" style="width:50px;" title="$314.98"></div></span><span class="tn_g1"></span></td>
+     <td>$3,533.88</td>
+     <td><span class="tn_dv">3533.88</span><span class="tn_g0"><div class="posBar1" style="width:4px;" title="$3,533.88"></div></span><span class="tn_g1"></span></td>
+   </tr>
+   
+    
+    
+      
+    
+  
+    
+     
+     
+       
+         </tbody>
+       
+        <tbody><tr class="tn_shr">
+          <td colspan="10"><div class="tn_shr">BILLING_COUNTRY</div></td>
+        </tr>
+        <tr class="tn_hr">
+          <th>Value</th>
+          <th>Count</th>
+          <th colspan="2">Percent</th>
+          <th colspan="2">Med Score</th>
+          <th colspan="2">Med Amount</th>
+          <th colspan="2">Tot Amount</th>        
+        </tr>
+        </tbody><tbody id="dataset_1">
+        
+    
+     
+    <tr class="tn_dr">
+     <td>US</td>
+     <td>377</td>
+     <td>92.85</td>
+     <td><span class="tn_dv">92.85</span><span class="tn_g0"><div class="posBar1" style="width:92px;margin-right:8px;" title="92.85"></div></span><span class="tn_g1"></span></td>
+     <td>792</td>
+     <td><span class="tn_dv">792</span><span class="tn_g0"><div class="posBar1" style="width:26px;" title="792"></div></span><span class="tn_g1"></span></td>
+     <td>$100.00</td>
+     <td><span class="tn_dv">100</span><span class="tn_g0"><div class="posBar1" style="width:13px;" title="$100.00"></div></span><span class="tn_g1"></span></td>
+     <td>$89,545.02</td>
+     <td><span class="tn_dv">89545.02</span><span class="tn_g0"><div class="maxPosBar1" style="width:100px;" title="$89,545.02"></div></span><span class="tn_g1"></span></td>
+   </tr>
+   
+    
+    
+      
+    
+  
+    
+     
+     
+     
+    <tr class="tn_dr">
+     <td>MX</td>
+     <td>10</td>
+     <td>2.46</td>
+     <td><span class="tn_dv">2.46</span><span class="tn_g0"><div class="posBar1" style="width:2px;margin-right:98px;" title="2.46"></div></span><span class="tn_g1"></span></td>
+     <td>1,511</td>
+     <td><span class="tn_dv">1511</span><span class="tn_g0"><div class="posBar1" style="width:63px;" title="1,511"></div></span><span class="tn_g1"></span></td>
+     <td>$24.99</td>
+     <td><span class="tn_dv">24.99</span><span class="tn_g0"><div class="posBar1" style="width:0px;" title="$24.99"></div></span><span class="tn_g1"></span></td>
+     <td>$474.94</td>
+     <td><span class="tn_dv">474.94</span><span class="tn_g0"><div class="posBar1" style="width:0px;" title="$474.94"></div></span><span class="tn_g1"></span></td>
+   </tr>
+   
+    
+    
+      
+    
+  
+    
+     
+     
+     
+    <tr class="tn_dr">
+     <td>CA</td>
+     <td>9</td>
+     <td>2.21</td>
+     <td><span class="tn_dv">2.21</span><span class="tn_g0"><div class="posBar1" style="width:2px;margin-right:98px;" title="2.21"></div></span><span class="tn_g1"></span></td>
+     <td>2,166</td>
+     <td><span class="tn_dv">2166</span><span class="tn_g0"><div class="posBar1" style="width:96px;" title="2,166"></div></span><span class="tn_g1"></span></td>
+     <td>$100.00</td>
+     <td><span class="tn_dv">100</span><span class="tn_g0"><div class="posBar1" style="width:13px;" title="$100.00"></div></span><span class="tn_g1"></span></td>
+     <td>$896.83</td>
+     <td><span class="tn_dv">896.83</span><span class="tn_g0"><div class="posBar1" style="width:1px;" title="$896.83"></div></span><span class="tn_g1"></span></td>
+   </tr>
+   
+    
+    
+      
+    
+  
+    
+     
+     
+     
+    <tr class="tn_dr">
+     <td>AS</td>
+     <td>2</td>
+     <td>0.49</td>
+     <td><span class="tn_dv">0.49</span><span class="tn_g0"><div class="posBar1" style="width:0px;margin-right:100px;" title="0.49"></div></span><span class="tn_g1"></span></td>
+     <td>1,198</td>
+     <td><span class="tn_dv">1198</span><span class="tn_g0"><div class="posBar1" style="width:47px;" title="1,198"></div></span><span class="tn_g1"></span></td>
+     <td>$350.00</td>
+     <td><span class="tn_dv">350</span><span class="tn_g0"><div class="posBar1" style="width:57px;" title="$350.00"></div></span><span class="tn_g1"></span></td>
+     <td>$700.00</td>
+     <td><span class="tn_dv">700</span><span class="tn_g0"><div class="posBar1" style="width:1px;" title="$700.00"></div></span><span class="tn_g1"></span></td>
+   </tr>
+   
+    
+    
+      
+    
+  
+    
+     
+     
+     
+    <tr class="tn_dr">
+     <td>AU</td>
+     <td>2</td>
+     <td>0.49</td>
+     <td><span class="tn_dv">0.49</span><span class="tn_g0"><div class="posBar1" style="width:0px;margin-right:100px;" title="0.49"></div></span><span class="tn_g1"></span></td>
+     <td>541</td>
+     <td><span class="tn_dv">541</span><span class="tn_g0"><div class="posBar1" style="width:13px;" title="541"></div></span><span class="tn_g1"></span></td>
+     <td>$72.49</td>
+     <td><span class="tn_dv">72.49</span><span class="tn_g0"><div class="posBar1" style="width:8px;" title="$72.49"></div></span><span class="tn_g1"></span></td>
+     <td>$144.99</td>
+     <td><span class="tn_dv">144.99</span><span class="tn_g0"><div class="posBar1" style="width:0px;" title="$144.99"></div></span><span class="tn_g1"></span></td>
+   </tr>
+   
+    
+    
+      
+    
+  
+    
+     
+     
+       
+         </tbody>
+       
+        <tbody><tr class="tn_shr">
+          <td colspan="10"><div class="tn_shr">PURCHASE_DATE</div></td>
+        </tr>
+        <tr class="tn_hr">
+          <th>Value</th>
+          <th>Count</th>
+          <th colspan="2">Percent</th>
+          <th colspan="2">Med Score</th>
+          <th colspan="2">Med Amount</th>
+          <th colspan="2">Tot Amount</th>        
+        </tr>
+        </tbody><tbody id="dataset_2">
+        
+    
+     
+    <tr class="tn_dr">
+     <td>06-JUN-15 05.26.10.000000 PM AMERICA/CHICAGO</td>
+     <td>2</td>
+     <td>0.49</td>
+     <td><span class="tn_dv">0.49</span><span class="tn_g0"><div class="posBar1" style="width:0px;margin-right:100px;" title="0.49"></div></span><span class="tn_g1"></span></td>
+     <td>280</td>
+     <td><span class="tn_dv">280</span><span class="tn_g0"><div class="posBar1" style="width:0px;" title="280"></div></span><span class="tn_g1"></span></td>
+     <td>$24.99</td>
+     <td><span class="tn_dv">24.99</span><span class="tn_g0"><div class="posBar1" style="width:0px;" title="$24.99"></div></span><span class="tn_g1"></span></td>
+     <td>$49.98</td>
+     <td><span class="tn_dv">49.98</span><span class="tn_g0"><div class="posBar1" style="width:0px;" title="$49.98"></div></span><span class="tn_g1"></span></td>
+   </tr>
+   
+    
+    
+      
+    
+  
+    
+     
+     
+     
+    <tr class="tn_dr">
+     <td>08-JUN-15 01.29.11.000000 AM US/CENTRAL</td>
+     <td>2</td>
+     <td>0.49</td>
+     <td><span class="tn_dv">0.49</span><span class="tn_g0"><div class="posBar1" style="width:0px;margin-right:100px;" title="0.49"></div></span><span class="tn_g1"></span></td>
+     <td>2,016</td>
+     <td><span class="tn_dv">2016</span><span class="tn_g0"><div class="posBar1" style="width:88px;" title="2,016"></div></span><span class="tn_g1"></span></td>
+     <td>$25.00</td>
+     <td><span class="tn_dv">25</span><span class="tn_g0"><div class="posBar1" style="width:0px;" title="$25.00"></div></span><span class="tn_g1"></span></td>
+     <td>$50.00</td>
+     <td><span class="tn_dv">50</span><span class="tn_g0"><div class="posBar1" style="width:0px;" title="$50.00"></div></span><span class="tn_g1"></span></td>
+   </tr>
+   
+    
+    
+      
+    
+  
+    
+     
+     
+     
+    <tr class="tn_dr">
+     <td>08-JUN-15 05.47.54.000000 PM US/CENTRAL</td>
+     <td>2</td>
+     <td>0.49</td>
+     <td><span class="tn_dv">0.49</span><span class="tn_g0"><div class="posBar1" style="width:0px;margin-right:100px;" title="0.49"></div></span><span class="tn_g1"></span></td>
+     <td>307</td>
+     <td><span class="tn_dv">307</span><span class="tn_g0"><div class="posBar1" style="width:1px;" title="307"></div></span><span class="tn_g1"></span></td>
+     <td>$599.00</td>
+     <td><span class="tn_dv">599</span><span class="tn_g0"><div class="maxPosBar1" style="width:100px;" title="$599.00"></div></span><span class="tn_g1"></span></td>
+     <td>$1,198.00</td>
+     <td><span class="tn_dv">1198</span><span class="tn_g0"><div class="posBar1" style="width:1px;" title="$1,198.00"></div></span><span class="tn_g1"></span></td>
+   </tr>
+   
+    
+    
+      
+    
+  
+    
+     
+     
+     
+    <tr class="tn_dr">
+     <td>08-JUN-15 12.12.10.000000 PM US/CENTRAL</td>
+     <td>2</td>
+     <td>0.49</td>
+     <td><span class="tn_dv">0.49</span><span class="tn_g0"><div class="posBar1" style="width:0px;margin-right:100px;" title="0.49"></div></span><span class="tn_g1"></span></td>
+     <td>455</td>
+     <td><span class="tn_dv">455</span><span class="tn_g0"><div class="posBar1" style="width:9px;" title="455"></div></span><span class="tn_g1"></span></td>
+     <td>$599.00</td>
+     <td><span class="tn_dv">599</span><span class="tn_g0"><div class="maxPosBar1" style="width:100px;" title="$599.00"></div></span><span class="tn_g1"></span></td>
+     <td>$1,198.00</td>
+     <td><span class="tn_dv">1198</span><span class="tn_g0"><div class="posBar1" style="width:1px;" title="$1,198.00"></div></span><span class="tn_g1"></span></td>
+   </tr>
+   
+    
+    
+      
+    
+  
+    
+     
+     
+     
+    <tr class="tn_dr">
+     <td>08-JUN-15 09.18.12.000000 AM AMERICA/CHICAGO</td>
+     <td>2</td>
+     <td>0.49</td>
+     <td><span class="tn_dv">0.49</span><span class="tn_g0"><div class="posBar1" style="width:0px;margin-right:100px;" title="0.49"></div></span><span class="tn_g1"></span></td>
+     <td>1,128</td>
+     <td><span class="tn_dv">1128</span><span class="tn_g0"><div class="posBar1" style="width:43px;" title="1,128"></div></span><span class="tn_g1"></span></td>
+     <td>$399.98</td>
+     <td><span class="tn_dv">399.98</span><span class="tn_g0"><div class="posBar1" style="width:65px;" title="$399.98"></div></span><span class="tn_g1"></span></td>
+     <td>$799.96</td>
+     <td><span class="tn_dv">799.96</span><span class="tn_g0"><div class="posBar1" style="width:1px;" title="$799.96"></div></span><span class="tn_g1"></span></td>
+   </tr>
+   
+    
+    
+      
+       </tbody>
+      
+    
+  
+  
+  </table>
+
+  
+  </div> <!-- section -->
+  
+</div> <!-- mainLayout -->  
+  
+  
+</body></html>

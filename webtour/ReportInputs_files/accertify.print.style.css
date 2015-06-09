@@ -1,0 +1,10 @@
+/* Use this file to hide things that should not be printed, or things that get in the way if printed */
+#menu UL {
+  display: none;
+  visibility: hidden;
+}
+
+div.scrollFiller {
+  display: none;
+  visibility: hidden;
+}

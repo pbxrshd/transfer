@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<!-- saved from url=(0045)http://localhost:8081/report/rptcontrol/menu# -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        
+
+        <title>Accertify</title>
+<!-- Bootstrap -->
+<link href="http://localhost:8081/unsecured/css/bootstrap.min.css" rel="stylesheet">
+<!-- Custom Styles For This Template -->
+<link href="http://localhost:8081/unsecured/css/non-responsive.css" rel="stylesheet">
+<!-- Font Awesome -->
+<link rel="stylesheet" href="./ReportInputs_files/font-awesome.min.css" type="text/css" media="all">
+
+<link rel="stylesheet" href="./ReportInputs_files/accertify.style.css" type="text/css" media="all">
+<link rel="stylesheet" href="./ReportInputs_files/accertify.print.style.css" type="text/css" media="print">
+<link rel="stylesheet" href="./ReportInputs_files/portal.css" type="text/css" media="screen">
+<link rel="SHORTCUT ICON" href="http://localhost:8081/unsecured/images/favicon.ico" type="image/x-icon">
+
+<!-- Theme1 -->
+<link rel="stylesheet" href="./ReportInputs_files/v2.css" type="text/css" media="all">
+
+<!--  these stylesheets are used for the 'modal' type dialog boxes -->
+<link href="./ReportInputs_files/modal_dialog_default_theme.css" rel="stylesheet" type="text/css">
+<link href="./ReportInputs_files/modal_dialog_alphacube_theme.css" rel="stylesheet" type="text/css">
+
+        <script language="javascript">
+        // for use by client side scripts
+        var CONSTANTS_CONTEXT_ROOT = "";
+        </script>
+        
+
+        
+
+
+<!-- Frequently used javascript libraries -->
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" src="./ReportInputs_files/prototype.js"></script>
+<script type="text/javascript" src="./ReportInputs_files/scriptaculous.js"></script><script type="text/javascript" src="./ReportInputs_files/builder.js"></script><script type="text/javascript" src="./ReportInputs_files/effects.js"></script><script type="text/javascript" src="./ReportInputs_files/dragdrop.js"></script><script type="text/javascript" src="./ReportInputs_files/controls.js"></script><script type="text/javascript" src="./ReportInputs_files/slider.js"></script><script type="text/javascript" src="./ReportInputs_files/sound.js"></script>
+<script type="text/javascript">
+if (typeof Prototype == 'undefined') {
+    document.write(unescape("%3Cscript type='text/javascript' src='/unsecured/js/libs/prototype-1.6.0.3.js?v=1433857830509'%3E%3C/script%3E"));
+}
+if (typeof Scriptaculous == 'undefined') {
+    document.write(unescape("%3Cscript type='text/javascript' src='/unsecured/js/libs/scriptaculous-1.8.2.js?v=1433857830509'%3E%3C/script%3E"));
+}
+</script>
+<script type="text/javascript" src="./ReportInputs_files/coreMerged.js"></script>
+<script type="text/javascript" src="./ReportInputs_files/jquery.min.js"></script>
+<script type="text/javascript">
+if (typeof jQuery == 'undefined') {
+    document.write(unescape("%3Cscript type='text/javascript' src='/unsecured/js/libs/jquery-1.7.1.min.js?v=1433857830509'%3E%3C/script%3E"));
+}
+</script>
+
+<script type="text/javascript">jQuery.noConflict();</script>
+
+
+
+
+
+        <script type="text/javascript" src="./ReportInputs_files/jquery-ui.js"></script>
+        <link type="text/css" rel="Stylesheet" href="./ReportInputs_files/jquery-ui.css">
+        <script type="text/javascript">
+        if (typeof jQuery.Widget == 'undefined') {
+            document.write(unescape("%3Cscript type='text/javascript' src='/unsecured/js/libs/jquery-ui-1.8.17.min.js'%3E%3C/script%3E"));
+            document.write(unescape("%3Clink type='text/css' rel='Stylesheet' href='/unsecured/css/jquery-ui/smoothness/jquery-ui.css'%3E%3C/script%3E"));
+        }
+        </script>
+
+
+
+
+<!-- Used for Chosen Select -->
+<script src="./ReportInputs_files/chosen.jquery.min.js"></script>
+<link rel="stylesheet" href="./ReportInputs_files/chosen.css" type="text/css" media="screen">
+
+<!-- Used for DatePicker -->
+<script type="text/javascript" src="./ReportInputs_files/jquery-ui-1.8.17.i18n.min.js"></script>
+<script type="text/javascript" src="./ReportInputs_files/jquery.acc.datepicker.js"></script>
+
+<script type="text/javascript">
+    var $j = jQuery;
+    $j(function() {
+        $j("#toggleChosen").on('click', enableChosen);
+    });
+
+    function enableChosen() {
+        $j(".chzn-select").chosen();
+        $j("#toggleChosen").hide();
+    }
+</script>
+
+<style type="text/css">
+        /* <![CDATA[ */
+    .chzn-container-multi .chzn-choices li {
+        float: inherit;
+    }
+    #toggleChosen {
+        cursor: pointer;
+    }
+        /* ]]> */
+</style>
+<!-- End of Chosen -->
+<!-- END - Frequently used javascript libraries -->
+        <script type="text/javascript" src="./ReportInputs_files/bootstrap.min.js"></script>
+        <!--[if lt IE 9]>
+        <script type="text/javascript" src="/unsecured/js/libs/respond.min.js"></script>
+        <![endif]-->
+        <script type="text/javascript" src="./ReportInputs_files/jquery.html5-placeholder-shim.js"></script>
+
+
+        
+            <script type="text/javascript">
+            // register key events on the page
+            Event.observe(window, 'load', initAltModes, false);
+            </script>
+        
+
+        
+        <script type="text/javascript">
+        // session timeout warnings
+        var idleTimer = new IdleTimer(
+            {duration: 14400000,
+             warnAt: 120000,
+             DIALOG_TITLE_TEXT: "WARNING",
+             OK_BUTTON_TEXT: "OK",
+             ABOUT_TO_EXPIRE_TEXT: "Your session is about to expire.",
+             COUNTDOWN_TEXT_1: "You have approximately",
+             COUNTDOWN_TEXT_2: "seconds to click",
+             COUNTDOWN_TEXT_3: "before your session times out.",
+             RECONNECT_TEXT_1: "Your session may have expired. Click",
+             RECONNECT_TEXT_2: "to attempt to reconnect.",
+             EXPIRED_TEXT_1: "Your session has expired. Please log back in.",
+             SESSION_EXPIRED_TEXT: "YOUR SESSION HAS EXPIRED"
+            });
+        idleTimer.beginTimer();
+        </script>
+        
+        
+        
+    <style type="text/css"></style></head>
+
+<body data-pinterest-extension-installed="cr1.37" cz-shortcut-listen="true" class="">
+    
+
+    <div class="header">
+        <div class="container" style="margin-bottom: 1em;">
+            <div class="acc-logo-container col-md-2">
+                
+                    <img src="./ReportInputs_files/dataservlet" class="img-responsive">
+                
+            </div>
+            <div class="col-md-10">
+                <div class="row acc-top-login-container pull-right">
+                    <p style="float: right;">
+                        
+                            Logged In As:&nbsp;<span class="acc-top-login-name"><a href="http://localhost:8081/jsp/other/myinfo/myinfo_v2.jsf" title="host admin">Host Administrator</a> </span>
+                        
+
+                        <!--  THIS IS THE ELSE CONDITION FOR IF THEY CAN'T CHANGE ALTER THEIR INFO -->
+                        
+
+                        
+                            On Behalf Of:&nbsp;<span class="acc-top-login-name-behalf"><a href="http://localhost:8081/jsp/other/onbehalfof/onbehalfof.jsf" name="header:selfLink" id="header:selfLink" title="host admin">Host Administrator</a></span>
+                        
+
+                        <span class="acc-top-logout"> (<a href="http://localhost:8081/unsecured/logouti.jsf" id="logoutLink">Logout</a>) </span>
+
+                        | <span class="acc-top-help"><a onclick="showHelp(this)" href="./ReportInputs_files/ReportInputs.html">Help</a></span>
+                    </p>
+                </div>
+                <div class="row">
+                    <div class="col-med-6 acc-top-crumbs">
+                        
+                            <ul><li><a href="http://localhost:8081/jsp/other/workingwith_v2.jsf?hierarchyId=5237260000000000001">Host</a></li><li><a href="http://localhost:8081/jsp/other/workingwith_v2.jsf?hierarchyId=5237260000000000007">Hosted Customers</a></li><li><a href="http://localhost:8081/jsp/other/workingwith_v2.jsf?hierarchyId=5237260000000000021">Host Future Use 1</a></li><li><a href="http://localhost:8081/jsp/other/workingwith_v2.jsf?hierarchyId=5237260000000000201">Retail</a></li><li><a href="http://localhost:8081/jsp/other/workingwith_v2.jsf?hierarchyId=5237260000000000202">Host Future Use 2</a></li><li>Target<a href="http://localhost:8081/jsp/other/workingwith_v2.jsf?hierarchyId=5237260000000004501"> ([Unknown Label: tableName=literal, fieldName=null, fieldValue=changeLocation])</a></li></ul>
+                        
+                        
+                    </div>
+                    <div class="col-med-3 acc-top-recently-worked-container">
+                        <a href="./ReportInputs_files/ReportInputs.html" class="acc-popover-general pull-right" data-toggle="popover" data-original-title="" title="" style="display: none;">Recently Worked:</a>
+                        <!--<input type="button" class="acc-popover-general acc-top-icon-button pull-left" value="&#xf0fe;" data-toggle="popover" />-->
+                        <div class="acc-general-popover-content-container hide">
+                            <div class="acc-tools-popper-content">
+                                <ul><li><div><a href="./ReportInputs_files/ReportInputs.html" class="col-md-1"><span class="fa fa-trello"></span></a><a href="http://localhost:8081/jsp/other/workingwith_v2.jsf?hierarchyId=5237260000000000001" class="col-md-10">Host</a></div></li><div class="clear"></div><li><div><a href="./ReportInputs_files/ReportInputs.html" class="col-md-1"><span class="fa fa-trello"></span></a><a href="http://localhost:8081/jsp/other/workingwith_v2.jsf?hierarchyId=5237260000000000069" class="col-md-10">Southwest Airlines</a></div></li><div class="clear"></div><li><div><a href="./ReportInputs_files/ReportInputs.html" class="col-md-1"><span class="fa fa-trello"></span></a><a href="http://localhost:8081/jsp/other/workingwith_v2.jsf?hierarchyId=5237260000000004022" class="col-md-10">Best Buy Production</a></div></li><div class="clear"></div><li><div><a href="./ReportInputs_files/ReportInputs.html" class="col-md-1"><span class="fa fa-trello"></span></a><a href="http://localhost:8081/jsp/other/workingwith_v2.jsf?hierarchyId=5237260000000003961" class="col-md-10">Delta Air Lines</a></div></li><div class="clear"></div><li><div><a href="./ReportInputs_files/ReportInputs.html" class="col-md-1"><span class="fa fa-trello"></span></a><a href="http://localhost:8081/jsp/other/workingwith_v2.jsf?hierarchyId=5237260000000001041" class="col-md-10">1-800-Flowers</a></div></li><div class="clear"></div><li><div><a href="./ReportInputs_files/ReportInputs.html" class="col-md-1"><span class="fa fa-trello"></span></a><a href="http://localhost:8081/jsp/other/workingwith_v2.jsf?hierarchyId=5237260000000001021" class="col-md-10">1-800-FLOWERS INC</a></div></li><div class="clear"></div><li><div><a href="./ReportInputs_files/ReportInputs.html" class="col-md-1"><span class="fa fa-trello"></span></a><a href="http://localhost:8081/jsp/other/workingwith_v2.jsf?hierarchyId=5237260000000003281" class="col-md-10">Adorama</a></div></li><div class="clear"></div><li><div><a href="./ReportInputs_files/ReportInputs.html" class="col-md-1"><span class="fa fa-trello"></span></a><a href="http://localhost:8081/jsp/other/workingwith_v2.jsf?hierarchyId=5237260000000017844" class="col-md-10">Groupon Production</a></div></li><div class="clear"></div><li><div><a href="./ReportInputs_files/ReportInputs.html" class="col-md-1"><span class="fa fa-trello"></span></a><a href="http://localhost:8081/jsp/other/workingwith_v2.jsf?hierarchyId=5237260000000024776" class="col-md-10">HSN</a></div></li></ul>
+                            </div>
+                        </div>
+                        <div id="popupContainerHolder"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="red bar"></div>
+
+    <div class="navbar navbar-default navbar-static" role="navigation">
+        <div class="container acc-nav-container">
+            <div class="collapse navbar-collapse"><ul class="nav navbar-nav"><li class="dropdown"><a href="./ReportInputs_files/ReportInputs.html" id="menu_system" class="dropdown-toggle">System</a><ul class="dropdown-menu nav-dropdown-menu" role="menu"><li><a href="http://localhost:8081/maintain/property/list" id="menu_property">Property</a></li><li><a href="http://localhost:8081/jsp/system/controlroom/controlroom.jsf" id="menu_controlroom">Control Room</a></li><li><a href="http://localhost:8081/jsp/system/hierarchy/hierarchy_v2.jsf" id="menu_hierarchy">Hierarchy</a></li><li><a href="http://localhost:8081/maintain/service/list" id="menu_service">Service</a></li><li><a href="http://localhost:8081/maintain/auditing/entities/list" id="menu_auditing">Auditing</a></li><li><a href="http://localhost:8081/jsp/system/cleanse/cleanse.jsf" id="menu_cleanse">Cleanse</a></li><li><a href="http://localhost:8081/jsp/system/threadpool/threadpool.jsf" id="menu_threadpool">Thread Pool</a></li><li><a href="http://localhost:8081/jsp/environment/billingtype/billingtype.jsf" id="menu_billingtype">Billing Type</a></li><li><a href="http://localhost:8081/maintain/reasoncodes/list" id="menu_reasoncodes">Reason Codes</a></li><li><a href="http://localhost:8081/maintain/reasoncodeexceptions/list" id="menu_reasoncodeexceptions">Reason Code Exceptions</a></li><li><a href="http://localhost:8081/maintain/linktransconfig/list" id="menu_linktransconfig">Link Transaction Config</a></li><li><a href="http://localhost:8081/maintain/binRange/list" id="menu_binRange">BIN Ranges</a></li><li><a href="http://localhost:8081/maintain/paygwconfig/list" id="menu_paygwconfig">Payment Gateway Operations</a></li><li><a href="http://localhost:8081/maintain/feature/list" id="menu_feature">Feature Maintenance</a></li></ul></li>
+<li class="dropdown"><a href="./ReportInputs_files/ReportInputs.html" id="menu_interface" class="dropdown-toggle">Interface</a><ul class="dropdown-menu nav-dropdown-menu" role="menu"><li><a href="http://localhost:8081/maintain/mask/list" id="menu_mask">Mask</a></li><li><a href="http://localhost:8081/jsp/interfaces/maskconfig/maskconfig.jsf" id="menu_maskconfig">Mask Config</a></li><li><a href="http://localhost:8081/maintain/importer/list" id="menu_importer">Importer</a></li><li><a href="http://localhost:8081/maintain/webimport/webimport" id="menu_webimport">Web Import</a></li><li><a href="http://localhost:8081/jsp/interfaces/emailtemplate/emailtemplate.jsf" id="menu_emailtemplate">Template</a></li><li><a href="http://localhost:8081/jsp/interfaces/helptext/helptext.jsf" id="menu_helptext">Help Text</a></li><li><a href="http://localhost:8081/maintain/xmlmask/list" id="menu_xmlmask">XML Mask</a></li><li><a href="http://localhost:8081/maintain/fixedwidthmask/list" id="menu_fixedwidthmask">Fixed Width Mask</a></li></ul></li>
+<li class="dropdown"><a href="./ReportInputs_files/ReportInputs.html" id="menu_environment" class="dropdown-toggle">Environment</a><ul class="dropdown-menu nav-dropdown-menu" role="menu"><li><a href="http://localhost:8081/jsp/environment/virtualtable/virtualtable_v2.jsf" id="menu_virtualtable">Virtual Table</a></li><li><a href="http://localhost:8081/jsp/environment/businessalias/businessalias.jsf" id="menu_businessalias">Business Alias</a></li><li><a href="http://localhost:8081/jsp/environment/logicaltype/logicaltype.jsf" id="menu_logicaltype">Logical Type</a></li><li><a href="http://localhost:8081/jsp/environment/flexlabel/flexlabels_v2.jsf" id="menu_flexlabel">Flex Label</a></li><li><a href="http://localhost:8081/maintain/imagelibrary/list" id="menu_imagelibrary">Image Library</a></li><li><a href="http://localhost:8081/jsp/environment/followup/followup_v2.jsf" id="menu_followup">Followup</a></li><li><a href="http://localhost:8081/jsp/environment/resolution/resolution_v2.jsf" id="menu_resolution">Resolution</a></li><li><a href="http://localhost:8081/maintain/queueconfig/list" id="menu_queueconfig">Queue Breakout</a></li><li><a href="http://localhost:8081/jsp/environment/reviewfunction/reviewfunction_v2.jsf" id="menu_reviewfunction">Review Function</a></li><li><a href="http://localhost:8081/jsp/environment/audittype/audittype.jsf" id="menu_audittype">Audit Type</a></li><li><a href="http://localhost:8081/jsp/environment/generictype/generictype.jsf" id="menu_generictype">Generic Type</a></li><li><a href="http://localhost:8081/jsp/environment/tranpagelayout/tranpagelayout.jsf" id="menu_tranpagelayout">Transaction Page Layout</a></li><li><a href="http://localhost:8081/jsp/environment/virtualdatacopyconfig/virtualdatacopyconfig.jsf" id="menu_virtualdatacopyconfig">Transaction Data Entry Config</a></li><li><a href="http://localhost:8081/maintain/industry/list" id="menu_industry">Industry</a></li><li><a href="http://localhost:8081/maintain/adwbusinessalias/list" id="menu_adwbusinessalias">ADW Business Alias</a></li></ul></li>
+<li class="dropdown"><a href="./ReportInputs_files/ReportInputs.html" id="menu_docmgmt" class="dropdown-toggle">Documents</a><ul class="dropdown-menu nav-dropdown-menu" role="menu"><li><a href="http://localhost:8081/maintain/documentcategory/list" id="menu_documentcategory">Document Categories</a></li><li><a href="http://localhost:8081/maintain/templatefieldmap/list" id="menu_templatefieldmap">Template Field Maps</a></li><li><a href="http://localhost:8081/maintain/documentlibraryitem/list" id="menu_documentlibraryitem">Document Library Items</a></li><li><a href="http://localhost:8081/maintain/documentassembly/list" id="menu_documentassembly">Document Assembly Instructions</a></li></ul></li>
+<li class="dropdown"><a href="./ReportInputs_files/ReportInputs.html" id="menu_clientMenu" class="dropdown-toggle">Client</a><ul class="dropdown-menu nav-dropdown-menu" role="menu"><li><a href="http://localhost:8081/jsp/client/user/user_v2.jsf" id="menu_user">User</a></li><li><a href="http://localhost:8081/jsp/client/role/role_v2.jsf" id="menu_role">Role</a></li><li><a href="http://localhost:8081/maintain/assignmentgroup/list" id="menu_assignmentgroup">Assignment Groups</a></li><li><a href="http://localhost:8081/jsp/client/rule/rule.jsf" id="menu_rule">Rule</a></li><li><a href="http://localhost:8081/jsp/client/ruleset/ruleset.jsf" id="menu_ruleset">Rule Set</a></li><li><a href="http://localhost:8081/maintain/rulesetversion/list" id="menu_rulesetversion">Rule Set Version</a></li><li><a href="http://localhost:8081/maintain/queueFilter/list" id="menu_queuefilter">Maintain Queue Filters</a></li><li><a href="http://localhost:8081/jsp/client/rulecategory/rulecategory.jsf" id="menu_rulecategory">Rule Category</a></li><li><a href="http://localhost:8081/jsp/client/negativetable/negtable_v2.jsf" id="menu_negtable">Negative Tables</a></li><li><a href="http://localhost:8081/jsp/client/negativevalue/negvalue_v2.jsf" id="menu_negvalue">Negative Values</a></li><li><a href="http://localhost:8081/maintain/literal/list" id="menu_literal">Literal</a></li><li><a href="http://localhost:8081/jsp/agent/addressbook/addressbook_v2.jsf" id="menu_maintain.addressbook">Maintain Address Book</a></li><li><a href="http://localhost:8081/jsp/agent/alert/alert_v2.jsf" id="menu_maintain.alerts">Maintain Alerts</a></li><li><a href="http://localhost:8081/jsp/client/casemanagement/casemanagement_v2.jsf" id="menu_maintain.cases">Maintain Cases</a></li><li><a href="http://localhost:8081/jsp/client/referencetable/referencetable.jsf" id="menu_referencetable">Reference Table</a></li><li><a href="http://localhost:8081/jsp/client/referencecontent/referencecontent.jsf" id="menu_referencecontent">Reference Content</a></li><li><a href="http://localhost:8081/jsp/client/crossreference/crossreference.jsf" id="menu_crossreference">Cross Reference</a></li><li><a href="http://localhost:8081/maintain/profiledefinition/list" id="menu_profiledefinition">Profile Definitions</a></li><li><a href="http://localhost:8081/maintain/profileinstruction/list" id="menu_profileinstruction">Profile Instructions</a></li><li><a href="http://localhost:8081/maintain/sfsoutput/list" id="menu_sfsoutput">Service Storage Outputs</a></li></ul></li>
+<li class="dropdown"><a href="./ReportInputs_files/ReportInputs.html" id="menu_boarding" class="dropdown-toggle">Boarding</a><ul class="dropdown-menu nav-dropdown-menu" role="menu"><li><a href="http://localhost:8081/maintain/masterClient/list" id="menu_masterclient">Master Clients</a></li><li><a href="http://localhost:8081/maintain/tenantType/list" id="menu_tenanttype">Tenant Types</a></li><li><a href="http://localhost:8081/maintain/tenant/list" id="menu_tenant">Tenants</a></li><li><a href="http://localhost:8081/maintain/literalName/list" id="menu_literalname">Literal Names</a></li><li><a href="http://localhost:8081/maintain/literalQuestion/list" id="menu_literalquestion">Literal Questions</a></li><li><a href="http://localhost:8081/maintain/literalAnswer/list" id="menu_literalanswer">Literal Answers</a></li><li><a href="http://localhost:8081/maintain/literalAnswerOption/list" id="menu_literalansweroption">Literal Answer Options</a></li><li><a href="http://localhost:8081/maintain/questionnaire/list" id="menu_questionnaire">Questionnaires</a></li><li><a href="http://localhost:8081/boarding/boardingwizard" id="menu_boardingwizard">Boarding Wizard</a></li></ul></li>
+<li class="dropdown"><a href="./ReportInputs_files/ReportInputs.html" id="menu_aoi" class="dropdown-toggle">AOI</a><ul class="dropdown-menu nav-dropdown-menu" role="menu"><li><a href="http://localhost:8081/maintain/aoiMasterTenant/list" id="menu_aoimastertenant">Master Tenants</a></li><li><a href="http://localhost:8081/maintain/aoiTenantType/list" id="menu_aoitenanttype">Tenant Types</a></li><li><a href="http://localhost:8081/maintain/aoiOfferingLevel/list" id="menu_aoiofferinglevel">Offering Levels</a></li><li><a href="http://localhost:8081/maintain/aoiService/list" id="menu_aoiservice">Services</a></li><li><a href="http://localhost:8081/maintain/aoiTenantClass/list" id="menu_aoitenantclass">Tenant Classes</a></li><li><a href="http://localhost:8081/maintain/aoiAnswer/list" id="menu_aoianswer">Answers</a></li><li><a href="http://localhost:8081/maintain/aoiQuestion/list" id="menu_aoiquestion">Questions</a></li><li><a href="http://localhost:8081/maintain/aoiAnswerGroup/list" id="menu_aoianswergroup">Answer Groups</a></li><li><a href="http://localhost:8081/maintain/aoiQuestionnaire/list" id="menu_aoiquestionnaire">Questionnaires</a></li><li><a href="http://localhost:8081/maintain/aoiRuleSetRecommendation/list" id="menu_aoirulesetrecommendation">Rule Set Recommendations</a></li><li><a href="http://localhost:8081/maintain/aoiTenant/list" id="menu_aoitenant">Tenants</a></li><li><a href="http://localhost:8081/flow/aoitenantquestionnaire" id="menu_aoitenantquestionnaire">Tenant Questionnaire</a></li></ul></li>
+<li class="dropdown"><a href="./ReportInputs_files/ReportInputs.html" id="menu_agent" class="dropdown-toggle">Agent</a><ul class="dropdown-menu nav-dropdown-menu" role="menu"><li><a href="http://localhost:8081/pages/queueReview/1" id="menu_queue">Queue Review</a></li><li><a href="http://localhost:8081/agent/dashboard/start" id="menu_queue.manager.dashboard">Queue Dashboard</a></li><li><a href="http://localhost:8081/jsp/agent/addressbook/agentAddressBook.jsf" id="menu_addressbook">Address Book</a></li><li><a href="http://localhost:8081/jsp/agent/alert/agentAlert.jsf" id="menu_alert">Alerts</a></li><li><a href="http://localhost:8081/jsp/agent/findtransaction/findtransaction.jsf?bucketId=1" id="menu_findtransaction">[Unknown Label: tableName=menus, fieldName=flexSuffix, fieldValue=findtransaction]</a></li><li><a href="http://localhost:8081/pages/queueReview/2" id="menu_chargeback">Chargeback Review</a></li><li><a href="http://localhost:8081/jsp/agent/findtransaction/findtransaction.jsf?bucketId=2" id="menu_findtransactionchargeback">Find Chargeback Transaction</a></li><li><a href="http://localhost:8081/jsp/agent/virtualterminal/virtualterminal.jsf" id="menu_virtualterminal">Virtual Terminal</a></li><li><a href="http://localhost:8081/pages/queueReview/3" id="menu_casemanagement">Case Review</a></li><li><a href="http://localhost:8081/jsp/agent/findtransaction/findtransaction.jsf?bucketId=3" id="menu_findtransactioncasemanagement">Find Case</a></li><li><a href="http://localhost:8081/pages/queueReview/4" id="menu_queueProcess4">Queue for Process 4</a></li><li><a href="http://localhost:8081/jsp/agent/findtransaction/findtransaction.jsf?bucketId=4" id="menu_findTransactionProcess4">Find for Process 4</a></li><li><a href="http://localhost:8081/pages/linkorphandoc/list" id="menu_linkorphandoc">Link Orphan Documents</a></li><li><a href="http://localhost:8081/maintain/transaction/init" id="menu_transaction">[Unknown Label: tableName=menus, fieldName=flexSuffix, fieldValue=transaction]</a></li></ul></li>
+<li class="dropdown"><a href="./ReportInputs_files/ReportInputs.html" id="menu_billing" class="dropdown-toggle">Billing</a><ul class="dropdown-menu nav-dropdown-menu" role="menu"><li><a href="http://localhost:8081/maintain/client/list" id="menu_client">Client</a></li><li><a href="http://localhost:8081/maintain/contract/list" id="menu_contract">Contract</a></li><li><a href="http://localhost:8081/maintain/contractproduct/list" id="menu_contractproduct">Contract Product</a></li></ul></li>
+<li class="dropdown"><a href="./ReportInputs_files/ReportInputs.html" id="menu_reporting" class="dropdown-toggle">Reporting</a><ul class="dropdown-menu nav-dropdown-menu" role="menu"><li><a href="http://localhost:8081/jsp/reporting/analystperformance/analystperformance.jsf?bucketId=1" id="menu_analystperformance">Analyst Performance</a></li><li><a href="http://localhost:8081/jsp/reporting/analystperformance/analystperformance.jsf?bucketId=2" id="menu_analystperformance2">Analyst Performance 2</a></li><li><a href="http://localhost:8081/jsp/reporting/analystperformance/analystperformance.jsf?bucketId=3" id="menu_analystperformance3">Analyst Performance 3</a></li><li><a href="http://localhost:8081/maintain/datadownload/list" id="menu_datadownload">Data Download</a></li><li><a href="http://localhost:8081/maintain/dataextractdefinition/list" id="menu_dataextractdefinition">Data Extract Definition</a></li><li><a href="http://localhost:8081/report/encryptionkey/list" id="menu_encryptionkey">Encryption Keys</a></li><li><a href="http://localhost:8081/jsp/reporting/fraudhistory/fraudhistory.jsf?bucketId=1" id="menu_fraudhistory">Resolution History</a></li><li><a href="http://localhost:8081/jsp/reporting/fraudhistory/fraudhistory.jsf?bucketId=2" id="menu_fraudhistory2">Fraud History 2</a></li><li><a href="http://localhost:8081/jsp/reporting/fraudhistory/fraudhistory.jsf?bucketId=3" id="menu_fraudhistory3">Fraud History 3</a></li><li><a href="http://localhost:8081/jsp/reporting/nontranreport/nontranreportLauncher.jsf" id="menu_nontranreport">Non Tran Reporting</a></li><li><a href="http://localhost:8081/maintain/rptdefinition/list" id="menu_rptdefinition">Report Definition</a></li><li><a href="http://localhost:8081/report/rptcontrol/menu" id="menu_rptmenu">Enterprise Reports</a></li></ul></li>
+</ul></div>
+        </div>
+    </div>
+    <script type="text/javascript" src="./ReportInputs_files/app.js"></script>
+
+    <div id="statusMessagesPanel1" class="statusMessagesPanel1"></div>
+
+    <div class="content">
+        
+
+
+
+
+
+<script src="./ReportInputs_files/spin.js"></script>
+
+<script type="text/javascript">
+
+    // register and setup wait spinner for this page
+    jQuery(window).load( function() {
+      new Spinner({ /* set options */
+              lines: 13, // The number of lines to draw
+              length: 20, // The length of each line
+              width: 10, // The line thickness
+              radius: 30, // The radius of the inner circle
+              corners: 1, // Corner roundness (0..1)
+              rotate: 0, // The rotation offset
+              direction: 1, // 1: clockwise, -1: counterclockwise
+              color: '#000', // #rgb or #rrggbb or array of colors
+              speed: 1, // Rounds per second
+              trail: 60, // Afterglow percentage
+              shadow: false, // Whether to render a shadow
+              hwaccel: false, // Whether to use hardware acceleration
+              className: 'spinner', // The CSS class to assign to the spinner
+              zIndex: 2e9, // The z-index (defaults to 2000000000)
+              top: '50%', // Top position relative to parent
+              left: '50%' // Left position relative to parent
+      }).spin(/* set target */document.getElementById('waiting_spinner_center'));}
+    );
+
+    // Report menu commands
+    var RM = (function() {
+        "use strict";
+        function menuItemClicked(ref) {
+            var mid = jQuery(ref).attr('mid');
+            var uri = '/report/rptcontrol/run?rdid=' + mid;
+            var rtt = jQuery(ref).attr('rtt');
+            if ('OWN_WINDOW' === rtt) {
+                window.open(uri, 'interceptas-report');
+            } else { // default, rtt === IN_LINE 
+                jQuery("#pleaseWaitDialog").modal('show');
+                jQuery('#rptContentContainer').load(uri, function() {
+                    jQuery('#pleaseWaitDialog').modal('hide');
+                    try {
+                        // execute this on the loaded fragment (if the loaded frag has it implemented)
+                        rpt_menu_post_load_process();
+                    } catch (e) {/*ignore*/
+                    }
+                    jQuery('div#rpt_menu_accordion a').removeClass('active');
+                    jQuery(ref).addClass('active');
+                });
+            }
+        }
+        return {
+            mc : menuItemClicked
+        };
+    })();
+
+</script>
+
+<div class="container">
+
+<div class="page-header">
+    <h1>Enterprise Reports</h1>
+</div>
+
+<p>Select a report from the left to configure and generate a report.</p>
+
+
+
+<div class="row">
+    <!-- Left Content -->
+    <div class="acc-input-control-left-content pull-left">
+        <!-- Accordion -->
+        <div class="panel-group row" id="rpt_menu_accordion">
+
+            
+
+                <div class="panel accordion-panel">
+                    <div class="panel-heading accordion-heading">
+                        <div class="accordion-heading-middle " data-toggle="collapse" data-parent="#accordion" href="#collapse0">
+                            <a class="accordion-toggle"></a>
+                            Standard Reports
+                        </div>
+                    </div>
+
+                    <div id="collapse0" class="panel-collapse collapse in">
+                        <div class="panel-body">
+                            <div class="acc-input-control-group">
+                                <div class="list-group acc-list-group">
+                                    
+                                        <a href="./ReportInputs_files/ReportInputs.html" class="list-group-item" onclick="RM.mc(this)" rtt="IN_LINE" mid="5237260000000000561">
+                                            Rule Execution Count (PENTRN0001)</a>
+                                    
+                                        <a href="./ReportInputs_files/ReportInputs.html" class="list-group-item" onclick="RM.mc(this)" rtt="IN_LINE" mid="5237260000000000383">
+                                            Analyst Activity (grouped by Analyst with Subtotals)</a>
+                                    
+                                        <a href="./ReportInputs_files/ReportInputs.html" class="list-group-item" onclick="RM.mc(this)" rtt="IN_LINE" mid="5237260000000000384">
+                                            Analyst Activity (grouped by Transaction)</a>
+                                    
+                                        <a href="./ReportInputs_files/ReportInputs.html" class="list-group-item" onclick="RM.mc(this)" rtt="" mid="5237260000000000385">
+                                            Analyst Activity (grouped by Resolutions)</a>
+                                    
+                                        <a href="./ReportInputs_files/ReportInputs.html" class="list-group-item" onclick="RM.mc(this)" rtt="" mid="5237260000000000386">
+                                            Analyst Activity Summary - Hostile/Friendly Fraud and Bulk Counts</a>
+                                    
+                                        <a href="./ReportInputs_files/ReportInputs.html" class="list-group-item" onclick="RM.mc(this)" rtt="IN_LINE" mid="5237260000000000387">
+                                            Analyst Activity - Dashboard</a>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            
+
+                <div class="panel accordion-panel">
+                    <div class="panel-heading accordion-heading">
+                        <div class="accordion-heading-middle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse1">
+                            <a class="accordion-toggle"></a>
+                            Profile Reports
+                        </div>
+                    </div>
+
+                    <div id="collapse1" class="panel-collapse collapse ">
+                        <div class="panel-body">
+                            <div class="acc-input-control-group">
+                                <div class="list-group acc-list-group">
+                                    
+                                        <a href="./ReportInputs_files/ReportInputs.html" class="list-group-item" onclick="RM.mc(this)" rtt="IN_LINE" mid="5237260000000000404">
+                                            Profile List Field Report</a>
+                                    
+                                        <a href="./ReportInputs_files/ReportInputs.html" class="list-group-item" onclick="RM.mc(this)" rtt="IN_LINE" mid="5237260000000000405">
+                                            Profile Meta Data Report</a>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            
+
+                <div class="panel accordion-panel">
+                    <div class="panel-heading accordion-heading">
+                        <div class="accordion-heading-middle" data-toggle="collapse" data-parent="#accordion" href="#collapse2">
+                            <a class="accordion-toggle"></a>
+                            Custom Reports
+                        </div>
+                    </div>
+
+                    <div id="collapse2" class="panel-collapse collapse in" style="height: auto;">
+                        <div class="panel-body">
+                            <div class="acc-input-control-group">
+                                <div class="list-group acc-list-group">
+                                    
+                                        <a href="./ReportInputs_files/ReportInputs.html" class="list-group-item" onclick="RM.mc(this)" rtt="OWN_WINDOW" mid="5237260000000000061">
+                                            Custom Report 1</a>
+                                    
+                                        <a href="./ReportInputs_files/ReportInputs.html" class="list-group-item active" onclick="RM.mc(this)" rtt="IN_LINE" mid="5237260000000000501">
+                                            Fraud Resolutions Grouped By Attribute</a>
+                                    
+                                        <a href="./ReportInputs_files/ReportInputs.html" class="list-group-item" onclick="RM.mc(this)" rtt="IN_LINE" mid="5237260000000000522">
+                                            Resolution History Statistics</a>
+                                    
+                                        <a href="./ReportInputs_files/ReportInputs.html" class="list-group-item" onclick="RM.mc(this)" rtt="IN_LINE" mid="5237260000000000523">
+                                            Resolution Spread</a>
+                                    
+                                        <a href="./ReportInputs_files/ReportInputs.html" class="list-group-item" onclick="RM.mc(this)" rtt="IN_LINE" mid="5237260000000000601">
+                                            Resolutions With Recommendation Code Grouped By Attribute</a>
+                                    
+                                        <a href="./ReportInputs_files/ReportInputs.html" class="list-group-item" onclick="RM.mc(this)" rtt="IN_LINE" mid="5237260000000000621">
+                                            Recommendation Codes Rate</a>
+                                    
+                                        <a href="./ReportInputs_files/ReportInputs.html" class="list-group-item" onclick="RM.mc(this)" rtt="IN_LINE" mid="5237260000000000622">
+                                            Queue Metrics</a>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            
+
+                <div class="panel accordion-panel">
+                    <div class="panel-heading accordion-heading">
+                        <div class="accordion-heading-middle" data-toggle="collapse" data-parent="#accordion" href="#collapse3">
+                            <a class="accordion-toggle"></a>
+                            Other
+                        </div>
+                    </div>
+
+                    <div id="collapse3" class="panel-collapse collapse in" style="height: auto;">
+                        <div class="panel-body">
+                            <div class="acc-input-control-group">
+                                <div class="list-group acc-list-group">
+                                    
+                                        <a href="./ReportInputs_files/ReportInputs.html" class="list-group-item" onclick="RM.mc(this)" rtt="IN_LINE" mid="5237260000000000582">
+                                            Rules Correlation</a>
+                                    
+                                        <a href="./ReportInputs_files/ReportInputs.html" class="list-group-item" onclick="RM.mc(this)" rtt="" mid="5237260000000000403">
+                                            Access to Sensitive Data (PENAUD0001)</a>
+                                    
+                                        <a href="./ReportInputs_files/ReportInputs.html" class="list-group-item" onclick="RM.mc(this)" rtt="IN_LINE" mid="5237260000000000402">
+                                            Change in Resolution</a>
+                                    
+                                        <a href="./ReportInputs_files/ReportInputs.html" class="list-group-item" onclick="RM.mc(this)" rtt="" mid="5237260000000000401">
+                                            Negative Values (PENMST0005)</a>
+                                    
+                                        <a href="./ReportInputs_files/ReportInputs.html" class="list-group-item" onclick="RM.mc(this)" rtt="IN_LINE" mid="5237260000000000521">
+                                            Operational Dashboard</a>
+                                    
+                                        <a href="./ReportInputs_files/ReportInputs.html" class="list-group-item" onclick="RM.mc(this)" rtt="IN_LINE" mid="5237260000000000541">
+                                            Recommendation Codes</a>
+                                    
+                                        <a href="./ReportInputs_files/ReportInputs.html" class="list-group-item" onclick="RM.mc(this)" rtt="IN_LINE" mid="5237260000000000525">
+                                            Transaction Scores</a>
+                                    
+                                        <a href="./ReportInputs_files/ReportInputs.html" class="list-group-item" onclick="RM.mc(this)" rtt="IN_LINE" mid="5237260000000000581">
+                                            Rules Tripped Overview</a>
+                                    
+                                        <a href="./ReportInputs_files/ReportInputs.html" class="list-group-item" onclick="RM.mc(this)" rtt="IN_LINE" mid="5237260000000000397">
+                                            Transactions Per Period (PENTRN0003)</a>
+                                    
+                                        <a href="./ReportInputs_files/ReportInputs.html" class="list-group-item" onclick="RM.mc(this)" rtt="IN_LINE" mid="5237260000000000421">
+                                            Sample Transactions Tripped</a>
+                                    
+                                        <a href="./ReportInputs_files/ReportInputs.html" class="list-group-item" onclick="RM.mc(this)" rtt="IN_LINE" mid="5237260000000000524">
+                                            Top Rules Tripped</a>
+                                    
+                                        <a href="./ReportInputs_files/ReportInputs.html" class="list-group-item" onclick="RM.mc(this)" rtt="IN_LINE" mid="5237260000000000661">
+                                            Pulse Dashboard</a>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            
+
+        </div> <!-- accordion -->
+    </div> <!-- Left Content -->
+
+    <!-- Right Content -->
+    <div id="rptContentContainer">
+
+
+
+
+
+
+
+
+                    <div class="acc-input-control-right-content pull-left acc-input-control-right-content-report">
+                        <div class="acc-input-control-right-content-inside pull-left">
+                            <h3 class="acc-h3">Fraud Resolutions Grouped By Attribute</h3>
+
+                            <div class="acc-alert-container alert alert-danger" role="alert" id="error_messages_container" style="display: none;">
+                                <p>There was a problem processing your request. The following fields returned errors:</p>
+                                <div class="errorMessages"></div>
+                                <p>Please verify your selections and try submiting your request again</p>
+                            </div>  
+
+                            <form role="form" id="scr_form" name="scr_form" method="post" action="http://localhost:8081/report/rptcontrol/run" target="interceptas_report">
+                              <input type="hidden" name="rdid" value="5237260000000000501">
+                              <input type="hidden" name="user_submitted" value="true">
+                              <input type="hidden" name="user_locale" value="en_US">
+
+                              <!-- Required Field -->
+                              <div class="form-group row">
+                                <div class="pull-right clearfix">
+                                  <i class="fa fa-asterisk"></i>
+                                  <label class="acc-small-italic-label" style="margin-right: 6.125em;">required field</label>
+                                </div>
+                              </div>
+
+                              
+                                
+                                  
+                                  
+                                    <div class="form-group row"><!-- ctrl 0 -->
+                                      
+                                        
+                                          <label class="col-md-2 control-label">Data Source<i class="fa fa-asterisk"></i></label>
+                                        
+                                        
+                                                                          
+                                      <div class="col-md-10 btn-group">
+                                        <div class="multiSelectWrapper " id="a3a18cd0"><table><tbody><tr><td colspan="3"><div class="filterWrapper"><input type="text" class="filter" placeholder="Enter Name" style="background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABHklEQVQ4EaVTO26DQBD1ohQWaS2lg9JybZ+AK7hNwx2oIoVf4UPQ0Lj1FdKktevIpel8AKNUkDcWMxpgSaIEaTVv3sx7uztiTdu2s/98DywOw3Dued4Who/M2aIx5lZV1aEsy0+qiwHELyi+Ytl0PQ69SxAxkWIA4RMRTdNsKE59juMcuZd6xIAFeZ6fGCdJ8kY4y7KAuTRNGd7jyEBXsdOPE3a0QGPsniOnnYMO67LgSQN9T41F2QGrQRRFCwyzoIF2qyBuKKbcOgPXdVeY9rMWgNsjf9ccYesJhk3f5dYT1HX9gR0LLQR30TnjkUEcx2uIuS4RnI+aj6sJR0AM8AaumPaM/rRehyWhXqbFAA9kh3/8/NvHxAYGAsZ/il8IalkCLBfNVAAAAABJRU5ErkJggg==); background-attachment: scroll; background-position: 100% 50%; background-repeat: no-repeat;"></div></td></tr><tr><td class="list-title no-select"><span>Available</span></td><td class="list-selectAll list-selectAll-left no-select"><label><input type="checkbox" onclick="Multi.selectAll(this, &quot;left&quot;);">Select All</label></td><td></td><td class="list-title no-select"><span>Selected</span></td><td class="list-selectAll list-selectAll-right no-select"><label><input type="checkbox" onclick="Multi.selectAll(this, &quot;right&quot;);">Select All</label></td></tr><tr><td colspan="2" class="list-td list-td-left"><div tabindex="0" class="list-wrapper list-wrapper-left"><div class="list-left"><span class="no-select item  " value="" sortindex="0"> </span><span class="no-select item  " value="5237260000000004501" sortindex="1">Target</span><span class="no-select item  " value="5237260000000004701" sortindex="3">Target Test</span></div></div></td><td><div class="list-copy list-copy-right no-select" onclick="Multi.copyRight(this);"><i class="fa fa-chevron-circle-right fa-2x"></i></div><div class="list-copy list-copy-left no-select" onclick="Multi.copyLeft(this);"><i class="fa fa-chevron-circle-left fa-2x"></i></div></td><td colspan="2" class="list-td list-td-right"><div tabindex="0" class="list-wrapper list-wrapper-right"><div class="list-right"><span class="no-select item" value="5237260000000004702" sortindex="2">Target Production</span></div></div></td></tr><tr><td colspan="2" class="numofselected no-select">0 of 3 selected</td><td></td><td colspan="2" class="totalSelectedMessage no-select">1 items</td></tr><tr class="listToSubmitTr"><td colspan="5"><input type="hidden" name="h" value="5237260000000004702"></td></tr></tbody></table></div>
+                                        <hr class="acc-divider">
+                                      </div>
+                                    </div><!-- ctrl 0 -->
+                                  
+                                
+                              
+                                
+                                  
+                                  
+                                    <div class="form-group row"><!-- ctrl 1 -->
+                                      
+                                        
+                                          <label class="col-md-2 control-label">Data Type<i class="fa fa-asterisk"></i></label>
+                                        
+                                        
+                                                                          
+                                      <div class="col-md-10 btn-group">
+                                        <select name="vt" id="vt" class="form-control" reqd="true" data-dependents="true"><option value=""> </option><option value="5237260000000006162">AAA</option><option value="5237260000000006163">AAB-TZ</option><option value="5237260000000003721">ACM Purchase Details_Retail</option><option value="5237260000000005082">ACM Purchase Details_Ticketing</option><option value="5237260000000004482">ACM Purchase Details_Travel</option><option value="5237260000000005002">ACM eFax Disposition</option><option value="5237260000000004982">ACM eFax Inbound</option><option value="5237260000000005722">AMEX RIM</option><option value="5237260000000005662">APG Global Card Token Repository</option><option value="5237260000000005763">APG Global HPF Session Repository</option><option value="5237260000000005283">APG Global Operations</option><option value="5237260000000005282">APG Global Transactions</option><option value="5237260000000003501">Accertify Chargebacks Management</option><option value="5237260000000002661">Base Sabre</option><option value="5237260000000003701">Base System Data Elements</option><option value="5237260000000002442">Target Orders</option></select><p class="acc-small-italic-label">16 total items</p>
+                                        <hr class="acc-divider">
+                                      </div>
+                                    </div><!-- ctrl 1 -->
+                                  
+                                
+                              
+                                
+                                  
+                                  
+                                    <div class="form-group row"><!-- ctrl 2 -->
+                                      
+                                        
+                                        
+                                          <label class="col-md-2 control-label acc-normal-label">Attribute</label>
+                                        
+                                                                          
+                                      <div class="col-md-10 btn-group">
+                                        <select name="bt_tn_ac" id="bt_tn_ac" class="form-control" multiple="true" data-dependency="vt"><option value=""> </option><option value="ACTION_CODE">Action Code</option><option value="BIN">BIN Number</option><option value="BILLING_ADDR">Billing Address</option><option value="BILLING_CITY">Billing City</option><option value="BILLING_COUNTRY">Billing Country</option><option value="BILLING_PHONE">Billing Phone Number</option><option value="BILLING_STATE">Billing State</option><option value="BILLING_ZIP">Billing Zip Code</option><option value="BIN_COUNTRY">Bin Country</option><option value="BILLING_NAME">Cardholder Name</option><option value="BILLING_CARD">Credit Card Number</option><option value="MEMBER_NAME">Guest Name</option><option value="IP_DOMAIN_SECOND">IP 2nd Level Domain</option><option value="IPADDRESS">IP Address</option><option value="IP_CARRIER_CODE">IP Carrier Code</option><option value="IP_CITY">IP City</option><option value="IP_COUNTRY">IP Country</option><option value="IP_DOMAIN_FIRST">IP Domain Level 1</option><option value="IP_PROXY">IP Proxy</option><option value="IP_REGION">IP Region</option><option value="IP_ROUTING">IP Routing</option><option value="IP_STATE">IP State</option><option value="PURCHASE_DATE">Order Date Time</option><option value="SHIPPING_ADDR">Shipping Address</option><option value="SHIPPING_CITY">Shipping City</option><option value="SHIPPING_COUNTRY">Shipping Country</option><option value="SHIPPING_EMAIL">Shipping Email Address</option><option value="SHIPPING_METHOD">Shipping Method</option><option value="SHIPPING_NAME">Shipping Name</option><option value="SHIPPING_PHONE">Shipping Phone Number</option><option value="SHIPPING_STATE">Shipping State</option><option value="SHIPPING_ZIP">Shipping Zip Code</option><option value="MEMBER_ID">Target.com Account ID</option><option value="BILLING_AMOUNT">Total Order Amount</option></select><p class="acc-small-italic-label">0 total items</p>
+                                        <hr class="acc-divider">
+                                      </div>
+                                    </div><!-- ctrl 2 -->
+                                  
+                                
+                              
+                                
+                                  
+                                  
+                                    <div class="form-group row"><!-- ctrl 3 -->
+                                      
+                                        
+                                          <label class="col-md-2 control-label">Display Top<i class="fa fa-asterisk"></i></label>
+                                        
+                                        
+                                                                          
+                                      <div class="col-md-10 btn-group">
+                                        <select name="tn_tn" id="tn_tn" class="form-control" reqd="true"><option value="5">5</option><option value="10">10</option><option value="25">25</option><option value="50">50</option></select><p class="acc-small-italic-label">4 total items</p>
+                                        <hr class="acc-divider">
+                                      </div>
+                                    </div><!-- ctrl 3 -->
+                                  
+                                
+                              
+                                
+                                  
+                                  
+                                    <div class="form-group row"><!-- ctrl 4 -->
+                                      
+                                        
+                                        
+                                          <label class="col-md-2 control-label acc-normal-label">Score</label>
+                                        
+                                                                          
+                                      <div class="col-md-10 btn-group">
+                                        <div class="row">
+  <div class="col-md-3"><select name="sr_nrc_op" id="sr_nrc_op" class="form-control" onchange="NRC.OC(this)"><option value=""></option><option value="eq">Equals</option><option value="lt">Less than</option><option value="gt">Greater than</option><option value="bw">Between</option></select></div>
+  <div class="col-md-3"><input name="sr_nrc_fv" id="sr_nrc_fv" size="4" onchange="NRC.IC(this)" class="form-control "></div>
+  <div class="col-md-3 and-clause hidden text-center">and</div>
+  <div class="col-md-3 and-clause hidden"><input name="sr_nrc_tv" id="sr_nrc_tv" size="4" onchange="NRC.IC(this)" class="form-control "></div>
+</div>
+                                        <hr class="acc-divider">
+                                      </div>
+                                    </div><!-- ctrl 4 -->
+                                  
+                                
+                              
+                                
+                                  
+                                  
+                                    <div class="form-group row"><!-- ctrl 5 -->
+                                      
+                                        
+                                          <label class="col-md-2 control-label">Date Period<i class="fa fa-asterisk"></i></label>
+                                        
+                                        
+                                                                          
+                                      <div class="col-md-10 btn-group">
+                                        <div class="panel" style="padding:4px;">
+  <div id="dp_period_section">    <div class="row well well-sm">
+      <div class="col-md-6"><div class="acc-small-normal-label">Select data for</div><select name="dp_p" id="dp_p" onchange="SC.X(this)" class="form-control "><option></option><optgroup label="Day"></optgroup><option value="d0">This day</option><option value="d1">1 day</option><option value="d2">2 days</option><option value="d3">3 days</option><option value="d5">5 days</option><option value="d6">6 days</option><option value="d7">7 days</option><option value="d15">15 days</option><option value="d30">30 days</option><optgroup label="Week"></optgroup><option value="w0">This week</option><option value="w1">1 week</option><option value="w2">2 weeks</option><option value="w3">3 weeks</option><option value="w4">4 weeks</option><optgroup label="Month"></optgroup><option value="m0">This month</option><option value="m1">1 month</option><option value="m2">2 months</option><option value="m3">3 months</option><option value="m4">4 months</option></select></div>
+      <div class="col-md-6"><div class="acc-small-normal-label">from</div><select name="dp_w" id="dp_w" class="form-control "><optgroup label="Day"></optgroup><option value="d1">1 day ago</option><option value="d2">2 days ago</option><option value="d3">3 days ago</option><option value="d5">5 days ago</option><option value="d6">6 days ago</option><option value="d7">7 days ago</option><option value="d15">15 days ago</option><option value="d30">30 days ago</option><optgroup label="Week"></optgroup><option value="w1">1 week ago</option><option value="w2">2 weeks ago</option><option value="w3">3 weeks ago</option><option value="w4">4 weeks ago</option><optgroup label="Month"></optgroup><option value="m1">1 month ago</option><option value="m2">2 months ago</option><option value="m3">3 months ago</option><option value="m4">4 months ago</option></select></div>
+    </div>
+  </div>  <div id="dp_date_section">    <div class="text-center">or</div>
+    <div class="well well-sm">
+      <div class="acc-small-normal-label">Data for date and times between</div><div><div class="row">
+ <div class="col-md-4"><input name="dp_s" id="dp_s" onchange="SC.X(this)" class="form-control acc-datepicker  hasDatepicker"><button type="button" class="ui-datepicker-trigger"></button></div>
+ <div class="col-md-8"><div class="row">
+ <div class="col-md-6"><select name="dp_sTI_HH" id="dp_sTI_HH" class="form-control"><option value="00">00</option><option value="01">01</option><option value="02">02</option><option value="03">03</option><option value="04">04</option><option value="05">05</option><option value="06">06</option><option value="07">07</option><option value="08">08</option><option value="09">09</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14">14</option><option value="15">15</option><option value="16">16</option><option value="17">17</option><option value="18">18</option><option value="19">19</option><option value="20">20</option><option value="21">21</option><option value="22">22</option><option value="23">23</option></select></div>
+ <div class="col-md-6"><select name="dp_sTI_MM" id="dp_sTI_MM" class="form-control"><option value="00">00</option><option value="15">15</option><option value="30">30</option><option value="45">45</option></select></div>
+</div></div>
+</div></div>
+      <div class="acc-small-normal-label">and</div><div><div class="row">
+ <div class="col-md-4"><input name="dp_e" id="dp_e" onchange="SC.X(this)" class="form-control acc-datepicker  hasDatepicker"><button type="button" class="ui-datepicker-trigger"></button></div>
+ <div class="col-md-8"><div class="row">
+ <div class="col-md-6"><select name="dp_eTI_HH" id="dp_eTI_HH" class="form-control"><option value="00">00</option><option value="01">01</option><option value="02">02</option><option value="03">03</option><option value="04">04</option><option value="05">05</option><option value="06">06</option><option value="07">07</option><option value="08">08</option><option value="09">09</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14">14</option><option value="15">15</option><option value="16">16</option><option value="17">17</option><option value="18">18</option><option value="19">19</option><option value="20">20</option><option value="21">21</option><option value="22">22</option><option value="23">23</option></select></div>
+ <div class="col-md-6"><select name="dp_eTI_MM" id="dp_eTI_MM" class="form-control"><option value="00">00</option><option value="15">15</option><option value="30">30</option><option value="45">45</option></select></div>
+</div></div>
+</div></div>
+    </div>
+  </div></div>
+                                        <hr class="acc-divider">
+                                      </div>
+                                    </div><!-- ctrl 5 -->
+                                  
+                                
+                              
+                                
+                                  
+                                  
+                                    <div class="form-group row"><!-- ctrl 6 -->
+                                      
+                                        
+                                        
+                                          <label class="col-md-2 control-label acc-normal-label">Scheduling</label>
+                                        
+                                                                          
+                                      <div class="col-md-10 btn-group">
+                                        <input type="checkbox" name="sw_sched" value="sw_not_now" id="sw_not_now" onchange="SC.X(this)">
+<span class="acc-small-normal-label">Check this to schedule this report and set scheduling options</span>
+<div id="sw_panel" class="panel hidden" style="padding:4px;"><br>
+  <div class="well well-sm">
+    <div>
+      <input type="radio" name="sw_sched_type" value="once" id="sw_once" checked="checked" onchange="SC.X(this)">
+      <span class="acc-small-normal-label">Schedule one time, as soon as possible</span>
+    </div>
+    <div>
+      <input type="radio" name="sw_sched_type" value="future" id="sw_future" onchange="SC.X(this)">
+      <span class="acc-small-normal-label">[Unknown Label: tableName=literal, fieldName=reportlabel, fieldValue=scheduletypefuture]</span>
+    </div>
+    <div id="sw_sched_type_options" class="hidden">
+      <div class="row">
+        <div class="col-md-3"><div class="acc-small-normal-label">Every</div></div>
+        <div class="col-md-9"><div class="acc-small-normal-label">At time</div></div>
+      </div>
+      <div class="row">
+        <div class="col-md-3"><select name="sw_at_every" id="sw_at_every" class="form-control"><option value="d">day</option><option value="w">week</option><option value="m">month</option></select></div>
+        <div class="col-md-9"><div class="row">
+ <div class="col-md-6"><select name="sw_at_timeTI_HH" id="sw_at_timeTI_HH" class="form-control"><option value="00">00</option><option value="01">01</option><option value="02">02</option><option value="03">03</option><option value="04">04</option><option value="05">05</option><option value="06">06</option><option value="07">07</option><option value="08">08</option><option value="09">09</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14">14</option><option value="15">15</option><option value="16">16</option><option value="17">17</option><option value="18">18</option><option value="19">19</option><option value="20">20</option><option value="21">21</option><option value="22">22</option><option value="23">23</option></select></div>
+ <div class="col-md-6"><select name="sw_at_timeTI_MM" id="sw_at_timeTI_MM" class="form-control"><option value="00">00</option><option value="15">15</option><option value="30">30</option><option value="45">45</option></select></div>
+</div></div>
+      </div>
+      <div class="row">
+        <div class="col-md-6"><div class="acc-small-normal-label">Begin schedule from</div></div>
+        <div class="col-md-6"><div class="acc-small-normal-label">Repeat schedule until</div></div>
+      </div>
+      <div class="row">
+        <div class="col-md-6"><input name="sw_start" id="sw_start" class="form-control acc-datepicker  hasDatepicker"><button type="button" class="ui-datepicker-trigger"></button></div>
+        <div class="col-md-6"><input name="sw_end" id="sw_end" class="form-control acc-datepicker  hasDatepicker"><button type="button" class="ui-datepicker-trigger"></button></div>
+      </div>
+    </div>
+  </div>
+  <div class="acc-small-normal-label">[Unknown Label: tableName=literal, fieldName=reportlabel, fieldValue=schedulereportname]<i class="fa fa-asterisk"></i></div><input name="sw_name" id="sw_name" value="Fraud_Resolutions_Grouped_By_Attribute_host_admin" class="form-control "><p></p>
+  <div class="acc-small-normal-label">Key to use to encrypt report file<i class="fa fa-asterisk"></i></div><select name="sw_pgpk" id="sw_pgpk" class="form-control"><option value=""> </option><option value="5237260000000000006">ded1 Key</option></select><p class="acc-small-italic-label">1 total items</p><p>&nbsp;</p>
+  <div class="acc-small-normal-label">Users to send notifications to</div><select name="sw_nu" id="sw_nu" class="form-control" multiple="true"><option value=""> </option><option value="5237260000000118929">Aalia Karim</option><option value="5237260000000138398">Aaron Johnson</option><option value="5237260000000138055">Abby Rivard</option><option value="5237260000000146658">Acacia Edmonds</option><option value="5237260000000120736">Ada Arneson</option><option value="5237260000000116222">Adam Nelson</option><option value="5237260000000139739">Alan Post</option><option value="5237260000000139710">Alex Kronzer</option><option value="5237260000000024221">Allison Fields</option><option value="5237260000000146657">Amy Bytnar</option><option value="5237260000000134891">Amy Dobmeier</option><option value="5237260000000024243">Andrea Leal</option><option value="5237260000000115505">Andrew Dill</option><option value="5237260000000115515">Andrew Schneewind</option><option value="5237260000000115502">Andrew Williamson</option><option value="5237260000000024248">Angela Stone</option><option value="5237260000000134950">Angela Wolfson</option><option value="5237260000000121110">Anita Holland</option><option value="5237260000000144215">Anjana V.P</option><option value="5237260000000139731">Anthony Gust</option><option value="5237260000000118916">Antonio Mare</option><option value="5237260000000118430">Anu.Remanan</option><option value="5237260000000116201">April Lutz</option><option value="5237260000000115573">Arnold Kpoto</option><option value="5237260000000103542">Arturo Perez</option><option value="5237260000000115503">Ashley Olson</option><option value="5237260000000137150">Austin Kucheska</option><option value="5237260000000139717">Austin Riches</option><option value="5237260000000115341">Bao Lee</option><option value="5237260000000039721">Barbara Hughes</option><option value="5237260000000121253">Barbara Peterson</option><option value="5237260000000103409">Barbara Schulz</option><option value="5237260000000024257">Barbara Standing</option><option value="5237260000000109983">Barbara Tjepkema</option><option value="5237260000000142017">Becky Gobel</option><option value="5237260000000098722">Becky Nicholas</option><option value="5237260000000112929">Beena Babu</option><option value="5237260000000138955">Benjamim Halama</option><option value="5237260000000139756">Benjamin Schneider</option><option value="5237260000000116203">Berhane Abay</option><option value="5237260000000125811">Beth Bleess</option><option value="5237260000000118482">Bob.Meissner</option><option value="5237260000000139705">Boubakar Jalloh</option><option value="5237260000000019721">Brad Mares</option><option value="5237260000000103405">Brandi McNamara</option><option value="5237260000000120735">Brenda Frie</option><option value="5237260000000118481">Brent Pack</option><option value="5237260000000146661">Brett Freistroffer</option><option value="5237260000000118524">Brett.Eslinger</option><option value="5237260000000138050">Brian Claus</option><option value="5237260000000115361">Brianna Dolejs</option><option value="5237260000000118930">Brianna Hall</option><option value="5237260000000139741">Brooke Tibbetts</option><option value="5237260000000115543">Bryant Koval</option><option value="5237260000000146660">Bryon Haskell</option><option value="5237260000000118526">Caitlin Horton</option><option value="5237260000000103589">Carleen Lensch</option><option value="5237260000000138057">Carley Dix</option><option value="5237260000000111281">Carol Agnes</option><option value="5237260000000103761">Carrie Jaeger</option><option value="5237260000000139712">Cassandra Scherer</option><option value="5237260000000129312">Cassie Leslie</option><option value="5237260000000123510">Catriece.Lewis</option><option value="5237260000000145517">Cecilia Abril Costa</option><option value="5237260000000098724">Charles Luna</option><option value="5237260000000103406">Charles.Rehbein</option><option value="5237260000000103590">Cheri McKelvey</option><option value="5237260000000138957">Christina Fallon</option><option value="5237260000000127407">Christina Muellner</option><option value="5237260000000118643">Christine Bartley</option><option value="5237260000000024258">Christine Fellner</option><option value="5237260000000145515">Christine Tapia</option><option value="5237260000000119953">Christopher.Furst</option><option value="5237260000000103410">Cindy Newcomer</option><option value="5237260000000121211">Collin Patrick</option><option value="5237260000000139716">Crystal Truman</option><option value="5237260000000103591">Crystal Willier</option><option value="5237260000000103402">Cynthia Buggs</option><option value="5237260000000139733">Dallas Walker</option><option value="5237260000000141319">Dan Sarles</option><option value="5237260000000131930">Dan Sarles</option><option value="5237260000000024249">Dang Xiong</option><option value="5237260000000118925">Daniel Flomo</option><option value="5237260000000103404">Daniel Steensland</option><option value="5237260000000119792">Daniel Traczyk</option><option value="5237260000000103592">Daren Storey</option><option value="5237260000000103481">Dauphane Cole</option><option value="5237260000000103411">David Blackowiak</option><option value="5237260000000121251">David Christensen</option><option value="5237260000000118530">David Hartung</option><option value="5237260000000115509">David Juvland</option><option value="5237260000000138051">David Renneke</option><option value="5237260000000120066">David.Shaw</option><option value="5237260000000075561">David.Stucki</option><option value="5237260000000075381">Deanna Schlafman</option><option value="5237260000000103416">Deb.Wert</option><option value="5237260000000103599">Deborah Mathison</option><option value="5237260000000145519">Deborah Moreno</option><option value="5237260000000024259">Deborah Prieto</option><option value="5237260000000122401">Debra Hammer</option><option value="5237260000000111121">Deepika Gnanasekar</option><option value="5237260000000103561">Delores Nauman</option><option value="5237260000000024260">Demond Counce</option><option value="5237260000000096281">Demond Counce</option><option value="5237260000000103401">Denise Carlson-Mwangi</option><option value="5237260000000116642">Devan Koss</option><option value="5237260000000103600">Diane Allshouse</option><option value="5237260000000103601">Diane Gregory</option><option value="5237260000000103581">Dimitrina Dimitrova</option><option value="5237260000000103626">Dixie Myrick</option><option value="5237260000000024261">Donald Churilla</option><option value="5237260000000115504">Drew Smalley</option><option value="5237260000000112923">Dyuti.Putatunda</option><option value="5237260000000120653">Edward Benedicto</option><option value="5237260000000146664">Edward Burns</option><option value="5237260000000139750">Edward Lutz</option><option value="5237260000000138530">Elayne Crecelius</option><option value="5237260000000139738">Elise Jasper</option><option value="5237260000000139010">Elizabeth Cleveland</option><option value="5237260000000111402">Elizabeth Lane</option><option value="5237260000000024244">Emily Hooper</option><option value="5237260000000115449">Emily Lidd</option><option value="5237260000000115457">Emily Zampogna</option><option value="5237260000000145521">Enedina Ramos-Santiago</option><option value="5237260000000118936">Eric Hazenson</option><option value="5237260000000103627">Erich Frank</option><option value="5237260000000139749">Erik Nelson</option><option value="5237260000000019733">Erika Anderson</option><option value="5237260000000103412">Erin Rolandson</option><option value="5237260000000024250">Ernest Johnson</option><option value="5237260000000138052">Essica Laganiere</option><option value="5237260000000139708">Evan Buckingham</option><option value="5237260000000115501">Evan Rajan</option><option value="5237260000000019730">Gabriela Johnson</option><option value="5237260000000118523">Gail.Roslin</option><option value="5237260000000115516">Georgiy Volfson</option><option value="5237260000000112401">Ghouse.M</option><option value="5237260000000145516">Gilbert Sanchez</option><option value="5237260000000111862">Gowtham Manjunath</option><option value="5237260000000111403">Gregg Nelson</option><option value="5237260000000109961">Gregory Chamberlin</option><option value="5237260000000120492">Gregory Patyk</option><option value="5237260000000024282">Gretchen VanSickle</option><option value="5237260000000111861">Guruprasad C</option><option value="5237260000000139729">Hamze Noor</option><option value="5237260000000103482">Harriet Perlman</option><option value="5237260000000118918">Harrison Zhuang</option><option value="5237260000000109962">Heather Martinez</option><option value="5237260000000119954">Helen.Kebhart</option><option value="5237260000000118926">Henry Mccabe</option><option value="5237260000000019732">Ilda Couri</option><option value="5237260000000139726">Jack Johnson</option><option value="5237260000000103417">Jackie Brown</option><option value="5237260000000024265">Jacqueline DeBuse</option><option value="5237260000000115442">Jacqueline Haecherl</option><option value="5237260000000143517">Jakai Taylor</option><option value="5237260000000115454">Jamal Zollicoffer</option><option value="5237260000000103543">James Hurrle</option><option value="5237260000000146656">Jamie Kowalczyk</option><option value="5237260000000128530">Jamie Nicholson</option><option value="5237260000000024241">Jan Hamilton</option><option value="5237260000000103628">Jana Neal</option><option value="5237260000000145520">Jane Williams</option><option value="5237260000000138049">Janette Scherer</option><option value="5237260000000103408">Janice Gladden</option><option value="5237260000000024251">Jason Baker</option><option value="5237260000000020041">Jason Plantin</option><option value="5237260000000115451">Jason Worrell</option><option value="5237260000000145492">Jay Anthony</option><option value="5237260000000118529">Jean Schlotz</option><option value="5237260000000103593">Jean Thompson</option><option value="5237260000000109002">Jeff Reents</option><option value="5237260000000142020">Jeffrey Dewall</option><option value="5237260000000119955">Jenelle Masterson</option><option value="5237260000000139751">Jenna Kang</option><option value="5237260000000022821">Jennifer Aday</option><option value="5237260000000109982">Jennifer House</option><option value="5237260000000097004">Jennifer Lindgren</option><option value="5237260000000130130">Jennifer Siemback</option><option value="5237260000000142022">Jennifer Trdan</option><option value="5237260000000119896">Jennifer.Stanoch</option><option value="5237260000000139734">Jerame Kuyper</option><option value="5237260000000116202">Jeremy Geary</option><option value="5237260000000109984">Jeremy Lloyd</option><option value="5237260000000115506">Jeremy Moore</option><option value="5237260000000146659">Jerome Jackson</option><option value="5237260000000103483">Jerry Sannan</option><option value="5237260000000118527">Jessica Degen</option><option value="5237260000000128750">Jessica Fahrenkamp</option><option value="5237260000000118920">Jessica Hartman</option><option value="5237260000000139706">Jessica Kadlec</option><option value="5237260000000115362">Jessica Ray</option><option value="5237260000000117261">Jeya rajendran</option><option value="5237260000000024252">Jill Hoeft</option><option value="5237260000000147091">Jillian De Los Santos</option><option value="5237260000000127408">Jim Nguyen</option><option value="5237260000000109005">Joan Youngberg</option><option value="5237260000000118525">Joan.Miller</option><option value="5237260000000103582">Joann Steiskal</option><option value="5237260000000020941">Jodi Kurtz</option><option value="5237260000000118521">Jodie.Peterson</option><option value="5237260000000099401">Joe Moe</option><option value="5237260000000115513">Joel Leatherman</option><option value="5237260000000121252">Joel Savin</option><option value="5237260000000019726">Joel Seeger</option><option value="5237260000000118528">Johanna Kitzman</option><option value="5237260000000125290">John Ahl</option><option value="5237260000000146662">John Alejos</option><option value="5237260000000111041">John Brine</option><option value="5237260000000023741">John Casey</option><option value="5237260000000019731">John Kiesner</option><option value="5237260000000124750">Joseph Smith</option><option value="5237260000000140225">Joseph Smith</option><option value="5237260000000115511">Joseph Smith</option><option value="5237260000000139754">Joseph Stephens</option><option value="5237260000000118927">Joshua Armagost</option><option value="5237260000000115507">Joshua Smuda</option><option value="5237260000000118922">Joshua Yang</option><option value="5237260000000115510">Jozef Steszkal</option><option value="5237260000000118931">Juan Orozco</option><option value="5237260000000120532">Juan.Morales</option><option value="5237260000000019729">Julianne Frankowski</option><option value="5237260000000103602">Julie Carroll</option><option value="5237260000000118522">Julie Fuller</option><option value="5237260000000103418">Julie Russ</option><option value="5237260000000019722">Julie Swenson</option><option value="5237260000000103588">Julio Acosta</option><option value="5237260000000125810">Justin Fambrough</option><option value="5237260000000024264">Justin Skistad</option><option value="5237260000000112924">Jyothi Priya</option><option value="5237260000000139742">Kadi Hendry</option><option value="5237260000000115001">Kaiser Faruque</option><option value="5237260000000115458">Kali Sorge</option><option value="5237260000000098721">Karen Nelson</option><option value="5237260000000103419">Karen Richardson</option><option value="5237260000000103484">Karen Riley</option><option value="5237260000000118532">Karen.Engelmann</option><option value="5237260000000103415">Karla Glad</option><option value="5237260000000024242">Karyn Prois</option><option value="5237260000000118531">Katherine.Nelson</option><option value="5237260000000139011">Katie Henrikson</option><option value="5237260000000142470">Katie.Haddad</option><option value="5237260000000103603">Kay Larson</option><option value="5237260000000103629">Kay Lideen</option><option value="5237260000000118912">Kayce Hunt</option><option value="5237260000000115321">Kelly Gitar</option><option value="5237260000000095921">Kelly Jackson</option><option value="5237260000000139736">Kelly McBain</option><option value="5237260000000118921">Kelly Nord</option><option value="5237260000000024245">KellyX Costanzo</option><option value="5237260000000115456">Kelsey Judge</option><option value="5237260000000139718">Kenneth Rivet</option><option value="5237260000000103621">Kenyetta Lewis</option><option value="5237260000000024281">Kevin Kutcher</option><option value="5237260000000147814">Kevin Skadsheim</option><option value="5237260000000139714">Kevin Skadsheim</option><option value="5237260000000139722">Khoua Xiong</option><option value="5237260000000118924">Kierstin Olson</option><option value="5237260000000118425">Kim Cox</option><option value="5237260000000125730">Kimberly Sawdey</option><option value="5237260000000115514">Kirk Wojcik</option><option value="5237260000000118570">Kristina Kenan</option><option value="5237260000000103622">LaWayne Marshall</option><option value="5237260000000118937">Lacey.Granroos</option><option value="5237260000000103407">Lana Williams</option><option value="5237260000000138054">Larry Pohlkamp</option><option value="5237260000000139732">Laura Dandeneau</option><option value="5237260000000103630">Laura Gellerman</option><option value="5237260000000023302">Laura Rauh</option><option value="5237260000000118567">Laurie.Dickson</option><option value="5237260000000121710">Leeann.Korecky</option><option value="5237260000000098727">Linda Mzezewa</option><option value="5237260000000120031">Linda.Wikman</option><option value="5237260000000110841">Lindy Smart</option><option value="5237260000000019725">Lingaiah Anuga</option><option value="5237260000000118919">Linh Nguyen</option><option value="5237260000000138473">Lisa Cooney</option><option value="5237260000000103485">Lisa Davis</option><option value="5237260000000103420">Lisa Johnson</option><option value="5237260000000024262">Lisa Lewis</option><option value="5237260000000109981">Lisa Paradis</option><option value="5237260000000118483">Lori.Oachs</option><option value="5237260000000118569">Lucas Korsman</option><option value="5237260000000118572">Luke.Schumacher</option><option value="5237260000000139715">Makayla Frericks</option><option value="5237260000000020681">Mallori Gattis</option><option value="5237260000000120531">Manav Nagla</option><option value="5237260000000146652">Mandy Lenk</option><option value="5237260000000146654">Manuel Bello</option><option value="5237260000000139753">Maria Castegaro</option><option value="5237260000000103631">Maria Diaz</option><option value="5237260000000118243">Maria Larenas</option><option value="5237260000000139737">Maria Thoreson</option><option value="5237260000000144212">Maricela Zamora</option><option value="5237260000000103461">Marie Cassidy</option><option value="5237260000000024163">Marina Markhasin</option><option value="5237260000000138688">Marisa Washington</option><option value="5237260000000103632">Mark Forbish</option><option value="5237260000000139745">Mark Furniss</option><option value="5237260000000114881">Mark Hassenstab</option><option value="5237260000000147092">Martina Zivkovic</option><option value="5237260000000098723">Marvin Younan</option><option value="5237260000000103421">Mary Coy</option><option value="5237260000000024283">MaryAn Run</option><option value="5237260000000125571">Matthew Bailey</option><option value="5237260000000121432">Matthew Marcus</option><option value="5237260000000139730">Matthew Mullen</option><option value="5237260000000118568">Maxine Kvasnik</option><option value="5237260000000024162">Maybelline Fudge</option><option value="5237260000000120530">Meenatchi.Sundaram</option><option value="5237260000000139713">Megan Cuevas</option><option value="5237260000000115446">Megan Parlanti</option><option value="5237260000000139746">Megan Patterson</option><option value="5237260000000144691">Megan.Augustin</option><option value="5237260000000112930">Megha Nagaraj</option><option value="5237260000000139755">Melanie Thorn</option><option value="5237260000000145522">Melinda Benham</option><option value="5237260000000139709">Melissa Burrows</option><option value="5237260000000024253">Melissa Jones</option><option value="5237260000000138791">Melissa Wichman</option><option value="5237260000000103501">Meri Renneberg</option><option value="5237260000000138053">Merle Fristad</option><option value="5237260000000145132">Miayenta Oglesby</option><option value="5237260000000139728">Micaela Magsamen</option><option value="5237260000000118932">Michael Corrigan</option><option value="5237260000000103403">Michael Hawkins</option><option value="5237260000000119793">Michael Rindelaub</option><option value="5237260000000140313">Michael Stone</option><option value="5237260000000120571">Michael Strauss</option><option value="5237260000000024284">Mike Nelson</option><option value="5237260000000139744">Mike Sikich</option><option value="5237260000000140226">Mitchell Lewis</option><option value="5237260000000115448">Mitchell Lewis</option><option value="5237260000000115447">Muhamet Haliti</option><option value="5237260000000118564">Nadira.Boodhram</option><option value="5237260000000110501">Namue Kata</option><option value="5237260000000024263">Nancy Napier</option><option value="5237260000000139720">Nandhini Devanathan</option><option value="5237260000000142574">Natalie Roney</option><option value="5237260000000121371">Nathan Jagoda</option><option value="5237260000000143252">Nathan Taylor</option><option value="5237260000000129310">Naveen Gudi</option><option value="5237260000000137130">Neha Chengappa</option><option value="5237260000000024254">Neng Moua</option><option value="5237260000000141728">Nicholas Campbell</option><option value="5237260000000115455">Nicholas Scotti</option><option value="5237260000000134916">Nicole Boyd</option><option value="5237260000000139748">Paige Gunvalson</option><option value="5237260000000109963">Pamela Dewitt</option><option value="5237260000000102901">Pat Lehane</option><option value="5237260000000103583">Patricia Hassel</option><option value="5237260000000115443">Patrick Dean</option><option value="5237260000000139725">Patrick Fee</option><option value="5237260000000069601">Patrick Youngmisuk</option><option value="5237260000000024255">Patti A Johnson</option><option value="5237260000000103521">Patti Ritchie</option><option value="5237260000000023885">Paul Bjerke</option><option value="5237260000000098781">Peggy Kehr</option><option value="5237260000000115508">Peng Xiong</option><option value="5237260000000118923">Peter Andrus</option><option value="5237260000000139719">Peter Buller</option><option value="5237260000000139752">Peter Lindemann</option><option value="5237260000000145523">Phoung ST John</option><option value="5237260000000103042">Praneetha Vembar</option><option value="5237260000000112402">Praveena Jayabalan</option><option value="5237260000000118428">Prudvi.Pappula</option><option value="5237260000000116204">Quintina Smith</option><option value="5237260000000112922">Rashmi.Tarafder</option><option value="5237260000000115441">Rebecca Fulton</option><option value="5237260000000103422">Rebecca Schimmelman</option><option value="5237260000000118913">Rebecca Shaughnessy</option><option value="5237260000000139724">Rebekah Wermager</option><option value="5237260000000103522">Reddie Buggs</option><option value="5237260000000140224">Regan Schutte</option><option value="5237260000000118914">Regan Schutte</option><option value="5237260000000142374">Regan Schutte</option><option value="5237260000000139747">Renatta Miller</option><option value="5237260000000118427">Renuka.Chinnavadan</option><option value="5237260000000145518">Rhonda Carter</option><option value="5237260000000118566">Rich.Johnson</option><option value="5237260000000135490">Richard Torres</option><option value="5237260000000102481">Robert Daline</option><option value="5237260000000103584">Robert Tholkes</option><option value="5237260000000019724">Robin Davis</option><option value="5237260000000103414">Robin Sanderson</option><option value="5237260000000103585">Robyn Ullman</option><option value="5237260000000111401">Rocky McCormick</option><option value="5237260000000024161">Roger Hanson</option><option value="5237260000000024247">Ronald Warner</option><option value="5237260000000146655">Ruben Valverde</option><option value="5237260000000139735">Ryan Becker</option><option value="5237260000000139707">Ryan Beckman</option><option value="5237260000000147094">Ryan Beckman</option><option value="5237260000000021641">Ryan Fahrmann</option><option value="5237260000000118933">Ryan Kuula</option><option value="5237260000000138056">Ryan Lindeman</option><option value="5237260000000103594">Sally Einhaus</option><option value="5237260000000118915">Samantha Tiede</option><option value="5237260000000111405">Sameer Rao</option><option value="5237260000000024246">Sandra Rietmann</option><option value="5237260000000103541">Sandy Hafner</option><option value="5237260000000109004">Sandy Schotzko</option><option value="5237260000000117601">Sanjeevkumar.M</option><option value="5237260000000103595">Sara King</option><option value="5237260000000109001">Sarah Gobel</option><option value="5237260000000118938">Scott Saboe</option><option value="5237260000000128730">Scott Thompson</option><option value="5237260000000103022">Sean Obrien</option><option value="5237260000000103441">Sean Traverse</option><option value="5237260000000112925">Sebastina Mohan</option><option value="5237260000000142021">Seng Xiong</option><option value="5237260000000115453">Seth Pearce</option><option value="5237260000000134913">Shanaya Branch</option><option value="5237260000000112931">Sharan Ayyappa</option><option value="5237260000000115512">Shawn Wilke</option><option value="5237260000000039741">Sheila Jones</option><option value="5237260000000111404">Shelly Robinson</option><option value="5237260000000112926">Shilpa Kariappa</option><option value="5237260000000138276">Shirley Estrada</option><option value="5237260000000117262">Shishir Udupa</option><option value="5237260000000118429">Srikanth.M</option><option value="5237260000000118426">Srilakshmi.Gadiyaram</option><option value="5237260000000112927">Sriram Ramesh</option><option value="5237260000000144214">Stacey Tigges</option><option value="5237260000000119791">Stanoch</option><option value="5237260000000119847">Stephanie.Reiman</option><option value="5237260000000118917">Stephen King</option><option value="5237260000000144410">Stephen Olson</option><option value="5237260000000118571">Stephen Olson</option><option value="5237260000000142373">Stephen Olson</option><option value="5237260000000019723">Steve Goff</option><option value="5237260000000103623">Steve Offerman</option><option value="5237260000000120570">Strauss</option><option value="5237260000000103586">Sue Stans</option><option value="5237260000000103041">Suji.Damodaran</option><option value="5237260000000134870">Sunshine Gilbert</option><option value="5237260000000019727">Surajit Dutta</option><option value="5237260000000110041">Susan Duffy</option><option value="5237260000000098726">Susan Obrien</option><option value="5237260000000020961">Susan Steinman</option><option value="5237260000000118928">Susan Vang</option><option value="5237260000000103021">Susie Juen</option><option value="5237260000000103587">Suze Magoon</option><option value="5237260000000112928">Swetha Nanjundaiah</option><option value="5237260000000108887">TEMPID06</option><option value="5237260000000112521">TRN041</option><option value="5237260000000112621">TRN042</option><option value="5237260000000112622">TRN043</option><option value="5237260000000112623">TRN044</option><option value="5237260000000112624">TRN045</option><option value="5237260000000112625">TRN046</option><option value="5237260000000112626">TRN047</option><option value="5237260000000112641">TRN048</option><option value="5237260000000112642">TRN049</option><option value="5237260000000112643">TRN050</option><option value="5237260000000112644">TRN051</option><option value="5237260000000112661">TRN052</option><option value="5237260000000112662">TRN053</option><option value="5237260000000112663">TRN054</option><option value="5237260000000112664">TRN055</option><option value="5237260000000112665">TRN056</option><option value="5237260000000112666">TRN057</option><option value="5237260000000112681">TRN058</option><option value="5237260000000112682">TRN059</option><option value="5237260000000112683">TRN060</option><option value="5237260000000112684">TRN061</option><option value="5237260000000112685">TRN062</option><option value="5237260000000112686">TRN063</option><option value="5237260000000112687">TRN064</option><option value="5237260000000112688">TRN065</option><option value="5237260000000112689">TRN066</option><option value="5237260000000118211">TRN067</option><option value="5237260000000118212">TRN068</option><option value="5237260000000118213">TRN069</option><option value="5237260000000118214">TRN070</option><option value="5237260000000118215">TRN071</option><option value="5237260000000118216">TRN072</option><option value="5237260000000118217">TRN073</option><option value="5237260000000118218">TRN074</option><option value="5237260000000118219">TRN075</option><option value="5237260000000118220">TRN076</option><option value="5237260000000118221">TRN077</option><option value="5237260000000118222">TRN078</option><option value="5237260000000118223">TRN079</option><option value="5237260000000118210">TRN080</option><option value="5237260000000118225">TRN214</option><option value="5237260000000118226">TRN215</option><option value="5237260000000118227">TRN216</option><option value="5237260000000118228">TRN217</option><option value="5237260000000118229">TRN218</option><option value="5237260000000118230">TRN219</option><option value="5237260000000118231">TRN220</option><option value="5237260000000108888">TRNEVER86</option><option value="5237260000000108889">TRNEVER87</option><option value="5237260000000108890">TRNEVER88</option><option value="5237260000000108891">TRNEVER89</option><option value="5237260000000108892">TRNEVER90</option><option value="5237260000000108893">TRNEVER91</option><option value="5237260000000108894">TRNEVER92</option><option value="5237260000000108895">TRNEVER93</option><option value="5237260000000108896">TRNEVER94</option><option value="5237260000000108897">TRNEVER95</option><option value="5237260000000108898">TRNEVER96</option><option value="5237260000000108899">TRNEVER97</option><option value="5237260000000108900">TRNEVER98</option><option value="5237260000000108901">TRNEVER99</option><option value="5237260000000116221">Tam Le</option><option value="5237260000000024981">Tamara Burth</option><option value="5237260000000103625">Tanya Simkins</option><option value="5237260000000098725">Tara Paquette</option><option value="5237260000000115841">Target Accertify Test User</option><option value="5237260000000019421">Target InterceptNOW Import User</option><option value="5237260000000120471">Target test user</option><option value="5237260000000139740">Taylor Fischer</option><option value="5237260000000118565">Tequilla.Neal</option><option value="5237260000000024256">Theresa Boehnlein</option><option value="5237260000000118934">Thomas Gregory</option><option value="5237260000000019861">Thomas Kelly</option><option value="5237260000000103596">Tiffany Flowers</option><option value="5237260000000103598">Tika Herritz</option><option value="5237260000000118563">Tina.Given</option><option value="5237260000000119853">Tonya Satter</option><option value="5237260000000119093">Tou Lyfoung-Ya</option><option value="5237260000000103597">Trenella Ricks</option><option value="5237260000000114201">Troy Miller</option><option value="5237260000000120550">Tyler.Schlecht</option><option value="5237260000000118683">Usharani Kandasamy</option><option value="5237260000000146663">Valarie Serrano</option><option value="5237260000000115445">Valeria Cogollo</option><option value="5237260000000135650">Valerie Evans</option><option value="5237260000000103633">Valorie Brady</option><option value="5237260000000019728">Vasudevan Lakshmi</option><option value="5237260000000119993">VenkatRam Reddy</option><option value="5237260000000024801">Verna Starr</option><option value="5237260000000109003">Vicki Duerksen</option><option value="5237260000000130091">Vicky Anderson</option><option value="5237260000000103624">Victoria Salvog</option><option value="5237260000000146665">Violet Penafiel</option><option value="5237260000000118935">Wade Fischer</option><option value="5237260000000024982">Walt Mahanna</option><option value="5237260000000139721">Westly Jackson</option><option value="5237260000000121210">Wilnelia Nieves</option><option value="5237260000000139723">Xang Lor</option><option value="5237260000000133653">Z_Andrew Williamson</option><option value="5237260000000133654">Z_Ashley Olson</option><option value="5237260000000143291">Z_Brianna Dolejs</option><option value="5237260000000133655">Z_Drew Smalley</option><option value="5237260000000133656">Z_Jacqueline Haecherl</option><option value="5237260000000133657">Z_Joshua Smuda</option><option value="5237260000000133658">Z_Kirk Wojcik</option><option value="5237260000000133659">Z_Neng Moua</option><option value="5237260000000144973">Z_Peter Buller</option><option value="5237260000000144972">Z_Ryan Beckman</option><option value="5237260000000133660">Z_Seth Pearce</option><option value="5237260000000133661">Z_Shawn Wilke</option><option value="5237260000000133662">Z_Troy Miller</option><option value="5237260000000139711">Zachary Peterson</option><option value="5237260000000118562">Zoraida.Gonzalez</option><option value="5237260000000120330">adw target</option><option value="5237260000000120622">adw test user</option><option value="5237260000000122511">auto reject user</option><option value="5237260000000020921">brad mares</option><option value="5237260000000122490">chargeback user</option><option value="5237260000000128090">ethoca alert user</option><option value="5237260000000099382">ghost buster</option><option value="5237260000000099381">ghost busters</option><option value="5237260000000119992">sindhu.prakash</option><option value="5237260000000099841">target prod import user</option><option value="5237260000000104081">target test importer</option><option value="5237260000000108881">tempid01</option><option value="5237260000000108883">tempid02</option><option value="5237260000000108884">tempid03</option><option value="5237260000000108885">tempid04</option><option value="5237260000000108886">tempid05</option><option value="5237260000000099661">test</option><option value="5237260000000117966">trn066</option></select><p class="acc-small-italic-label">576 total items</p>
+  <div class="acc-small-normal-label">Roles to send notifications to</div><select name="sw_nr" id="sw_nr" class="form-control" multiple="true"><option value=""> </option><option value="5237260000000017821">A_TGS Senior Specialist</option><option value="5237260000000017962">A_Target Audit Team</option><option value="5237260000000005671">A_Target Business Technical Support</option><option value="5237260000000005667">A_Target Chargeback Analyst</option><option value="5237260000000017681">A_Target Chargeback BP2 Access</option><option value="5237260000000005669">A_Target Data Manager</option><option value="5237260000000005661">A_Target Fraud Manager</option><option value="5237260000000006902">A_Target Fraud Manager with Neg Tbls</option><option value="5237260000000012323">A_Target Fraud Research</option><option value="5237260000000005665">A_Target Fraud Review</option><option value="5237260000000005663">A_Target Fraud Supervisor</option><option value="5237260000000010461">A_Target Guest Service</option><option value="5237260000000005670">A_Target System Administrator</option><option value="5237260000000018441">Accertify Reporting - End User</option><option value="5237260000000007281">Advanced Reporting</option><option value="5237260000000010261">Alert Site Monitoring User - Read Only</option><option value="5237260000000003801">Generic Base Admin BP1</option><option value="5237260000000003781">Generic Base Agent BP1</option><option value="5237260000000005402">Generic Base Agent BP3</option><option value="5237260000000003782">Generic Base Manager BP1</option><option value="5237260000000014901">HelpAgent</option><option value="5237260000000014902">HelpChargebacks</option><option value="5237260000000014903">HelpInternal</option><option value="5237260000000009461">Host Administrator CHARGEBACK</option><option value="5237260000000000241">InterceptNOW Import Role</option><option value="5237260000000010263">JSRpt_Adhoc</option><option value="5237260000000015081">JSRpt_Chargebacks</option><option value="5237260000000007761">JSRpt_Digital</option><option value="5237260000000007762">JSRpt_Events</option><option value="5237260000000013201">JSRpt_Events_Marketplace</option><option value="5237260000000007721">JSRpt_Lang_English</option><option value="5237260000000007741">JSRpt_Lang_Portuguese</option><option value="5237260000000007722">JSRpt_Lang_Spanish</option><option value="5237260000000017781">JSRpt_Mapping</option><option value="5237260000000012921">JSRpt_PID</option><option value="5237260000000015441">JSRpt_POS_TAO</option><option value="5237260000000012922">JSRpt_PSP</option><option value="5237260000000007763">JSRpt_Retail</option><option value="5237260000000012902">JSRpt_Retail_Marketplace</option><option value="5237260000000007764">JSRpt_Service</option><option value="5237260000000007765">JSRpt_SocialNet</option><option value="5237260000000007766">JSRpt_Travel</option></select><p class="acc-small-italic-label">42 total items</p>
+  <div class="acc-small-normal-label">Emails to send notifications to</div><textarea name="sw_nl" id="sw_nl" class="form-control "></textarea><p class="acc-small-italic-label">Separate multiple emails with commas</p>
+</div>
+                                        <hr class="acc-divider">
+                                      </div>
+                                    </div><!-- ctrl 6 -->
+                                  
+                                
+                              
+                                
+                                  
+                                  
+                                    <div class="form-group row"><!-- ctrl 7 -->
+                                      
+                                        
+                                        
+                                          <label class="col-md-2 control-label acc-normal-label">Output</label>
+                                        
+                                                                          
+                                      <div class="col-md-10 btn-group">
+                                        <select name="fmt" id="fmt" class="form-control"><option value="HTML" selected="selected">HTML</option><option value="PDF">PDF</option></select><p class="acc-small-italic-label">2 total items</p>
+                                        <hr class="acc-divider">
+                                      </div>
+                                    </div><!-- ctrl 7 -->
+                                  
+                                
+                              
+
+                              <!-- submit -->
+                              <div class="form-group row acc-input-control-runreport-container">
+                                <label class="col-md-2 control-label acc-normal-label"></label>
+                                <div class="col-md-10 btn-group">
+                                  <div>
+                                    <input type="checkbox" id="scr_target_control">&nbsp;
+                                    <label class="control-label acc-normal-label">Show report in new window</label>
+                                  </div>
+                                  <button type="button" class="btn btn-default acc-general-button acc-large-button" id="submitFilter" name="submitFilter" onclick="SCR.submit();">Submit</button>
+                                </div>
+                              </div>
+                            </form>
+                        </div>
+                    </div>
+</div> <!-- Right Content -->
+
+</div> <!-- row -->
+</div> <!-- container -->
+
+
+<div id="pleaseWaitDialog" class="modal fade" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="text-align: center">
+                <h3>Please wait while we refresh the page...</h3>
+            </div>
+            <div class="modal-body">
+                <div style="height:200px">
+                    <span id="waiting_spinner_center" style="position: absolute;display: block;top: 50%;left: 50%;"><div class="spinner" role="progressbar" style="position: absolute; width: 0px; z-index: 2000000000; left: 50%; top: 50%;"><div style="position: absolute; top: -5px; opacity: 0.25; -webkit-animation: opacity-60-25-0-13 1s linear infinite; -webkit-animation-play-state: initial;"><div style="position: absolute; width: 30px; height: 10px; -webkit-box-shadow: rgba(0, 0, 0, 0.0980392) 0px 0px 1px; -webkit-transform-origin: left 50% 0px; -webkit-transform: rotate(0deg) translate(30px, 0px); border-radius: 5px; background: rgb(0, 0, 0);"></div></div><div style="position: absolute; top: -5px; opacity: 0.25; -webkit-animation: opacity-60-25-1-13 1s linear infinite; -webkit-animation-play-state: initial;"><div style="position: absolute; width: 30px; height: 10px; -webkit-box-shadow: rgba(0, 0, 0, 0.0980392) 0px 0px 1px; -webkit-transform-origin: left 50% 0px; -webkit-transform: rotate(27deg) translate(30px, 0px); border-radius: 5px; background: rgb(0, 0, 0);"></div></div><div style="position: absolute; top: -5px; opacity: 0.25; -webkit-animation: opacity-60-25-2-13 1s linear infinite; -webkit-animation-play-state: initial;"><div style="position: absolute; width: 30px; height: 10px; -webkit-box-shadow: rgba(0, 0, 0, 0.0980392) 0px 0px 1px; -webkit-transform-origin: left 50% 0px; -webkit-transform: rotate(55deg) translate(30px, 0px); border-radius: 5px; background: rgb(0, 0, 0);"></div></div><div style="position: absolute; top: -5px; opacity: 0.25; -webkit-animation: opacity-60-25-3-13 1s linear infinite; -webkit-animation-play-state: initial;"><div style="position: absolute; width: 30px; height: 10px; -webkit-box-shadow: rgba(0, 0, 0, 0.0980392) 0px 0px 1px; -webkit-transform-origin: left 50% 0px; -webkit-transform: rotate(83deg) translate(30px, 0px); border-radius: 5px; background: rgb(0, 0, 0);"></div></div><div style="position: absolute; top: -5px; opacity: 0.25; -webkit-animation: opacity-60-25-4-13 1s linear infinite; -webkit-animation-play-state: initial;"><div style="position: absolute; width: 30px; height: 10px; -webkit-box-shadow: rgba(0, 0, 0, 0.0980392) 0px 0px 1px; -webkit-transform-origin: left 50% 0px; -webkit-transform: rotate(110deg) translate(30px, 0px); border-radius: 5px; background: rgb(0, 0, 0);"></div></div><div style="position: absolute; top: -5px; opacity: 0.25; -webkit-animation: opacity-60-25-5-13 1s linear infinite; -webkit-animation-play-state: initial;"><div style="position: absolute; width: 30px; height: 10px; -webkit-box-shadow: rgba(0, 0, 0, 0.0980392) 0px 0px 1px; -webkit-transform-origin: left 50% 0px; -webkit-transform: rotate(138deg) translate(30px, 0px); border-radius: 5px; background: rgb(0, 0, 0);"></div></div><div style="position: absolute; top: -5px; opacity: 0.25; -webkit-animation: opacity-60-25-6-13 1s linear infinite; -webkit-animation-play-state: initial;"><div style="position: absolute; width: 30px; height: 10px; -webkit-box-shadow: rgba(0, 0, 0, 0.0980392) 0px 0px 1px; -webkit-transform-origin: left 50% 0px; -webkit-transform: rotate(166deg) translate(30px, 0px); border-radius: 5px; background: rgb(0, 0, 0);"></div></div><div style="position: absolute; top: -5px; opacity: 0.25; -webkit-animation: opacity-60-25-7-13 1s linear infinite; -webkit-animation-play-state: initial;"><div style="position: absolute; width: 30px; height: 10px; -webkit-box-shadow: rgba(0, 0, 0, 0.0980392) 0px 0px 1px; -webkit-transform-origin: left 50% 0px; -webkit-transform: rotate(193deg) translate(30px, 0px); border-radius: 5px; background: rgb(0, 0, 0);"></div></div><div style="position: absolute; top: -5px; opacity: 0.25; -webkit-animation: opacity-60-25-8-13 1s linear infinite; -webkit-animation-play-state: initial;"><div style="position: absolute; width: 30px; height: 10px; -webkit-box-shadow: rgba(0, 0, 0, 0.0980392) 0px 0px 1px; -webkit-transform-origin: left 50% 0px; -webkit-transform: rotate(221deg) translate(30px, 0px); border-radius: 5px; background: rgb(0, 0, 0);"></div></div><div style="position: absolute; top: -5px; opacity: 0.25; -webkit-animation: opacity-60-25-9-13 1s linear infinite; -webkit-animation-play-state: initial;"><div style="position: absolute; width: 30px; height: 10px; -webkit-box-shadow: rgba(0, 0, 0, 0.0980392) 0px 0px 1px; -webkit-transform-origin: left 50% 0px; -webkit-transform: rotate(249deg) translate(30px, 0px); border-radius: 5px; background: rgb(0, 0, 0);"></div></div><div style="position: absolute; top: -5px; opacity: 0.25; -webkit-animation: opacity-60-25-10-13 1s linear infinite; -webkit-animation-play-state: initial;"><div style="position: absolute; width: 30px; height: 10px; -webkit-box-shadow: rgba(0, 0, 0, 0.0980392) 0px 0px 1px; -webkit-transform-origin: left 50% 0px; -webkit-transform: rotate(276deg) translate(30px, 0px); border-radius: 5px; background: rgb(0, 0, 0);"></div></div><div style="position: absolute; top: -5px; opacity: 0.25; -webkit-animation: opacity-60-25-11-13 1s linear infinite; -webkit-animation-play-state: initial;"><div style="position: absolute; width: 30px; height: 10px; -webkit-box-shadow: rgba(0, 0, 0, 0.0980392) 0px 0px 1px; -webkit-transform-origin: left 50% 0px; -webkit-transform: rotate(304deg) translate(30px, 0px); border-radius: 5px; background: rgb(0, 0, 0);"></div></div><div style="position: absolute; top: -5px; opacity: 0.25; -webkit-animation: opacity-60-25-12-13 1s linear infinite; -webkit-animation-play-state: initial;"><div style="position: absolute; width: 30px; height: 10px; -webkit-box-shadow: rgba(0, 0, 0, 0.0980392) 0px 0px 1px; -webkit-transform-origin: left 50% 0px; -webkit-transform: rotate(332deg) translate(30px, 0px); border-radius: 5px; background: rgb(0, 0, 0);"></div></div></div></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    </div>
+
+    <div class="red bar"></div>
+
+    <div id="footer">
+        <!-- ################################ BEGIN FOOTER ################################ -->
+        <div class="acc-footer-container-outside">
+            <div class="container acc-footer-container-inside">
+                <div class="acc-footer-interceptas-logo">
+                
+                </div>
+
+                <br>
+                <br>
+
+                <div class="acc-footer-links">
+                    <p class="row acc-footer-text">
+                        <a href="http://www.accertify.com/">Accertify, Inc.</a> 1075 Hawthorn Drive Itasca, IL 60143 |
+                        <a href="http://localhost:8081/unsecured/terms.jsf">Terms Of Use</a> | © 2007-2013 Accertify, Inc.
+                    </p>
+                </div>
+
+                <p class="acc-footer-unique">Unique Page Id:
+                    <span id="page_screen_name_alt">rptcontrol</span>
+                    [<span id="page_screen_id_alt">0</span>]
+                </p>
+            </div>
+        </div>
+        <!-- ################################  END FOOTER  ################################ -->
+    </div>
+
+
+<span style="height: 20px; width: 40px; position: absolute; opacity: 0.85; z-index: 8675309; display: none; cursor: pointer; border: none; background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAUCAYAAAD/Rn+7AAADU0lEQVR42s2WXUhTYRjHz0VEVPRFUGmtVEaFUZFhHxBhsotCU5JwBWEf1EWEEVHQx4UfFWYkFa2biPJiXbUta33OXFtuUXMzJ4bK3Nqay7m5NeZq6h/tPQ+xU20zugjOxR/+7/O8539+5znnwMtNTExwJtMb3L/fiLv3botCSmUjeCaejTOb39AiFothfHxcFIrHY8RksZjBsckJcOIRMfFsHD/SsbExUYpnI8DR0dGUGjSb0byhEJp5Uqg5CTSzc2CQleJbMEj9/ywBcGRkJEk9DQqouEVQT1sK444yWI9UonmTjGqauVLEIlHa9x8lAMbj8SSpp0rwKGMVvg8P46vbg0C7na8z8JsMcgHe7jlEa+edRhiLy8n/TUMfu6EvLElk+U0WtGwrTrdfAGQf5J8iiK4LVzDU28t8JtMSocf8E+l68myaNFXm/6rXslLK7ay5TOunuRvZWpJuvwAYjUaTpOIWoquuAZ219RTaxKYp9BbjycoN5FvL9qH9TBX5rvoGdJythvXYSTxdtRnWylO/ZdqrLsGwszzhWQ593z2KlAwCYCQSSZJ6ehZ0W7bD9VBLgN0NCqr3qR7R2rBrL3pu3Sb/7nDlz2uy6cG0OXk0GTbZXzNp8trsPAQdTj6frlWzN2DcXZGKQQAMh8NJ6rpyHe+PnkCr/CAFdZyvpfpjuvkifLF9wIt1Wwlo0OHie1RvWrKa93RjzfzliTzPKz3ltB0/Tevmwp14wGUgHAzSOoUEwFAolFaaBSuhnslPRkJexUJtZ6v5HtUeLswl33n1BgEY5fvhs9sJ3FAiT+QYyyvoAQJuD0KBAFRTJNAuz5/s3gJgMBhMJwrVFRThM5tY5zUF/A4X1f2fvQTRLCuBreoim0YmAbqNJryvPEXeeq46kaNdkQ/1HCncbJKPs9ZSv2VHGfWsZ2hfkhKAfr8/pdxWKx4wwD69PmVfNSOL+lr2w+gYqHpWDtXt1xQ8AMlWU0e1lqLd/APRHoP8AJqWrQG9gYxcPMsvSJUvAA4MDKTUJ7MZLaVy8v+qT21tcDx/OemePr0RTkNrur4A6PP5xCgBsL+/X4wiQDpuuVxOeL1eMYmYeDY6sOp0z+B0OuHxeEQhxkJMFosJiSO/UinOI/8Pc+l7KKArAT8AAAAASUVORK5CYII=); background-color: transparent;"></span><div id="ui-datepicker-div" class="ui-datepicker ui-widget ui-widget-content ui-helper-clearfix ui-corner-all"></div><script id="hiddenlpsubmitdiv" style="display: none;">0</script><script>try{for(var lastpass_iter=0; lastpass_iter < document.forms.length; lastpass_iter++){ var lastpass_f = document.forms[lastpass_iter]; if(typeof(lastpass_f.lpsubmitorig2)=="undefined"){ lastpass_f.lpsubmitorig2 = lastpass_f.submit; if (typeof(lastpass_f.lpsubmitorig2)=='object'){ continue;}lastpass_f.submit = function(){ var form=this; var customEvent = document.createEvent("Event"); customEvent.initEvent("lpCustomEvent", true, true); var d = document.getElementById("hiddenlpsubmitdiv"); if (d) {for(var i = 0; i < document.forms.length; i++){ if(document.forms[i]==form){ if (typeof(d.innerText) != 'undefined') { d.innerText=i; } else { d.textContent=i; } } } d.dispatchEvent(customEvent); }form.lpsubmitorig2(); } } }}catch(e){}</script></body></html>
