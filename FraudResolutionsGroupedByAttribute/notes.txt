@@ -118,4 +118,34 @@ SELECT
   AND ( RH.DATA_HIERARCHY_ID IN (5237260000000004702) ) AND ( RH.VIRTUAL_TABLE_ID IN (5237260000000002442) ) 
   --AND RH.SCORE > 100  
   AND RH.END_TIME >= TIMESTAMP'2015-06-08 00:00:00 -05:00'  AND RH.END_TIME < TIMESTAMP'2015-06-09 00:00:00 -05:00' 
+
+  
+  
+  
+  
+  
+explanation:
+------------
+criteria: is fraud, this h, this vt, this score range, this time range
+
+CNT how many of this billing_city were found, matching criteria
+
+CNT (G_ATTRVAL=1) total count of billing_cities shown in the report, matching criteria
+
+CNT (G_ATTR=1,G_ATTRVAL=1) total count of all attributes shown in the report, matching criteria, (including blank attribute value and null attribute value as 2 separate items)
+
+TOTAL_CNT (G_ATTRVAL=1) total no. of all billing_cities, (not just the ones shown in the report), matching criteria, (including blank attribute value and null attribute value as 2 separate items)
+  
+SUM(TOTAMT) total billing_amount for this billing_city, matching criteria
+  
+SUM(TOTAMT) (G_ATTRVAL=1) total billing_amount for billing_cities shown in the report, matching criteria
+  
+SUM(TOTAMT) (G_ATTR=1,G_ATTRVAL=1) total billing_amount of all attributes shown in the report, matching criteria, (including blank attribute value and null attribute value as 2 separate items)
+
+  
+  
+  
+  
+  
+  
   
