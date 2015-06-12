@@ -5,3 +5,9 @@ http://www.sitepoint.com/web-tour-instructional-plugins/
 http://usablica.github.io/intro.js/
 http://github.hubspot.com/shepherd/
 
+bootstrap-tour:
+--------------
+
+
+
+
