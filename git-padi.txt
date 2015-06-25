@@ -1,7 +1,7 @@
 
 
 CONCEPTS: 
- 
+
 Working Tree: is the project directory where edits are done
 Bare Repository: is the structure that holds the project files and describes the repo, on a central remote server. 
   edits are NOT done on bare repos. bare repos do NOT have working trees.
