@@ -5,7 +5,7 @@ CONCEPTS:
 Working Tree: is the project directory where edits are done
 Bare Repository: is the structure that holds the project files and describes the repo, on a central remote server. 
   edits are NOT done on bare repos. bare repos do NOT have working trees.
-Remote: is the bare repository is called.
+Remote: is what the bare repository is called.
 Local Repository: is connected to a remote central bare repo.
 Cloning: is how a local repo creates a working tree of a repo on a remote.
 Origin: local repo calls the remote it was cloned from "origin", by convention.
@@ -71,6 +71,14 @@ HOWTO: set up the git config
   If you want to override this with a different name or e-mail address for specific projects, 
   you can run the command without the --global option when you’re in that project.
 
+HOWTO: get information about the remote and it's relation to local
+  to show information for a remote called "origin"
+  $ git show remote origin 
+  this should:
+    show the urls (https or ssh)
+    local remotes and if they are already tracked, and new remotes that aren't tracked yet
+    the local and remote branches "pull" and "push" will operate on
+  
 HOWTO: create a git repo from an existing project that is not under source control
   go to the root directory of the project
   $ git init # this creates the necessary git repository files in the project folder
@@ -87,6 +95,20 @@ HOWTO: clone a remote repo into a local repo, using ssh
   $ git clone git://sshCloneUrl
   this can support ssh password-less authentication
 
+HOWTO: list branches
+  to list local branches, with * in front of checked-out branch
+  $ git branch
+  to also list remote branches that are not yet tracked
+  $ git branch -a 
+
+HOWTO: move between branches
+  $ git checkout name_of_branch_that_you_want_to_move_to
+  
+HOWTO: create a local only branch
+  this will make a branch that is a copy of the branch that is currently checked out
+  $ git branch name_to_be_created
+  this should yield a local-only branch, with no corresponding remote so it can be committed to but no push can happen
+  
 HOWTO: track file
   $ git add untracked_file # add is used to add a file to start being tracked
   $ git add already_tracked_but_just_modified_file # add is used to stage a tracked file
