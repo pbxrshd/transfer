@@ -166,7 +166,17 @@ MM file_that_was modified_and_staged_and_then_modified_again
 A  new_file_that_is_being_staged_for_the_first_time
 M  file_that_has_been_modified_since_the_last_stage_but_not_yet_staged_again
 ?? file_that_is_untracked
-  
+
+
+HOWOTO: list changed files between branches
+  $ git --name-status branchA..branchB # show only names of files changed, and their status
+  status is in the form of actions that need to happen to get branchA to become branchB
+  $ git --stat branchA..branchB # show only names of files changed, and the no.of lines that changed
+  $ git diff --staged # show differences in the files that are staged
+
+HOWTO: replace a file with the HEAD version
+  $ git checkout -- path_to_file_that_has_uncommited_changes_that_needs_to_be_replaced
+
 HOWTO: checkout a commit by it's SHA-ID
  
 HOWTO: know when to merge vs rebase 
@@ -197,3 +207,4 @@ workingDirectory -> index(stage,tracked) -> remoteRepo
 
 ref is a variable that holds an identifier to a single git object.
 
+https://gist.github.com/hofmannsven/6814451 (My simply Git Cheatsheet)
